@@ -3,30 +3,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.destrostudios.cards</groupId>
-        <artifactId>main</artifactId>
+        <artifactId>frontend</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>frontend</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>card-gui</module>
-        <module>card-gui-test</module>
-        <module>frontend-application</module>
-    </modules>
+    <artifactId>card-gui-test</artifactId>
+    <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <jm3.group>org.jmonkeyengine</jm3.group>
-        <jm3.version>3.2.0-stable</jm3.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
     
     <dependencies>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>card-gui</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

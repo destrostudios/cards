@@ -25,6 +25,10 @@ public class EntityData {
         return components[component].getOrElse(entity, defaultValue);
     }
 
+    public int get(int entity, int component) {
+        return components[component].get(entity);
+    }
+
     public void set(int entity, int component, int value) {
         components[component].set(entity, value);
     }
@@ -40,5 +44,4 @@ public class EntityData {
 //    public IntStream streamEntitiesWithComponent(int component, IntIntConsumer consumer) {
 //        return components[component].stream();
 //    }
-    
 }

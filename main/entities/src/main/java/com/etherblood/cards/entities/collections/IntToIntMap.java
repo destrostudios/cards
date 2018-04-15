@@ -20,7 +20,7 @@ public class IntToIntMap {
     private int freeValue;
     private boolean hasFreeKey;
     private int count;
-    
+
     public IntToIntMap() {
         this(8);
     }
@@ -47,7 +47,7 @@ public class IntToIntMap {
 
     public IntStream stream() {
         IntStream stream = LongStream.of(data).mapToInt(IntToIntMap::key).filter(key -> key != FREE_KEY);
-        if(hasFreeKey) {
+        if (hasFreeKey) {
             stream = IntStream.concat(IntStream.of(freeValue), stream);
         }
         return stream;
@@ -71,9 +71,31 @@ public class IntToIntMap {
         }
     }
 
+    public int get(int key) {
+        if (key == FREE_KEY) {
+            if (hasFreeKey) {
+                return freeValue;
+            }
+            throw new NullPointerException();
+        }
+        int index = key & mask;
+        int indexKey;
+        while (true) {
+            long keyValue = data[index];
+            indexKey = key(keyValue);
+            if (indexKey == key) {
+                return value(keyValue);
+            }
+            if (indexKey == FREE_KEY) {
+                throw new NullPointerException();
+            }
+            index = (index + 1) & mask;
+        }
+    }
+
     public int getOrElse(int key, int defaultValue) {
         if (key == FREE_KEY) {
-            return hasFreeKey? freeValue: defaultValue;
+            return hasFreeKey ? freeValue : defaultValue;
         }
         int index = key & mask;
         int indexKey;
@@ -93,7 +115,7 @@ public class IntToIntMap {
     public Integer getOrNull(int key) {
         Integer defaultValue = null;
         if (key == FREE_KEY) {
-            return hasFreeKey? freeValue: defaultValue;
+            return hasFreeKey ? freeValue : defaultValue;
         }
         int index = key & mask;
         int indexKey;
@@ -219,11 +241,11 @@ public class IntToIntMap {
     private static int value(long keyValue) {
         return (int) (keyValue >>> 32);
     }
-    
+
     private static long dataValue(int value) {
-        return ((long)value) << 32;
+        return ((long) value) << 32;
     }
-    
+
     private static long dataKey(int key) {
         return Integer.toUnsignedLong(key);
     }

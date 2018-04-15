@@ -28,14 +28,14 @@ public final class IntSet {
         assert (mask & capacity) == 0;
         keys = new int[capacity];
     }
-    
+
     public void foreach(IntConsumer consumer) {
-        if(hasFreeKey) {
+        if (hasFreeKey) {
             consumer.accept(FREE_KEY);
         }
         for (int i = 0; i < keys.length; i++) {
             int key = keys[i];
-            if(key != FREE_KEY) {
+            if (key != FREE_KEY) {
                 consumer.accept(key);
             }
         }

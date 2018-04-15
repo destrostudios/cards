@@ -1,4 +1,4 @@
-package com.etherblood.cards.sandbox.rules;
+package com.etherblood.cards.rules.battle;
 
 import com.etherblood.cards.entities.EntityData;
 import com.etherblood.cards.events.EventHandler;
@@ -9,7 +9,7 @@ import org.slf4j.Logger;
  *
  * @author Philipp
  */
-public class AttackEventHandler implements EventHandler<AttackEvent>{
+public class AttackEventHandler implements EventHandler<AttackEvent> {
 
     private final EntityData data;
     private final EventQueue events;
@@ -22,11 +22,12 @@ public class AttackEventHandler implements EventHandler<AttackEvent>{
         this.log = log;
         this.attackKey = attackKey;
     }
-    
+
     @Override
     public void onEvent(AttackEvent event) {
         log.info("{} is attacking {}", event.source, event.target);
-        events.trigger(new DamageEvent(event.target, data.getOrElse(event.source, attackKey, 0)));
+        events.response(new DamageEvent(event.target, data.getOrElse(event.source, attackKey, 0)));
+        events.response(new DamageEvent(event.source, data.getOrElse(event.target, attackKey, 0)));
     }
 
 }

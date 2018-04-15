@@ -5,6 +5,7 @@ package com.etherblood.cards.events;
  * @author Philipp
  */
 public abstract class Event {
+
     private Event parent;
     private boolean cancelled;
 

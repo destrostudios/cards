@@ -27,7 +27,7 @@ public class EventQueueImpl implements EventQueue {
 
     @Override
     public void action(ActionEvent action) {
-        if(depth != 0) {
+        if (depth != 0) {
             throw new IllegalStateException("actions may not be enqueued during event handling");
         }
         enqueue(getQueue(ROOT_QUEUE), action);
@@ -55,11 +55,13 @@ public class EventQueueImpl implements EventQueue {
 
     @Override
     public void trigger(TriggeredEvent event) {
-        enqueue(getQueue(ROOT_QUEUE), event);
+        assert depth > 0;
+        enqueue(getQueue(depth - 1), event);
     }
 
     @Override
     public void response(ResponseEvent event) {
+        assert depth > 0;
         enqueue(getQueue(depth), event);
     }
 

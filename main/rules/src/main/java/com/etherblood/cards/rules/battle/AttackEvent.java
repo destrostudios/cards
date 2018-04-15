@@ -1,12 +1,12 @@
-package com.etherblood.cards.sandbox.rules;
+package com.etherblood.cards.rules.battle;
 
-import com.etherblood.cards.events.ActionEvent;
+import com.etherblood.cards.events.ResponseEvent;
 
 /**
  *
  * @author Philipp
  */
-public class AttackEvent extends ActionEvent {
+public class AttackEvent extends ResponseEvent {
 
     public int source, target;
 

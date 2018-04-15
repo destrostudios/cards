@@ -1,6 +1,6 @@
-package com.etherblood.cards.sandbox.rules;
+package com.etherblood.cards.rules.battle;
 
-import com.etherblood.cards.sandbox.rules.SetHealthEvent;
+import com.etherblood.cards.rules.battle.SetHealthEvent;
 import com.etherblood.cards.entities.EntityData;
 import com.etherblood.cards.events.EventHandler;
 import com.etherblood.cards.events.EventQueue;
@@ -10,7 +10,7 @@ import org.slf4j.Logger;
  *
  * @author Philipp
  */
-public class DamageEventHandler implements EventHandler<DamageEvent>{
+public class DamageEventHandler implements EventHandler<DamageEvent> {
 
     private final EntityData data;
     private final EventQueue events;
@@ -23,11 +23,11 @@ public class DamageEventHandler implements EventHandler<DamageEvent>{
         this.log = log;
         this.healthKey = healthKey;
     }
-    
+
     @Override
     public void onEvent(DamageEvent event) {
         log.info("dealing {} damage to {}", event.damage, event.target);
-        events.trigger(new SetHealthEvent(event.target, data.getOrElse(event.target, healthKey, 0) - event.damage));
+        events.response(new SetHealthEvent(event.target, data.getOrElse(event.target, healthKey, 0) - event.damage));
     }
 
 }

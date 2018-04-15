@@ -1,12 +1,12 @@
-package com.etherblood.cards.sandbox.rules;
+package com.etherblood.cards.rules.battle;
 
-import com.etherblood.cards.events.TriggeredEvent;
+import com.etherblood.cards.events.ResponseEvent;
 
 /**
  *
  * @author Philipp
  */
-public class SetHealthEvent extends TriggeredEvent {
+public class SetHealthEvent extends ResponseEvent {
 
     public int target, health;
 

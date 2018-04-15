@@ -9,6 +9,7 @@
         <module>entities</module>
         <module>sandbox</module>
         <module>events</module>
+        <module>rules</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

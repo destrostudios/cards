@@ -19,9 +19,11 @@ public class EventDispatcherImpl implements EventDispatcher {
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void fire(Event event) {
-        for (EventHandler handler : listeners.get(event.getClass())) {
+        List<EventHandler<? extends Event>> handlers = listeners.get(event.getClass());
+        assert handlers != null : "no handlers for " + event;
+        for (EventHandler handler : handlers) {
             handler.onEvent(event);
-            if(event.isCancelled()) {
+            if (event.isCancelled()) {
                 break;
             }
         }

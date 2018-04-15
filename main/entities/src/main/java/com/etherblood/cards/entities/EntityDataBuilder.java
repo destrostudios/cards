@@ -15,9 +15,7 @@ public class EntityDataBuilder {
     private int nextComponentKey = 0;
 
     public ComponentDefinition<Integer> withComponent(String name) {
-        ComponentDefinition<Integer> component = new ComponentDefinition<>(name, nextComponentKey++, x -> x);
-        components.add(component);
-        return component;
+        return withComponent(name, x -> x);
     }
 
     public <T> ComponentDefinition<T> withComponent(String name, ValueMapping<T> mapping) {

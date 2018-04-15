@@ -1,12 +1,9 @@
 package com.etherblood.cards.rules.turns.battle;
 
-import com.etherblood.cards.rules.turns.main.*;
-import com.etherblood.cards.rules.battle.*;
 import com.etherblood.cards.entities.EntityData;
 import com.etherblood.cards.events.EventHandler;
 import com.etherblood.cards.events.EventQueue;
 import com.etherblood.cards.rules.turns.TurnPhase;
-import com.etherblood.cards.rules.turns.respond.StartRespondPhaseEvent;
 import com.etherblood.cards.rules.turns.upkeep.StartUpkeepPhaseEvent;
 import org.slf4j.Logger;
 

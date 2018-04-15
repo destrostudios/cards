@@ -2,6 +2,7 @@ package com.etherblood.cards.entities.collections;
 
 import com.etherblood.cards.entities.IntIntConsumer;
 import java.util.Arrays;
+import java.util.function.LongConsumer;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
@@ -41,6 +42,19 @@ public class IntToIntMap {
             int key = key(keyValue);
             if (key != FREE_KEY) {
                 consumer.accept(key, value(keyValue));
+            }
+        }
+    }
+
+    public void foreach(LongConsumer consumer) {
+        if (hasFreeKey) {
+            consumer.accept(dataKey(FREE_KEY) | dataValue(freeValue));
+        }
+        for (int i = 0; i < data.length; i++) {
+            long keyValue = data[i];
+            int key = key(keyValue);
+            if (key != FREE_KEY) {
+                consumer.accept(keyValue);
             }
         }
     }
@@ -112,25 +126,25 @@ public class IntToIntMap {
         }
     }
 
-    public Integer getOrNull(int key) {
-        Integer defaultValue = null;
-        if (key == FREE_KEY) {
-            return hasFreeKey ? freeValue : defaultValue;
-        }
-        int index = key & mask;
-        int indexKey;
-        while (true) {
-            long keyValue = data[index];
-            indexKey = key(keyValue);
-            if (indexKey == key) {
-                return value(keyValue);
-            }
-            if (indexKey == FREE_KEY) {
-                return defaultValue;
-            }
-            index = (index + 1) & mask;
-        }
-    }
+//    public Integer getOrNull(int key) {
+//        Integer defaultValue = null;
+//        if (key == FREE_KEY) {
+//            return hasFreeKey ? freeValue : defaultValue;
+//        }
+//        int index = key & mask;
+//        int indexKey;
+//        while (true) {
+//            long keyValue = data[index];
+//            indexKey = key(keyValue);
+//            if (indexKey == key) {
+//                return value(keyValue);
+//            }
+//            if (indexKey == FREE_KEY) {
+//                return defaultValue;
+//            }
+//            index = (index + 1) & mask;
+//        }
+//    }
 
     public void set(int key, int value) {
         assert count < data.length;

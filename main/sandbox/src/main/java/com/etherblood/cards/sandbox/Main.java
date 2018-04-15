@@ -9,7 +9,7 @@ import com.etherblood.cards.rules.battle.SetHealthEvent;
 import com.etherblood.cards.entities.EntityDataBuilder;
 import com.etherblood.cards.entities.EntityPool;
 import com.etherblood.cards.entities.EntityData;
-import com.etherblood.cards.events.EventDispatcherImpl;
+import com.etherblood.cards.events.EventDispatcher;
 import com.etherblood.cards.events.EventQueue;
 import com.etherblood.cards.events.EventQueueImpl;
 import com.etherblood.cards.rules.battle.ArmorEventHandler;
@@ -80,7 +80,7 @@ public class Main {
         int turnPhase = builder.withComponent("phase", x -> TurnPhase.values()[x]).getKey();
 
         EntityData data = builder.build();
-        EventDispatcherImpl dispatcher = new EventDispatcherImpl();
+        EventDispatcher dispatcher = new EventDispatcher();
         EventQueue events = new EventQueueImpl(dispatcher::fire);
         dispatcher.addListener(AttackEvent.class, new AttackEventHandler(data, events, loggerFactory.apply(AttackEventHandler.class), attack));
 
@@ -103,7 +103,7 @@ public class Main {
 
         int player1 = entities.create();
         data.set(player1, displayName, names.indexOf("player1"));
-        data.set(player1, turnPhase, TurnPhase.RESPOND.ordinal());
+        data.set(player1, turnPhase, TurnPhase.MAIN.ordinal());
 
         int player2 = entities.create();
         data.set(player2, displayName, names.indexOf("player2"));
@@ -132,9 +132,7 @@ public class Main {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Logger log = LoggerFactory.getLogger(Main.class);
-        
-        log.info(gson.toJson(builder.toDebugMap(data, entities)));
-        events.action(new EndRespondPhaseEvent(player1));
+
         log.info(gson.toJson(builder.toDebugMap(data, entities)));
         events.action(new DeclareAttackEvent(hero, minion2));
         log.info(gson.toJson(builder.toDebugMap(data, entities)));

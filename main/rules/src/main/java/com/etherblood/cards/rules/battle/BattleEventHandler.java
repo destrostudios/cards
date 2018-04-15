@@ -4,7 +4,6 @@ import com.etherblood.cards.entities.EntityData;
 import com.etherblood.cards.events.EventHandler;
 import com.etherblood.cards.events.EventQueue;
 import com.etherblood.cards.rules.turns.battle.StartBattlePhaseEvent;
-import com.etherblood.cards.rules.turns.respond.EndRespondPhaseEvent;
 import org.slf4j.Logger;
 
 /**

@@ -1,6 +1,5 @@
 package com.etherblood.cards.rules.battle;
 
-import com.etherblood.cards.rules.battle.SetHealthEvent;
 import com.etherblood.cards.entities.EntityData;
 import com.etherblood.cards.events.EventHandler;
 import com.etherblood.cards.events.EventQueue;

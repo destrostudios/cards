@@ -35,10 +35,10 @@ import com.etherblood.cards.rules.turns.respond.EndRespondPhaseEvent;
 import com.etherblood.cards.rules.turns.respond.EndRespondPhaseEventHandler;
 import com.etherblood.cards.rules.turns.upkeep.EndUpkeepPhaseEvent;
 import com.etherblood.cards.rules.turns.upkeep.EndUpkeepPhaseEventHandler;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 import org.slf4j.Logger;
@@ -130,33 +130,20 @@ public class Main {
         data.set(hero, armor, 1);
         data.set(hero, ownedBy, player1);
 
-        Map<Integer, Map<String, Object>> map = builder.toDebugMap(data, entities);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(map));
-
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Logger log = LoggerFactory.getLogger(Main.class);
+        
+        log.info(gson.toJson(builder.toDebugMap(data, entities)));
         events.action(new EndRespondPhaseEvent(player1));
-
-        map = builder.toDebugMap(data, entities);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(map));
-
+        log.info(gson.toJson(builder.toDebugMap(data, entities)));
         events.action(new DeclareAttackEvent(hero, minion2));
-
-        map = builder.toDebugMap(data, entities);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(map));
-
+        log.info(gson.toJson(builder.toDebugMap(data, entities)));
         events.action(new EndMainPhaseEvent(player1));
-
-        map = builder.toDebugMap(data, entities);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(map));
-
+        log.info(gson.toJson(builder.toDebugMap(data, entities)));
         events.action(new DeclareBlockEvent(minion1, hero));
-
-        map = builder.toDebugMap(data, entities);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(map));
-
+        log.info(gson.toJson(builder.toDebugMap(data, entities)));
         events.action(new EndRespondPhaseEvent(player2));
-
-        map = builder.toDebugMap(data, entities);
-        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(map));
+        log.info(gson.toJson(builder.toDebugMap(data, entities)));
     }
 
 }

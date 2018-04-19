@@ -10,6 +10,7 @@ import com.destrostudios.cards.frontend.cardgui.zones.*;
 import com.destrostudios.cards.frontend.cardguitest.game.*;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
+import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
@@ -43,6 +44,8 @@ public class TestApplication extends SimpleApplication implements ActionListener
 
     @Override
     public void simpleInitApp() {
+        assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
+
         initCamera();
         initListeners();
         initGame();

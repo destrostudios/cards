@@ -14,4 +14,9 @@ public class SetHealthEvent extends ResponseEvent {
         this.target = target;
         this.health = health;
     }
+
+    @Override
+    public String toString() {
+        return "SetHealthEvent{" + "target=" + target + ", health=" + health + '}';
+    }
 }

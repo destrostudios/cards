@@ -14,4 +14,9 @@ public class StartUpkeepPhaseEvent extends TriggeredEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "StartUpkeepPhaseEvent{" + "player=" + player + '}';
+    }
+
 }

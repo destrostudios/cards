@@ -14,4 +14,9 @@ public class EndRespondPhaseEvent extends ActionEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "EndRespondPhaseEvent{" + "player=" + player + '}';
+    }
+
 }

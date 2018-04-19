@@ -14,4 +14,9 @@ public class EndMainPhaseEvent extends ActionEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "EndMainPhaseEvent{" + "player=" + player + '}';
+    }
+
 }

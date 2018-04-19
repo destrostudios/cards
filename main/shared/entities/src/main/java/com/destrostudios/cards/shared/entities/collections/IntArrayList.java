@@ -1,42 +1,44 @@
 package com.destrostudios.cards.shared.entities.collections;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.PrimitiveIterator;
 import java.util.Random;
-import java.util.stream.LongStream;
+import java.util.stream.IntStream;
 
 /**
  *
  * @author Philipp
  */
-public class LongArrayList {
+public class IntArrayList implements Iterable<Integer> {
 
     private int size = 0;
-    private long[] data;
+    private int[] data;
 
-    public LongArrayList() {
+    public IntArrayList() {
         this(8);
     }
 
-    public LongArrayList(int capacity) {
-        data = new long[capacity];
+    public IntArrayList(int capacity) {
+        data = new int[capacity];
     }
 
-    public long get(int index) {
+    public int get(int index) {
         return data[index];
     }
 
-    public void add(long value) {
+    public void add(int value) {
         if (size == data.length) {
             grow();
         }
         data[size++] = value;
     }
 
-    public long removeLast() {
+    public int removeLast() {
         return data[--size];
     }
 
-    public void insertAt(int index, long value) {
+    public void insertAt(int index, int value) {
         if (size == data.length) {
             grow();
         }
@@ -44,7 +46,7 @@ public class LongArrayList {
         data[index] = value;
     }
 
-    public void swapInsertAt(int index, long value) {
+    public void swapInsertAt(int index, int value) {
         if (size == data.length) {
             grow();
         }
@@ -53,7 +55,7 @@ public class LongArrayList {
     }
 
     public void swap(int index1, int index2) {
-        long tmp = data[index1];
+        int tmp = data[index1];
         data[index1] = data[index2];
         data[index2] = tmp;
     }
@@ -64,6 +66,15 @@ public class LongArrayList {
 
     public void swapRemoveAt(int index) {
         data[index] = data[--size];
+    }
+    
+    public int indexOf(int value) {
+        for (int i = 0; i < size; i++) {
+            if(data[i] == value) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public void clear() {
@@ -80,12 +91,12 @@ public class LongArrayList {
         }
     }
 
-    public LongStream stream() {
+    public IntStream stream() {
         return Arrays.stream(data, 0, size);
     }
 
     private void grow() {
-        long[] nextData = new long[data.length * 2];
+        int[] nextData = new int[data.length * 2];
         System.arraycopy(data, 0, nextData, 0, data.length);
         data = nextData;
     }
@@ -94,13 +105,29 @@ public class LongArrayList {
         return size;
     }
 
-    public long[] data() {
+    public int[] data() {
         return data;
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + Arrays.toString(Arrays.copyOfRange(data, 0, size));
+    }
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return new PrimitiveIterator.OfInt() {
+            private int i = 0;
+            @Override
+            public int nextInt() {
+                return data[i++];
+            }
+
+            @Override
+            public boolean hasNext() {
+                return i < size;
+            }
+        };
     }
 
 }

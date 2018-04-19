@@ -14,4 +14,9 @@ public class EndBattlePhaseEvent extends TriggeredEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "EndBattlePhaseEvent{" + "player=" + player + '}';
+    }
+
 }

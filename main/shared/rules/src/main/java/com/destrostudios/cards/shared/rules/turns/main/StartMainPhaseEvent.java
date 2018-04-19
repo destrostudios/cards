@@ -14,4 +14,9 @@ public class StartMainPhaseEvent extends TriggeredEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "StartMainPhaseEvent{" + "player=" + player + '}';
+    }
+
 }

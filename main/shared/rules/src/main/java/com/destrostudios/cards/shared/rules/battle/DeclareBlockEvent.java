@@ -15,4 +15,9 @@ public class DeclareBlockEvent extends ActionEvent {
         this.target = target;
     }
 
+    @Override
+    public String toString() {
+        return "DeclareBlockEvent{" + "source=" + source + ", target=" + target + '}';
+    }
+
 }

@@ -14,4 +14,9 @@ public class DamageEvent extends ResponseEvent {
         this.target = target;
         this.damage = damage;
     }
+
+    @Override
+    public String toString() {
+        return "DamageEvent{" + "target=" + target + ", damage=" + damage + '}';
+    }
 }

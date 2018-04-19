@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.entities.collections;
 
 import com.destrostudios.cards.shared.entities.IntIntConsumer;
 import java.util.Arrays;
-import java.util.function.LongConsumer;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
@@ -46,26 +46,26 @@ public class IntToIntMap {
         }
     }
 
-    public void foreach(LongConsumer consumer) {
+    public void foreachKey(IntConsumer consumer) {
         if (hasFreeKey) {
-            consumer.accept(dataKey(FREE_KEY) | dataValue(freeValue));
+            consumer.accept(FREE_KEY);
         }
         for (int i = 0; i < data.length; i++) {
             long keyValue = data[i];
             int key = key(keyValue);
             if (key != FREE_KEY) {
-                consumer.accept(keyValue);
+                consumer.accept(key);
             }
         }
     }
 
-    public IntStream stream() {
-        IntStream stream = LongStream.of(data).mapToInt(IntToIntMap::key).filter(key -> key != FREE_KEY);
-        if (hasFreeKey) {
-            stream = IntStream.concat(IntStream.of(freeValue), stream);
-        }
-        return stream;
-    }
+//    public IntStream keyStream() {
+//        IntStream stream = LongStream.of(data).mapToInt(IntToIntMap::key).filter(key -> key != FREE_KEY);
+//        if (hasFreeKey) {
+//            stream = IntStream.concat(IntStream.of(freeValue), stream);
+//        }
+//        return stream;
+//    }
 
     public boolean hasKey(int key) {
         if (key == FREE_KEY) {
@@ -125,26 +125,6 @@ public class IntToIntMap {
             index = (index + 1) & mask;
         }
     }
-
-//    public Integer getOrNull(int key) {
-//        Integer defaultValue = null;
-//        if (key == FREE_KEY) {
-//            return hasFreeKey ? freeValue : defaultValue;
-//        }
-//        int index = key & mask;
-//        int indexKey;
-//        while (true) {
-//            long keyValue = data[index];
-//            indexKey = key(keyValue);
-//            if (indexKey == key) {
-//                return value(keyValue);
-//            }
-//            if (indexKey == FREE_KEY) {
-//                return defaultValue;
-//            }
-//            index = (index + 1) & mask;
-//        }
-//    }
 
     public void set(int key, int value) {
         assert count < data.length;

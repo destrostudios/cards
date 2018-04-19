@@ -15,4 +15,9 @@ public class AttackEvent extends ResponseEvent {
         this.target = target;
     }
 
+    @Override
+    public String toString() {
+        return "AttackEvent{" + "source=" + source + ", target=" + target + '}';
+    }
+
 }

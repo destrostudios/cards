@@ -21,7 +21,7 @@ public abstract class Event {
         this.parent = parent;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void cancel() {
+        this.cancelled = true;
     }
 }

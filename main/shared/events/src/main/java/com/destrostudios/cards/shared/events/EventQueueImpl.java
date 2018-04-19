@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.helpers.NOPLogger;
 
 /**
  *
@@ -17,12 +19,18 @@ public class EventQueueImpl implements EventQueue {
 
     private final List<Queue<Event>> eventStack = new ArrayList<>();
     private final Consumer<Event> eventConsumer;
+    private final Logger log;
     private int depth = 0;
     private int successiveEventsCount;
     private Event activeEvent = null;
 
     public EventQueueImpl(Consumer<Event> eventConsumer) {
+        this(eventConsumer, NOPLogger.NOP_LOGGER);
+    }
+
+    public EventQueueImpl(Consumer<Event> eventConsumer, Logger log) {
         this.eventConsumer = eventConsumer;
+        this.log = log;
     }
 
     @Override
@@ -43,8 +51,10 @@ public class EventQueueImpl implements EventQueue {
             if (successiveEventsCount > SUCCESSIVE_EVENTS_LIMIT) {
                 throw new IllegalStateException("successive events limit reached");
             }
+            log.debug("handling {}", activeEvent);
             eventConsumer.accept(activeEvent);
             if (activeEvent.isCancelled()) {
+                log.debug("{} was cancelled", activeEvent);
                 getQueue(depth).clear();
             } else {
                 processEvents();

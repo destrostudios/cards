@@ -15,4 +15,9 @@ public class DeclareAttackEvent extends ActionEvent {
         this.target = target;
     }
 
+    @Override
+    public String toString() {
+        return "DeclareAttackEvent{" + "source=" + source + ", target=" + target + '}';
+    }
+
 }

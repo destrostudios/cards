@@ -14,4 +14,9 @@ public class StartRespondPhaseEvent extends TriggeredEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "StartRespondPhaseEvent{" + "player=" + player + '}';
+    }
+
 }

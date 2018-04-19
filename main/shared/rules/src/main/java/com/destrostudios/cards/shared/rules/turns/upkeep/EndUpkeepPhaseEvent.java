@@ -14,4 +14,9 @@ public class EndUpkeepPhaseEvent extends TriggeredEvent {
         this.player = player;
     }
 
+    @Override
+    public String toString() {
+        return "EndUpkeepPhaseEvent{" + "player=" + player + '}';
+    }
+
 }

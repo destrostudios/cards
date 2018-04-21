@@ -1,6 +1,7 @@
 package com.destrostudios.cards.frontend.cardguitest;
 
 import com.destrostudios.cards.frontend.cardgui.*;
+import com.destrostudios.cards.frontend.cardgui.animations.ShuffleAnimation;
 import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
 import com.destrostudios.cards.frontend.cardgui.interactivities.*;
@@ -8,7 +9,6 @@ import com.destrostudios.cards.frontend.cardgui.targetarrow.TargetSnapMode;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.*;
 import com.destrostudios.cards.frontend.cardguitest.game.*;
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.KeyInput;
@@ -21,6 +21,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.system.AppSettings;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class TestApplication extends SimpleApplication implements ActionListener{
 
@@ -69,7 +70,8 @@ public class TestApplication extends SimpleApplication implements ActionListener
     
     private void initListeners() {
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addListener(this, "space");
+        inputManager.addMapping("n", new KeyTrigger(KeyInput.KEY_N));
+        inputManager.addListener(this, "space", "n");
     }
     
     private void initGame() {
@@ -153,34 +155,25 @@ public class TestApplication extends SimpleApplication implements ActionListener
         
         int playersCount = game.getPlayers().length;
         playerZones = new PlayerZones[playersCount];
-        for (int i=0;i<playersCount;i++) {
+        Vector3f offset = new Vector3f(0, 0, 2);
+        for (int i = 0; i < playersCount; i++) {
+            if (i == 1) {
+                offset.addLocal(0, 0, -6);
+            }
             IntervalZone deckZone = new IntervalZone(new Vector3f(0, 0.04f, 0));
             IntervalZone handZone = new IntervalZone(new Vector3f(1, 1, 1));
             IntervalZone boardZone = new IntervalZone(new Vector3f(1, 1, 1));
+            boardZone.setFixedTargetWorldPosition(offset.add(0, 0, 0));
+            handZone.setFixedTargetWorldPosition(offset.add(0, 0, 2.5f));
+            deckZone.setFixedTargetWorldPosition(offset.add(10, 0, 0));
+            handZone.setFixedTargetRotation(new Quaternion().fromAngleAxis(FastMath.PI * 0.25f, Vector3f.UNIT_X));
             board.addZone(deckZone);
             board.addZone(handZone);
             board.addZone(boardZone);
             playerZones[i] = new PlayerZones(deckZone, handZone, boardZone);
         }
 
-        stateManager.attach(new BoardAppState(board, rootNode){
-
-            @Override
-            protected void initialize(Application app) {
-                super.initialize(app);
-                Vector3f offset = new Vector3f(0, 0, 2);
-                for (int i=0;i<game.getPlayers().length;i++) {
-                    if (i == 1) {
-                        offset.addLocal(0, 0, -6);
-                    }
-                    PlayerZones zones = playerZones[i];
-                    getBoardObjectNode(zones.getBoardZone()).setLocalTranslation(offset.add(0, 0, 0));
-                    getBoardObjectNode(zones.getHandZone()).setLocalTranslation(offset.add(0, 0, 2.5f));
-                    getBoardObjectNode(zones.getDeckZone()).setLocalTranslation(offset.add(10, 0, 0));
-                    getBoardObjectNode(zones.getHandZone()).rotate(new Quaternion().fromAngleAxis(FastMath.PI * 0.25f, Vector3f.UNIT_X));
-                }
-            }
-        });
+        stateManager.attach(new BoardAppState(board, rootNode));
     }
     
     private void updateBoard() {
@@ -235,6 +228,10 @@ public class TestApplication extends SimpleApplication implements ActionListener
         if ("space".equals(name) && isPressed) {
             inputManager.setCursorVisible(flyCam.isEnabled());
             flyCam.setEnabled(!flyCam.isEnabled());
+        }
+        else if ("n".equals(name) && isPressed) {
+            LinkedList<Card> cards = playerZones[0].getDeckZone().getCards();
+            board.playAnimation(new ShuffleAnimation(cards, this));
         }
     }
 }

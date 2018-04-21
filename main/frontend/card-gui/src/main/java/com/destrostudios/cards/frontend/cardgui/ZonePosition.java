@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
 /**
@@ -23,7 +24,11 @@ public class ZonePosition {
         this.position = position;
     }
 
-    public Vector3f getPosition() {
-        return position;
+    public Vector3f getDefaultTargetPosition() {
+        return zone.getCurrentPosition().add(zone.getLocalPosition(position));
+    }
+
+    public Quaternion getDefaultTargetRotation() {
+        return zone.getCurrentRotation();
     }
 }

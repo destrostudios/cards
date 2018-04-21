@@ -15,7 +15,7 @@ public class IntervalZone extends CardZone{
     private Vector3f interval;
 
     @Override
-    public Vector3f getWorldPosition(Vector3f zonePosition) {
+    public Vector3f getLocalPosition(Vector3f zonePosition) {
         return zonePosition.mult(interval);
     }
 }

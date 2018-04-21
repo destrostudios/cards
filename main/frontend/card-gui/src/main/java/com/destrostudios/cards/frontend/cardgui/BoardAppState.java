@@ -11,12 +11,12 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  *
@@ -48,21 +48,17 @@ public class BoardAppState extends BaseAppState implements ActionListener{
     protected void initialize(Application app) {
         application = app;
         rayCasting = new RayCasting(application);
-        for (CardZone zone : board.getZones()) {
-            Node zoneNode = new Node();
-            zoneNode.setUserData("boardObjectId", zone.getId());
-            board.getVisualizer(zone).createVisualisation(zoneNode, application.getAssetManager());
-            board.getVisualizer(zone).updateVisualisation(zoneNode, zone, application.getAssetManager());
-            rootNode.attachChild(zoneNode);
-            boardObjectNodes.put(zone, zoneNode);
-            for (Card card : zone.getCards()) {
-                card.setProperty("mana", "0");
-                Node cardNode = new Node();
-                cardNode.setUserData("boardObjectId", card.getId());
-                board.getVisualizer(card).createVisualisation(cardNode, application.getAssetManager());
-                board.getVisualizer(card).updateVisualisation(cardNode, card, application.getAssetManager());
-                rootNode.attachChild(cardNode);
-                boardObjectNodes.put(card, cardNode);
+        for (BoardObject boardObject : board.getBoardObjects()) {
+            Node node = new Node();
+            node.setUserData("boardObjectId", boardObject.getId());
+            board.getVisualizer(boardObject).createVisualisation(node, application.getAssetManager());
+            board.getVisualizer(boardObject).updateVisualisation(node, boardObject, application.getAssetManager());
+            rootNode.attachChild(node);
+            boardObjectNodes.put(boardObject, node);
+            if (boardObject instanceof TransformedBoardObject) {
+                TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
+                transformedBoardObject.setCurrentPosition(node.getLocalTranslation());
+                transformedBoardObject.setCurrentRotation(node.getLocalRotation());
             }
         }
         targetArrow = new TargetArrow(application.getAssetManager());
@@ -78,9 +74,9 @@ public class BoardAppState extends BaseAppState implements ActionListener{
     @Override
     public void update(float lastTimePerFrame) {
         super.update(lastTimePerFrame);
-        for (Map.Entry<BoardObject, Node> boardObjectEntry : boardObjectNodes.entrySet()) {
-            BoardObject boardObject = boardObjectEntry.getKey();
-            Node node = boardObjectEntry.getValue();
+        board.update(lastTimePerFrame);
+        for (BoardObject boardObject : board.getBoardObjects()) {
+            Node node = boardObjectNodes.get(boardObject);
             if (boardObject == draggedBoardObject) {
                 continue;
             }
@@ -89,17 +85,17 @@ public class BoardAppState extends BaseAppState implements ActionListener{
                 board.getVisualizer(boardObject).updateVisualisation(node, boardObject, application.getAssetManager());
                 boardObject.onVisualisationUpdate();
             }
-            if (boardObject instanceof Card) {
-                Card card = (Card) boardObject;
-                CardZone zone = card.getZonePosition().getZone();
-                Node zoneNode = boardObjectNodes.get(zone);
+            if (boardObject instanceof TransformedBoardObject) {
+                TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
+                Vector3f position = FloatInterpolate.get(node.getLocalTranslation(), transformedBoardObject.getTargetPosition(), lastTimePerFrame);
+                Quaternion rotation = FloatInterpolate.get(node.getLocalRotation(), transformedBoardObject.getTargetRotation(), lastTimePerFrame);
 
-                Vector3f worldPosition = zone.getWorldPosition(card.getZonePosition().getPosition());
-                worldPosition = worldPosition.add(zoneNode.getLocalTranslation());
-
-                node.setLocalTranslation(FloatInterpolate.get(node.getLocalTranslation(), worldPosition, lastTimePerFrame));
-                node.setLocalRotation(FloatInterpolate.get(node.getLocalRotation(), zoneNode.getLocalRotation(), lastTimePerFrame));
+                node.setLocalTranslation(position);
+                node.setLocalRotation(rotation);
                 //node.setLocalScale(FloatInterpolate.get(node.getLocalScale(), zoneNode.getLocalScale(), lastTimePerFrame));
+
+                transformedBoardObject.setCurrentPosition(position);
+                transformedBoardObject.setCurrentRotation(rotation);
             }
         }
         if (draggedNode != null) {
@@ -122,7 +118,7 @@ public class BoardAppState extends BaseAppState implements ActionListener{
                     if (dragToTargetInteractivity.getTargetSnapMode() != TargetSnapMode.NEVER) {
                         BoardObject hoveredBoardObject = getHoveredInteractivityTarget(dragToTargetInteractivity.getTargetSnapMode() == TargetSnapMode.VALID);
                         if (hoveredBoardObject != null) {
-                            targetLocation = getBoardObjectNode(hoveredBoardObject).getLocalTranslation();
+                            targetLocation = boardObjectNodes.get(hoveredBoardObject).getLocalTranslation();
                         }
                     }
                     targetArrow.updateGeometry(sourceLocation, targetLocation);
@@ -209,14 +205,6 @@ public class BoardAppState extends BaseAppState implements ActionListener{
             }
         }
         return null;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    protected Node getBoardObjectNode(BoardObject boardObject) {
-        return boardObjectNodes.get(boardObject);
     }
     
     // TODO: Other appstate interface methods

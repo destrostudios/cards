@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -7,7 +8,7 @@ import java.util.LinkedList;
  *
  * @author Carl
  */
-public class Board {
+public class Board implements GameLoopListener {
 
     public Board(BoardObjectVisualizer<CardZone> zoneVisualizer, BoardObjectVisualizer<Card> cardVisualizer, InteractivityListener interactivityListener) {
         this.zoneVisualizer = zoneVisualizer;
@@ -20,6 +21,7 @@ public class Board {
     private BoardObjectVisualizer<CardZone> zoneVisualizer;
     private BoardObjectVisualizer<Card> cardVisualizer;
     private InteractivityListener interactivityListener;
+    private AnimationQueue animationQueue = new AnimationQueue();
     
     public void register(BoardObject boardObject) {
         if (boardObject.getId() == -1) {
@@ -27,6 +29,10 @@ public class Board {
             boardObjects.put(nextId, boardObject);
             nextId++;
         }
+    }
+
+    public Collection<BoardObject> getBoardObjects() {
+        return boardObjects.values();
     }
 
     public BoardObject getBoardObject(Integer id) {
@@ -38,9 +44,13 @@ public class Board {
         zone.setBoard(this);
         zones.add(zone);
     }
-    
+
     public void triggerEvent(GameEvent event) {
         event.trigger(this);
+    }
+
+    public void playAnimation(Animation animation) {
+        animationQueue.addAnimation(animation);
     }
 
     public LinkedList<CardZone> getZones() {
@@ -59,5 +69,10 @@ public class Board {
 
     public InteractivityListener getInteractivityListener() {
         return interactivityListener;
+    }
+
+    @Override
+    public void update(float lastTimePerFrame) {
+        animationQueue.update(lastTimePerFrame);
     }
 }

@@ -10,7 +10,7 @@ import com.jme3.math.Vector3f;
 public class CustomZone extends CardZone{
 
     @Override
-    public Vector3f getWorldPosition(Vector3f zonePosition) {
+    public Vector3f getLocalPosition(Vector3f zonePosition) {
         return zonePosition;
     }
 }

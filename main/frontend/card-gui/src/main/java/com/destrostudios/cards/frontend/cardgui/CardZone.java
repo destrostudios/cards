@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import java.util.LinkedList;
 
@@ -7,7 +8,7 @@ import java.util.LinkedList;
  *
  * @author Carl
  */
-public abstract class CardZone extends BoardObject {
+public abstract class CardZone extends TransformedBoardObject {
 
     private Board board;
     private LinkedList<Card> cards = new LinkedList<>();
@@ -29,7 +30,7 @@ public abstract class CardZone extends BoardObject {
         cards.remove(card);
     }
     
-    public abstract Vector3f getWorldPosition(Vector3f zonePosition);
+    public abstract Vector3f getLocalPosition(Vector3f zonePosition);
 
     public void setBoard(Board board) {
         this.board = board;
@@ -37,5 +38,15 @@ public abstract class CardZone extends BoardObject {
 
     public LinkedList<Card> getCards() {
         return cards;
+    }
+
+    @Override
+    protected Vector3f getDefaultTargetPosition() {
+        return Vector3f.ZERO;
+    }
+
+    @Override
+    protected Quaternion getDefaultTargetRotation() {
+        return Quaternion.DIRECTION_Z;
     }
 }

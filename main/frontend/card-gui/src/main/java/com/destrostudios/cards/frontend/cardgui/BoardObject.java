@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.destrostudios.cards.frontend.cardgui;
 
 import java.util.HashMap;
@@ -11,12 +6,17 @@ import java.util.HashMap;
  *
  * @author Carl
  */
-public class BoardObject {
+public class BoardObject implements GameLoopListener {
 
     private int id = -1;
     private HashMap<String, String> properties = new HashMap<>();
     private boolean needsVisualisationUpdate;
     private Interactivity interactivity;
+
+    @Override
+    public void update(float lastTimePerFrame) {
+
+    }
 
     public void setProperty(String name, String value) {
         String oldValue = properties.get(name);

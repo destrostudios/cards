@@ -1,6 +1,5 @@
 package com.destrostudios.cards.frontend.cardgui;
 
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import java.util.LinkedList;
 
@@ -38,15 +37,5 @@ public abstract class CardZone extends TransformedBoardObject {
 
     public LinkedList<Card> getCards() {
         return cards;
-    }
-
-    @Override
-    protected Vector3f getDefaultTargetPosition() {
-        return Vector3f.ZERO;
-    }
-
-    @Override
-    protected Quaternion getDefaultTargetRotation() {
-        return Quaternion.DIRECTION_Z;
     }
 }

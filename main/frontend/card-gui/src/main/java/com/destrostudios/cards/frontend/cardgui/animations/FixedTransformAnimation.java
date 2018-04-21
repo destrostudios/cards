@@ -2,6 +2,7 @@ package com.destrostudios.cards.frontend.cardgui.animations;
 
 import com.destrostudios.cards.frontend.cardgui.Animation;
 import com.destrostudios.cards.frontend.cardgui.TransformedBoardObject;
+import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
@@ -28,10 +29,10 @@ public abstract class FixedTransformAnimation extends Animation {
         Quaternion targetRotation = getTargetRotation();
         for (TransformedBoardObject transformedBoardObject : transformedBoardObjects) {
             if (isFirstFrame ||(!transformedBoardObject.hasReachedTargetPosition())) {
-                transformedBoardObject.setFixedTargetWorldPosition(targetPosition);
+                transformedBoardObject.setPositionTransformation(new SimpleTargetPositionTransformation(targetPosition));
             }
             if (isFirstFrame ||(!transformedBoardObject.hasReachedTargetRotation())) {
-                transformedBoardObject.setFixedTargetRotation(targetRotation);
+                transformedBoardObject.setRotationTransformation(new SimpleTargetRotationTransformation(targetRotation));
             }
         }
         allTargetTransformationsReached = transformedBoardObjects.stream().allMatch(transformedBoardObject -> transformedBoardObject.hasReachedTargetTransform());

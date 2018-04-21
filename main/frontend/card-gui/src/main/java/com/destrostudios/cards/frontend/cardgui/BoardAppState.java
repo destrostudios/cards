@@ -11,7 +11,6 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -87,15 +86,8 @@ public class BoardAppState extends BaseAppState implements ActionListener{
             }
             if (boardObject instanceof TransformedBoardObject) {
                 TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
-                Vector3f position = FloatInterpolate.get(node.getLocalTranslation(), transformedBoardObject.getTargetPosition(), lastTimePerFrame);
-                Quaternion rotation = FloatInterpolate.get(node.getLocalRotation(), transformedBoardObject.getTargetRotation(), lastTimePerFrame);
-
-                node.setLocalTranslation(position);
-                node.setLocalRotation(rotation);
-                //node.setLocalScale(FloatInterpolate.get(node.getLocalScale(), zoneNode.getLocalScale(), lastTimePerFrame));
-
-                transformedBoardObject.setCurrentPosition(position);
-                transformedBoardObject.setCurrentRotation(rotation);
+                node.setLocalTranslation(transformedBoardObject.getCurrentPosition());
+                node.setLocalRotation(transformedBoardObject.getCurrentRotation());
             }
         }
         if (draggedNode != null) {
@@ -109,6 +101,11 @@ public class BoardAppState extends BaseAppState implements ActionListener{
                     // Set rotation so the node faces the camera (2d-like)
                     draggedNode.setLocalRotation(application.getCamera().getRotation());
                     draggedNode.rotate(-FastMath.HALF_PI, 0, FastMath.PI);
+                    if (draggedBoardObject instanceof TransformedBoardObject) {
+                        TransformedBoardObject transformedBoardObject = (TransformedBoardObject) draggedBoardObject;
+                        transformedBoardObject.setCurrentPosition(draggedNode.getLocalTranslation());
+                        transformedBoardObject.setCurrentRotation(draggedNode.getLocalRotation());
+                    }
                     break;
                 
                 case AIM:
@@ -144,12 +141,10 @@ public class BoardAppState extends BaseAppState implements ActionListener{
                                     board.getInteractivityListener().onInteractivity(boardObject, null);
                                     break;
                                 case DRAG:
-                                    draggedBoardObject = boardObject;
-                                    draggedNode = boardObjectNodes.get(boardObject);
+                                    setDraggedBoardObject(boardObject);
                                     break;
                                 case AIM:
-                                    draggedBoardObject = boardObject;
-                                    draggedNode = boardObjectNodes.get(boardObject);
+                                    setDraggedBoardObject(boardObject);
                                     rootNode.attachChild(targetArrow.getGeometry());
                                     break;
                             }
@@ -171,12 +166,25 @@ public class BoardAppState extends BaseAppState implements ActionListener{
                                 break;
                         }
                         draggedNode = null;
+                        if (draggedBoardObject instanceof TransformedBoardObject) {
+                            TransformedBoardObject transformedBoardObject = (TransformedBoardObject) draggedBoardObject;
+                            transformedBoardObject.setTransformationEnabled(true);
+                        }
                         draggedBoardObject = null;
                         rootNode.detachChild(targetArrow.getGeometry());
                     }
                 }
                 break;
         }
+    }
+
+    private void setDraggedBoardObject(BoardObject boardObject) {
+        draggedBoardObject = boardObject;
+        if (draggedBoardObject instanceof TransformedBoardObject) {
+            TransformedBoardObject transformedBoardObject = (TransformedBoardObject) draggedBoardObject;
+            transformedBoardObject.setTransformationEnabled(false);
+        }
+        draggedNode = boardObjectNodes.get(draggedBoardObject);
     }
     
     private BoardObject getHoveredInteractivityTarget(boolean filterValidTargets) {

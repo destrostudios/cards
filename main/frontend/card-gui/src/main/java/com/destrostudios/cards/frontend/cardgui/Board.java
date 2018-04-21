@@ -53,6 +53,14 @@ public class Board implements GameLoopListener {
         animationQueue.addAnimation(animation);
     }
 
+    @Override
+    public void update(float lastTimePerFrame) {
+        for (BoardObject boardObject : boardObjects.values()) {
+            boardObject.update(lastTimePerFrame);
+        }
+        animationQueue.update(lastTimePerFrame);
+    }
+
     public LinkedList<CardZone> getZones() {
         return zones;
     }
@@ -69,10 +77,5 @@ public class Board implements GameLoopListener {
 
     public InteractivityListener getInteractivityListener() {
         return interactivityListener;
-    }
-
-    @Override
-    public void update(float lastTimePerFrame) {
-        animationQueue.update(lastTimePerFrame);
     }
 }

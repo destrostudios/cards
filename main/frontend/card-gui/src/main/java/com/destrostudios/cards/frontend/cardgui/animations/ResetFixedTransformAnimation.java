@@ -16,7 +16,7 @@ public class ResetFixedTransformAnimation extends Animation {
     @Override
     public void start() {
         for (TransformedBoardObject transformedBoardObject : transformedBoardObjects) {
-            transformedBoardObject.resetFixedTargetTransform();
+            transformedBoardObject.resetTransformations();
         }
     }
 

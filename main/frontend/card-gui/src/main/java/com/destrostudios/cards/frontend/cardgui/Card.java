@@ -1,7 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
-import com.jme3.math.Quaternion;
-import com.jme3.math.Vector3f;
+import com.destrostudios.cards.frontend.cardgui.transformations.*;
 
 /**
  *
@@ -16,12 +15,12 @@ public class Card extends TransformedBoardObject{
     }
 
     @Override
-    protected Vector3f getDefaultTargetPosition() {
-        return zonePosition.getDefaultTargetPosition();
+    protected PositionTransformation getDefaultPositionTransformation() {
+        return new CardInZonePositionTransformation(zonePosition);
     }
 
     @Override
-    protected Quaternion getDefaultTargetRotation() {
-        return zonePosition.getDefaultTargetRotation();
+    protected RotationTransformation getDefaultRotationTransformation() {
+        return new CardInZoneRotationTransformation(zonePosition);
     }
 }

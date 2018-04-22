@@ -2,6 +2,8 @@ package com.destrostudios.cards.frontend.cardgui;
 
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.math.Vector4f;
+import com.jme3.util.TempVars;
 
 /**
  *
@@ -9,12 +11,23 @@ import com.jme3.math.Vector3f;
  */
 public class FloatInterpolate {
 
+    public static float get(float currentValue, float targetValue, float speed, float lastTimePerFrame) {
+        if (currentValue != targetValue) {
+            float totalDistance = (targetValue - currentValue);
+            float movedDistance = (speed * lastTimePerFrame);
+            if (movedDistance < Math.abs(totalDistance)) {
+                return (currentValue + (Math.signum(totalDistance) * movedDistance));
+            }
+        }
+        return targetValue;
+    }
+
     public static Vector3f get(Vector3f currentValue, Vector3f targetValue, float speed, float lastTimePerFrame) {
         Vector3f difference = targetValue.subtract(currentValue);
-        float differenceLength = difference.length();
-        if (differenceLength > 0) {
+        float totalDistance = difference.length();
+        if (totalDistance > 0) {
             float movedDistance = (speed * lastTimePerFrame);
-            if (movedDistance < differenceLength) {
+            if (movedDistance < totalDistance) {
                 return currentValue.add(difference.normalizeLocal().multLocal(movedDistance));
             }
         }
@@ -22,24 +35,29 @@ public class FloatInterpolate {
     }
     
     public static Quaternion get(Quaternion currentValue, Quaternion targetValue, float speed, float lastTimePerFrame) {
-        if (!currentValue.equals(targetValue)) {
-            float x = get(currentValue.getX(), targetValue.getX(), speed, lastTimePerFrame);
-            float y = get(currentValue.getY(), targetValue.getY(), speed, lastTimePerFrame);
-            float z = get(currentValue.getZ(), targetValue.getZ(), speed, lastTimePerFrame);
-            float w = get(currentValue.getW(), targetValue.getW(), speed,  lastTimePerFrame);
-            return new Quaternion(x, y, z, w);
-        }
-        return targetValue;
-    }
-    
-    public static float get(float currentValue, float targetValue, float speed, float lastTimePerFrame) {
-        if (currentValue != targetValue) {
-            float difference = (targetValue - currentValue);
+        TempVars vars = TempVars.get();
+        vars.vect4f1.set(currentValue.getX(), currentValue.getY(), currentValue.getZ(), currentValue.getW());
+        vars.vect4f2.set(targetValue.getX(), targetValue.getY(), targetValue.getZ(), targetValue.getW());
+        Vector4f difference = vars.vect4f2.subtract(vars.vect4f1);
+        float totalDistance = difference.length();
+        Quaternion newValue = targetValue;
+        if (totalDistance > 0) {
             float movedDistance = (speed * lastTimePerFrame);
-            if (movedDistance < Math.abs(difference)) {
-                return (currentValue + (Math.signum(difference) * movedDistance));
+            if (movedDistance < totalDistance) {
+                Vector4f newValueVector = vars.vect4f1.add(difference.normalizeLocal().multLocal(movedDistance));
+                newValue = new Quaternion(newValueVector.getX(), newValueVector.getY(), newValueVector.getZ(), newValueVector.getW());
             }
         }
-        return targetValue;
+        vars.release();
+        return newValue;
+    }
+
+    public static float getDistanceLikeNumber(Quaternion quaternion1, Quaternion quaternion2) {
+        TempVars vars = TempVars.get();
+        vars.vect4f1.set(quaternion1.getX(), quaternion1.getY(), quaternion1.getZ(), quaternion1.getW());
+        vars.vect4f2.set(quaternion2.getX(), quaternion2.getY(), quaternion2.getZ(), quaternion2.getW());
+        float distance = vars.vect4f1.distance(vars.vect4f2);
+        vars.release();
+        return distance;
     }
 }

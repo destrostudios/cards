@@ -13,7 +13,7 @@ public class CardInZoneRotationTransformation extends SimpleTargetRotationTransf
 
     @Override
     public void update(float lastTimePerFrame) {
+        setTargetRotation(zonePosition.getDefaultTargetRotation(), true);
         super.update(lastTimePerFrame);
-        targetRotation.set(zonePosition.getDefaultTargetRotation());
     }
 }

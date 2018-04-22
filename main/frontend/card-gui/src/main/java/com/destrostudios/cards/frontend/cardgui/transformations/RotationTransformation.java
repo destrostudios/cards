@@ -15,4 +15,7 @@ public abstract class RotationTransformation extends Transformation<TransformedB
     public void applyNewValue(Quaternion newValue) {
         object.setCurrentRotation(newValue);
     }
+
+    @Override
+    public abstract RotationTransformation clone();
 }

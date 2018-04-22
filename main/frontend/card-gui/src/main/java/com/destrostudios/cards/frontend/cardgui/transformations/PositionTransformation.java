@@ -15,4 +15,7 @@ public abstract class PositionTransformation extends Transformation<TransformedB
     public void applyNewValue(Vector3f newValue) {
         object.setCurrentPosition(newValue);
     }
+
+    @Override
+    public abstract PositionTransformation clone();
 }

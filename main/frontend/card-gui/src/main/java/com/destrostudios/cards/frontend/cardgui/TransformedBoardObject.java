@@ -45,11 +45,19 @@ public abstract class TransformedBoardObject extends BoardObject {
         this.positionTransformation = positionTransformation;
     }
 
+    public PositionTransformation getPositionTransformation() {
+        return positionTransformation;
+    }
+
     public void setRotationTransformation(RotationTransformation rotationTransformation) {
         if (rotationTransformation != null) {
             rotationTransformation.setObject(this);
         }
         this.rotationTransformation = rotationTransformation;
+    }
+
+    public RotationTransformation getRotationTransformation() {
+        return rotationTransformation;
     }
 
     public boolean hasReachedTargetTransform() {

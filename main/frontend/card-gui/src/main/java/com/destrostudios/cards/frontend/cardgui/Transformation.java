@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
-public abstract class Transformation<ObjectType, ValueType> implements GameLoopListener {
+public abstract class Transformation<ObjectType, ValueType> implements Cloneable, GameLoopListener {
 
     protected ObjectType object;
 
@@ -22,4 +22,7 @@ public abstract class Transformation<ObjectType, ValueType> implements GameLoopL
     public abstract void applyNewValue(ValueType newValue);
 
     public abstract boolean hasReachedTarget();
+
+    @Override
+    public abstract Transformation<ObjectType, ValueType> clone();
 }

@@ -24,11 +24,19 @@ public abstract class FixedTransformAnimation<PositionTransformationType extends
     public void start() {
         PositionTransformationType positionTransformation = createPositionTransform();
         RotationTransformationType rotationTransformation = createRotationTransform();
-        updatePositionTransform(positionTransformation);
-        updateRotationTransform(rotationTransformation);
+        int index = 0;
         for (TransformedBoardObject transformedBoardObject : transformedBoardObjects) {
-            transformedBoardObject.setPositionTransformation(positionTransformation.clone());
-            transformedBoardObject.setRotationTransformation(rotationTransformation.clone());
+            if (positionTransformation != null) {
+                PositionTransformationType clonedPositionTransformation = (PositionTransformationType) positionTransformation.clone();
+                updatePositionTransform(index, transformedBoardObject, clonedPositionTransformation);
+                transformedBoardObject.setPositionTransformation(clonedPositionTransformation);
+            }
+            if (rotationTransformation != null) {
+                RotationTransformationType clonedRotationTransformation = (RotationTransformationType) rotationTransformation.clone();
+                updateRotationTransform(index, transformedBoardObject, clonedRotationTransformation);
+                transformedBoardObject.setRotationTransformation(rotationTransformation.clone());
+            }
+            index++;
         }
     }
 
@@ -36,13 +44,15 @@ public abstract class FixedTransformAnimation<PositionTransformationType extends
     public void update(float lastTimePerFrame) {
         super.update(lastTimePerFrame);
         if (reevaluateEveryFrame) {
+            int index = 0;
             for (TransformedBoardObject transformedBoardObject : transformedBoardObjects) {
                 if (!transformedBoardObject.hasReachedTargetPosition()) {
-                    updatePositionTransform((PositionTransformationType) transformedBoardObject.getPositionTransformation());
+                    updatePositionTransform(index, transformedBoardObject, (PositionTransformationType) transformedBoardObject.getPositionTransformation());
                 }
                 if (!transformedBoardObject.hasReachedTargetRotation()) {
-                    updateRotationTransform((RotationTransformationType) transformedBoardObject.getRotationTransformation());
+                    updateRotationTransform(index, transformedBoardObject, (RotationTransformationType) transformedBoardObject.getRotationTransformation());
                 }
+                index++;
             }
         }
         allTargetTransformationsReached = transformedBoardObjects.stream().allMatch(transformedBoardObject -> transformedBoardObject.hasReachedTargetTransform());
@@ -55,9 +65,9 @@ public abstract class FixedTransformAnimation<PositionTransformationType extends
 
     protected abstract PositionTransformationType createPositionTransform();
 
-    protected abstract void updatePositionTransform(PositionTransformationType positionTransformation);
+    protected abstract void updatePositionTransform(int index, TransformedBoardObject transformedBoardObject, PositionTransformationType positionTransformation);
 
     protected abstract RotationTransformationType createRotationTransform();
 
-    protected abstract void updateRotationTransform(RotationTransformationType rotationTransformation);
+    protected abstract void updateRotationTransform(int index, TransformedBoardObject transformedBoardObject, RotationTransformationType rotationTransformation);
 }

@@ -4,10 +4,7 @@ import com.destrostudios.cards.frontend.cardgui.Animation;
 
 public class StagedAnimation extends Animation {
 
-    public StagedAnimation(Animation... stages) {
-        this.stages = stages;
-    }
-    private Animation[] stages;
+    protected Animation[] stages;
     private int currentStageIndex;
 
     @Override

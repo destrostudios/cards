@@ -1,7 +1,7 @@
 package com.destrostudios.cards.frontend.cardguitest;
 
 import com.destrostudios.cards.frontend.cardgui.*;
-import com.destrostudios.cards.frontend.cardgui.animations.ShuffleAnimation;
+import com.destrostudios.cards.frontend.cardgui.animations.*;
 import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
 import com.destrostudios.cards.frontend.cardgui.interactivities.*;
@@ -72,7 +72,8 @@ public class TestApplication extends SimpleApplication implements ActionListener
     private void initListeners() {
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("n", new KeyTrigger(KeyInput.KEY_N));
-        inputManager.addListener(this, "space", "n");
+        inputManager.addMapping("b", new KeyTrigger(KeyInput.KEY_B));
+        inputManager.addListener(this, "space", "n", "b");
     }
     
     private void initGame() {
@@ -233,6 +234,9 @@ public class TestApplication extends SimpleApplication implements ActionListener
         else if ("n".equals(name) && isPressed) {
             LinkedList<Card> cards = playerZones[0].getDeckZone().getCards();
             board.playAnimation(new ShuffleAnimation(cards, this));
+        }
+        else if ("b".equals(name) && isPressed) {
+            board.playAnimation(new CameraShakeAnimation(cam,1, 0.01f));
         }
     }
 }

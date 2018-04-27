@@ -71,9 +71,10 @@ public class TestApplication extends SimpleApplication implements ActionListener
     
     private void initListeners() {
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addMapping("n", new KeyTrigger(KeyInput.KEY_N));
-        inputManager.addMapping("b", new KeyTrigger(KeyInput.KEY_B));
-        inputManager.addListener(this, "space", "n", "b");
+        inputManager.addMapping("1", new KeyTrigger(KeyInput.KEY_1));
+        inputManager.addMapping("2", new KeyTrigger(KeyInput.KEY_2));
+        inputManager.addMapping("3", new KeyTrigger(KeyInput.KEY_3));
+        inputManager.addListener(this, "space", "1", "2", "3");
     }
     
     private void initGame() {
@@ -231,12 +232,15 @@ public class TestApplication extends SimpleApplication implements ActionListener
             inputManager.setCursorVisible(flyCam.isEnabled());
             flyCam.setEnabled(!flyCam.isEnabled());
         }
-        else if ("n".equals(name) && isPressed) {
+        else if ("1".equals(name) && isPressed) {
             LinkedList<Card> cards = playerZones[0].getDeckZone().getCards();
             board.playAnimation(new ShuffleAnimation(cards, this));
         }
-        else if ("b".equals(name) && isPressed) {
+        else if ("2".equals(name) && isPressed) {
             board.playAnimation(new CameraShakeAnimation(cam,1, 0.01f));
+        }
+        else if ("3".equals(name) && isPressed) {
+            board.playAnimation(new SnowAnimation(assetManager, cam, rootNode));
         }
     }
 }

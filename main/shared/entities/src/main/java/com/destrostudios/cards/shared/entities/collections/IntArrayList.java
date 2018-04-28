@@ -1,7 +1,6 @@
 package com.destrostudios.cards.shared.entities.collections;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.PrimitiveIterator;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -67,10 +66,10 @@ public class IntArrayList implements Iterable<Integer> {
     public void swapRemoveAt(int index) {
         data[index] = data[--size];
     }
-    
+
     public int indexOf(int value) {
         for (int i = 0; i < size; i++) {
-            if(data[i] == value) {
+            if (data[i] == value) {
                 return i;
             }
         }
@@ -115,9 +114,10 @@ public class IntArrayList implements Iterable<Integer> {
     }
 
     @Override
-    public Iterator<Integer> iterator() {
+    public PrimitiveIterator.OfInt iterator() {
         return new PrimitiveIterator.OfInt() {
             private int i = 0;
+
             @Override
             public int nextInt() {
                 return data[i++];

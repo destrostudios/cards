@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.entities.collections.IntToIntMap;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.PrimitiveIterator;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
@@ -51,6 +52,7 @@ public class EntityData {
         components[component].foreach(consumer);
     }
 
+    @Deprecated
     @SafeVarargs
     public final List<ComponentValue> entityComponentValues(int component, Predicate<ComponentValue>... predicates) {
         IntToIntMap map = components[component];
@@ -81,5 +83,28 @@ public class EntityData {
         });
         list.sort();
         return list;
+    }
+
+    public int uniqueEntityWithComponent(int component, IntPredicate... predicates) {
+        boolean found = false;
+        int result = 0;
+        IntToIntMap map = components[component];
+        PrimitiveIterator.OfInt iterator = map.iterator();
+        while (iterator.hasNext()) {
+            int entity = iterator.nextInt();
+            for (IntPredicate predicate : predicates) {
+                if (!predicate.test(entity)) {
+                    if (found) {
+                        throw new IllegalStateException("multiple entities found");
+                    }
+                    found = true;
+                    result = entity;
+                }
+            }
+        }
+        if (!found) {
+            throw new NullPointerException("no entity found");
+        }
+        return result;
     }
 }

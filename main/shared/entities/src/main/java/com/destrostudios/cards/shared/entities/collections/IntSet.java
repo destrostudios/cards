@@ -1,31 +1,37 @@
 package com.destrostudios.cards.shared.entities.collections;
 
 import java.util.Arrays;
+import java.util.PrimitiveIterator;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntConsumer;
 
 /**
  *
  * @author Philipp
  */
-public final class IntSet {
+public final class IntSet implements Iterable<Integer> {
 
-    private final static int FILL_NOMINATOR = 3, FILL_DENOMINATOR = 4;
-    private final static int FREE_KEY = 0;
+    private static final int FREE_KEY = 0;
 
     private int[] keys;
     private int mask;
-    private boolean hasFreeKey;
+    private int fillLimit;
     private int count = 0;
+    private final float fillFactor;
+    private boolean hasFreeKey;
 
     public IntSet() {
-        this(8);
+        this(8, 0.75f);
     }
 
-    public IntSet(int capacity) {
+    public IntSet(int capacity, float fillFactor) {
+        assert 0 < fillFactor && fillFactor < 1;
+        this.fillFactor = fillFactor;
         this.mask = capacity - 1;
         assert mask != 0;
         assert (mask & capacity) == 0;
         keys = new int[capacity];
+        updateFillLimit(capacity);
     }
 
     public void foreach(IntConsumer consumer) {
@@ -67,12 +73,16 @@ public final class IntSet {
             }
             return;
         }
-        if ((count + 1) * FILL_DENOMINATOR >= capacity() * FILL_NOMINATOR) {
+        if (count >= fillLimit) {
             resize(capacity() << 1);
         }
-        if (_set(key)) {
+        if (uncheckedSet(key)) {
             count++;
         }
+    }
+
+    private void updateFillLimit(int capacity) {
+        fillLimit = (int) (fillFactor * capacity) - 1;
     }
 
     public void remove(int key) {
@@ -120,7 +130,7 @@ public final class IntSet {
         }
     }
 
-    private boolean _set(int key) {
+    private boolean uncheckedSet(int key) {
         assert key != FREE_KEY;
         int index = key & mask;
         int indexKey;
@@ -144,13 +154,28 @@ public final class IntSet {
         int[] oldKeys = keys;
         keys = new int[capacity];
         Arrays.fill(keys, FREE_KEY);
+        updateFillLimit(capacity);
         for (int index = 0; index < oldKeys.length; index++) {
             int key = oldKeys[index];
             if (key == FREE_KEY) {
                 continue;
             }
-            _set(key);
+            uncheckedSet(key);
         }
+    }
+
+    public int[] toArray() {
+        int[] array = new int[size()];
+        AtomicInteger i = new AtomicInteger(0);
+        foreach(x -> {
+            array[i.getAndIncrement()] = x;
+        });
+        return array;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + Arrays.toString(toArray());
     }
 
     public int size() {
@@ -159,5 +184,44 @@ public final class IntSet {
 
     public int capacity() {
         return keys.length;
+    }
+
+    @Override
+    public PrimitiveIterator.OfInt iterator() {
+        return new PrimitiveIterator.OfInt() {
+            int i;
+            int next;
+
+            {
+                i = -1;
+                next = FREE_KEY;
+                if (!hasFreeKey) {
+                    gotoNext();
+                }
+            }
+
+            private void gotoNext() {
+                do {
+                    i++;
+                } while (hasNext() && keys[i] == FREE_KEY);
+                if (hasNext()) {
+                    next = keys[i];
+                }
+            }
+
+            @Override
+            public int nextInt() {
+                try {
+                    return next;
+                } finally {
+                    gotoNext();
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                return i < keys.length;
+            }
+        };
     }
 }

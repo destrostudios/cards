@@ -2,35 +2,37 @@ package com.destrostudios.cards.shared.entities.collections;
 
 import com.destrostudios.cards.shared.entities.IntIntConsumer;
 import java.util.Arrays;
+import java.util.PrimitiveIterator;
 import java.util.function.IntConsumer;
-import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 /**
  *
  * @author Philipp
  */
-public class IntToIntMap {
+public class IntToIntMap implements Iterable<Integer> {
 
     private static final long VALUE_MASK = 0xffffffff00000000L;
-    private final static int FILL_NOMINATOR = 3, FILL_DENOMINATOR = 4;
-    private final static int FREE_KEY = 0;
+    private static final int FREE_KEY = 0;
 
     private long[] data;
     private int mask;
     private int freeValue;
-    private boolean hasFreeKey;
     private int count;
+    private int fillLimit;
+    private final float fillFactor;
+    private boolean hasFreeKey;
 
     public IntToIntMap() {
-        this(8);
+        this(8, 0.75f);
     }
 
-    public IntToIntMap(int capacity) {
+    public IntToIntMap(int capacity, float fillFactor) {
+        this.fillFactor = fillFactor;
         this.mask = capacity - 1;
         assert mask != 0;
         assert (mask & capacity) == 0;
         data = new long[capacity];
+        updateFillLimit(capacity);
     }
 
     public void foreach(IntIntConsumer consumer) {
@@ -58,14 +60,6 @@ public class IntToIntMap {
             }
         }
     }
-
-//    public IntStream keyStream() {
-//        IntStream stream = LongStream.of(data).mapToInt(IntToIntMap::key).filter(key -> key != FREE_KEY);
-//        if (hasFreeKey) {
-//            stream = IntStream.concat(IntStream.of(freeValue), stream);
-//        }
-//        return stream;
-//    }
 
     public boolean hasKey(int key) {
         if (key == FREE_KEY) {
@@ -136,15 +130,15 @@ public class IntToIntMap {
             }
             return;
         }
-        if ((count + 1) * FILL_DENOMINATOR >= capacity() * FILL_NOMINATOR) {
+        if (count >= fillLimit) {
             resize(capacity() << 1);
         }
-        if (_set(key, dataValue(value))) {
+        if (uncheckedSet(key, dataValue(value))) {
             count++;
         }
     }
 
-    private boolean _set(int key, long shiftedValue) {
+    private boolean uncheckedSet(int key, long shiftedValue) {
         assert key != FREE_KEY;
         int index = key & mask;
         int indexKey;
@@ -170,14 +164,19 @@ public class IntToIntMap {
         long[] oldData = data;
         data = new long[capacity];
         Arrays.fill(data, FREE_KEY);
+        updateFillLimit(capacity);
         for (int index = 0; index < oldData.length; index++) {
             long keyValue = oldData[index];
             int key = key(keyValue);
             if (key == FREE_KEY) {
                 continue;
             }
-            _set(key, keyValue & VALUE_MASK);
+            uncheckedSet(key, keyValue & VALUE_MASK);
         }
+    }
+
+    private void updateFillLimit(int capacity) {
+        fillLimit = (int) (fillFactor * capacity) - 1;
     }
 
     public void remove(int key) {
@@ -250,5 +249,44 @@ public class IntToIntMap {
 
     public int capacity() {
         return data.length;
+    }
+
+    @Override
+    public PrimitiveIterator.OfInt iterator() {
+        return new PrimitiveIterator.OfInt() {
+            int i;
+            int next;
+
+            {
+                i = -1;
+                next = FREE_KEY;
+                if (!hasFreeKey) {
+                    gotoNext();
+                }
+            }
+
+            private void gotoNext() {
+                do {
+                    i++;
+                } while (hasNext() && key(data[i]) == FREE_KEY);
+                if (hasNext()) {
+                    next = key(data[i]);
+                }
+            }
+
+            @Override
+            public int nextInt() {
+                try {
+                    return next;
+                } finally {
+                    gotoNext();
+                }
+            }
+
+            @Override
+            public boolean hasNext() {
+                return i < data.length;
+            }
+        };
     }
 }

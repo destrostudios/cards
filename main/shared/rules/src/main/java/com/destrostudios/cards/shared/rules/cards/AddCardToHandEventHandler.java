@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import org.slf4j.Logger;
 
 /**
@@ -14,20 +15,18 @@ public class AddCardToHandEventHandler implements EventHandler<AddCardToHandEven
     private final EntityData data;
     private final EventQueue events;
     private final Logger log;
-    private final int handKey, ownedByKey;
+    private final int handKey = Components.HAND, ownedByKey = Components.OWNED_BY;
 
-    public AddCardToHandEventHandler(EntityData data, EventQueue events, Logger log, int handKey, int ownedByKey) {
+    public AddCardToHandEventHandler(EntityData data, EventQueue events, Logger log) {
         this.data = data;
         this.events = events;
         this.log = log;
-        this.handKey = handKey;
-        this.ownedByKey = ownedByKey;
     }
 
     @Override
     public void onEvent(AddCardToHandEvent event) {
         int player = data.get(event.card, ownedByKey);
-        int handSize = data.entitiesWithComponent(handKey, entity -> data.hasValue(entity, ownedByKey, player)).size();
+        int handSize = data.entities(handKey, entity -> data.hasValue(entity, ownedByKey, player)).size();
         data.set(event.card, handKey, handSize);
         log.info("added {} to hand", event.card);
     }

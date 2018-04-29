@@ -1,9 +1,9 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.entities.ComponentValue;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import org.slf4j.Logger;
 
 /**
@@ -15,22 +15,20 @@ public class RemoveCardFromHandEventHandler implements EventHandler<RemoveCardFr
     private final EntityData data;
     private final EventQueue events;
     private final Logger log;
-    private final int handKey, ownedByKey;
+    private final int handKey = Components.HAND, ownedByKey = Components.OWNED_BY;
 
-    public RemoveCardFromHandEventHandler(EntityData data, EventQueue events, Logger log, int handKey, int ownedByKey) {
+    public RemoveCardFromHandEventHandler(EntityData data, EventQueue events, Logger log) {
         this.data = data;
         this.events = events;
         this.log = log;
-        this.handKey = handKey;
-        this.ownedByKey = ownedByKey;
     }
 
     @Override
     public void onEvent(RemoveCardFromHandEvent event) {
         int player = data.get(event.card, ownedByKey);
         int handIndex = data.get(event.card, handKey);
-        for (ComponentValue componentValue : data.entityComponentValues(handKey, x -> data.hasValue(x.getEntity(), ownedByKey, player), x -> x.getComponentValue() > handIndex)) {
-            data.set(componentValue.getEntity(), handKey, componentValue.getComponentValue() - 1);
+        for (int handCard : data.entities(handKey, x -> data.hasValue(x, ownedByKey, player), x -> data.get(x, handKey) > handIndex)) {
+            data.set(handCard, handKey, data.get(handCard, handKey) - 1);
         }
         data.remove(event.card, handKey);
         log.info("removed {} from hand", event.card);

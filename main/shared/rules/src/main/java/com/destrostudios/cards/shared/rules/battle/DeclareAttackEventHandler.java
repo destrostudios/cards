@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules.battle;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import org.slf4j.Logger;
 
 /**
@@ -14,13 +15,12 @@ public class DeclareAttackEventHandler implements EventHandler<DeclareAttackEven
     private final EntityData data;
     private final EventQueue events;
     private final Logger log;
-    private final int declareAttackKey;
+    private final int declareAttackKey = Components.DECLARED_ATTACK;
 
-    public DeclareAttackEventHandler(EntityData data, EventQueue events, Logger log, int declareAttackKey) {
+    public DeclareAttackEventHandler(EntityData data, EventQueue events, Logger log) {
         this.data = data;
         this.events = events;
         this.log = log;
-        this.declareAttackKey = declareAttackKey;
     }
 
     @Override

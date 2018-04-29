@@ -1,11 +1,11 @@
 package com.destrostudios.cards.sandbox;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.EntityDataBuilder;
 import com.destrostudios.cards.shared.entities.EntityPool;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.events.EventQueueImpl;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.ArmorEventHandler;
 import com.destrostudios.cards.shared.rules.battle.AttackEvent;
 import com.destrostudios.cards.shared.rules.battle.AttackEventHandler;
@@ -86,120 +86,120 @@ public class Main {
         names.add("player2");
         names.add("card");
 
-        EntityDataBuilder builder = new EntityDataBuilder();
         Random random = new Random(453);
         EntityPool entities = new EntityPool(random);
 
-        int health = builder.withComponent("health").getKey();
-        int ownedBy = builder.withComponent("ownedBy").getKey();
-        int nextPlayer = builder.withComponent("nextPlayer").getKey();
-        int attack = builder.withComponent("attack").getKey();
-        int armor = builder.withComponent("armor").getKey();
-        int declaredAttack = builder.withComponent("declaredAttack").getKey();
-        int declaredBlock = builder.withComponent("declaredBlock").getKey();
-        int displayName = builder.withComponent("displayName", names::get).getKey();
-        int turnPhase = builder.withComponent("phase", x -> TurnPhase.values()[x]).getKey();
-        int library = builder.withComponent("library").getKey();
-        int hand = builder.withComponent("hand").getKey();
-        int cardTemplate = builder.withComponent("cardTemplate").getKey();
+        EntityDebugMapper debug = new EntityDebugMapper();
+        debug.register(Components.HEALTH, "health");
+        debug.register(Components.OWNED_BY, "ownedBy");
+        debug.register(Components.NEXT_PLAYER, "nextPlayer");
+        debug.register(Components.ATTACK, "attack");
+        debug.register(Components.ARMOR, "armor");
+        debug.register(Components.DECLARED_ATTACK, "declaredAttack");
+        debug.register(Components.DECLARED_BLOCK, "declaredBlock");
+        debug.register(Components.DISPLAY_NAME, "displayName", names::get);
+        debug.register(Components.TURN_PHASE, "phase", x -> TurnPhase.values()[x]);
+        debug.register(Components.LIBRARY, "library");
+        debug.register(Components.HAND, "hand");
+        debug.register(Components.CARD_TEMPLATE, "cardTemplate");
 
-        EntityData data = builder.build();
+        EntityData data = new EntityData(Components.COMPONENTS_COUNT);
         EventDispatcher dispatcher = new EventDispatcher();
         EventQueue events = new EventQueueImpl(dispatcher::fire, loggerFactory.apply(EventQueueImpl.class));
-        dispatcher.addListener(AttackEvent.class, new AttackEventHandler(data, events, loggerFactory.apply(AttackEventHandler.class), attack));
+        dispatcher.addListener(AttackEvent.class, new AttackEventHandler(data, events, loggerFactory.apply(AttackEventHandler.class)));
 
-        dispatcher.addListener(DamageEvent.class, new ArmorEventHandler(data, events, loggerFactory.apply(ArmorEventHandler.class), armor));
-        dispatcher.addListener(DamageEvent.class, new DamageEventHandler(data, events, loggerFactory.apply(DamageEventHandler.class), health));
+        dispatcher.addListener(DamageEvent.class, new ArmorEventHandler(data, events, loggerFactory.apply(ArmorEventHandler.class)));
+        dispatcher.addListener(DamageEvent.class, new DamageEventHandler(data, events, loggerFactory.apply(DamageEventHandler.class)));
 
-        dispatcher.addListener(SetHealthEvent.class, new SetHealthEventHandler(data, events, loggerFactory.apply(SetHealthEventHandler.class), health));
-        dispatcher.addListener(DeclareAttackEvent.class, new DeclareAttackEventHandler(data, events, loggerFactory.apply(DeclareAttackEventHandler.class), declaredAttack));
-        dispatcher.addListener(DeclareBlockEvent.class, new DeclareBlockEventHandler(data, events, loggerFactory.apply(DeclareBlockEventHandler.class), declaredBlock));
+        dispatcher.addListener(SetHealthEvent.class, new SetHealthEventHandler(data, events, loggerFactory.apply(SetHealthEventHandler.class)));
+        dispatcher.addListener(DeclareAttackEvent.class, new DeclareAttackEventHandler(data, events, loggerFactory.apply(DeclareAttackEventHandler.class)));
+        dispatcher.addListener(DeclareBlockEvent.class, new DeclareBlockEventHandler(data, events, loggerFactory.apply(DeclareBlockEventHandler.class)));
 
-        dispatcher.addListener(StartRespondPhaseEvent.class, new StartRespondPhaseEventHandler(data, events, loggerFactory.apply(StartRespondPhaseEventHandler.class), turnPhase));
-        dispatcher.addListener(EndRespondPhaseEvent.class, new EndRespondPhaseEventHandler(data, events, loggerFactory.apply(EndRespondPhaseEventHandler.class), turnPhase));
+        dispatcher.addListener(StartRespondPhaseEvent.class, new StartRespondPhaseEventHandler(data, events, loggerFactory.apply(StartRespondPhaseEventHandler.class)));
+        dispatcher.addListener(EndRespondPhaseEvent.class, new EndRespondPhaseEventHandler(data, events, loggerFactory.apply(EndRespondPhaseEventHandler.class)));
 
-        dispatcher.addListener(StartBattlePhaseEvent.class, new StartBattlePhaseEventHandler(data, events, loggerFactory.apply(StartBattlePhaseEventHandler.class), turnPhase));
-        dispatcher.addListener(StartBattlePhaseEvent.class, new BattleEventHandler(data, events, loggerFactory.apply(BattleEventHandler.class), declaredBlock, declaredAttack, ownedBy));
+        dispatcher.addListener(StartBattlePhaseEvent.class, new StartBattlePhaseEventHandler(data, events, loggerFactory.apply(StartBattlePhaseEventHandler.class)));
+        dispatcher.addListener(StartBattlePhaseEvent.class, new BattleEventHandler(data, events, loggerFactory.apply(BattleEventHandler.class)));
 
-        dispatcher.addListener(EndBattlePhaseEvent.class, new EndBattlePhaseEventHandler(data, events, loggerFactory.apply(EndBattlePhaseEventHandler.class), turnPhase));
+        dispatcher.addListener(EndBattlePhaseEvent.class, new EndBattlePhaseEventHandler(data, events, loggerFactory.apply(EndBattlePhaseEventHandler.class)));
 
-        dispatcher.addListener(StartUpkeepPhaseEvent.class, new StartUpkeepPhaseEventHandler(data, events, loggerFactory.apply(StartUpkeepPhaseEventHandler.class), turnPhase));
+        dispatcher.addListener(StartUpkeepPhaseEvent.class, new StartUpkeepPhaseEventHandler(data, events, loggerFactory.apply(StartUpkeepPhaseEventHandler.class)));
         dispatcher.addListener(StartUpkeepPhaseEvent.class, new UpkeepDrawEventHandler(data, events, loggerFactory.apply(UpkeepDrawEventHandler.class)));
 
-        dispatcher.addListener(EndUpkeepPhaseEvent.class, new EndUpkeepPhaseEventHandler(data, events, loggerFactory.apply(EndUpkeepPhaseEventHandler.class), turnPhase));
-        dispatcher.addListener(StartMainPhaseEvent.class, new StartMainPhaseEventHandler(data, events, loggerFactory.apply(StartMainPhaseEventHandler.class), turnPhase));
-        dispatcher.addListener(EndMainPhaseEvent.class, new EndMainPhaseEventHandler(data, events, loggerFactory.apply(EndMainPhaseEventHandler.class), turnPhase, nextPlayer));
+        dispatcher.addListener(EndUpkeepPhaseEvent.class, new EndUpkeepPhaseEventHandler(data, events, loggerFactory.apply(EndUpkeepPhaseEventHandler.class)));
+        dispatcher.addListener(StartMainPhaseEvent.class, new StartMainPhaseEventHandler(data, events, loggerFactory.apply(StartMainPhaseEventHandler.class)));
+        dispatcher.addListener(EndMainPhaseEvent.class, new EndMainPhaseEventHandler(data, events, loggerFactory.apply(EndMainPhaseEventHandler.class)));
 
-        dispatcher.addListener(StartGameEvent.class, new ShuffleLibraryOnGameStartHandler(data, events, loggerFactory.apply(ShuffleLibraryOnGameStartHandler.class), nextPlayer));
-        dispatcher.addListener(ShuffleLibraryEvent.class, new ShuffleLibraryEventHandler(data, events, loggerFactory.apply(ShuffleLibraryEventHandler.class), random, library, ownedBy));
+        dispatcher.addListener(StartGameEvent.class, new ShuffleLibraryOnGameStartHandler(data, events, loggerFactory.apply(ShuffleLibraryOnGameStartHandler.class)));
+        dispatcher.addListener(ShuffleLibraryEvent.class, new ShuffleLibraryEventHandler(data, events, loggerFactory.apply(ShuffleLibraryEventHandler.class), random));
 
-        dispatcher.addListener(DrawCardEvent.class, new DrawCardEventHandler(data, events, loggerFactory.apply(DrawCardEventHandler.class), library, ownedBy));
-        dispatcher.addListener(AddCardToHandEvent.class, new AddCardToHandEventHandler(data, events, loggerFactory.apply(AddCardToHandEventHandler.class), hand, ownedBy));
-        dispatcher.addListener(RemoveCardFromHandEvent.class, new RemoveCardFromHandEventHandler(data, events, loggerFactory.apply(RemoveCardFromHandEventHandler.class), hand, ownedBy));
-        dispatcher.addListener(AddCardToLibraryEvent.class, new AddCardToLibraryEventHandler(data, events, loggerFactory.apply(AddCardToLibraryEventHandler.class), library, ownedBy));
-        dispatcher.addListener(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryEventHandler(data, events, loggerFactory.apply(RemoveCardFromLibraryEventHandler.class), library, ownedBy));
+        dispatcher.addListener(DrawCardEvent.class, new DrawCardEventHandler(data, events, loggerFactory.apply(DrawCardEventHandler.class)));
+        dispatcher.addListener(AddCardToHandEvent.class, new AddCardToHandEventHandler(data, events, loggerFactory.apply(AddCardToHandEventHandler.class)));
+        dispatcher.addListener(RemoveCardFromHandEvent.class, new RemoveCardFromHandEventHandler(data, events, loggerFactory.apply(RemoveCardFromHandEventHandler.class)));
+        dispatcher.addListener(AddCardToLibraryEvent.class, new AddCardToLibraryEventHandler(data, events, loggerFactory.apply(AddCardToLibraryEventHandler.class)));
+        dispatcher.addListener(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryEventHandler(data, events, loggerFactory.apply(RemoveCardFromLibraryEventHandler.class)));
 
-        MoveGenerator moveGenerator = new MoveGenerator(data, turnPhase, attack, health, ownedBy, declaredAttack);
+        MoveGenerator moveGenerator = new MoveGenerator(data);
 
         int player1 = entities.create();
-        data.set(player1, displayName, names.indexOf("player1"));
-        data.set(player1, turnPhase, TurnPhase.MAIN.ordinal());
+        data.set(player1, Components.DISPLAY_NAME, names.indexOf("player1"));
+        data.set(player1, Components.TURN_PHASE, TurnPhase.MAIN.ordinal());
 
         int player2 = entities.create();
-        data.set(player2, displayName, names.indexOf("player2"));
+        data.set(player2, Components.DISPLAY_NAME, names.indexOf("player2"));
 
-        data.set(player1, nextPlayer, player2);
-        data.set(player2, nextPlayer, player1);
+        data.set(player1, Components.NEXT_PLAYER, player2);
+        data.set(player2, Components.NEXT_PLAYER, player1);
 
         int minion1 = entities.create();
-        data.set(minion1, health, 15);
-        data.set(minion1, displayName, names.indexOf("minion1"));
-        data.set(minion1, attack, 2);
-        data.set(minion1, ownedBy, player2);
+        data.set(minion1, Components.HEALTH, 15);
+        data.set(minion1, Components.DISPLAY_NAME, names.indexOf("minion1"));
+        data.set(minion1, Components.ATTACK, 2);
+        data.set(minion1, Components.OWNED_BY, player2);
 
         int minion2 = entities.create();
-        data.set(minion2, health, 5);
-        data.set(minion2, displayName, names.indexOf("minion2"));
-        data.set(minion2, attack, 5);
-        data.set(minion2, ownedBy, player2);
+        data.set(minion2, Components.HEALTH, 5);
+        data.set(minion2, Components.DISPLAY_NAME, names.indexOf("minion2"));
+        data.set(minion2, Components.ATTACK, 5);
+        data.set(minion2, Components.OWNED_BY, player2);
 
         int hero = entities.create();
-        data.set(hero, health, 215);
-        data.set(hero, attack, 3);
-        data.set(hero, displayName, names.indexOf("hero"));
-        data.set(hero, armor, 1);
-        data.set(hero, ownedBy, player1);
+        data.set(hero, Components.HEALTH, 215);
+        data.set(hero, Components.ATTACK, 3);
+        data.set(hero, Components.DISPLAY_NAME, names.indexOf("hero"));
+        data.set(hero, Components.ARMOR, 1);
+        data.set(hero, Components.OWNED_BY, player1);
 
         int librarySize = 3;
         for (int i = 0; i < 2 * librarySize; i++) {
             int card = entities.create();
-            data.set(card, cardTemplate, i);
-            data.set(card, displayName, names.indexOf("card"));
-            data.set(card, ownedBy, i < librarySize ? player1 : player2);
-            data.set(card, library, i % librarySize);
+            data.set(card, Components.CARD_TEMPLATE, i);
+            data.set(card, Components.DISPLAY_NAME, names.indexOf("card"));
+            data.set(card, Components.OWNED_BY, i < librarySize ? player1 : player2);
+            data.set(card, Components.LIBRARY, i % librarySize);
         }
         events.action(new StartGameEvent());
 
         Logger log = LoggerFactory.getLogger(Main.class);
 
         try {
-            logState(log, builder, data, entities, moveGenerator, turnPhase);
+            logState(log, debug, data, entities, moveGenerator);
             events.action(new DeclareAttackEvent(hero, minion2));
-            logState(log, builder, data, entities, moveGenerator, turnPhase);
+            logState(log, debug, data, entities, moveGenerator);
             events.action(new EndMainPhaseEvent(player1));
-            logState(log, builder, data, entities, moveGenerator, turnPhase);
+            logState(log, debug, data, entities, moveGenerator);
             events.action(new DeclareBlockEvent(minion1, hero));
-            logState(log, builder, data, entities, moveGenerator, turnPhase);
+            logState(log, debug, data, entities, moveGenerator);
             events.action(new EndRespondPhaseEvent(player2));
         } finally {
-            logState(log, builder, data, entities, moveGenerator, turnPhase);
+            logState(log, debug, data, entities, moveGenerator);
         }
     }
 
-    private static void logState(Logger log, EntityDataBuilder builder, EntityData data, EntityPool entities, MoveGenerator gen, int activePlayerKey) {
+    private static void logState(Logger log, EntityDebugMapper debug, EntityData data, EntityPool entities, MoveGenerator gen) {
         if (log.isDebugEnabled()) {
-            log.debug(GSON.toJson(builder.toDebugMap(data, entities)));
-            log.debug("available moves are {}", gen.generateAvailableMoves(data.entitiesWithComponent(activePlayerKey).get(0)));
+            log.debug(GSON.toJson(debug.toDebugObjects(data, entities.getEntities())));
+            log.debug("available moves are {}", gen.generateAvailableMoves(data.entities(Components.TURN_PHASE).get(0)));
         }
     }
 

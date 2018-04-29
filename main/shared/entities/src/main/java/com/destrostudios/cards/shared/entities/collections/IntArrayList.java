@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.entities.collections;
 import java.util.Arrays;
 import java.util.PrimitiveIterator;
 import java.util.Random;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 /**
@@ -106,6 +107,12 @@ public class IntArrayList implements Iterable<Integer> {
 
     public int[] data() {
         return data;
+    }
+    
+    public void foreach(IntConsumer consumer) {
+        for (int i = 0; i < size; i++) {
+            consumer.accept(data[i]);
+        }
     }
 
     @Override

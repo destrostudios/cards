@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.entities;
+package com.destrostudios.cards.shared.entities.util;
 
 /**
  *

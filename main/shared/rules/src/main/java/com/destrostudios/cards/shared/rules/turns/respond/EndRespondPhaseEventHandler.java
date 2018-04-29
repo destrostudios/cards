@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules.turns.respond;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.turns.TurnPhase;
 import com.destrostudios.cards.shared.rules.turns.battle.StartBattlePhaseEvent;
 import org.slf4j.Logger;
@@ -16,13 +17,12 @@ public class EndRespondPhaseEventHandler implements EventHandler<EndRespondPhase
     private final EntityData data;
     private final EventQueue events;
     private final Logger log;
-    private final int phaseKey;
+    private final int phaseKey = Components.TURN_PHASE;
 
-    public EndRespondPhaseEventHandler(EntityData data, EventQueue events, Logger log, int phaseKey) {
+    public EndRespondPhaseEventHandler(EntityData data, EventQueue events, Logger log) {
         this.data = data;
         this.events = events;
         this.log = log;
-        this.phaseKey = phaseKey;
     }
 
     @Override

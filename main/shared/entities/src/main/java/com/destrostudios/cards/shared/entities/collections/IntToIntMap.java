@@ -1,6 +1,6 @@
 package com.destrostudios.cards.shared.entities.collections;
 
-import com.destrostudios.cards.shared.entities.IntIntConsumer;
+import com.destrostudios.cards.shared.entities.util.IntIntConsumer;
 import java.util.Arrays;
 import java.util.PrimitiveIterator;
 import java.util.function.IntConsumer;

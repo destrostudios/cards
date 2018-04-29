@@ -4,6 +4,7 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import java.util.Random;
 import org.slf4j.Logger;
 
@@ -17,20 +18,18 @@ public class ShuffleLibraryEventHandler implements EventHandler<ShuffleLibraryEv
     private final EventQueue events;
     private final Logger log;
     private final Random random;
-    private final int libraryKey, ownedByKey;
+    private final int libraryKey = Components.LIBRARY, ownedByKey = Components.OWNED_BY;
 
-    public ShuffleLibraryEventHandler(EntityData data, EventQueue events, Logger log, Random random, int libraryKey, int ownedByKey) {
+    public ShuffleLibraryEventHandler(EntityData data, EventQueue events, Logger log, Random random) {
         this.data = data;
         this.events = events;
         this.log = log;
         this.random = random;
-        this.libraryKey = libraryKey;
-        this.ownedByKey = ownedByKey;
     }
 
     @Override
     public void onEvent(ShuffleLibraryEvent event) {
-        IntArrayList libraryCards = data.entitiesWithComponent(libraryKey, card -> data.hasValue(card, ownedByKey, event.player));
+        IntArrayList libraryCards = data.entities(libraryKey, card -> data.hasValue(card, ownedByKey, event.player));
         libraryCards.shuffle(random);
         for (int i = 0; i < libraryCards.size(); i++) {
             int card = libraryCards.get(i);

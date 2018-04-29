@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules.battle;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import org.slf4j.Logger;
 
 /**
@@ -14,13 +15,12 @@ public class DeclareBlockEventHandler implements EventHandler<DeclareBlockEvent>
     private final EntityData data;
     private final EventQueue events;
     private final Logger log;
-    private final int declareBlockKey;
+    private final int declareBlockKey = Components.DECLARED_BLOCK;
 
-    public DeclareBlockEventHandler(EntityData data, EventQueue events, Logger log, int declareBlockKey) {
+    public DeclareBlockEventHandler(EntityData data, EventQueue events, Logger log) {
         this.data = data;
         this.events = events;
         this.log = log;
-        this.declareBlockKey = declareBlockKey;
     }
 
     @Override

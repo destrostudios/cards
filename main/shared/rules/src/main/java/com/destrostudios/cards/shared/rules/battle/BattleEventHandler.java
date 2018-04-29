@@ -1,9 +1,9 @@
 package com.destrostudios.cards.shared.rules.battle;
 
-import com.destrostudios.cards.shared.entities.ComponentValue;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.turns.battle.StartBattlePhaseEvent;
 import org.slf4j.Logger;
 
@@ -16,30 +16,25 @@ public class BattleEventHandler implements EventHandler<StartBattlePhaseEvent> {
     private final EntityData data;
     private final EventQueue events;
     private final Logger log;
-    private final int declaredBlockKey, declaredAttackKey, ownedByKey;
+    private final int declaredBlockKey = Components.DECLARED_BLOCK, declaredAttackKey = Components.DECLARED_ATTACK, ownedByKey = Components.OWNED_BY;
 
-    public BattleEventHandler(EntityData data, EventQueue events, Logger log, int declaredBlockKey, int declaredAttackKey, int ownedByKey) {
+    public BattleEventHandler(EntityData data, EventQueue events, Logger log) {
         this.data = data;
         this.events = events;
         this.log = log;
-        this.declaredAttackKey = declaredAttackKey;
-        this.declaredBlockKey = declaredBlockKey;
-        this.ownedByKey = ownedByKey;
     }
 
     @Override
     public void onEvent(StartBattlePhaseEvent event) {
-        for (ComponentValue entityValue : data.entityComponentValues(declaredBlockKey, x -> data.hasValue(x.getEntity(), ownedByKey, event.player))) {
-            int blocker = entityValue.getEntity();
-            int blocked = entityValue.getComponentValue();
+        for (int blocker : data.entities(declaredBlockKey, x -> data.hasValue(x, ownedByKey, event.player))) {
+            int blocked = data.get(blocker, declaredBlockKey);
             log.info("blocking {} with {}", blocked, blocker);
             events.response(new AttackEvent(blocker, blocked));
             data.remove(blocker, declaredBlockKey);
         }
         
-        for (ComponentValue entityValue : data.entityComponentValues(declaredAttackKey, x -> data.hasValue(x.getComponentValue(), ownedByKey, event.player))) {
-            int attacker = entityValue.getEntity();
-            int attacked = entityValue.getComponentValue();
+        for (int attacker : data.entities(declaredAttackKey, x -> data.hasValue(data.get(x, declaredAttackKey), ownedByKey, event.player))) {
+            int attacked = data.get(attacker, declaredAttackKey);
             log.info("attacking {} with {}", attacked, attacker);
             events.response(new AttackEvent(attacker, attacked));
             data.remove(attacker, declaredAttackKey);

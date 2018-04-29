@@ -7,6 +7,7 @@ import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.game.StartGameEvent;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -14,21 +15,21 @@ import org.slf4j.Logger;
  */
 public class ShuffleLibraryOnGameStartHandler implements EventHandler<StartGameEvent> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ShuffleLibraryEventHandler.class);
+
     private final EntityData data;
     private final EventQueue events;
-    private final Logger log;
     private final int playerKey = Components.NEXT_PLAYER;
 
-    public ShuffleLibraryOnGameStartHandler(EntityData data, EventQueue events, Logger log) {
+    public ShuffleLibraryOnGameStartHandler(EntityData data, EventQueue events) {
         this.data = data;
         this.events = events;
-        this.log = log;
     }
 
     @Override
     public void onEvent(StartGameEvent event) {
         IntArrayList players = data.entities(playerKey);
-        log.info("shuffling libraries of players {}", players);
+        LOG.info("shuffling libraries of players {}", players);
         players.stream().forEachOrdered(player -> events.trigger(new ShuffleLibraryEvent(player)));
     }
 

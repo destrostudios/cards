@@ -7,6 +7,7 @@ import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import java.util.Random;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -14,16 +15,16 @@ import org.slf4j.Logger;
  */
 public class ShuffleLibraryEventHandler implements EventHandler<ShuffleLibraryEvent> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ShuffleLibraryEventHandler.class);
+
     private final EntityData data;
     private final EventQueue events;
-    private final Logger log;
     private final Random random;
     private final int libraryKey = Components.LIBRARY, ownedByKey = Components.OWNED_BY;
 
-    public ShuffleLibraryEventHandler(EntityData data, EventQueue events, Logger log, Random random) {
+    public ShuffleLibraryEventHandler(EntityData data, EventQueue events, Random random) {
         this.data = data;
         this.events = events;
-        this.log = log;
         this.random = random;
     }
 
@@ -35,7 +36,7 @@ public class ShuffleLibraryEventHandler implements EventHandler<ShuffleLibraryEv
             int card = libraryCards.get(i);
             data.set(card, libraryKey, i);
         }
-        log.info("shuffled library of {}", event.player);
+        LOG.info("shuffled library of {}", event.player);
     }
 
 }

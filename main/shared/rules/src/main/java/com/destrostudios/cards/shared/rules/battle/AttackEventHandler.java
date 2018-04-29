@@ -5,27 +5,28 @@ import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Philipp
  */
 public class AttackEventHandler implements EventHandler<AttackEvent> {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(AttackEventHandler.class);
 
     private final EntityData data;
     private final EventQueue events;
-    private final Logger log;
     private final int attackKey = Components.ATTACK;
 
-    public AttackEventHandler(EntityData data, EventQueue events, Logger log) {
+    public AttackEventHandler(EntityData data, EventQueue events) {
         this.data = data;
         this.events = events;
-        this.log = log;
     }
 
     @Override
     public void onEvent(AttackEvent event) {
-        log.info("{} is attacking {}", event.source, event.target);
+        LOG.info("{} is attacking {}", event.source, event.target);
         events.response(new DamageEvent(event.target, data.getOrElse(event.source, attackKey, 0)));
         events.response(new DamageEvent(event.source, data.getOrElse(event.target, attackKey, 0)));
     }

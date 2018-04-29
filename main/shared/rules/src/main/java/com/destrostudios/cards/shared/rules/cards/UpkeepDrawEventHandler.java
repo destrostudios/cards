@@ -3,8 +3,10 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.battle.AttackEventHandler;
 import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEvent;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -12,19 +14,19 @@ import org.slf4j.Logger;
  */
 public class UpkeepDrawEventHandler implements EventHandler<StartUpkeepPhaseEvent> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AttackEventHandler.class);
+    
     private final EntityData data;
     private final EventQueue events;
-    private final Logger log;
 
-    public UpkeepDrawEventHandler(EntityData data, EventQueue events, Logger log) {
+    public UpkeepDrawEventHandler(EntityData data, EventQueue events) {
         this.data = data;
         this.events = events;
-        this.log = log;
     }
 
     @Override
     public void onEvent(StartUpkeepPhaseEvent event) {
-        log.info("drawing upkeep card");
+        LOG.info("drawing upkeep card");
         events.response(new DrawCardEvent(event.player));
     }
 

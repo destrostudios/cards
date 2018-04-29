@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -12,15 +13,15 @@ import org.slf4j.Logger;
  */
 public class RemoveCardFromLibraryEventHandler implements EventHandler<RemoveCardFromLibraryEvent> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(RemoveCardFromLibraryEventHandler.class);
+
     private final EntityData data;
     private final EventQueue events;
-    private final Logger log;
     private final int libraryKey = Components.LIBRARY, ownedByKey = Components.OWNED_BY;
 
-    public RemoveCardFromLibraryEventHandler(EntityData data, EventQueue events, Logger log) {
+    public RemoveCardFromLibraryEventHandler(EntityData data, EventQueue events) {
         this.data = data;
         this.events = events;
-        this.log = log;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class RemoveCardFromLibraryEventHandler implements EventHandler<RemoveCar
             data.set(libraryCard, libraryKey, data.get(libraryCard, libraryKey) - 1);
         }
         data.remove(event.card, libraryKey);
-        log.info("removed {} from library", event.card);
+        LOG.info("removed {} from library", event.card);
     }
 
 }

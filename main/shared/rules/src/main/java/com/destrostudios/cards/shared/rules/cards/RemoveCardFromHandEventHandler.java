@@ -4,8 +4,6 @@ import com.destrostudios.cards.shared.entities.ComponentValue;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
-import java.util.Comparator;
-import java.util.Optional;
 import org.slf4j.Logger;
 
 /**

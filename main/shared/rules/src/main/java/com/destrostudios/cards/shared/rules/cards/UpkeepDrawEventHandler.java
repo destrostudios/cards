@@ -1,11 +1,8 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.ComponentValue;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
-import com.destrostudios.cards.shared.rules.turns.battle.StartBattlePhaseEvent;
 import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEvent;
 import org.slf4j.Logger;
 

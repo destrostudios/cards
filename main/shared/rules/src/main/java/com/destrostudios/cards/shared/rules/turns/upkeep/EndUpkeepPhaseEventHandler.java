@@ -1,10 +1,10 @@
 package com.destrostudios.cards.shared.rules.turns.upkeep;
 
-import com.destrostudios.cards.shared.rules.turns.main.*;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.turns.TurnPhase;
+import com.destrostudios.cards.shared.rules.turns.main.*;
 import org.slf4j.Logger;
 
 /**

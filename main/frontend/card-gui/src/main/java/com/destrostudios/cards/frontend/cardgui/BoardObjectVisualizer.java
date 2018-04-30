@@ -7,9 +7,9 @@ import com.jme3.scene.Node;
  *
  * @author Carl
  */
-public interface BoardObjectVisualizer<T extends BoardObject> {
+public interface BoardObjectVisualizer<BoardObjectType extends BoardObject> {
     
     void createVisualisation(Node node, AssetManager assetManager);
 
-    void updateVisualisation(Node node, T t, AssetManager assetManager);
+    void updateVisualisation(Node node, BoardObjectType BoardObjectType, AssetManager assetManager);
 }

@@ -4,7 +4,7 @@ import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 
-public abstract class TransformedBoardObject extends BoardObject {
+public abstract class TransformedBoardObject<ModelType extends BoardObjectModel> extends BoardObject<ModelType> {
 
     private Vector3f currentPosition = new Vector3f();
     private Quaternion currentRotation = new Quaternion();

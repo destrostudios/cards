@@ -21,18 +21,18 @@ import java.util.HashMap;
  *
  * @author Carl
  */
-public class BoardAppState extends BaseAppState implements ActionListener{
+public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseAppState implements ActionListener{
 
-    public BoardAppState(Board board, Node rootNode) {
+    public BoardAppState(Board<CardModelType> board, Node rootNode) {
         this.board = board;
         this.rootNode = rootNode;
     }
-    private Board board;
+    private Board<CardModelType> board;
     private Node rootNode;
     private Application application;
     private RayCasting rayCasting;
     private HashMap<BoardObject, Node> boardObjectNodes = new HashMap<BoardObject, Node>();
-    private BoardObject draggedBoardObject;
+    private BoardObject<CardModelType> draggedBoardObject;
     private Node draggedNode;
     private BoardObjectFilter nonDraggedNodeFilter = new BoardObjectFilter() {
         
@@ -47,7 +47,7 @@ public class BoardAppState extends BaseAppState implements ActionListener{
     protected void initialize(Application app) {
         application = app;
         rayCasting = new RayCasting(application);
-        for (BoardObject boardObject : board.getBoardObjects()) {
+        for (BoardObject<CardModelType> boardObject : board.getBoardObjects()) {
             Node node = new Node();
             node.setUserData("boardObjectId", boardObject.getId());
             board.getVisualizer(boardObject).createVisualisation(node, application.getAssetManager());
@@ -79,7 +79,7 @@ public class BoardAppState extends BaseAppState implements ActionListener{
             if (boardObject == draggedBoardObject) {
                 continue;
             }
-            
+
             if (boardObject.needsVisualisationUpdate()) {
                 board.getVisualizer(boardObject).updateVisualisation(node, boardObject, application.getAssetManager());
                 boardObject.onVisualisationUpdate();

@@ -1,16 +1,14 @@
 package com.destrostudios.cards.frontend.cardgui;
 
-import java.util.HashMap;
-
 /**
  *
  * @author Carl
  */
-public class BoardObject implements GameLoopListener {
+public class BoardObject<ModelType extends BoardObjectModel> implements GameLoopListener {
 
     private int id = -1;
-    private HashMap<String, String> properties = new HashMap<>();
-    private boolean needsVisualisationUpdate;
+    private ModelType model;
+    private boolean checkForVisualisationUpdate;
     private Interactivity interactivity;
 
     @Override
@@ -18,24 +16,25 @@ public class BoardObject implements GameLoopListener {
 
     }
 
-    public void setProperty(String name, String value) {
-        String oldValue = properties.get(name);
-        if ((value != oldValue) && (!value.equals(oldValue))) {
-            properties.put(name, value);
-            needsVisualisationUpdate = true;
-        }
+    protected void setModel(ModelType model) {
+        this.model = model;
+    }
+
+    public ModelType getModel() {
+        return model;
+    }
+
+    public void checkForVisualisationUpdate() {
+        checkForVisualisationUpdate = true;
     }
 
     public void onVisualisationUpdate() {
-        this.needsVisualisationUpdate = false;
+        model.onUpdate();
+        checkForVisualisationUpdate = false;
     }
 
     public boolean needsVisualisationUpdate() {
-        return needsVisualisationUpdate;
-    }
-
-    public String getProperty(String name) {
-        return properties.get(name);
+        return checkForVisualisationUpdate && model.wasChanged();
     }
 
     public void setId(int id) {

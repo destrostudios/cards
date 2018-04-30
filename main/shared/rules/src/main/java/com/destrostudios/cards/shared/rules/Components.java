@@ -21,6 +21,5 @@ public class Components {
     public static final ComponentDefinition<String> DISPLAY_NAME = new ComponentDefinition<>("displayName");
     public static final ComponentDefinition<Integer> HAND = new ComponentDefinition<>("hand");
     public static final ComponentDefinition<Integer> CARD_TEMPLATE = new ComponentDefinition<>("cardTemplate");
-    public static final ComponentDefinition<Integer> COMPONENTS_COUNT = new ComponentDefinition<>("componentsCount");
 
 }

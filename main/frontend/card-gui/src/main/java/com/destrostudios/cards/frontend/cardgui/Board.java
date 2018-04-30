@@ -45,7 +45,7 @@ public class Board implements GameLoopListener {
         zones.add(zone);
     }
 
-    public void triggerEvent(GameEvent event) {
+    public void event(GameEvent event) {
         event.trigger(this);
     }
 

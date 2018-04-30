@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.events.ResponseEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class RemoveCardFromHandEvent extends ResponseEvent {
+public class RemoveCardFromHandEvent extends Event {
     public int card;
 
     public RemoveCardFromHandEvent(int card) {

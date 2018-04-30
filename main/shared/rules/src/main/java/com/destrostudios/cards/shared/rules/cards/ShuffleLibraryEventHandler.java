@@ -6,6 +6,7 @@ import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import java.util.Random;
+import java.util.function.IntUnaryOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +20,9 @@ public class ShuffleLibraryEventHandler implements EventHandler<ShuffleLibraryEv
 
     private final EntityData data;
     private final EventQueue events;
-    private final Random random;
+    private final IntUnaryOperator random;
 
-    public ShuffleLibraryEventHandler(EntityData data, EventQueue events, Random random) {
+    public ShuffleLibraryEventHandler(EntityData data, EventQueue events, IntUnaryOperator random) {
         this.data = data;
         this.events = events;
         this.random = random;

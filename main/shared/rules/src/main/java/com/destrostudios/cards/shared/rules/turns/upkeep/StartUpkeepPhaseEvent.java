@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.turns.upkeep;
 
-import com.destrostudios.cards.shared.events.TriggeredEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class StartUpkeepPhaseEvent extends TriggeredEvent {
+public class StartUpkeepPhaseEvent extends Event {
 
     public int player;
 

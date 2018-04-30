@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.turns.main;
 
-import com.destrostudios.cards.shared.events.TriggeredEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class StartMainPhaseEvent extends TriggeredEvent {
+public class StartMainPhaseEvent extends Event {
 
     public int player;
 

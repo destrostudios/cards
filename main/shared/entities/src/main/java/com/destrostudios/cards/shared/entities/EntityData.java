@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.entities.collections.IntSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.function.IntSupplier;
@@ -18,6 +19,10 @@ public class EntityData {
     private final Map<ComponentDefinition<?>, Map<Integer, Object>> components = new HashMap<>();
     private final IntSet entities = new IntSet();
     private final IntSupplier entitySequence;
+
+    public EntityData() {
+        this(new Random(1)::nextInt);
+    }
 
     public EntityData(IntSupplier entitySequence) {
         this.entitySequence = entitySequence;
@@ -69,6 +74,14 @@ public class EntityData {
         } while (entities.hasKey(entityKey));
         entities.set(entityKey);
         return entityKey;
+    }
+
+    public int entity(ComponentDefinition<?> component, IntPredicate... predicates) {
+        IntArrayList result = entities(component, predicates);
+        if (result.size() != 1) {
+            throw new IllegalStateException(Integer.toString(result.size()));
+        }
+        return result.get(0);
     }
 
     public Set<ComponentDefinition<?>> knownComponents() {

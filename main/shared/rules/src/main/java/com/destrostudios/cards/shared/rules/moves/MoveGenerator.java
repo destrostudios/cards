@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.rules.moves;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
-import com.destrostudios.cards.shared.events.ActionEvent;
+import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.DeclareAttackEvent;
 import com.destrostudios.cards.shared.rules.battle.DeclareBlockEvent;
@@ -25,13 +25,13 @@ public class MoveGenerator {
         this.data = data;
     }
 
-    public List<ActionEvent> generateAvailableMoves(int player) {
-        List<ActionEvent> result = new ArrayList<>();
+    public List<Event> generateAvailableMoves(int player) {
+        List<Event> result = new ArrayList<>();
         generateAvailableMoves(player, result::add);
         return result;
     }
 
-    public void generateAvailableMoves(int player, Consumer<ActionEvent> eventConsumer) {
+    public void generateAvailableMoves(int player, Consumer<Event> eventConsumer) {
         TurnPhase phase = data.get(player, Components.TURN_PHASE);
         if (phase != null) {
             switch (phase) {

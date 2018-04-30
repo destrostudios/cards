@@ -3,7 +3,7 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
-import com.destrostudios.cards.shared.rules.battle.AttackEventHandler;
+import com.destrostudios.cards.shared.rules.battle.BattleEventHandler;
 import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UpkeepDrawEventHandler implements EventHandler<StartUpkeepPhaseEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AttackEventHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BattleEventHandler.class);
     
     private final EntityData data;
     private final EventQueue events;

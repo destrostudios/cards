@@ -50,11 +50,5 @@
             <artifactId>card-painter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <!--TODO: Cleanup & Remove-->
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>sandbox</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 </project>

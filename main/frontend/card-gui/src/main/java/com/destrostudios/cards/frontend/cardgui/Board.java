@@ -45,7 +45,7 @@ public class Board<CardModelType extends BoardObjectModel> implements GameLoopLi
         zones.add(zone);
     }
 
-    public void event(GameEvent event) {
+    public void triggerEvent(GameEvent event) {
         event.trigger(this);
     }
 

@@ -1,11 +1,13 @@
 package com.destrostudios.cards.shared.entities;
 
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
+import com.destrostudios.cards.shared.entities.collections.IntSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.IntPredicate;
+import java.util.function.IntSupplier;
 
 /**
  *
@@ -14,6 +16,12 @@ import java.util.function.IntPredicate;
 public class EntityData {
 
     private final Map<ComponentDefinition<?>, Map<Integer, Object>> components = new HashMap<>();
+    private final IntSet entities = new IntSet();
+    private final IntSupplier entitySequence;
+
+    public EntityData(IntSupplier entitySequence) {
+        this.entitySequence = entitySequence;
+    }
 
     public boolean has(int entity, ComponentDefinition<?> component) {
         return getComponentMap(component).containsKey(entity);
@@ -54,12 +62,25 @@ public class EntityData {
         return list;
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
-        return (Map<Integer, T>) components.computeIfAbsent(component, x -> new HashMap<>());
+    public int createEntity() {
+        int entityKey;
+        do {
+            entityKey = entitySequence.getAsInt();
+        } while (entities.hasKey(entityKey));
+        entities.set(entityKey);
+        return entityKey;
     }
 
     public Set<ComponentDefinition<?>> knownComponents() {
         return components.keySet();
+    }
+
+    public IntSet getEntities() {
+        return entities;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
+        return (Map<Integer, T>) components.computeIfAbsent(component, x -> new HashMap<>());
     }
 }

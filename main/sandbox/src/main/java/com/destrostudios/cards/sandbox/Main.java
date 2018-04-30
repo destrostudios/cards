@@ -1,7 +1,6 @@
 package com.destrostudios.cards.sandbox;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.EntityPool;
 import com.destrostudios.cards.shared.events.ActionEvent;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
@@ -59,45 +58,43 @@ public class Main {
         EntityData data = createEntityData();
         MoveGenerator moveGenerator = new MoveGenerator(data);
         Random random = new Random(453);
-        EntityPool entities = new EntityPool(random);
         EventDispatcher dispatcher = new EventDispatcher();
         EventQueue events = new EventQueueImpl(dispatcher::fire);
         setListener(dispatcher, data, events, random);
 
         try {
             for (int i = 0; i < 5; i++) {
-                logState(data, entities, moveGenerator);
+                logState(data, moveGenerator);
                 List<ActionEvent> actionEvents = moveGenerator.generateAvailableMoves(data.entities(Components.TURN_PHASE).get(0));
                 ActionEvent actionEvent = actionEvents.get(random.nextInt(actionEvents.size()));
                 events.action(actionEvent);
             }
         } finally {
-            logState(data, entities, moveGenerator);
+            logState(data, moveGenerator);
         }
     }
 
     public static EntityData createEntityData() {
         Random random = new Random(453);
-        EntityData data = new EntityData();
-        EntityPool entities = new EntityPool(random);
+        EntityData data = new EntityData(random::nextInt);
 
-        int player1 = entities.create();
-        int player2 = entities.create();
-        int hero1 = entities.create();
-        int hero2 = entities.create();
-        int handCards1 = entities.create();
-        int handCards2 = entities.create();
+        int player1 = data.createEntity();
+        int player2 = data.createEntity();
+        int hero1 = data.createEntity();
+        int hero2 = data.createEntity();
+        int handCards1 = data.createEntity();
+        int handCards2 = data.createEntity();
 
         initPlayerAndHeroEntities(data, player1, player2, hero1, hero2);
-        initLibraryAndHandCardsEntities(data, entities, player1, player2, handCards1, handCards2);
-        initBoardCardsEntities(data, entities, player1, player2);
+        initLibraryAndHandCardsEntities(data, player1, player2, handCards1, handCards2);
+        initBoardCardsEntities(data, player1, player2);
 
         return data;
     }
 
-    private static void initBoardCardsEntities(EntityData data, EntityPool entities, int player1, int player2) {
-        int card1 = entities.create();
-        int card2 = entities.create();
+    private static void initBoardCardsEntities(EntityData data, int player1, int player2) {
+        int card1 = data.createEntity();
+        int card2 = data.createEntity();
 
 
         data.set(card1, Components.CARD_TEMPLATE, 100);
@@ -115,8 +112,8 @@ public class Main {
         data.set(card2, Components.ENTCHANTMENT_CARD, null);
         data.set(card2, Components.ENCHANTMENT_ZONE, 0);
 
-        int card3 = entities.create();
-        int card4 = entities.create();
+        int card3 = data.createEntity();
+        int card4 = data.createEntity();
 
         data.set(card3, Components.CARD_TEMPLATE, 102);
         data.set(card3, Components.DISPLAY_NAME, "card102");
@@ -138,12 +135,12 @@ public class Main {
     }
 
 
-    private static void initLibraryAndHandCardsEntities(EntityData data, EntityPool entities, int player1, int player2, int handCards1, int handCards2) {
+    private static void initLibraryAndHandCardsEntities(EntityData data, int player1, int player2, int handCards1, int handCards2) {
         int librarySize = 50;
         int handSize = 5;
 
         for (int i = 0; i < 2 * (librarySize - handSize); i++) {
-            int card = entities.create();
+            int card = data.createEntity();
             data.set(card, Components.CARD_TEMPLATE, i);
             data.set(card, Components.DISPLAY_NAME, "card" + i);
             data.set(card, Components.OWNED_BY, i < (librarySize - handSize) ? player1 : player2);
@@ -155,7 +152,7 @@ public class Main {
         data.set(handCards2, Components.OWNED_BY, player2);
 
         for (int i = 0; i < 2 * handSize; i++) {
-            int card = entities.create();
+            int card = data.createEntity();
             data.set(card, Components.CARD_TEMPLATE, i);
             data.set(card, Components.DISPLAY_NAME, "card" + i);
             data.set(card, Components.OWNED_BY, i < handSize ? player1 : player2);
@@ -211,9 +208,9 @@ public class Main {
         dispatcher.addListeners(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryEventHandler(data, events));
     }
 
-    private static void logState(EntityData data, EntityPool entities, MoveGenerator gen) {
+    private static void logState(EntityData data, MoveGenerator gen) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(GSON.toJson(new EntityDebugMapper().toDebugObjects(data, entities.getEntities())));
+            LOG.debug(GSON.toJson(new EntityDebugMapper().toDebugObjects(data)));
             LOG.debug("available moves are {}", gen.generateAvailableMoves(data.entities(Components.TURN_PHASE).get(0)));
         }
     }

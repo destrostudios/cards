@@ -17,7 +17,6 @@ public class SetHealthEventHandler implements EventHandler<SetHealthEvent> {
     
     private final EntityData data;
     private final EventQueue events;
-    private final int healthKey = Components.HEALTH;
 
     public SetHealthEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -27,7 +26,7 @@ public class SetHealthEventHandler implements EventHandler<SetHealthEvent> {
     @Override
     public void onEvent(SetHealthEvent event) {
         LOG.info("setting health of {} to {}", event.target, event.health);
-        data.set(event.target, healthKey, event.health);
+        data.set(event.target, Components.HEALTH, event.health);
     }
 
 }

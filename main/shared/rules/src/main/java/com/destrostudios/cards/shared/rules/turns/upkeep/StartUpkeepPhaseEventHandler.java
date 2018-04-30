@@ -19,7 +19,6 @@ public class StartUpkeepPhaseEventHandler implements EventHandler<StartUpkeepPha
     
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE;
 
     public StartUpkeepPhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -29,7 +28,7 @@ public class StartUpkeepPhaseEventHandler implements EventHandler<StartUpkeepPha
     @Override
     public void onEvent(StartUpkeepPhaseEvent event) {
         LOG.info("upkeep phase of {} started", event.player);
-        data.set(event.player, phaseKey, TurnPhase.UPKEEP.ordinal());
+        data.set(event.player, Components.TURN_PHASE, TurnPhase.UPKEEP);
         events.trigger(new EndUpkeepPhaseEvent(event.player));
     }
 

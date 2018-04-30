@@ -19,7 +19,6 @@ public class ShuffleLibraryOnGameStartHandler implements EventHandler<StartGameE
 
     private final EntityData data;
     private final EventQueue events;
-    private final int playerKey = Components.NEXT_PLAYER;
 
     public ShuffleLibraryOnGameStartHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,7 +27,7 @@ public class ShuffleLibraryOnGameStartHandler implements EventHandler<StartGameE
 
     @Override
     public void onEvent(StartGameEvent event) {
-        IntArrayList players = data.entities(playerKey);
+        IntArrayList players = data.entities(Components.NEXT_PLAYER);
         LOG.info("shuffling libraries of players {}", players);
         players.stream().forEachOrdered(player -> events.trigger(new ShuffleLibraryEvent(player)));
     }

@@ -20,7 +20,6 @@ import java.util.function.Consumer;
 public class MoveGenerator {
 
     private final EntityData data;
-    private final int phaseKey = Components.TURN_PHASE, attackerKey = Components.ATTACK, blockerKey = Components.HEALTH, ownedByKey = Components.OWNED_BY, declaredAttackerKey = Components.DECLARED_ATTACK;
 
     public MoveGenerator(EntityData data) {
         this.data = data;
@@ -33,14 +32,14 @@ public class MoveGenerator {
     }
 
     public void generateAvailableMoves(int player, Consumer<ActionEvent> eventConsumer) {
-        int phase = data.getOrElse(player, phaseKey, -1);
-        if (phase != -1) {
-            switch (TurnPhase.values()[phase]) {
+        TurnPhase phase = data.get(player, Components.TURN_PHASE);
+        if (phase != null) {
+            switch (phase) {
                 case RESPOND:
-                    IntArrayList availableBlockers = data.entities(blockerKey, x -> data.hasValue(x, ownedByKey, player));
-                    IntArrayList declaredAttackers = data.entities(declaredAttackerKey, x -> data.hasValue(data.get(x, declaredAttackerKey), ownedByKey, player));
+                    IntArrayList availableBlockers = data.entities(Components.HEALTH, x -> data.hasValue(x, Components.OWNED_BY, player));
+                    IntArrayList declaredAttackers = data.entities(Components.DECLARED_ATTACK, x -> data.hasValue(data.get(x, Components.DECLARED_ATTACK), Components.OWNED_BY, player));
                     for (int attacker : declaredAttackers) {
-                        int index = availableBlockers.indexOf(data.get(attacker, declaredAttackerKey));
+                        int index = availableBlockers.indexOf(data.get(attacker, Components.DECLARED_ATTACK));
                         if (index != -1) {
                             availableBlockers.swapRemoveAt(index);
                         }
@@ -54,8 +53,8 @@ public class MoveGenerator {
                     eventConsumer.accept(new EndRespondPhaseEvent(player));
                     break;
                 case MAIN:
-                    IntArrayList availableAttackers = data.entities(attackerKey, x -> data.hasValue(x, ownedByKey, player), x -> !data.has(x, declaredAttackerKey));
-                    IntArrayList availableTargets = data.entities(blockerKey, x -> !data.hasValue(x, ownedByKey, player));
+                    IntArrayList availableAttackers = data.entities(Components.ATTACK, x -> data.hasValue(x, Components.OWNED_BY, player), x -> !data.has(x, Components.DECLARED_ATTACK));
+                    IntArrayList availableTargets = data.entities(Components.HEALTH, x -> !data.hasValue(x, Components.OWNED_BY, player));
                     for (int availableTarget : availableTargets) {
                         for (int availableAttacker : availableAttackers) {
                             eventConsumer.accept(new DeclareAttackEvent(availableAttacker, availableTarget));

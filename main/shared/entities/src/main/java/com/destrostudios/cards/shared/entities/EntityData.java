@@ -1,7 +1,10 @@
 package com.destrostudios.cards.shared.entities;
 
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
-import com.destrostudios.cards.shared.entities.collections.IntToIntMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.IntPredicate;
 
 /**
@@ -10,43 +13,36 @@ import java.util.function.IntPredicate;
  */
 public class EntityData {
 
-    private final IntToIntMap[] components;
+    private final Map<ComponentDefinition<?>, Map<Integer, Object>> components = new HashMap<>();
 
-    public EntityData(int componentCount) {
-        this.components = new IntToIntMap[componentCount];
-        for (int i = 0; i < components.length; i++) {
-            components[i] = new IntToIntMap();
-        }
+    public boolean has(int entity, ComponentDefinition<?> component) {
+        return getComponentMap(component).containsKey(entity);
     }
 
-    public boolean has(int entity, int component) {
-        return components[component].hasKey(entity);
+    public <T> boolean hasValue(int entity, ComponentDefinition<T> component, T value) {
+        return has(entity, component) && Objects.equals(get(entity, component), value);
     }
 
-    public boolean hasValue(int entity, int component, int value) {
-        return components[component].getOrElse(entity, ~value) == value;
+    public <T> T getOrElse(int entity, ComponentDefinition<T> component, T defaultValue) {
+        return getComponentMap(component).getOrDefault(entity, defaultValue);
     }
 
-    public int getOrElse(int entity, int component, int defaultValue) {
-        return components[component].getOrElse(entity, defaultValue);
+    public <T> T get(int entity, ComponentDefinition<T> component) {
+        return getComponentMap(component).get(entity);
     }
 
-    public int get(int entity, int component) {
-        return components[component].get(entity);
+    public <T> void set(int entity, ComponentDefinition<T> component, T value) {
+        getComponentMap(component).put(entity, value);
     }
 
-    public void set(int entity, int component, int value) {
-        components[component].set(entity, value);
+    public void remove(int entity, ComponentDefinition<?> component) {
+        getComponentMap(component).remove(entity);
     }
 
-    public void remove(int entity, int component) {
-        components[component].remove(entity);
-    }
-
-    public IntArrayList entities(int component, IntPredicate... predicates) {
-        IntToIntMap map = components[component];
+    public IntArrayList entities(ComponentDefinition<?> component, IntPredicate... predicates) {
+        Map<Integer, ?> map = getComponentMap(component);
         IntArrayList list = new IntArrayList(map.size());
-        map.foreachKey(entity -> {
+        map.keySet().forEach(entity -> {
             for (IntPredicate predicate : predicates) {
                 if (!predicate.test(entity)) {
                     return;
@@ -56,5 +52,14 @@ public class EntityData {
         });
         list.sort();
         return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
+        return (Map<Integer, T>) components.computeIfAbsent(component, x -> new HashMap<>());
+    }
+
+    public Set<ComponentDefinition<?>> knownComponents() {
+        return components.keySet();
     }
 }

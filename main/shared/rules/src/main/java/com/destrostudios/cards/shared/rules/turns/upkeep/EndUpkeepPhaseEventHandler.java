@@ -19,7 +19,6 @@ public class EndUpkeepPhaseEventHandler implements EventHandler<EndUpkeepPhaseEv
     
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE;
 
     public EndUpkeepPhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,7 +27,6 @@ public class EndUpkeepPhaseEventHandler implements EventHandler<EndUpkeepPhaseEv
 
     @Override
     public void onEvent(EndUpkeepPhaseEvent event) {
-        assert data.get(event.player, phaseKey) == TurnPhase.UPKEEP.ordinal();
         LOG.info("upkeep phase of {} ended", event.player);
         events.trigger(new StartMainPhaseEvent(event.player));
     }

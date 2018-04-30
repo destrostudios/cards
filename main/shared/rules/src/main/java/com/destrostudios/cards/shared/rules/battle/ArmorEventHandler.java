@@ -17,7 +17,6 @@ public class ArmorEventHandler implements EventHandler<DamageEvent> {
 
     private final EntityData data;
     private final EventQueue events;
-    private final int armorKey = Components.ARMOR;
 
     public ArmorEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -26,7 +25,7 @@ public class ArmorEventHandler implements EventHandler<DamageEvent> {
 
     @Override
     public void onEvent(DamageEvent event) {
-        int armor = data.getOrElse(event.target, armorKey, 0);
+        int armor = data.getOrElse(event.target, Components.ARMOR, 0);
         LOG.info("reducing damage by {}", armor);
         event.damage -= armor;
     }

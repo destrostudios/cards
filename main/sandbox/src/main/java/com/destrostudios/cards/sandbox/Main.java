@@ -1,5 +1,6 @@
 package com.destrostudios.cards.sandbox;
 
+import com.destrostudios.cards.shared.rules.debug.EntityDebugMapper;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.EntityPool;
 import com.destrostudios.cards.shared.events.EventDispatcher;
@@ -53,8 +54,6 @@ import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEvent;
 import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEventHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,33 +76,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        List<String> names = new ArrayList<>();
-        names.add("hero");
-        names.add("minion1");
-        names.add("minion2");
-        names.add("noise");
-        names.add("player1");
-        names.add("player2");
-        names.add("card");
-
         Random random = new Random(453);
         EntityPool entities = new EntityPool(random);
 
-        EntityDebugMapper debug = new EntityDebugMapper();
-        debug.register(Components.HEALTH, "health");
-        debug.register(Components.OWNED_BY, "ownedBy");
-        debug.register(Components.NEXT_PLAYER, "nextPlayer");
-        debug.register(Components.ATTACK, "attack");
-        debug.register(Components.ARMOR, "armor");
-        debug.register(Components.DECLARED_ATTACK, "declaredAttack");
-        debug.register(Components.DECLARED_BLOCK, "declaredBlock");
-        debug.register(Components.DISPLAY_NAME, "displayName", names::get);
-        debug.register(Components.TURN_PHASE, "phase", x -> TurnPhase.values()[x]);
-        debug.register(Components.LIBRARY, "library");
-        debug.register(Components.HAND, "hand");
-        debug.register(Components.CARD_TEMPLATE, "cardTemplate");
-
-        EntityData data = new EntityData(Components.COMPONENTS_COUNT);
+        EntityData data = new EntityData();
         EventDispatcher dispatcher = new EventDispatcher();
         EventQueue events = new EventQueueImpl(dispatcher::fire);
         dispatcher.setListeners(AttackEvent.class, new AttackEventHandler(data, events));
@@ -145,31 +121,31 @@ public class Main {
         MoveGenerator moveGenerator = new MoveGenerator(data);
 
         int player1 = entities.create();
-        data.set(player1, Components.DISPLAY_NAME, names.indexOf("player1"));
-        data.set(player1, Components.TURN_PHASE, TurnPhase.MAIN.ordinal());
+        data.set(player1, Components.DISPLAY_NAME, "player1");
+        data.set(player1, Components.TURN_PHASE, TurnPhase.MAIN);
 
         int player2 = entities.create();
-        data.set(player2, Components.DISPLAY_NAME, names.indexOf("player2"));
+        data.set(player2, Components.DISPLAY_NAME, "player2");
 
         data.set(player1, Components.NEXT_PLAYER, player2);
         data.set(player2, Components.NEXT_PLAYER, player1);
 
         int minion1 = entities.create();
         data.set(minion1, Components.HEALTH, 15);
-        data.set(minion1, Components.DISPLAY_NAME, names.indexOf("minion1"));
+        data.set(minion1, Components.DISPLAY_NAME, "minion1");
         data.set(minion1, Components.ATTACK, 2);
         data.set(minion1, Components.OWNED_BY, player2);
 
         int minion2 = entities.create();
         data.set(minion2, Components.HEALTH, 5);
-        data.set(minion2, Components.DISPLAY_NAME, names.indexOf("minion2"));
+        data.set(minion2, Components.DISPLAY_NAME, "minion2");
         data.set(minion2, Components.ATTACK, 5);
         data.set(minion2, Components.OWNED_BY, player2);
 
         int hero = entities.create();
         data.set(hero, Components.HEALTH, 215);
         data.set(hero, Components.ATTACK, 3);
-        data.set(hero, Components.DISPLAY_NAME, names.indexOf("hero"));
+        data.set(hero, Components.DISPLAY_NAME, "hero");
         data.set(hero, Components.ARMOR, 1);
         data.set(hero, Components.OWNED_BY, player1);
 
@@ -177,29 +153,29 @@ public class Main {
         for (int i = 0; i < 2 * librarySize; i++) {
             int card = entities.create();
             data.set(card, Components.CARD_TEMPLATE, i);
-            data.set(card, Components.DISPLAY_NAME, names.indexOf("card"));
+            data.set(card, Components.DISPLAY_NAME, "card");
             data.set(card, Components.OWNED_BY, i < librarySize ? player1 : player2);
             data.set(card, Components.LIBRARY, i % librarySize);
         }
         events.action(new StartGameEvent());
 
         try {
-            logState(debug, data, entities, moveGenerator);
+            logState(data, entities, moveGenerator);
             events.action(new DeclareAttackEvent(hero, minion2));
-            logState(debug, data, entities, moveGenerator);
+            logState(data, entities, moveGenerator);
             events.action(new EndMainPhaseEvent(player1));
-            logState(debug, data, entities, moveGenerator);
+            logState(data, entities, moveGenerator);
             events.action(new DeclareBlockEvent(minion1, hero));
-            logState(debug, data, entities, moveGenerator);
+            logState(data, entities, moveGenerator);
             events.action(new EndRespondPhaseEvent(player2));
         } finally {
-            logState(debug, data, entities, moveGenerator);
+            logState(data, entities, moveGenerator);
         }
     }
 
-    private static void logState(EntityDebugMapper debug, EntityData data, EntityPool entities, MoveGenerator gen) {
+    private static void logState(EntityData data, EntityPool entities, MoveGenerator gen) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug(GSON.toJson(debug.toDebugObjects(data, entities.getEntities())));
+            LOG.debug(GSON.toJson(new EntityDebugMapper().toDebugObjects(data, entities.getEntities())));
             LOG.debug("available moves are {}", gen.generateAvailableMoves(data.entities(Components.TURN_PHASE).get(0)));
         }
     }

@@ -19,7 +19,6 @@ public class EndMainPhaseEventHandler implements EventHandler<EndMainPhaseEvent>
 
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE, nextPlayerKey = Components.NEXT_PLAYER;
 
     public EndMainPhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,10 +27,9 @@ public class EndMainPhaseEventHandler implements EventHandler<EndMainPhaseEvent>
 
     @Override
     public void onEvent(EndMainPhaseEvent event) {
-        assert data.get(event.player, phaseKey) == TurnPhase.MAIN.ordinal();
         LOG.info("main phase of {} ended", event.player);
-        data.remove(event.player, phaseKey);
-        int nextPlayer = data.get(event.player, nextPlayerKey);
+        data.remove(event.player, Components.TURN_PHASE);
+        int nextPlayer = data.get(event.player, Components.NEXT_PLAYER);
         events.trigger(new StartRespondPhaseEvent(nextPlayer));
     }
 

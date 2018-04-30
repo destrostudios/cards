@@ -17,7 +17,6 @@ public class RemoveCardFromHandEventHandler implements EventHandler<RemoveCardFr
 
     private final EntityData data;
     private final EventQueue events;
-    private final int handKey = Components.HAND, ownedByKey = Components.OWNED_BY;
 
     public RemoveCardFromHandEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -26,12 +25,12 @@ public class RemoveCardFromHandEventHandler implements EventHandler<RemoveCardFr
 
     @Override
     public void onEvent(RemoveCardFromHandEvent event) {
-        int player = data.get(event.card, ownedByKey);
-        int handIndex = data.get(event.card, handKey);
-        for (int handCard : data.entities(handKey, x -> data.hasValue(x, ownedByKey, player), x -> data.get(x, handKey) > handIndex)) {
-            data.set(handCard, handKey, data.get(handCard, handKey) - 1);
+        int player = data.get(event.card, Components.OWNED_BY);
+        int handIndex = data.get(event.card, Components.HAND);
+        for (int handCard : data.entities(Components.HAND, x -> data.hasValue(x, Components.OWNED_BY, player), x -> data.get(x, Components.HAND) > handIndex)) {
+            data.set(handCard, Components.HAND, data.get(handCard, Components.HAND) - 1);
         }
-        data.remove(event.card, handKey);
+        data.remove(event.card, Components.HAND);
         LOG.info("removed {} from hand", event.card);
     }
 

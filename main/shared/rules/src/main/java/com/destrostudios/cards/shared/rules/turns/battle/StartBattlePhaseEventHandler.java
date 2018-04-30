@@ -18,7 +18,6 @@ public class StartBattlePhaseEventHandler implements EventHandler<StartBattlePha
     
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE;
 
     public StartBattlePhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,7 +27,7 @@ public class StartBattlePhaseEventHandler implements EventHandler<StartBattlePha
     @Override
     public void onEvent(StartBattlePhaseEvent event) {
         LOG.info("battle phase of {} started", event.player);
-        data.set(event.player, phaseKey, TurnPhase.BATTLE.ordinal());
+        data.set(event.player, Components.TURN_PHASE, TurnPhase.BATTLE);
         events.trigger(new EndBattlePhaseEvent(event.player));
     }
 

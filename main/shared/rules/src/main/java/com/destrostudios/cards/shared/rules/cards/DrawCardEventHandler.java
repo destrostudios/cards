@@ -18,7 +18,6 @@ public class DrawCardEventHandler implements EventHandler<DrawCardEvent> {
 
     private final EntityData data;
     private final EventQueue events;
-    private final int libraryKey = Components.LIBRARY, ownedByKey = Components.OWNED_BY;
 
     public DrawCardEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -27,12 +26,12 @@ public class DrawCardEventHandler implements EventHandler<DrawCardEvent> {
 
     @Override
     public void onEvent(DrawCardEvent event) {
-        IntArrayList library = data.entities(libraryKey, entity -> data.hasValue(entity, ownedByKey, event.player));
+        IntArrayList library = data.entities(Components.LIBRARY, entity -> data.hasValue(entity, Components.OWNED_BY, event.player));
         if (library.size() != 0) {
             int card = library.get(0);
             for (int i = 1; i < library.size(); i++) {
                 int candidate = library.get(i);
-                if (data.get(candidate, libraryKey) > data.get(card, libraryKey)) {
+                if (data.get(candidate, Components.LIBRARY) > data.get(card, Components.LIBRARY)) {
                     card = candidate;
                 }
             }

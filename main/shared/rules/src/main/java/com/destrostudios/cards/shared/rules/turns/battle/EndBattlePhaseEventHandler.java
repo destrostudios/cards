@@ -19,7 +19,6 @@ public class EndBattlePhaseEventHandler implements EventHandler<EndBattlePhaseEv
     
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE;
 
     public EndBattlePhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,7 +27,6 @@ public class EndBattlePhaseEventHandler implements EventHandler<EndBattlePhaseEv
 
     @Override
     public void onEvent(EndBattlePhaseEvent event) {
-        assert data.get(event.player, phaseKey) == TurnPhase.BATTLE.ordinal();
         LOG.info("battle phase of {} ended", event.player);
         events.trigger(new StartUpkeepPhaseEvent(event.player));
     }

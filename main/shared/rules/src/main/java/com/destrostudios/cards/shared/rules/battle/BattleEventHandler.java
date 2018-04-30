@@ -18,7 +18,6 @@ public class BattleEventHandler implements EventHandler<StartBattlePhaseEvent> {
     
     private final EntityData data;
     private final EventQueue events;
-    private final int declaredBlockKey = Components.DECLARED_BLOCK, declaredAttackKey = Components.DECLARED_ATTACK, ownedByKey = Components.OWNED_BY;
 
     public BattleEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -27,18 +26,18 @@ public class BattleEventHandler implements EventHandler<StartBattlePhaseEvent> {
 
     @Override
     public void onEvent(StartBattlePhaseEvent event) {
-        for (int blocker : data.entities(declaredBlockKey, x -> data.hasValue(x, ownedByKey, event.player))) {
-            int blocked = data.get(blocker, declaredBlockKey);
+        for (int blocker : data.entities(Components.DECLARED_BLOCK, x -> data.hasValue(x, Components.OWNED_BY, event.player))) {
+            int blocked = data.get(blocker, Components.DECLARED_BLOCK);
             LOG.info("blocking {} with {}", blocked, blocker);
             events.response(new AttackEvent(blocker, blocked));
-            data.remove(blocker, declaredBlockKey);
+            data.remove(blocker, Components.DECLARED_BLOCK);
         }
         
-        for (int attacker : data.entities(declaredAttackKey, x -> data.hasValue(data.get(x, declaredAttackKey), ownedByKey, event.player))) {
-            int attacked = data.get(attacker, declaredAttackKey);
+        for (int attacker : data.entities(Components.DECLARED_ATTACK, x -> data.hasValue(data.get(x, Components.DECLARED_ATTACK), Components.OWNED_BY, event.player))) {
+            int attacked = data.get(attacker, Components.DECLARED_ATTACK);
             LOG.info("attacking {} with {}", attacked, attacker);
             events.response(new AttackEvent(attacker, attacked));
-            data.remove(attacker, declaredAttackKey);
+            data.remove(attacker, Components.DECLARED_ATTACK);
         }
     }
 

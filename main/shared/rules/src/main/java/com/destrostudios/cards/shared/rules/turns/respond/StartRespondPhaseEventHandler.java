@@ -18,7 +18,6 @@ public class StartRespondPhaseEventHandler implements EventHandler<StartRespondP
     
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE;
 
     public StartRespondPhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,7 +27,7 @@ public class StartRespondPhaseEventHandler implements EventHandler<StartRespondP
     @Override
     public void onEvent(StartRespondPhaseEvent event) {
         LOG.info("respond phase of {} started", event.player);
-        data.set(event.player, phaseKey, TurnPhase.RESPOND.ordinal());
+        data.set(event.player, Components.TURN_PHASE, TurnPhase.RESPOND);
     }
 
 }

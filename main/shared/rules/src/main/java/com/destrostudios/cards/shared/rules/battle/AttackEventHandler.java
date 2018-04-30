@@ -17,7 +17,6 @@ public class AttackEventHandler implements EventHandler<AttackEvent> {
 
     private final EntityData data;
     private final EventQueue events;
-    private final int attackKey = Components.ATTACK;
 
     public AttackEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -27,8 +26,8 @@ public class AttackEventHandler implements EventHandler<AttackEvent> {
     @Override
     public void onEvent(AttackEvent event) {
         LOG.info("{} is attacking {}", event.source, event.target);
-        events.response(new DamageEvent(event.target, data.getOrElse(event.source, attackKey, 0)));
-        events.response(new DamageEvent(event.source, data.getOrElse(event.target, attackKey, 0)));
+        events.response(new DamageEvent(event.target, data.getOrElse(event.source, Components.ATTACK, 0)));
+        events.response(new DamageEvent(event.source, data.getOrElse(event.target, Components.ATTACK, 0)));
     }
 
 }

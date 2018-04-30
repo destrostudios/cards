@@ -17,7 +17,6 @@ public class RemoveCardFromLibraryEventHandler implements EventHandler<RemoveCar
 
     private final EntityData data;
     private final EventQueue events;
-    private final int libraryKey = Components.LIBRARY, ownedByKey = Components.OWNED_BY;
 
     public RemoveCardFromLibraryEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -26,12 +25,12 @@ public class RemoveCardFromLibraryEventHandler implements EventHandler<RemoveCar
 
     @Override
     public void onEvent(RemoveCardFromLibraryEvent event) {
-        int player = data.get(event.card, ownedByKey);
-        int libraryIndex = data.get(event.card, libraryKey);
-        for (int libraryCard : data.entities(libraryKey, x -> data.hasValue(x, ownedByKey, player), x -> data.get(x, libraryKey) > libraryIndex)) {
-            data.set(libraryCard, libraryKey, data.get(libraryCard, libraryKey) - 1);
+        int player = data.get(event.card, Components.OWNED_BY);
+        int libraryIndex = data.get(event.card, Components.LIBRARY);
+        for (int libraryCard : data.entities(Components.LIBRARY, x -> data.hasValue(x, Components.OWNED_BY, player), x -> data.get(x, Components.LIBRARY) > libraryIndex)) {
+            data.set(libraryCard, Components.LIBRARY, data.get(libraryCard, Components.LIBRARY) - 1);
         }
-        data.remove(event.card, libraryKey);
+        data.remove(event.card, Components.LIBRARY);
         LOG.info("removed {} from library", event.card);
     }
 

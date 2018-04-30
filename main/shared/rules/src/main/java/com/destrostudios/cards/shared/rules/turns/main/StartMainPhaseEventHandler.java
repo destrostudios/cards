@@ -18,7 +18,6 @@ public class StartMainPhaseEventHandler implements EventHandler<StartMainPhaseEv
 
     private final EntityData data;
     private final EventQueue events;
-    private final int phaseKey = Components.TURN_PHASE;
 
     public StartMainPhaseEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -28,7 +27,7 @@ public class StartMainPhaseEventHandler implements EventHandler<StartMainPhaseEv
     @Override
     public void onEvent(StartMainPhaseEvent event) {
         LOG.info("main phase of {} started", event.player);
-        data.set(event.player, phaseKey, TurnPhase.MAIN.ordinal());
+        data.set(event.player, Components.TURN_PHASE, TurnPhase.MAIN);
     }
 
 }

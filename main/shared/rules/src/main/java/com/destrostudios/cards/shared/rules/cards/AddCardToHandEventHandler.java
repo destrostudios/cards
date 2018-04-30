@@ -17,7 +17,6 @@ public class AddCardToHandEventHandler implements EventHandler<AddCardToHandEven
 
     private final EntityData data;
     private final EventQueue events;
-    private final int handKey = Components.HAND, ownedByKey = Components.OWNED_BY;
 
     public AddCardToHandEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -26,9 +25,9 @@ public class AddCardToHandEventHandler implements EventHandler<AddCardToHandEven
 
     @Override
     public void onEvent(AddCardToHandEvent event) {
-        int player = data.get(event.card, ownedByKey);
-        int handSize = data.entities(handKey, entity -> data.hasValue(entity, ownedByKey, player)).size();
-        data.set(event.card, handKey, handSize);
+        int player = data.get(event.card, Components.OWNED_BY);
+        int handSize = data.entities(Components.HAND, entity -> data.hasValue(entity, Components.OWNED_BY, player)).size();
+        data.set(event.card, Components.HAND, handSize);
         LOG.info("added {} to hand", event.card);
     }
 

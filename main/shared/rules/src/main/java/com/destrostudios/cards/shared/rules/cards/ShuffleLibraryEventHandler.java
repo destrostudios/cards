@@ -20,7 +20,6 @@ public class ShuffleLibraryEventHandler implements EventHandler<ShuffleLibraryEv
     private final EntityData data;
     private final EventQueue events;
     private final Random random;
-    private final int libraryKey = Components.LIBRARY, ownedByKey = Components.OWNED_BY;
 
     public ShuffleLibraryEventHandler(EntityData data, EventQueue events, Random random) {
         this.data = data;
@@ -30,11 +29,11 @@ public class ShuffleLibraryEventHandler implements EventHandler<ShuffleLibraryEv
 
     @Override
     public void onEvent(ShuffleLibraryEvent event) {
-        IntArrayList libraryCards = data.entities(libraryKey, card -> data.hasValue(card, ownedByKey, event.player));
+        IntArrayList libraryCards = data.entities(Components.LIBRARY, card -> data.hasValue(card, Components.OWNED_BY, event.player));
         libraryCards.shuffle(random);
         for (int i = 0; i < libraryCards.size(); i++) {
             int card = libraryCards.get(i);
-            data.set(card, libraryKey, i);
+            data.set(card, Components.LIBRARY, i);
         }
         LOG.info("shuffled library of {}", event.player);
     }

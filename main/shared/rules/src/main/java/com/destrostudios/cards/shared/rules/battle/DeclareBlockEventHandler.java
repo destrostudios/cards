@@ -17,7 +17,6 @@ public class DeclareBlockEventHandler implements EventHandler<DeclareBlockEvent>
 
     private final EntityData data;
     private final EventQueue events;
-    private final int declareBlockKey = Components.DECLARED_BLOCK;
 
     public DeclareBlockEventHandler(EntityData data, EventQueue events) {
         this.data = data;
@@ -27,7 +26,7 @@ public class DeclareBlockEventHandler implements EventHandler<DeclareBlockEvent>
     @Override
     public void onEvent(DeclareBlockEvent event) {
         LOG.info("{} will block {}", event.source, event.target);
-        data.set(event.source, declareBlockKey, event.target);
+        data.set(event.source, Components.DECLARED_BLOCK, event.target);
     }
 
 }

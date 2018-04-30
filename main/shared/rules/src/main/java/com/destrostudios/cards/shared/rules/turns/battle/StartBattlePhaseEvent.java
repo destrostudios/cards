@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.turns.battle;
 
-import com.destrostudios.cards.shared.events.TriggeredEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class StartBattlePhaseEvent extends TriggeredEvent {
+public class StartBattlePhaseEvent extends Event {
 
     public int player;
 

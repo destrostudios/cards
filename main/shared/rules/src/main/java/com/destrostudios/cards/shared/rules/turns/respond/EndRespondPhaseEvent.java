@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.turns.respond;
 
-import com.destrostudios.cards.shared.events.ActionEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class EndRespondPhaseEvent extends ActionEvent {
+public class EndRespondPhaseEvent extends Event {
 
     public int player;
 

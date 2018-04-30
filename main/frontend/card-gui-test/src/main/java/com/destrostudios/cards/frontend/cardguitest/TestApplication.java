@@ -207,10 +207,10 @@ public class TestApplication extends SimpleApplication implements ActionListener
         while (deckIterator.hasNext()) {
             MyCard myCard = deckIterator.next();
             Card card = getOrCreateCard(myCard);
-            board.triggerEvent(new SetPropertyEvent(card, "color", "" + myCard.getColor().ordinal()));
-            board.triggerEvent(new SetPropertyEvent(card, "name", myCard.getName()));
-            board.triggerEvent(new SetPropertyEvent(card, "damaged", Boolean.toString(myCard.isDamaged())));
-            board.triggerEvent(new MoveCardEvent(card, cardZone, interval.mult(index)));
+            board.event(new SetPropertyEvent(card, "color", "" + myCard.getColor().ordinal()));
+            board.event(new SetPropertyEvent(card, "name", myCard.getName()));
+            board.event(new SetPropertyEvent(card, "damaged", Boolean.toString(myCard.isDamaged())));
+            board.event(new MoveCardEvent(card, cardZone, interval.mult(index)));
             card.setInteractivity(interactivity);
             index++;
         }

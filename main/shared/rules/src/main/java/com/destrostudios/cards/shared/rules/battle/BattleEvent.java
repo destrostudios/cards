@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.battle;
 
-import com.destrostudios.cards.shared.events.ResponseEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class BattleEvent extends ResponseEvent {
+public class BattleEvent extends Event {
 
     public int source, target;
 

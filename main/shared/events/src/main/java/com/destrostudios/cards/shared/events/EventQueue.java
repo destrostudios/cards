@@ -6,10 +6,10 @@ package com.destrostudios.cards.shared.events;
  */
 public interface EventQueue {
 
-    void action(ActionEvent event);
+    void action(Event event);
 
-    void trigger(TriggeredEvent event);
+    void trigger(Event event);
 
-    void response(ResponseEvent event);
+    void response(Event event);
 
 }

@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.battle;
 
-import com.destrostudios.cards.shared.events.ActionEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class DeclareBlockEvent extends ActionEvent {
+public class DeclareBlockEvent extends Event {
 
     public int source, target;
 

@@ -34,14 +34,16 @@ public class TestEntityBoard {
         data.set(minion1, Components.DISPLAY_NAME, "Shyvana");
         data.set(minion1, Components.ATTACK, 2);
         data.set(minion1, Components.OWNED_BY, player2);
-        data.set(minion1, Components.BOARD, 0);
+        data.set(minion1, Components.BOARD, null);
+        data.set(minion1, Components.CREATURE_ZONE, 0);
 
         int minion2 = entities.create();
         data.set(minion2, Components.HEALTH, 5);
         data.set(minion2, Components.DISPLAY_NAME, "Aether Adept");
         data.set(minion2, Components.ATTACK, 5);
         data.set(minion2, Components.OWNED_BY, player2);
-        data.set(minion2, Components.BOARD, 1);
+        data.set(minion2, Components.BOARD, null);
+        data.set(minion2, Components.CREATURE_ZONE, 1);
 
         int hero = entities.create();
         data.set(hero, Components.HEALTH, 215);

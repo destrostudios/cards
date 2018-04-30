@@ -1,8 +1,7 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.frontend.cardgui.*;
-import com.destrostudios.cards.frontend.cardgui.events.MoveCardEvent;
-import com.destrostudios.cards.frontend.cardgui.events.ModelUpdatedEvent;
+import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
@@ -36,7 +35,7 @@ public class FrontendApplication extends SimpleApplication implements ActionList
     public FrontendApplication() {
         loadSettings();
     }
-    private Board board;
+    private Board<CardModel> board;
     private EntityData entityData;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap = new CardGuiMap();
@@ -83,6 +82,17 @@ public class FrontendApplication extends SimpleApplication implements ActionList
 
             @Override
             protected Vector2f getSize(CardZone zone) {
+                for (PlayerZones playerZones : playerZonesMap.values()) {
+                    if (zone == playerZones.getDeckZone()) {
+                        return new Vector2f(1.2f, 1.2f);
+                    }
+                    else if (zone == playerZones.getHandZone()) {
+                        return new Vector2f(6, 2);
+                    }
+                    else if (zone == playerZones.getBoardZone()) {
+                        return new Vector2f(10, 3);
+                    }
+                }
                 return super.getSize(zone);
             }
         }, new SimpleCardVisualizer<CardModel>() {
@@ -125,7 +135,7 @@ public class FrontendApplication extends SimpleApplication implements ActionList
                 board.addZone(boardZone);
                 playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, boardZone));
             }
-            stateManager.attach(new BoardAppState(board, rootNode));
+            stateManager.attach(new BoardAppState<>(board, rootNode));
 
             IntArrayList cardEntities = entityData.entities(Components.OWNED_BY);
             for (int cardEntity : cardEntities) {
@@ -146,11 +156,11 @@ public class FrontendApplication extends SimpleApplication implements ActionList
         if (entityData.has(cardEntity, Components.LIBRARY)) {
             return entityData.get(cardEntity, Components.LIBRARY);
         }
-        else if (entityData.has(cardEntity, Components.HAND)) {
-            return entityData.get(cardEntity, Components.HAND);
+        else if (entityData.has(cardEntity, Components.HAND_CARDS)) {
+            return entityData.get(cardEntity, Components.HAND_CARDS);
         }
-        else if (entityData.has(cardEntity, Components.BOARD)) {
-            return entityData.get(cardEntity, Components.BOARD);
+        else if (entityData.has(cardEntity, Components.CREATURE_ZONE)) {
+            return entityData.get(cardEntity, Components.CREATURE_ZONE);
         }
         return -1;
     }
@@ -161,10 +171,10 @@ public class FrontendApplication extends SimpleApplication implements ActionList
         if (entityData.has(cardEntity, Components.LIBRARY)) {
             return playerZones.getDeckZone();
         }
-        else if (entityData.has(cardEntity, Components.HAND)) {
+        else if (entityData.has(cardEntity, Components.HAND_CARDS)) {
             return playerZones.getHandZone();
         }
-        else if (entityData.has(cardEntity, Components.BOARD)) {
+        else if (entityData.has(cardEntity, Components.CREATURE_ZONE)) {
             return playerZones.getBoardZone();
         }
         return null;

@@ -2,6 +2,7 @@ package com.destrostudios.cards.sandbox;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.EntityPool;
+import com.destrostudios.cards.shared.events.ActionEvent;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.events.EventQueueImpl;
@@ -33,13 +34,14 @@ import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Random;
 
 /**
  * @author Philipp
  */
 public class Main {
-    private static final EntityData data = new EntityData();
+
 
     static {
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
@@ -53,16 +55,34 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        final Random random = new Random(453);
-        final EntityPool entities = new EntityPool(random);
-
-        final EventDispatcher dispatcher = new EventDispatcher();
-        final EventQueue events = new EventQueueImpl(dispatcher::fire);
-        // final MoveGenerator moveGenerator = new MoveGenerator(data);
+        //events.action(new StartGameEvent());
+        EntityData data = createEntityData();
+        MoveGenerator moveGenerator = new MoveGenerator(data);
+        Random random = new Random(453);
+        EntityPool entities = new EntityPool(random);
+        EventDispatcher dispatcher = new EventDispatcher();
+        EventQueue events = new EventQueueImpl(dispatcher::fire);
         setListener(dispatcher, data, events, random);
 
-        final int player1 = entities.create();
-        final int player2 = entities.create();
+        try {
+            for (int i = 0; i < 5; i++) {
+                logState(data, entities, moveGenerator);
+                List<ActionEvent> actionEvents = moveGenerator.generateAvailableMoves(data.entities(Components.TURN_PHASE).get(0));
+                ActionEvent actionEvent = actionEvents.get(random.nextInt(actionEvents.size()));
+                events.action(actionEvent);
+            }
+        } finally {
+            logState(data, entities, moveGenerator);
+        }
+    }
+
+    private static EntityData createEntityData() {
+        Random random = new Random(453);
+        EntityData data = new EntityData();
+        EntityPool entities = new EntityPool(random);
+
+        int player1 = entities.create();
+        int player2 = entities.create();
         int hero1 = entities.create();
         int hero2 = entities.create();
         int handCards1 = entities.create();
@@ -71,36 +91,7 @@ public class Main {
         initPlayerAndHeroEntities(data, player1, player2, hero1, hero2);
         initLibraryAndHandCardsEntities(data, entities, player1, player2, handCards1, handCards2);
         initBoardCardsEntities(data, entities, player1, player2);
-        //events.action(new StartGameEvent());
-        
-//        int minion1 = entities.create();
-//        data.set(minion1, Components.HEALTH, 15);
-//        data.set(minion1, Components.DISPLAY_NAME, "minion1");
-//        data.set(minion1, Components.ATTACK, 2);
-//        data.set(minion1, Components.OWNED_BY, player2);
-//
-//        int minion2 = entities.create();
-//        data.set(minion2, Components.HEALTH, 5);
-//        data.set(minion2, Components.DISPLAY_NAME, "minion2");
-//        data.set(minion2, Components.ATTACK, 5);
-//        data.set(minion2, Components.OWNED_BY, player2);
 
-
-//        try {
-//            logState(data, entities, moveGenerator);
-//            events.action(new DeclareAttackEvent(hero1, minion2));
-//            logState(data, entities, moveGenerator);
-//            events.action(new EndMainPhaseEvent(player1));
-//            logState(data, entities, moveGenerator);
-//            events.action(new DeclareBlockEvent(minion1, hero1));
-//            logState(data, entities, moveGenerator);
-//            events.action(new EndRespondPhaseEvent(player2));
-//        } finally {
-//            logState(data, entities, moveGenerator);
-//        }
-    }
-
-    public static EntityData getData() {
         return data;
     }
 

@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.debug;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.collections.IntSet;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,9 +11,9 @@ import java.util.TreeMap;
  */
 public class EntityDebugMapper {
 
-    public Map<Integer, Map<String, Object>> toDebugObjects(EntityData data, IntSet entities) {
+    public Map<Integer, Map<String, Object>> toDebugObjects(EntityData data) {
         Map<Integer, Map<String, Object>> result = new TreeMap<>();
-        entities.foreach(entity -> {
+        data.getEntities().foreach(entity -> {
             result.put(entity, toDebugObject(data, entity));
         });
         return result;

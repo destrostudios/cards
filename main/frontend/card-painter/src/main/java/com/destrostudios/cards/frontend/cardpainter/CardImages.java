@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class CardImages{
 
-    private static HashMap<String, Image> imageCache = new HashMap<String, Image>();
+    private static HashMap<String, Image> imageCache = new HashMap<>();
 
     public static Image getCachedImage(String resourcePath){
         return getCachedImage(resourcePath, -1, -1);
@@ -46,7 +46,7 @@ public class CardImages{
             filePath += titleImageSuffix + ".jpg";
         }
         else{
-            filePath += "cards/Other.png";
+            filePath += "cards/other.png";
         }
         return filePath;
     }

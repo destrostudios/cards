@@ -20,7 +20,6 @@ public class CardGuiMapper {
         List<Integer> manaTypes = new LinkedList<>();
         manaTypes.add(2);
         manaTypes.add(3);
-        manaTypes.add(4);
         cardModel.setManaTypes(manaTypes);
         List<String> keywords = new LinkedList<>();
         keywords.add("Charge");
@@ -37,8 +36,8 @@ public class CardGuiMapper {
 
         cardModel.setDamaged(true);
         List<String> tribes = new LinkedList<>();
-        keywords.add("Human");
-        keywords.add("Dragon");
+        tribes.add("Human");
+        tribes.add("Dragon");
         cardModel.setTribes(tribes);
     }
 }

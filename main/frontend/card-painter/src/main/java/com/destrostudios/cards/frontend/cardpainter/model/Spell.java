@@ -4,7 +4,7 @@ public class Spell {
 
     private String title;
     private String description;
-    private Object cost;
+    private Cost cost;
 
     public String getTitle() {
         return title;
@@ -14,7 +14,7 @@ public class Spell {
         return description;
     }
 
-    public Object getCost() {
+    public Cost getCost() {
         return cost;
     }
 }

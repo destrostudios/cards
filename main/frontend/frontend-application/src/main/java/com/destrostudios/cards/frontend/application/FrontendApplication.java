@@ -8,6 +8,7 @@ import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.sandbox.Main;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.*;
@@ -99,7 +100,7 @@ public class FrontendApplication extends SimpleApplication implements ActionList
 
             @Override
             public PaintableImage paintCard(CardModel cardModel) {
-                PaintableImage paintableImage = new PaintableImage(300, 400);
+                PaintableImage paintableImage = new PaintableImage(400, 560);
                 CardPainterJME.drawCard(paintableImage, cardModel);
                 return paintableImage;
             }
@@ -115,7 +116,7 @@ public class FrontendApplication extends SimpleApplication implements ActionList
         EventQueue events = new EventQueueImpl(dispatcher::fire);
         dispatcher.addListeners(StartGameEvent.class, event -> {
             // TODO: Apply
-            entityData = TestEntityBoard.getTestEntityData();
+            entityData = Main.createEntityData();
         }, event -> {
             IntArrayList players = entityData.entities(Components.NEXT_PLAYER);
             Vector3f offset = new Vector3f(0, 0, 2);

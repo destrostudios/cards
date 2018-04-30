@@ -6,7 +6,6 @@ import com.destrostudios.cards.frontend.cardpainter.model.Spell;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,12 +18,11 @@ public class CardPainterAWT {
     private static final Font fontEffects = new Font("Tahoma", Font.PLAIN, 13);
     private static final Font fontFlavorText = new Font("Tahoma", Font.ITALIC, 13);
     private static final Font fontTribes = new Font("Tahoma", Font.BOLD, 13);
-    private static final Font fontStats = new Font("Tahoma", Font.BOLD, 35);
-    private Graphics2D graphics;
+    private static final Font fontStats = new Font("Tahoma", Font.BOLD, 50);
 
     private static int tmpX;
     private static int tmpY;
-    public static void drawCard(Graphics2D graphics, ImageObserver imageObserver, CardModel cardModel){
+    public static void drawCard(Graphics2D graphics, CardModel cardModel, int width, int height){
         graphics = (Graphics2D) graphics.create();
         if(cardModel.isFront()){
             List<String> drawnKeywords = new LinkedList<>();
@@ -41,32 +39,18 @@ public class CardPainterAWT {
                 hasCastSpell = true;
             }
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(74, 43, 155, 155);
+            graphics.fillRect(35, 68, 329, 242);
             String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 155, 155), 74, 43, 155, 155, imageObserver);
+            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 329, 242), 35, 68, null);
             List<Integer> manaTypes = cardModel.getManaTypes();
-            graphics.drawImage(getCardBackgroundImage(manaTypes), 0, 0, imageObserver);
+            graphics.drawImage(getCardBackgroundImage(manaTypes, width, height), 0, 0, null);
             graphics.setFont(fontTitle);
             graphics.setColor(Color.BLACK);
-            FontMetrics fontMetrics = graphics.getFontMetrics();
-            if(fontMetrics.getHeight() > 0){
-                String title = cardModel.getTitle();
-                Rectangle2D titleBounds = fontMetrics.getStringBounds(title, graphics);
-                int x = 150 - (int) (titleBounds.getWidth() / 2);
-                int y;
-                for(int i=0;i<title.length();i++){
-                    String letter = title.substring(i, i + 1);
-                    Rectangle2D letterBounds = fontMetrics.getStringBounds(letter, graphics);
-                    y = (int) (203 + (Math.cos((x - 47) / 46.0) * 8.3));
-                    graphics.translate(x, y);
-                    graphics.drawImage(getLetterImage(graphics, letter), 0, 0, null);
-                    graphics.translate(-1 * x, -1 * y);
-                    x += (letterBounds.getWidth() + 0.75);
-                }
-            }
-            int startX = 60;
-            int lineWidth = 184;
-            tmpY = 274;
+            String title = cardModel.getTitle();
+            int textStartX = 45;
+            graphics.drawString(title, 45, 54);
+            int lineWidth = 306;
+            tmpY = 370;
             if(drawnKeywords.size() > 0){
                 String keywordsText = "";
                 for(int i=0;i<drawnKeywords.size();i++){
@@ -77,68 +61,57 @@ public class CardPainterAWT {
                     keywordsText += keyword + (keyword.equals("Cast")?":":".");
                 }
                 graphics.setFont(fontKeywords);
-                tmpX = startX;
-                drawStringMultiLine(graphics, keywordsText, lineWidth, tmpX, startX, tmpY, -2);
+                tmpX = textStartX;
+                drawStringMultiLine(graphics, keywordsText, lineWidth, tmpX, textStartX, tmpY, -2);
                 if(hasCastSpell){
-                    /*tmpX += 3;
-                    drawSpellDescription(graphics, castSpell, lineWidth, tmpX, startX, tmpY);*/
+                    tmpX += 3;
+                    drawSpellDescription(graphics, castSpell, lineWidth, tmpX, textStartX, tmpY);
                 }
                 tmpY += 18;
             }
             String description = cardModel.getDescription();
             if(description != null){
                 graphics.setFont(fontDescription);
-                tmpX = startX;
-                drawStringMultiLine(graphics, description, 180, tmpX, startX, tmpY, -2);
+                tmpX = textStartX;
+                drawStringMultiLine(graphics, description, 180, tmpX, textStartX, tmpY, -2);
                 tmpY += 18;
             }
             List<Spell> spells = cardModel.getSpells();
             if (spells != null) {
                 for (Spell spell : spells) {
-                    tmpX = startX;
+                    tmpX = textStartX;
                     /*if (!spell.getCost().isEmpty()) {
-                        drawCost(graphics, spell.getCost(), lineWidth, tmpX, startX, tmpY);
+                        drawCost(graphics, spell.getCost(), lineWidth, tmpX, textStartX, tmpY);
                         tmpX += 3;
-                    }
-                    drawSpellDescription(graphics, spell, lineWidth, tmpX, startX, tmpY);
-                    tmpY += 18;*/
+                    }*/
+                    drawSpellDescription(graphics, spell, lineWidth, tmpX, textStartX, tmpY);
+                    tmpY += 18;
                 }
             }
             String flavourText = cardModel.getFlavourText();
             if(flavourText != null){
-                tmpX = startX;
+                tmpX = textStartX;
                 graphics.setFont(fontFlavorText);
-                drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, startX, tmpY, -2);
+                drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, textStartX, tmpY, -2);
                 tmpY += 18;
             }
             Integer attackDamage = cardModel.getAttackDamage();
             Integer lifepoints = cardModel.getLifepoints();
             if((attackDamage != null) && (lifepoints != null)){
-                graphics.drawImage(CardImages.getCachedImage("images/templates/stats.png"), 0, 0, 300, 400, imageObserver);
+                graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
+                graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
                 graphics.setFont(fontStats);
                 graphics.setColor(Color.WHITE);
-                fontMetrics = graphics.getFontMetrics();
+                FontMetrics fontMetrics = graphics.getFontMetrics();
                 String attackDamageText = ("" + attackDamage);
                 Rectangle2D attackDamageBounds = fontMetrics.getStringBounds(attackDamageText, graphics);
-                graphics.drawString(attackDamageText, (int) (48 - (attackDamageBounds.getWidth() / 2)), 372);
+                tmpX = (int) (65 - (attackDamageBounds.getWidth() / 2));
+                tmpY = 513;
+                drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, Color.WHITE);
                 String lifepointsText = ("" + lifepoints);
                 Rectangle2D lifepointsBounds = fontMetrics.getStringBounds(lifepointsText, graphics);
-                tmpX = (int) (254 - (lifepointsBounds.getWidth() / 2));
-                tmpY = (int) (394 - (lifepointsBounds.getHeight() / 2));
-                if(cardModel.isDamaged()){
-                    graphics.setColor(Color.BLACK);
-                    graphics.drawString(lifepointsText, tmpX - 1, tmpY - 1);
-                    graphics.drawString(lifepointsText, tmpX + 0, tmpY - 1);
-                    graphics.drawString(lifepointsText, tmpX + 1, tmpY - 1);
-                    graphics.drawString(lifepointsText, tmpX - 1, tmpY + 0);
-                    graphics.drawString(lifepointsText, tmpX + 0, tmpY + 0);
-                    graphics.drawString(lifepointsText, tmpX + 1, tmpY + 0);
-                    graphics.drawString(lifepointsText, tmpX - 1, tmpY + 1);
-                    graphics.drawString(lifepointsText, tmpX + 0, tmpY + 1);
-                    graphics.drawString(lifepointsText, tmpX + 1, tmpY + 1);
-                    graphics.setColor(Color.RED);
-                }
-                graphics.drawString(lifepointsText, tmpX, tmpY);
+                tmpX = (int) (335 - (lifepointsBounds.getWidth() / 2));
+                drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, (cardModel.isDamaged() ? Color.RED : Color.WHITE));
                 List<String> tribes = cardModel.getTribes();
                 if (tribes != null) {
                     if (tribes.size() > 0) {
@@ -147,26 +120,38 @@ public class CardPainterAWT {
                             if (i != 0) {
                                 tribesText += ", ";
                             }
-                            String tribeName = tribes.get(i);
-                            tribesText += tribeName.substring(0, 1).toUpperCase() + tribeName.substring(1).toLowerCase();
+                            tribesText += tribes.get(i);
                         }
                         graphics.setFont(fontTribes);
                         graphics.setColor(Color.BLACK);
-                        fontMetrics = graphics.getFontMetrics();
-                        Rectangle2D tribesBounds = fontMetrics.getStringBounds(tribesText, graphics);
-                        graphics.drawString(tribesText, 150 - (int) (tribesBounds.getWidth() / 2), 357);
+                        graphics.drawString(tribesText, textStartX, 334);
                     }
                 }
             }
         }
         else{
-            graphics.drawImage(CardImages.getCachedImage("images/back.png"), 0, 0, 300, 400, imageObserver);
+            graphics.drawImage(CardImages.getCachedImage("images/back.png"), 0, 0, 300, 400, null);
         }
         graphics.dispose();
     }
 
+    private static void drawOutlinedText(Graphics2D graphics, String text, int x, int y, Color outlineColor, Color textColor) {
+        graphics.setColor(outlineColor);
+        graphics.drawString(text, x - 1, y - 1);
+        graphics.drawString(text, x + 0, y - 1);
+        graphics.drawString(text, x + 1, y - 1);
+        graphics.drawString(text, x - 1, y + 0);
+        graphics.drawString(text, x + 0, y + 0);
+        graphics.drawString(text, x + 1, y + 0);
+        graphics.drawString(text, x - 1, y + 1);
+        graphics.drawString(text, x + 0, y + 1);
+        graphics.drawString(text, x + 1, y + 1);
+        graphics.setColor(textColor);
+        graphics.drawString(text, x, y);
+    }
+
     private static HashMap<String, BufferedImage> cardBackgroundImages = new HashMap<>();
-    public static BufferedImage getCardBackgroundImage(List<Integer> manaTypes){
+    public static BufferedImage getCardBackgroundImage(List<Integer> manaTypes, int width, int height){
         String key = "";
         for(int i=0;i<manaTypes.size();i++){
             if(i != 0){
@@ -176,8 +161,6 @@ public class CardPainterAWT {
         }
         BufferedImage image = cardBackgroundImages.get(key);
         if(image == null){
-            int width = 300;
-            int height = 400;
             int partWidth = Math.round(((float) width) / manaTypes.size());
             image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D imageGraphics = image.createGraphics();
@@ -190,10 +173,9 @@ public class CardPainterAWT {
                         if(lineX >= width){
                             break;
                         }
-                        Image templateImage = CardImages.getCachedImage("images/templates/mana_" + manaType + ".png");
+                        Image templateImage = CardImages.getCachedImage("images/templates/template_" + manaType + ".png");
                         float alpha;
-                        if(((i < (0.5 * partWidth)) && (lineX < (partWidth / 2)))
-                                || (i > (0.5 * partWidth))){
+                        if(((i < (0.5 * partWidth)) && (lineX < (partWidth / 2))) || (i > (0.5 * partWidth))){
                             alpha = 1;
                         }
                         else{
@@ -213,28 +195,28 @@ public class CardPainterAWT {
         return image;
     }
 
-    /*private static void drawSpellDescription(Graphics2D graphics, Spell spell, int lineWidth, int startX, int followingX, int y){
+    private static void drawSpellDescription(Graphics2D graphics, Spell spell, int lineWidth, int startX, int followingX, int y){
         graphics.setFont(fontEffects);
         String description = spell.getDescription();
         String text = description;
-        ManaSpell manaSpell = null;
+        /*ManaSpell manaSpell = null;
         if(spell instanceof ManaSpell){
             manaSpell = (ManaSpell) spell;
             if(text.length() > 0){
                 text += " ";
             }
             text += "Gain";
-        }
+        }*/
         drawStringMultiLine(graphics, text, lineWidth, startX, followingX, y, -2);
-        if(manaSpell != null){
+        /*if(manaSpell != null){
             tmpX += 3;
             drawManaAmount(graphics, manaSpell.getGainedManaAmount(), lineWidth, tmpX, followingX, tmpY);
             tmpX += 1;
             graphics.drawString(".", tmpX, tmpY);
-        }
+        }*/
     }
 
-    private static final int effectsIconSize = 15;
+    /*private static final int effectsIconSize = 15;
     private static final int effectsGapSize = 2;
     private static void drawCost(Graphics2D graphics, Object cost, int lineWidth, int startX, int followingX, int y){
         if(cost.isTap()){

@@ -1,38 +1,14 @@
 package com.destrostudios.cards.sandbox;
 
-import com.destrostudios.cards.shared.rules.debug.EntityDebugMapper;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.EntityPool;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.events.EventQueueImpl;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.battle.ArmorEventHandler;
-import com.destrostudios.cards.shared.rules.battle.AttackEvent;
-import com.destrostudios.cards.shared.rules.battle.AttackEventHandler;
-import com.destrostudios.cards.shared.rules.battle.BattleEventHandler;
-import com.destrostudios.cards.shared.rules.battle.DamageEvent;
-import com.destrostudios.cards.shared.rules.battle.DamageEventHandler;
-import com.destrostudios.cards.shared.rules.battle.DeclareAttackEvent;
-import com.destrostudios.cards.shared.rules.battle.DeclareAttackEventHandler;
-import com.destrostudios.cards.shared.rules.battle.DeclareBlockEvent;
-import com.destrostudios.cards.shared.rules.battle.DeclareBlockEventHandler;
-import com.destrostudios.cards.shared.rules.battle.SetHealthEvent;
-import com.destrostudios.cards.shared.rules.battle.SetHealthEventHandler;
-import com.destrostudios.cards.shared.rules.cards.AddCardToHandEvent;
-import com.destrostudios.cards.shared.rules.cards.AddCardToHandEventHandler;
-import com.destrostudios.cards.shared.rules.cards.AddCardToLibraryEvent;
-import com.destrostudios.cards.shared.rules.cards.AddCardToLibraryEventHandler;
-import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
-import com.destrostudios.cards.shared.rules.cards.DrawCardEventHandler;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromHandEvent;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromHandEventHandler;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromLibraryEvent;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromLibraryEventHandler;
-import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEvent;
-import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEventHandler;
-import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryOnGameStartHandler;
-import com.destrostudios.cards.shared.rules.cards.UpkeepDrawEventHandler;
+import com.destrostudios.cards.shared.rules.battle.*;
+import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.debug.EntityDebugMapper;
 import com.destrostudios.cards.shared.rules.game.StartGameEvent;
 import com.destrostudios.cards.shared.rules.moves.MoveGenerator;
 import com.destrostudios.cards.shared.rules.turns.TurnPhase;
@@ -54,15 +30,16 @@ import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEvent;
 import com.destrostudios.cards.shared.rules.turns.upkeep.StartUpkeepPhaseEventHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Random;
+
 /**
- *
  * @author Philipp
  */
 public class Main {
+    private static final EntityData data = new EntityData();
 
     static {
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
@@ -76,101 +53,171 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Random random = new Random(453);
-        EntityPool entities = new EntityPool(random);
+        final Random random = new Random(453);
+        final EntityPool entities = new EntityPool(random);
 
-        EntityData data = new EntityData();
-        EventDispatcher dispatcher = new EventDispatcher();
-        EventQueue events = new EventQueueImpl(dispatcher::fire);
-        dispatcher.setListeners(AttackEvent.class, new AttackEventHandler(data, events));
+        final EventDispatcher dispatcher = new EventDispatcher();
+        final EventQueue events = new EventQueueImpl(dispatcher::fire);
+        // final MoveGenerator moveGenerator = new MoveGenerator(data);
+        setListener(dispatcher, data, events, random);
 
+        final int player1 = entities.create();
+        final int player2 = entities.create();
+        int hero1 = entities.create();
+        int hero2 = entities.create();
+        int handCards1 = entities.create();
+        int handCards2 = entities.create();
+
+        initPlayerAndHeroEntities(data, player1, player2, hero1, hero2);
+        initLibraryAndHandCardsEntities(data, entities, player1, player2, handCards1, handCards2);
+        initBoardCardsEntities(data, entities, player1, player2);
+        //events.action(new StartGameEvent());
+        
+//        int minion1 = entities.create();
+//        data.set(minion1, Components.HEALTH, 15);
+//        data.set(minion1, Components.DISPLAY_NAME, "minion1");
+//        data.set(minion1, Components.ATTACK, 2);
+//        data.set(minion1, Components.OWNED_BY, player2);
+//
+//        int minion2 = entities.create();
+//        data.set(minion2, Components.HEALTH, 5);
+//        data.set(minion2, Components.DISPLAY_NAME, "minion2");
+//        data.set(minion2, Components.ATTACK, 5);
+//        data.set(minion2, Components.OWNED_BY, player2);
+
+
+//        try {
+//            logState(data, entities, moveGenerator);
+//            events.action(new DeclareAttackEvent(hero1, minion2));
+//            logState(data, entities, moveGenerator);
+//            events.action(new EndMainPhaseEvent(player1));
+//            logState(data, entities, moveGenerator);
+//            events.action(new DeclareBlockEvent(minion1, hero1));
+//            logState(data, entities, moveGenerator);
+//            events.action(new EndRespondPhaseEvent(player2));
+//        } finally {
+//            logState(data, entities, moveGenerator);
+//        }
+    }
+
+    public static EntityData getData() {
+        return data;
+    }
+
+    private static void initBoardCardsEntities(EntityData data, EntityPool entities, int player1, int player2) {
+        int card1 = entities.create();
+        int card2 = entities.create();
+
+
+        data.set(card1, Components.CARD_TEMPLATE, 100);
+        data.set(card1, Components.DISPLAY_NAME, "card100");
+        data.set(card1, Components.OWNED_BY, player1);
+        data.set(card1, Components.BOARD, null);
+        data.set(card1, Components.CREATURE_CARD, null);
+        data.set(card1, Components.CREATURE_ZONE, null);
+        data.set(card1, Components.ATTACK, 2);
+        data.set(card1, Components.HEALTH, 2);
+        data.set(card2, Components.OWNED_BY, player1);
+        data.set(card2, Components.CARD_TEMPLATE, 101);
+        data.set(card2, Components.DISPLAY_NAME, "card101");
+        data.set(card2, Components.BOARD, null);
+        data.set(card2, Components.ENTCHANTMENT_CARD, null);
+        data.set(card2, Components.ENCHANTMENT_ZONE, 0);
+
+        int card3 = entities.create();
+        int card4 = entities.create();
+
+        data.set(card3, Components.CARD_TEMPLATE, 102);
+        data.set(card3, Components.DISPLAY_NAME, "card102");
+        data.set(card3, Components.OWNED_BY, player2);
+        data.set(card3, Components.BOARD, null);
+        data.set(card3, Components.CREATURE_CARD, null);
+        data.set(card3, Components.CREATURE_ZONE, 0);
+        data.set(card3, Components.ATTACK, 1);
+        data.set(card3, Components.HEALTH, 1);
+
+        data.set(card4, Components.OWNED_BY, player2);
+        data.set(card4, Components.CARD_TEMPLATE, 103);
+        data.set(card4, Components.DISPLAY_NAME, "card103");
+        data.set(card4, Components.BOARD, null);
+        data.set(card4, Components.CREATURE_CARD, null);
+        data.set(card4, Components.CREATURE_ZONE, 1);
+        data.set(card4, Components.ATTACK, 1);
+        data.set(card4, Components.HEALTH, 1);
+    }
+
+
+    private static void initLibraryAndHandCardsEntities(EntityData data, EntityPool entities, int player1, int player2, int handCards1, int handCards2) {
+        int librarySize = 50;
+        int handSize = 5;
+
+        for (int i = 0; i < 2 * (librarySize - handSize); i++) {
+            int card = entities.create();
+            data.set(card, Components.CARD_TEMPLATE, i);
+            data.set(card, Components.DISPLAY_NAME, "card" + i);
+            data.set(card, Components.OWNED_BY, i < (librarySize - handSize) ? player1 : player2);
+            data.set(card, Components.LIBRARY, i % (librarySize - handSize));
+            data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD, null);
+        }
+
+        data.set(handCards1, Components.OWNED_BY, player1);
+        data.set(handCards2, Components.OWNED_BY, player2);
+
+        for (int i = librarySize; i < 2 * (librarySize + handSize); i++) {
+            int card = entities.create();
+            data.set(card, Components.CARD_TEMPLATE, i);
+            data.set(card, Components.DISPLAY_NAME, "card" + i);
+            data.set(card, Components.OWNED_BY, i < (librarySize + handSize) ? player1 : player2);
+            data.set(card, Components.HAND_CARDS, i % (librarySize + handSize));
+            data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD, null);
+        }
+
+    }
+
+    private static void initPlayerAndHeroEntities(EntityData data, int player1, int player2, int hero1, int hero2) {
+        data.set(player1, Components.DISPLAY_NAME, "player1");
+        data.set(player1, Components.TURN_PHASE, TurnPhase.MAIN);
+        data.set(player2, Components.DISPLAY_NAME, "player2");
+        data.set(player1, Components.NEXT_PLAYER, player2);
+        data.set(player2, Components.NEXT_PLAYER, player1);
+
+        data.set(hero1, Components.HEALTH, 20);
+        data.set(hero1, Components.DISPLAY_NAME, "hero1");
+        data.set(hero1, Components.OWNED_BY, player1);
+
+        data.set(hero1, Components.HEALTH, 20);
+        data.set(hero1, Components.DISPLAY_NAME, "hero2");
+        data.set(hero1, Components.OWNED_BY, player2);
+    }
+
+
+    private static void setListener(EventDispatcher dispatcher, EntityData data, EventQueue events, Random random) {
+        dispatcher.setListeners(BattleEvent.class, new BattleEventHandler(data, events));
         dispatcher.setListeners(DamageEvent.class,
                 new ArmorEventHandler(data, events),
                 new DamageEventHandler(data, events));
-
         dispatcher.setListeners(SetHealthEvent.class, new SetHealthEventHandler(data, events));
         dispatcher.setListeners(DeclareAttackEvent.class, new DeclareAttackEventHandler(data, events));
         dispatcher.setListeners(DeclareBlockEvent.class, new DeclareBlockEventHandler(data, events));
-
         dispatcher.setListeners(StartRespondPhaseEvent.class, new StartRespondPhaseEventHandler(data, events));
         dispatcher.setListeners(EndRespondPhaseEvent.class, new EndRespondPhaseEventHandler(data, events));
-
         dispatcher.setListeners(StartBattlePhaseEvent.class,
                 new StartBattlePhaseEventHandler(data, events),
-                new BattleEventHandler(data, events));
-
+                new StartBattleEventHandler(data, events));
         dispatcher.setListeners(EndBattlePhaseEvent.class, new EndBattlePhaseEventHandler(data, events));
-
         dispatcher.setListeners(StartUpkeepPhaseEvent.class,
                 new StartUpkeepPhaseEventHandler(data, events),
                 new UpkeepDrawEventHandler(data, events));
-
         dispatcher.setListeners(EndUpkeepPhaseEvent.class, new EndUpkeepPhaseEventHandler(data, events));
         dispatcher.setListeners(StartMainPhaseEvent.class, new StartMainPhaseEventHandler(data, events));
         dispatcher.setListeners(EndMainPhaseEvent.class, new EndMainPhaseEventHandler(data, events));
-
         dispatcher.setListeners(StartGameEvent.class, new ShuffleLibraryOnGameStartHandler(data, events));
         dispatcher.setListeners(ShuffleLibraryEvent.class, new ShuffleLibraryEventHandler(data, events, random));
-
         dispatcher.setListeners(DrawCardEvent.class, new DrawCardEventHandler(data, events));
         dispatcher.setListeners(AddCardToHandEvent.class, new AddCardToHandEventHandler(data, events));
         dispatcher.setListeners(RemoveCardFromHandEvent.class, new RemoveCardFromHandEventHandler(data, events));
         dispatcher.setListeners(AddCardToLibraryEvent.class, new AddCardToLibraryEventHandler(data, events));
         dispatcher.setListeners(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryEventHandler(data, events));
-
-        MoveGenerator moveGenerator = new MoveGenerator(data);
-
-        int player1 = entities.create();
-        data.set(player1, Components.DISPLAY_NAME, "player1");
-        data.set(player1, Components.TURN_PHASE, TurnPhase.MAIN);
-
-        int player2 = entities.create();
-        data.set(player2, Components.DISPLAY_NAME, "player2");
-
-        data.set(player1, Components.NEXT_PLAYER, player2);
-        data.set(player2, Components.NEXT_PLAYER, player1);
-
-        int minion1 = entities.create();
-        data.set(minion1, Components.HEALTH, 15);
-        data.set(minion1, Components.DISPLAY_NAME, "minion1");
-        data.set(minion1, Components.ATTACK, 2);
-        data.set(minion1, Components.OWNED_BY, player2);
-
-        int minion2 = entities.create();
-        data.set(minion2, Components.HEALTH, 5);
-        data.set(minion2, Components.DISPLAY_NAME, "minion2");
-        data.set(minion2, Components.ATTACK, 5);
-        data.set(minion2, Components.OWNED_BY, player2);
-
-        int hero = entities.create();
-        data.set(hero, Components.HEALTH, 215);
-        data.set(hero, Components.ATTACK, 3);
-        data.set(hero, Components.DISPLAY_NAME, "hero");
-        data.set(hero, Components.ARMOR, 1);
-        data.set(hero, Components.OWNED_BY, player1);
-
-        int librarySize = 2;
-        for (int i = 0; i < 2 * librarySize; i++) {
-            int card = entities.create();
-            data.set(card, Components.CARD_TEMPLATE, i);
-            data.set(card, Components.DISPLAY_NAME, "card");
-            data.set(card, Components.OWNED_BY, i < librarySize ? player1 : player2);
-            data.set(card, Components.LIBRARY, i % librarySize);
-        }
-        events.action(new StartGameEvent());
-
-        try {
-            logState(data, entities, moveGenerator);
-            events.action(new DeclareAttackEvent(hero, minion2));
-            logState(data, entities, moveGenerator);
-            events.action(new EndMainPhaseEvent(player1));
-            logState(data, entities, moveGenerator);
-            events.action(new DeclareBlockEvent(minion1, hero));
-            logState(data, entities, moveGenerator);
-            events.action(new EndRespondPhaseEvent(player2));
-        } finally {
-            logState(data, entities, moveGenerator);
-        }
     }
 
     private static void logState(EntityData data, EntityPool entities, MoveGenerator gen) {

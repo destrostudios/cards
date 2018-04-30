@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class TestApplication extends SimpleApplication implements ActionListener{
+public class CardguiTestApplication extends SimpleApplication implements ActionListener{
 
     public static void main(String[] args) {
         FileAssets.readRootFile();
         
-        TestApplication app = new TestApplication();
+        CardguiTestApplication app = new CardguiTestApplication();
         app.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
         settings.setWidth(1280);

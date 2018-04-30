@@ -13,5 +13,13 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jm3.group>org.jmonkeyengine</jm3.group>
+        <jm3.version>3.2.1-stable</jm3.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
 </project>

@@ -1,4 +1,4 @@
-package com.destrostudios.cards.network;
+package com.destrostudios.cards.shared.network;
 
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;

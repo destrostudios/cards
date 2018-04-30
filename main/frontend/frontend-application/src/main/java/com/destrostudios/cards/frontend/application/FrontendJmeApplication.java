@@ -9,10 +9,8 @@ import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
-import com.destrostudios.cards.shared.events.*;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.TestGameSetup;
 import com.destrostudios.cards.shared.rules.game.StartGameEvent;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
@@ -23,22 +21,15 @@ import com.jme3.math.*;
 import com.jme3.system.AppSettings;
 
 import java.util.HashMap;
-import java.util.Random;
 
-public class FrontendApplication extends SimpleApplication implements ActionListener {
+public class FrontendJmeApplication extends SimpleApplication implements ActionListener {
 
-    public static void main(String[] args){
-        FileAssets.readRootFile();
-
-        FrontendApplication app = new FrontendApplication();
-        app.start();
-    }
-
-    public FrontendApplication() {
+    public FrontendJmeApplication(GameContext gameContext) {
+        this.gameContext = gameContext;
         loadSettings();
     }
-    private Board<CardModel> board;
     private GameContext gameContext;
+    private Board<CardModel> board;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap = new CardGuiMap();
 
@@ -113,13 +104,7 @@ public class FrontendApplication extends SimpleApplication implements ActionList
             }
         });
 
-        EventDispatcher dispatcher = new EventDispatcher();
-        EventQueue events = new EventQueueImpl(dispatcher::fire);
-        dispatcher.addListeners(StartGameEvent.class, event -> {
-            // TODO: Apply
-            gameContext = new GameContext(new Random(453)::nextInt);
-            new TestGameSetup().testSetup(gameContext.getData());
-        }, event -> {
+        gameContext.getDispatcher().addListeners(StartGameEvent.class, event -> {
             IntArrayList players = gameContext.getData().entities(Components.NEXT_PLAYER);
             Vector3f offset = new Vector3f(0, 0, 2);
             for (int i = 0; i < players.size(); i++) {
@@ -151,8 +136,6 @@ public class FrontendApplication extends SimpleApplication implements ActionList
                 }
             }
         });
-        // TODO: Network triggered
-        events.action(new StartGameEvent());
     }
 
     private int getCardZoneIndex(int cardEntity) {

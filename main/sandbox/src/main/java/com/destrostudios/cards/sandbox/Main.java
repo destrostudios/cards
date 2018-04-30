@@ -82,41 +82,41 @@ public class Main {
         EntityData data = new EntityData();
         EventDispatcher dispatcher = new EventDispatcher();
         EventQueue events = new EventQueueImpl(dispatcher::fire);
-        dispatcher.setListeners(AttackEvent.class, new AttackEventHandler(data, events));
+        dispatcher.addListeners(AttackEvent.class, new AttackEventHandler(data, events));
 
-        dispatcher.setListeners(DamageEvent.class,
+        dispatcher.addListeners(DamageEvent.class,
                 new ArmorEventHandler(data, events),
                 new DamageEventHandler(data, events));
 
-        dispatcher.setListeners(SetHealthEvent.class, new SetHealthEventHandler(data, events));
-        dispatcher.setListeners(DeclareAttackEvent.class, new DeclareAttackEventHandler(data, events));
-        dispatcher.setListeners(DeclareBlockEvent.class, new DeclareBlockEventHandler(data, events));
+        dispatcher.addListeners(SetHealthEvent.class, new SetHealthEventHandler(data, events));
+        dispatcher.addListeners(DeclareAttackEvent.class, new DeclareAttackEventHandler(data, events));
+        dispatcher.addListeners(DeclareBlockEvent.class, new DeclareBlockEventHandler(data, events));
 
-        dispatcher.setListeners(StartRespondPhaseEvent.class, new StartRespondPhaseEventHandler(data, events));
-        dispatcher.setListeners(EndRespondPhaseEvent.class, new EndRespondPhaseEventHandler(data, events));
+        dispatcher.addListeners(StartRespondPhaseEvent.class, new StartRespondPhaseEventHandler(data, events));
+        dispatcher.addListeners(EndRespondPhaseEvent.class, new EndRespondPhaseEventHandler(data, events));
 
-        dispatcher.setListeners(StartBattlePhaseEvent.class,
+        dispatcher.addListeners(StartBattlePhaseEvent.class,
                 new StartBattlePhaseEventHandler(data, events),
                 new BattleEventHandler(data, events));
 
-        dispatcher.setListeners(EndBattlePhaseEvent.class, new EndBattlePhaseEventHandler(data, events));
+        dispatcher.addListeners(EndBattlePhaseEvent.class, new EndBattlePhaseEventHandler(data, events));
 
-        dispatcher.setListeners(StartUpkeepPhaseEvent.class,
+        dispatcher.addListeners(StartUpkeepPhaseEvent.class,
                 new StartUpkeepPhaseEventHandler(data, events),
                 new UpkeepDrawEventHandler(data, events));
 
-        dispatcher.setListeners(EndUpkeepPhaseEvent.class, new EndUpkeepPhaseEventHandler(data, events));
-        dispatcher.setListeners(StartMainPhaseEvent.class, new StartMainPhaseEventHandler(data, events));
-        dispatcher.setListeners(EndMainPhaseEvent.class, new EndMainPhaseEventHandler(data, events));
+        dispatcher.addListeners(EndUpkeepPhaseEvent.class, new EndUpkeepPhaseEventHandler(data, events));
+        dispatcher.addListeners(StartMainPhaseEvent.class, new StartMainPhaseEventHandler(data, events));
+        dispatcher.addListeners(EndMainPhaseEvent.class, new EndMainPhaseEventHandler(data, events));
 
-        dispatcher.setListeners(StartGameEvent.class, new ShuffleLibraryOnGameStartHandler(data, events));
-        dispatcher.setListeners(ShuffleLibraryEvent.class, new ShuffleLibraryEventHandler(data, events, random));
+        dispatcher.addListeners(StartGameEvent.class, new ShuffleLibraryOnGameStartHandler(data, events));
+        dispatcher.addListeners(ShuffleLibraryEvent.class, new ShuffleLibraryEventHandler(data, events, random));
 
-        dispatcher.setListeners(DrawCardEvent.class, new DrawCardEventHandler(data, events));
-        dispatcher.setListeners(AddCardToHandEvent.class, new AddCardToHandEventHandler(data, events));
-        dispatcher.setListeners(RemoveCardFromHandEvent.class, new RemoveCardFromHandEventHandler(data, events));
-        dispatcher.setListeners(AddCardToLibraryEvent.class, new AddCardToLibraryEventHandler(data, events));
-        dispatcher.setListeners(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryEventHandler(data, events));
+        dispatcher.addListeners(DrawCardEvent.class, new DrawCardEventHandler(data, events));
+        dispatcher.addListeners(AddCardToHandEvent.class, new AddCardToHandEventHandler(data, events));
+        dispatcher.addListeners(RemoveCardFromHandEvent.class, new RemoveCardFromHandEventHandler(data, events));
+        dispatcher.addListeners(AddCardToLibraryEvent.class, new AddCardToLibraryEventHandler(data, events));
+        dispatcher.addListeners(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryEventHandler(data, events));
 
         MoveGenerator moveGenerator = new MoveGenerator(data);
 

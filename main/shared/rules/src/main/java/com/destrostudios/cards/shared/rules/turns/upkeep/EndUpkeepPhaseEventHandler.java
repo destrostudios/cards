@@ -3,7 +3,7 @@ package com.destrostudios.cards.shared.rules.turns.upkeep;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
-import com.destrostudios.cards.shared.rules.turns.main.*;
+import com.destrostudios.cards.shared.rules.turns.main.StartMainPhaseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

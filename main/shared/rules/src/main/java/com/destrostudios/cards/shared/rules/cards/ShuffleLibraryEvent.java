@@ -1,12 +1,12 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.events.TriggeredEvent;
+import com.destrostudios.cards.shared.events.Event;
 
 /**
  *
  * @author Philipp
  */
-public class ShuffleLibraryEvent extends TriggeredEvent {
+public class ShuffleLibraryEvent extends Event {
 
     public int player;
 

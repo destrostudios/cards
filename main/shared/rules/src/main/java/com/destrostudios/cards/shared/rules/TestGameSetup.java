@@ -31,7 +31,7 @@ public class TestGameSetup {
         data.set(card1, Components.OWNED_BY, player1);
         data.set(card1, Components.BOARD, null);
         data.set(card1, Components.CREATURE_CARD, null);
-        data.set(card1, Components.CREATURE_ZONE, null);
+        data.set(card1, Components.CREATURE_ZONE, 0);
         data.set(card1, Components.ATTACK, 2);
         data.set(card1, Components.HEALTH, 2);
         data.set(card2, Components.OWNED_BY, player1);
@@ -79,12 +79,12 @@ public class TestGameSetup {
         data.set(handCards1, Components.OWNED_BY, player1);
         data.set(handCards2, Components.OWNED_BY, player2);
 
-        for (int i = librarySize; i < 2 * (librarySize + handSize); i++) {
+        for (int i = 0; i < 2 * handSize; i++) {
             int card = data.createEntity();
             data.set(card, Components.CARD_TEMPLATE, i);
             data.set(card, Components.DISPLAY_NAME, "card" + i);
-            data.set(card, Components.OWNED_BY, i < (librarySize + handSize) ? player1 : player2);
-            data.set(card, Components.HAND_CARDS, i % (librarySize + handSize));
+            data.set(card, Components.OWNED_BY, i < handSize ? player1 : player2);
+            data.set(card, Components.HAND_CARDS, i % handSize);
             data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD, null);
         }
 

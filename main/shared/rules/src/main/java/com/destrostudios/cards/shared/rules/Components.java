@@ -26,7 +26,6 @@ public class Components {
     public static final ComponentDefinition<Integer> ENCHANTMENT_ZONE = new ComponentDefinition<>("enchantmentZone");
     public static final ComponentDefinition<Integer> SPELL_ZONE= new ComponentDefinition<>("spellZone");
     public static final ComponentDefinition<Integer> CARD_TEMPLATE = new ComponentDefinition<>("cardTemplate");
-    public static final ComponentDefinition<Integer> COMPONENTS_COUNT = new ComponentDefinition<>("componentsCount");
     public static final ComponentDefinition<Void> CREATURE_CARD = new ComponentDefinition<>("creatureCard");
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<Void> ENTCHANTMENT_CARD = new ComponentDefinition<>("entchantmentCard");

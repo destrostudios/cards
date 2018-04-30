@@ -24,12 +24,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class TestApplication extends SimpleApplication implements ActionListener{
+public class CardguiTestApplication extends SimpleApplication implements ActionListener{
 
     public static void main(String[] args) {
         FileAssets.readRootFile();
         
-        TestApplication app = new TestApplication();
+        CardguiTestApplication app = new CardguiTestApplication();
         app.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
         settings.setWidth(1280);
@@ -38,11 +38,11 @@ public class TestApplication extends SimpleApplication implements ActionListener
         app.setSettings(settings);
         app.start();
     }
-    private Board board;
+    private Board<MyCardModel> board;
     private MyGame game;
     private PlayerZones[] playerZones;
-    private HashMap<MyCard, Card> visualCards = new HashMap<>();
-    private HashMap<Card, MyCard> gameCards = new HashMap<>();
+    private HashMap<MyCard, Card<MyCardModel>> visualCards = new HashMap<>();
+    private HashMap<Card<MyCardModel>, MyCard> gameCards = new HashMap<>();
 
     @Override
     public void simpleInitApp() {
@@ -90,39 +90,39 @@ public class TestApplication extends SimpleApplication implements ActionListener
     }
     
     private void initBoardGui() {
-        board = new Board(new DebugZoneVisualizer() {
+        board = new Board<MyCardModel>(new DebugZoneVisualizer() {
 
             @Override
             protected Vector2f getSize(CardZone zone) {
-            for (int i=0;i<game.getPlayers().length;i++) {
-                if (zone == playerZones[i].getDeckZone()) {
-                    return new Vector2f(1.2f, 1.2f);
-                }
-                else if (zone == playerZones[i].getHandZone()) {
-                    return new Vector2f(6, 2);
-                }
-                else if (zone == playerZones[i].getBoardZone()) {
-                    return new Vector2f(10, 3);
-                }
-            }
-            return super.getSize(zone);
-            }
-        }, new SimpleCardVisualizer() {
-            
-            @Override
-            public PaintableImage paintCard(Card card) {
-            PaintableImage paintableImage = new PaintableImage(300, 400);
-            paintableImage.setBackground_Alpha(0);
-            paintableImage.paintImage(new PaintableImage("images/cards/" + card.getProperty("name") + ".png"), 74, 43, 155, 155);
-            paintableImage.paintImage(new PaintableImage("images/templates/mana_" + card.getProperty("color") + ".png"), 0, 0, 300, 400);
-            if ("true".equals(card.getProperty("damaged"))) {
-                for (int x=0;x<paintableImage.getWidth();x++) {
-                    for (int y=0;y<paintableImage.getHeight();y++) {
-                        paintableImage.setPixel_Red(x, y, 255);
+                for (int i=0;i<game.getPlayers().length;i++) {
+                    if (zone == playerZones[i].getDeckZone()) {
+                        return new Vector2f(1.2f, 1.2f);
+                    }
+                    else if (zone == playerZones[i].getHandZone()) {
+                        return new Vector2f(6, 2);
+                    }
+                    else if (zone == playerZones[i].getBoardZone()) {
+                        return new Vector2f(10, 3);
                     }
                 }
+                return super.getSize(zone);
             }
-            return paintableImage;
+        }, new SimpleCardVisualizer<MyCardModel>() {
+
+            @Override
+            public PaintableImage paintCard(MyCardModel cardModel) {
+                PaintableImage paintableImage = new PaintableImage(300, 400);
+                paintableImage.setBackground_Alpha(0);
+                paintableImage.paintImage(new PaintableImage("images/cards/" + cardModel.getName() + ".png"), 74, 43, 155, 155);
+                paintableImage.paintImage(new PaintableImage("images/templates/mana_" + cardModel.getColor().ordinal() + ".png"), 0, 0, 300, 400);
+                if (cardModel.isDamaged()) {
+                    for (int x=0;x<paintableImage.getWidth();x++) {
+                        for (int y=0;y<paintableImage.getHeight();y++) {
+                            paintableImage.setPixel_Red(x, y, 255);
+                        }
+                    }
+                }
+                return paintableImage;
             }
         }, new InteractivityListener() {
 
@@ -190,9 +190,9 @@ public class TestApplication extends SimpleApplication implements ActionListener
                 @Override
                 public boolean isValid(BoardObject boardObject) {
                     if (boardObject instanceof Card) {
-                        Card card = (Card) boardObject;
+                        Card<MyCardModel> card = (Card<MyCardModel>) boardObject;
                         if (card.getZonePosition().getZone() == playerZones[opponentPlayerIndex].getBoardZone()) {
-                            return !"0".equals(card.getProperty("color"));
+                            return !MyCard.Color.NEUTRAL.equals(card.getModel().getColor());
                         }
                     }
                     return false;
@@ -200,26 +200,28 @@ public class TestApplication extends SimpleApplication implements ActionListener
             });
         }
     }
-    
+
     private void updateZone(MyCards myCards, CardZone cardZone, Vector3f interval, Interactivity interactivity) {
         int index = 0;
-        Iterator<MyCard> deckIterator = myCards.iterator();
-        while (deckIterator.hasNext()) {
-            MyCard myCard = deckIterator.next();
-            Card card = getOrCreateCard(myCard);
-            board.event(new SetPropertyEvent(card, "color", "" + myCard.getColor().ordinal()));
-            board.event(new SetPropertyEvent(card, "name", myCard.getName()));
-            board.event(new SetPropertyEvent(card, "damaged", Boolean.toString(myCard.isDamaged())));
-            board.event(new MoveCardEvent(card, cardZone, interval.mult(index)));
+        Iterator<MyCard> cardIterator = myCards.iterator();
+        while (cardIterator.hasNext()) {
+            MyCard myCard = cardIterator.next();
+            Card<MyCardModel> card = getOrCreateCard(myCard);
+            MyCardModel cardModel = card.getModel();
+            cardModel.setColor(myCard.getColor());
+            cardModel.setName(myCard.getName());
+            cardModel.setDamaged(myCard.isDamaged());
+            board.triggerEvent(new ModelUpdatedEvent(card));
+            board.triggerEvent(new MoveCardEvent(card, cardZone, interval.mult(index)));
             card.setInteractivity(interactivity);
             index++;
         }
     }
     
-    private Card getOrCreateCard(MyCard myCard) {
-        Card card = visualCards.get(myCard);
+    private Card<MyCardModel> getOrCreateCard(MyCard myCard) {
+        Card<MyCardModel> card = visualCards.get(myCard);
         if (card == null) {
-            card = new Card();
+            card = new Card<>(new MyCardModel());
             visualCards.put(myCard, card);
             gameCards.put(card, myCard);
         }

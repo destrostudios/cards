@@ -17,17 +17,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <jm3.group>org.jmonkeyengine</jm3.group>
-        <jm3.version>3.2.1-stable</jm3.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <url>http://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
-    
     <dependencies>
     </dependencies>
 </project>

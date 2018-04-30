@@ -6,8 +6,11 @@ import com.destrostudios.cards.frontend.cardgui.transformations.*;
  *
  * @author Carl
  */
-public class Card extends TransformedBoardObject{
+public class Card<ModelType extends BoardObjectModel> extends TransformedBoardObject<ModelType>{
 
+    public Card(ModelType model) {
+        setModel(model);
+    }
     private ZonePosition zonePosition = new ZonePosition();
 
     public ZonePosition getZonePosition() {

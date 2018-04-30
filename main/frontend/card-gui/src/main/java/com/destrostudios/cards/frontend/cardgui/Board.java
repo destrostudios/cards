@@ -8,9 +8,9 @@ import java.util.LinkedList;
  *
  * @author Carl
  */
-public class Board implements GameLoopListener {
+public class Board<CardModelType extends BoardObjectModel> implements GameLoopListener {
 
-    public Board(BoardObjectVisualizer<CardZone> zoneVisualizer, BoardObjectVisualizer<Card> cardVisualizer, InteractivityListener interactivityListener) {
+    public Board(BoardObjectVisualizer<CardZone> zoneVisualizer, BoardObjectVisualizer<Card<CardModelType>> cardVisualizer, InteractivityListener interactivityListener) {
         this.zoneVisualizer = zoneVisualizer;
         this.cardVisualizer = cardVisualizer;
         this.interactivityListener = interactivityListener;
@@ -19,7 +19,7 @@ public class Board implements GameLoopListener {
     private HashMap<Integer, BoardObject> boardObjects = new HashMap<Integer, BoardObject>();
     private LinkedList<CardZone> zones = new LinkedList<CardZone>();
     private BoardObjectVisualizer<CardZone> zoneVisualizer;
-    private BoardObjectVisualizer<Card> cardVisualizer;
+    private BoardObjectVisualizer<Card<CardModelType>> cardVisualizer;
     private InteractivityListener interactivityListener;
     private AnimationQueue animationQueue = new AnimationQueue();
     
@@ -45,7 +45,7 @@ public class Board implements GameLoopListener {
         zones.add(zone);
     }
 
-    public void event(GameEvent event) {
+    public void triggerEvent(GameEvent event) {
         event.trigger(this);
     }
 

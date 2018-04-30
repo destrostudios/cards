@@ -1,4 +1,4 @@
-package com.destrostudios.cards.network;
+package com.destrostudios.cards.shared.network;
 
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;

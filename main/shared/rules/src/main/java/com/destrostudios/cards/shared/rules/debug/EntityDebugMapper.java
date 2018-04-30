@@ -3,10 +3,8 @@ package com.destrostudios.cards.shared.rules.debug;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.collections.IntSet;
-import com.destrostudios.cards.shared.rules.Components;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.IntFunction;
 
 /**
  *

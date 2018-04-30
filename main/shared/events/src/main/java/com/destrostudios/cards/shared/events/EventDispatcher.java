@@ -1,6 +1,10 @@
 package com.destrostudios.cards.shared.events;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -8,18 +12,20 @@ import java.util.HashMap;
  */
 public class EventDispatcher {
 
-    private final HashMap<Class<? extends Event>, EventHandler<? extends Event>[]> listeners = new HashMap<>();
+    private final Map<Class<? extends Event>, List<EventHandler<? extends Event>>> listeners = new HashMap<>();
 
     @SafeVarargs
-    public final <T extends Event> void setListeners(Class<T> eventType, EventHandler<T>... listeners) {
-        if (this.listeners.put(eventType, listeners) != null) {
-            throw new IllegalStateException("added listeners for " + eventType + " multiple times");
-        }
+    public final <T extends Event> void addListeners(Class<T> eventType, EventHandler<T>... listeners) {
+        addListeners(eventType, Arrays.asList(listeners));
+    }
+
+    public <T extends Event> void addListeners(Class<T> eventType, List<EventHandler<T>> listeners) {
+        this.listeners.computeIfAbsent(eventType, x -> new ArrayList<>()).addAll(listeners);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void fire(Event event) {
-        EventHandler<? extends Event>[] handlers = listeners.get(event.getClass());
+        List<EventHandler<? extends Event>> handlers = listeners.get(event.getClass());
         assert handlers != null : "no handlers for " + event;
         for (EventHandler handler : handlers) {
             handler.onEvent(event);

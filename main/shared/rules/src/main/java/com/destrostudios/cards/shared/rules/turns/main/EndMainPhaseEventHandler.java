@@ -4,7 +4,6 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.turns.TurnPhase;
 import com.destrostudios.cards.shared.rules.turns.respond.StartRespondPhaseEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

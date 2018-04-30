@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.IntUnaryOperator;
 
 /**
  * @author Philipp
@@ -60,7 +61,7 @@ public class Main {
         Random random = new Random(453);
         EventDispatcher dispatcher = new EventDispatcher();
         EventQueue events = new EventQueueImpl(dispatcher::fire);
-        setListener(dispatcher, data, events, random);
+        setListener(dispatcher, data, events, random::nextInt);
 
         try {
             for (int i = 0; i < 5; i++) {
@@ -78,6 +79,12 @@ public class Main {
         Random random = new Random(453);
         EntityData data = new EntityData(random::nextInt);
 
+        populateEntityData(data);
+
+        return data;
+    }
+
+    public static void populateEntityData(EntityData data) {
         int player1 = data.createEntity();
         int player2 = data.createEntity();
         int hero1 = data.createEntity();
@@ -88,8 +95,6 @@ public class Main {
         initPlayerAndHeroEntities(data, player1, player2, hero1, hero2);
         initLibraryAndHandCardsEntities(data, player1, player2, handCards1, handCards2);
         initBoardCardsEntities(data, player1, player2);
-
-        return data;
     }
 
     private static void initBoardCardsEntities(EntityData data, int player1, int player2) {
@@ -179,7 +184,7 @@ public class Main {
     }
 
 
-    private static void setListener(EventDispatcher dispatcher, EntityData data, EventQueue events, Random random) {
+    public static void setListener(EventDispatcher dispatcher, EntityData data, EventQueue events, IntUnaryOperator random) {
         dispatcher.addListeners(BattleEvent.class, new BattleEventHandler(data, events));
         dispatcher.addListeners(DamageEvent.class,
                 new ArmorEventHandler(data, events),

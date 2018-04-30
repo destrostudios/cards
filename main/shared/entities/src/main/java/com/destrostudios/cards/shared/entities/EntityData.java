@@ -71,6 +71,14 @@ public class EntityData {
         return entityKey;
     }
 
+    public int entity(ComponentDefinition<?> component, IntPredicate... predicates) {
+        IntArrayList result = entities(component, predicates);
+        if (result.size() != 1) {
+            throw new IllegalStateException(Integer.toString(result.size()));
+        }
+        return result.get(0);
+    }
+
     public Set<ComponentDefinition<?>> knownComponents() {
         return components.keySet();
     }

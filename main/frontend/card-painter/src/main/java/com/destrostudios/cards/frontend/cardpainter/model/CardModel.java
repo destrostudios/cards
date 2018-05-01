@@ -7,25 +7,24 @@ import java.util.List;
 public class CardModel extends BoardObjectModel {
 
     private boolean isFront;
-    private List<Integer> manaTypes;
+    private List<Color> colors;
     private String title;
-    private String description;
-    private List<String> keywords;
-    private List<String> mechanics;
     private List<String> tribes;
+    private List<String> keywords;
+    private String description;
+    private String castDescription;
+    private List<Spell> spells;
     private Integer attackDamage;
     private Integer lifepoints;
     private boolean isDamaged;
-    private List<Spell> spells;
-    private Spell castSpell;
     private String flavourText;
 
     public boolean isFront() {
         return isFront;
     }
 
-    public List<Integer> getManaTypes() {
-        return manaTypes;
+    public List<Color> getColors() {
+        return colors;
     }
 
     public String getTitle() {
@@ -38,10 +37,6 @@ public class CardModel extends BoardObjectModel {
 
     public List<String> getKeywords() {
         return keywords;
-    }
-
-    public List<String> getMechanics() {
-        return mechanics;
     }
 
     public List<String> getTribes() {
@@ -64,8 +59,8 @@ public class CardModel extends BoardObjectModel {
         return spells;
     }
 
-    public Spell getCastSpell() {
-        return castSpell;
+    public String getCastDescription() {
+        return castDescription;
     }
 
     public String getFlavourText() {
@@ -80,8 +75,8 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
     }
 
-    public void setManaTypes(List<Integer> manaTypes) {
-        updateIfNotEquals(this.manaTypes, manaTypes, () -> this.manaTypes = manaTypes);
+    public void setColors(List<Color> colors) {
+        updateIfNotEquals(this.colors, colors, () -> this.colors = colors);
     }
 
     public void setDescription(String description) {
@@ -90,10 +85,6 @@ public class CardModel extends BoardObjectModel {
 
     public void setKeywords(List<String> keywords) {
         updateIfNotEquals(this.keywords, keywords, () -> this.keywords = keywords);
-    }
-
-    public void setMechanics(List<String> mechanics) {
-        updateIfNotEquals(this.mechanics, mechanics, () -> this.mechanics = mechanics);
     }
 
     public void setTribes(List<String> tribes) {
@@ -116,8 +107,8 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.spells, spells, () -> this.spells = spells);
     }
 
-    public void setCastSpell(Spell castSpell) {
-        updateIfNotEquals(this.castSpell, castSpell, () -> this.castSpell = castSpell);
+    public void setCastDescription(String castDescription) {
+        updateIfNotEquals(this.castDescription, castDescription, () -> this.castDescription = castDescription);
     }
 
     public void setFlavourText(String flavourText) {

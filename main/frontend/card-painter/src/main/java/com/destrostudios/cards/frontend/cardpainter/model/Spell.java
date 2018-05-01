@@ -1,20 +1,40 @@
 package com.destrostudios.cards.frontend.cardpainter.model;
 
-public class Spell {
+import com.destrostudios.cards.frontend.cardgui.BoardObjectModel;
 
-    private String title;
-    private String description;
+import java.util.Objects;
+
+public class Spell extends BoardObjectModel {
+
+    public Spell(BoardObjectModel parentModel) {
+        super(parentModel);
+    }
     private Cost cost;
+    private String description;
 
-    public String getTitle() {
-        return title;
+    public void setCost(Cost cost) {
+        updateIfNotEquals(this.cost, cost, () -> this.cost = cost);
+    }
+
+    public Cost getCost() {
+        return cost;
+    }
+
+    public void setDescription(String description) {
+        updateIfNotEquals(this.description, description, () -> this.description = description);
     }
 
     public String getDescription() {
         return description;
     }
 
-    public Cost getCost() {
-        return cost;
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Spell) {
+            Spell spell = (Spell) object;
+            return (Objects.equals(cost, spell.cost)
+                && (Objects.equals(description, spell.description)));
+        }
+        return false;
     }
 }

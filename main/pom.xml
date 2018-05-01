@@ -9,7 +9,6 @@
         <module>backend</module>
         <module>shared</module>
         <module>frontend</module>
-        <module>sandbox</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

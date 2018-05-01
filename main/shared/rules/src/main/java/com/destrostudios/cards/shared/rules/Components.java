@@ -53,7 +53,7 @@ public class Components {
     }
 
     public static class Cost {
-        public static final ComponentDefinition<Integer> TAB = new ComponentDefinition<>("tabCost");
+        public static final ComponentDefinition<Integer> TAP = new ComponentDefinition<>("tapCost");
     }
 
     public static class ManaAmount {

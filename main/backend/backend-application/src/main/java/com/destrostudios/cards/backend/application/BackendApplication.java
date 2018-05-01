@@ -3,6 +3,7 @@ package com.destrostudios.cards.backend.application;
 import com.destrostudios.cards.shared.network.TrackedRandom;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.TestGameSetup;
+import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.jme3.network.*;
 
 import java.io.IOException;
@@ -17,28 +18,7 @@ public class BackendApplication {
     public BackendApplication(int port) {
         try {
             System.out.println("Starting server...");
-            Server server = Network.createServer(port);
-
-            TrackedRandom serverRandom = new TrackedRandom(new Random(5));
-            GameContext serverContext = new GameContext(serverRandom::nextInt);
-            new TestGameSetup().testSetup(serverContext.getData());
-
-            server.addConnectionListener(new ConnectionListener() {
-
-                @Override
-                public void connectionAdded(Server server, HostedConnection hostedConnection) {
-                    System.out.println("#" + hostedConnection.getId() + " connected.");
-                }
-
-                @Override
-                public void connectionRemoved(Server server, HostedConnection hostedConnection) {
-                    System.out.println("#" + hostedConnection.getId() + " disconnected.");
-                }
-            });
-            server.addMessageListener((HostedConnection connection, Message message) -> {
-
-            }, Message.class);
-
+            SimpleGameServer server = new SimpleGameServer(port);
             server.start();
             System.out.println("Server started.");
 

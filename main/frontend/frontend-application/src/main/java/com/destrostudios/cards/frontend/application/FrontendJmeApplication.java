@@ -11,7 +11,7 @@ import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.game.StartGameEvent;
+import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.KeyInput;
@@ -24,11 +24,11 @@ import java.util.HashMap;
 
 public class FrontendJmeApplication extends SimpleApplication implements ActionListener {
 
-    public FrontendJmeApplication(GameContext gameContext) {
-        this.gameContext = gameContext;
+    public FrontendJmeApplication(SimpleGameClient gameClient) {
+        this.gameClient = gameClient;
         loadSettings();
     }
-    private GameContext gameContext;
+    private SimpleGameClient gameClient;
     private Board<CardModel> board;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap = new CardGuiMap();
@@ -48,6 +48,8 @@ public class FrontendJmeApplication extends SimpleApplication implements ActionL
         initCamera();
         initListeners();
         initBoard();
+        
+        gameClient.start();
     }
 
     private void initCamera() {
@@ -104,8 +106,8 @@ public class FrontendJmeApplication extends SimpleApplication implements ActionL
             }
         });
 
-        gameContext.getDispatcher().addListeners(StartGameEvent.class, event -> {
-            IntArrayList players = gameContext.getData().entities(Components.NEXT_PLAYER);
+        gameClient.getGame().getDispatcher().addListeners(GameStartEvent.class, event -> {
+            IntArrayList players = gameClient.getGame().getData().entities(Components.NEXT_PLAYER);
             Vector3f offset = new Vector3f(0, 0, 2);
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {
@@ -125,12 +127,12 @@ public class FrontendJmeApplication extends SimpleApplication implements ActionL
             }
             stateManager.attach(new BoardAppState<>(board, rootNode));
 
-            IntArrayList cardEntities = gameContext.getData().entities(Components.OWNED_BY);
+            IntArrayList cardEntities = gameClient.getGame().getData().entities(Components.OWNED_BY);
             for (int cardEntity : cardEntities) {
                 Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
                 int cardZoneIndex = getCardZoneIndex(cardEntity);
                 if (cardZoneIndex != -1) {
-                    CardGuiMapper.updateModel(card, gameContext.getData(), cardEntity);
+                    CardGuiMapper.updateModel(card, gameClient.getGame().getData(), cardEntity);
                     board.triggerEvent(new ModelUpdatedEvent(card));
                     board.triggerEvent(new MoveCardEvent(card, getCardZone(cardEntity), new Vector3f(cardZoneIndex, 0, 0)));
                 }
@@ -139,28 +141,28 @@ public class FrontendJmeApplication extends SimpleApplication implements ActionL
     }
 
     private int getCardZoneIndex(int cardEntity) {
-        if (gameContext.getData().has(cardEntity, Components.LIBRARY)) {
-            return gameContext.getData().get(cardEntity, Components.LIBRARY);
+        if (gameClient.getGame().getData().has(cardEntity, Components.LIBRARY)) {
+            return gameClient.getGame().getData().get(cardEntity, Components.LIBRARY);
         }
-        else if (gameContext.getData().has(cardEntity, Components.HAND_CARDS)) {
-            return gameContext.getData().get(cardEntity, Components.HAND_CARDS);
+        else if (gameClient.getGame().getData().has(cardEntity, Components.HAND_CARDS)) {
+            return gameClient.getGame().getData().get(cardEntity, Components.HAND_CARDS);
         }
-        else if (gameContext.getData().has(cardEntity, Components.CREATURE_ZONE)) {
-            return gameContext.getData().get(cardEntity, Components.CREATURE_ZONE);
+        else if (gameClient.getGame().getData().has(cardEntity, Components.CREATURE_ZONE)) {
+            return gameClient.getGame().getData().get(cardEntity, Components.CREATURE_ZONE);
         }
         return -1;
     }
 
     private CardZone getCardZone(int cardEntity) {
-        int playerEntity = gameContext.getData().get(cardEntity, Components.OWNED_BY);
+        int playerEntity = gameClient.getGame().getData().get(cardEntity, Components.OWNED_BY);
         PlayerZones playerZones = playerZonesMap.get(playerEntity);
-        if (gameContext.getData().has(cardEntity, Components.LIBRARY)) {
+        if (gameClient.getGame().getData().has(cardEntity, Components.LIBRARY)) {
             return playerZones.getDeckZone();
         }
-        else if (gameContext.getData().has(cardEntity, Components.HAND_CARDS)) {
+        else if (gameClient.getGame().getData().has(cardEntity, Components.HAND_CARDS)) {
             return playerZones.getHandZone();
         }
-        else if (gameContext.getData().has(cardEntity, Components.CREATURE_ZONE)) {
+        else if (gameClient.getGame().getData().has(cardEntity, Components.CREATURE_ZONE)) {
             return playerZones.getBoardZone();
         }
         return null;

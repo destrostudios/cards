@@ -1,11 +1,14 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.network.ActionNotificationMessage;
+import com.destrostudios.cards.shared.network.ActionRequestMessage;
+import com.destrostudios.cards.shared.network.SerializerSetup;
+import com.destrostudios.cards.shared.network.TrackedRandom;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.TestGameSetup;
-import com.destrostudios.cards.shared.rules.game.StartGameEvent;
+import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
@@ -22,21 +25,22 @@ import org.slf4j.LoggerFactory;
  *
  * @author Philipp
  */
-public class TestGameServer {
+public class SimpleGameServer {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestGameServer.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleGameServer.class);
 
     private final Server server;
     private final TrackedRandom trackedRandom;
     private final GameContext context;
     private final List<ActionNotificationMessage> actionHistory = new ArrayList<>();
 
-    public TestGameServer(int port) throws IOException {
+    public SimpleGameServer(int port) throws IOException {
+        SerializerSetup.ensureInitialized();
         server = Network.createServer(port);
         trackedRandom = new TrackedRandom(new SecureRandom());
         context = new GameContext(trackedRandom::nextInt);
         new TestGameSetup().testSetup(context.getData());
-        applyAction(-1);
+        applyAction(new GameStartEvent());
 
         server.addConnectionListener(new ConnectionListener() {
             @Override
@@ -54,20 +58,19 @@ public class TestGameServer {
         });
         server.addMessageListener((HostedConnection s, Message msg) -> {
             ActionRequestMessage message = (ActionRequestMessage) msg;
-            applyAction(message.action);
+            applyAction(message.getAction());
         }, ActionRequestMessage.class);
     }
 
-    private void applyAction(int actionIndex) {
+    private void applyAction(Event action) {
         IntArrayList history = trackedRandom.getHistory();
         history.clear();
-        Event action = actionIndex == -1 ? new StartGameEvent() : context.getMoveGenerator().generateAvailableMoves(context.getData().entity(Components.TURN_PHASE)).get(actionIndex);
         context.getEvents().action(action);
-        int[] rngs = new int[history.size()];
-        for (int i = 0; i < rngs.length; i++) {
-            rngs[i] = history.get(i);
+        int[] randomHistory = new int[history.size()];
+        for (int i = 0; i < randomHistory.length; i++) {
+            randomHistory[i] = history.get(i);
         }
-        ActionNotificationMessage message = new ActionNotificationMessage(actionIndex, rngs);
+        ActionNotificationMessage message = new ActionNotificationMessage(action, randomHistory);
         actionHistory.add(message);
         LOG.debug("applied {}, broadcasting...", action);
         server.broadcast(message);

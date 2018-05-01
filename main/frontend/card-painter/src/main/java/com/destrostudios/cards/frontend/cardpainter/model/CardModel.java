@@ -9,6 +9,7 @@ public class CardModel extends BoardObjectModel {
     private boolean isFront;
     private List<Color> colors;
     private String title;
+    private ManaCost manaCost;
     private List<String> tribes;
     private List<String> keywords;
     private String description;
@@ -29,6 +30,10 @@ public class CardModel extends BoardObjectModel {
 
     public String getTitle() {
         return title;
+    }
+
+    public ManaCost getManaCost() {
+        return manaCost;
     }
 
     public String getDescription() {
@@ -67,12 +72,16 @@ public class CardModel extends BoardObjectModel {
         return flavourText;
     }
 
+    public void setFront(boolean isFront) {
+        updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setFront(boolean isFront) {
-        updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
+    public void setManaCost(ManaCost manaCost) {
+        this.manaCost = manaCost;
     }
 
     public void setColors(List<Color> colors) {

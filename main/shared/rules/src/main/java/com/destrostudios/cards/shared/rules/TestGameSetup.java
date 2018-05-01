@@ -53,6 +53,8 @@ public class TestGameSetup {
         data.set(card3, Components.DAMAGED);
         data.set(card3, Components.Tribe.HUMAN);
         data.set(card3, Components.Tribe.DRAGON);
+        data.set(card3, Components.Ability.TAUNT);
+        data.set(card3, Components.FLAVOUR_TEXT, "\"I am op.\"");
 
         data.set(card4, Components.Color.NEUTRAL);
         data.set(card4, Components.Color.WHITE);
@@ -68,6 +70,11 @@ public class TestGameSetup {
         data.set(card4, Components.ATTACK, 1);
         data.set(card4, Components.HEALTH, 1);
         data.set(card4, Components.Tribe.GOD);
+        data.set(card4, Components.Ability.CHARGE);
+        data.set(card4, Components.Ability.DIVINE_SHIELD);
+        data.set(card4, Components.Ability.HEXPROOF);
+        data.set(card4, Components.Ability.IMMUNE);
+        data.set(card4, Components.Ability.TAUNT);
     }
 
     private void initLibraryAndHandCardsEntities(EntityData data, int player1, int player2, int handCards1, int handCards2) {

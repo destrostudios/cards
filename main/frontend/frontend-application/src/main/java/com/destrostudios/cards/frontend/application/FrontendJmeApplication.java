@@ -56,6 +56,7 @@ public class FrontendJmeApplication extends SimpleApplication implements ActionL
         flyCam.setEnabled(false);
         cam.setLocation(new Vector3f(2.584369f, 14.878008f, 0.86850137f));
         cam.setRotation(new Quaternion(-0.001344382f, 0.72532254f, -0.6884064f, -0.0014168395f));
+        cam.setFrustumPerspective(45, (float) cam.getWidth() / cam.getHeight(), 0.01f, 1000f);
     }
 
     private void initListeners() {

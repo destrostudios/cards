@@ -2,6 +2,7 @@ package com.destrostudios.cards.frontend.cardpainter;
 
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.cardpainter.model.Cost;
+import com.destrostudios.cards.frontend.cardpainter.model.ManaCost;
 import com.destrostudios.cards.frontend.cardpainter.model.Spell;
 
 import java.awt.*;
@@ -10,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class CardPainterAWT {
 
@@ -21,6 +21,12 @@ public class CardPainterAWT {
     private static final Font fontFlavorText = new Font("Tahoma", Font.ITALIC, 13);
     private static final Font fontTribes = new Font("Tahoma", Font.BOLD, 13);
     private static final Font fontStats = new Font("Tahoma", Font.BOLD, 50);
+
+    private static final int lineWidth = 306;
+    private static final int cardCostIconSize = 24;
+    private static final int cardCostGapSize = 2;
+    private static final int effectsIconSize = 15;
+    private static final int effectsGapSize = 2;
 
     private static int tmpX;
     private static int tmpY;
@@ -44,7 +50,9 @@ public class CardPainterAWT {
             String title = cardModel.getTitle();
             int textStartX = 45;
             graphics.drawString(title, 45, 54);
-            int lineWidth = 306;
+            if (cardModel.getManaCost() != null) {
+                drawCardCostManaAmount(graphics, cardModel.getManaCost(), (width - textStartX - cardCostIconSize), (46 - (cardCostIconSize / 2)));
+            }
             tmpY = 370;
             if(drawnKeywords.size() > 0){
                 String keywordsText = "";
@@ -192,14 +200,12 @@ public class CardPainterAWT {
         drawStringMultiLine(graphics, description, lineWidth, startX, followingX, y, -2);
     }
 
-    private static final int effectsIconSize = 15;
-    private static final int effectsGapSize = 2;
     private static void drawCost(Graphics2D graphics, Cost cost, int lineWidth, int startX, int followingX, int y){
         if(cost.isTap()){
             drawTapIcon(graphics, startX, y);
         }
         if (cost.getManaCost() != null) {
-            drawManaAmount(graphics, cost.getManaCost(), lineWidth, tmpX, followingX, y);
+            drawSpellCostManaAmount(graphics, cost.getManaCost(), lineWidth, tmpX, followingX, y);
         }
     }
 
@@ -209,11 +215,11 @@ public class CardPainterAWT {
         tmpX = x;
     }
 
-    private static void drawManaAmount(Graphics2D graphics, Map<com.destrostudios.cards.frontend.cardpainter.model.Color, Integer> manaAmount, int lineWidth, int startX, int followingX, int y){
+    private static void drawSpellCostManaAmount(Graphics2D graphics, ManaCost manaCost, int lineWidth, int startX, int followingX, int y){
         tmpX = startX;
         tmpY = y;
         for(com.destrostudios.cards.frontend.cardpainter.model.Color color : com.destrostudios.cards.frontend.cardpainter.model.Color.values()){
-            Integer amount = manaAmount.get(color);
+            Integer amount = manaCost.get(color);
             if (amount != null) {
                 for (int i = 0; i < amount; i++) {
                     if (tmpX > (followingX + lineWidth)) {
@@ -222,6 +228,20 @@ public class CardPainterAWT {
                     }
                     graphics.drawImage(CardImages.getCachedImage("images/mana/" + color.ordinal() + ".png", effectsIconSize, effectsIconSize), tmpX, tmpY - 12, effectsIconSize, effectsIconSize, null);
                     tmpX += (effectsIconSize + effectsGapSize);
+                }
+            }
+        }
+    }
+
+    private static void drawCardCostManaAmount(Graphics2D graphics, ManaCost manaCost, int endX, int y){
+        tmpX = endX;
+        tmpY = y;
+        for(com.destrostudios.cards.frontend.cardpainter.model.Color color : com.destrostudios.cards.frontend.cardpainter.model.Color.values()){
+            Integer amount = manaCost.get(color);
+            if (amount != null) {
+                for (int i = 0; i < amount; i++) {
+                    graphics.drawImage(CardImages.getCachedImage("images/mana/" + color.ordinal() + ".png", cardCostIconSize, cardCostIconSize), tmpX, tmpY, cardCostIconSize, cardCostIconSize, null);
+                    tmpX -= (cardCostGapSize + cardCostIconSize);
                 }
             }
         }

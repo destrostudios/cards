@@ -1,10 +1,7 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.frontend.cardgui.Card;
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
-import com.destrostudios.cards.frontend.cardpainter.model.Color;
-import com.destrostudios.cards.frontend.cardpainter.model.Cost;
-import com.destrostudios.cards.frontend.cardpainter.model.Spell;
+import com.destrostudios.cards.frontend.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
@@ -49,6 +46,11 @@ public class CardGuiMapper {
         String title = entityData.get(cardEntity, Components.DISPLAY_NAME);
         cardModel.setTitle(title);
 
+        ManaCost manaCost = new ManaCost(cardModel);
+        manaCost.set(Color.RED, 1);
+        manaCost.set(Color.GREEN, 1);
+        cardModel.setManaCost(manaCost);
+
         List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);
         cardModel.setTribes(tribes);
 
@@ -65,7 +67,9 @@ public class CardGuiMapper {
         Spell spell = new Spell(cardModel);
         Cost cost = new Cost(spell);
         cost.setTap(true);
-        cost.setManaCost(Color.RED, 2);
+        ManaCost spellManaCost = new ManaCost(cost);
+        spellManaCost.set(Color.RED, 2);
+        cost.setManaCost(spellManaCost);
         spell.setCost(cost);
         spell.setDescription("woop de doop");
         spells.add(spell);

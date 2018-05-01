@@ -44,6 +44,10 @@ public class EntityData {
         return getComponentMap(component).get(entity);
     }
 
+    public void set(int entity, ComponentDefinition<Void> component) {
+        set(entity, component, null);
+    }
+
     public <T> void set(int entity, ComponentDefinition<T> component, T value) {
         getComponentMap(component).put(entity, value);
     }

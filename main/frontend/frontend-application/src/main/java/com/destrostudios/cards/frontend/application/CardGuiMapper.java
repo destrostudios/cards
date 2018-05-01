@@ -14,60 +14,52 @@ import java.util.*;
 public class CardGuiMapper {
 
     private static Map<ComponentDefinition, Color> colorComponents = new LinkedHashMap<>();
-    private static Map<ComponentDefinition, String> keywordComponents = new LinkedHashMap<>();
+    private static Map<ComponentDefinition, String> keywordcomponents = new LinkedHashMap<>();
     private static Map<ComponentDefinition, String> tribeComponents = new LinkedHashMap<>();
     static {
-        colorComponents.put(Components.DISPLAY_NAME, Color.NEUTRAL);
-        colorComponents.put(Components.DISPLAY_NAME, Color.WHITE);
-        colorComponents.put(Components.DISPLAY_NAME, Color.RED);
-        colorComponents.put(Components.DISPLAY_NAME, Color.GREEN);
-        colorComponents.put(Components.DISPLAY_NAME, Color.BLUE);
-        colorComponents.put(Components.DISPLAY_NAME, Color.BLACK);
+        colorComponents.put(Components.Color.NEUTRAL, Color.NEUTRAL);
+        colorComponents.put(Components.Color.WHITE, Color.WHITE);
+        colorComponents.put(Components.Color.RED, Color.RED);
+        colorComponents.put(Components.Color.GREEN, Color.GREEN);
+        colorComponents.put(Components.Color.BLUE, Color.BLUE);
+        colorComponents.put(Components.Color.BLACK, Color.BLACK);
 
-        keywordComponents.put(Components.DISPLAY_NAME, "Charge");
-        keywordComponents.put(Components.DISPLAY_NAME, "Taunt");
-        keywordComponents.put(Components.DISPLAY_NAME, "Divine Shield");
-        keywordComponents.put(Components.DISPLAY_NAME, "Immune");
+        keywordcomponents.put(Components.Ability.CHARGE, "Charge");
+        keywordcomponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
+        keywordcomponents.put(Components.Ability.HEXPROOF, "Hexproof");
+        keywordcomponents.put(Components.Ability.IMMUNE, "Immune");
+        keywordcomponents.put(Components.Ability.TAUNT, "Taunt");
 
-        tribeComponents.put(Components.DISPLAY_NAME, "Human");
-        tribeComponents.put(Components.DISPLAY_NAME, "Dragon");
-        tribeComponents.put(Components.DISPLAY_NAME, "Beast");
-        tribeComponents.put(Components.DISPLAY_NAME, "Fish");
-        tribeComponents.put(Components.DISPLAY_NAME, "God");
+        tribeComponents.put(Components.Tribe.BEAST, "Beast");
+        tribeComponents.put(Components.Tribe.DRAGON, "Dragon");
+        tribeComponents.put(Components.Tribe.FISH, "Fish");
+        tribeComponents.put(Components.Tribe.GOD, "God");
+        tribeComponents.put(Components.Tribe.HUMAN, "Human");
     }
 
     public static void updateModel(Card<CardModel> card, EntityData entityData, int cardEntity) {
         CardModel cardModel = card.getModel();
 
-        boolean isFront = entityData.has(cardEntity, Components.OWNED_BY);
+        boolean isFront = true;
         cardModel.setFront(isFront);
 
         List<Color> colors = createListBasedOnComponents(entityData, cardEntity, colorComponents);
         cardModel.setColors(colors);
 
-        String displayName = entityData.get(cardEntity, Components.DISPLAY_NAME);
-        cardModel.setTitle(displayName);
-
-        String description = entityData.get(cardEntity, Components.DISPLAY_NAME);
-        cardModel.setDescription(description);
+        String title = entityData.get(cardEntity, Components.DISPLAY_NAME);
+        cardModel.setTitle(title);
 
         List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);
         cardModel.setTribes(tribes);
 
-        List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordComponents);
+        List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordcomponents);
         cardModel.setKeywords(keywords);
 
-        String flavourText = entityData.get(cardEntity, Components.DISPLAY_NAME);
-        cardModel.setFlavourText(flavourText);
+        String castDescription = "Battlecry";
+        cardModel.setCastDescription(castDescription);
 
-        Integer attackDamage = entityData.get(cardEntity, Components.ATTACK);
-        cardModel.setAttackDamage(attackDamage);
-
-        Integer lifepoints = entityData.get(cardEntity, Components.HEALTH);
-        cardModel.setLifepoints(lifepoints);
-
-        boolean isDamaged = entityData.has(cardEntity, Components.HEALTH);
-        cardModel.setDamaged(isDamaged);
+        String description = "Description";
+        cardModel.setDescription(description);
 
         List<Spell> spells = new LinkedList<>();
         Spell spell = new Spell(cardModel);
@@ -79,8 +71,17 @@ public class CardGuiMapper {
         spells.add(spell);
         cardModel.setSpells(spells);
 
-        String castDescription = entityData.get(cardEntity, Components.DISPLAY_NAME);
-        cardModel.setCastDescription(castDescription);
+        Integer attackDamage = entityData.get(cardEntity, Components.ATTACK);
+        cardModel.setAttackDamage(attackDamage);
+
+        Integer lifepoints = entityData.get(cardEntity, Components.HEALTH);
+        cardModel.setLifepoints(lifepoints);
+
+        boolean isDamaged = entityData.has(cardEntity, Components.DAMAGED);
+        cardModel.setDamaged(isDamaged);
+
+        String flavourText = entityData.get(cardEntity, Components.FLAVOUR_TEXT);
+        cardModel.setFlavourText(flavourText);
     }
 
     private static <T> List<T> createListBasedOnComponents(EntityData entityData, int entity, Map<ComponentDefinition, T> componentValueMap) {

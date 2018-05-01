@@ -25,49 +25,62 @@ public class TestGameSetup {
         int card1 = data.createEntity();
         int card2 = data.createEntity();
 
+        data.set(card1, Components.Color.NEUTRAL);
         data.set(card1, Components.DISPLAY_NAME, "card100");
         data.set(card1, Components.OWNED_BY, player1);
-        data.set(card1, Components.BOARD, null);
-        data.set(card1, Components.CREATURE_CARD, null);
+        data.set(card1, Components.BOARD);
+        data.set(card1, Components.CREATURE_CARD);
         data.set(card1, Components.CREATURE_ZONE, 0);
         data.set(card1, Components.ATTACK, 2);
         data.set(card1, Components.HEALTH, 2);
         data.set(card2, Components.OWNED_BY, player1);
         data.set(card2, Components.DISPLAY_NAME, "card101");
-        data.set(card2, Components.BOARD, null);
-        data.set(card2, Components.ENCHANTMENT_CARD, null);
+        data.set(card2, Components.ENCHANTMENT_CARD);
         data.set(card2, Components.ENCHANTMENT_ZONE, 0);
 
         int card3 = data.createEntity();
         int card4 = data.createEntity();
 
-        data.set(card3, Components.DISPLAY_NAME, "card102");
+        data.set(card3, Components.Color.BLUE);
+        data.set(card3, Components.Color.RED);
+        data.set(card3, Components.DISPLAY_NAME, "Shyvana");
         data.set(card3, Components.OWNED_BY, player2);
-        data.set(card3, Components.BOARD, null);
-        data.set(card3, Components.CREATURE_CARD, null);
+        data.set(card3, Components.BOARD);
+        data.set(card3, Components.CREATURE_CARD);
         data.set(card3, Components.CREATURE_ZONE, 0);
         data.set(card3, Components.ATTACK, 1);
         data.set(card3, Components.HEALTH, 1);
+        data.set(card3, Components.DAMAGED);
+        data.set(card3, Components.Tribe.HUMAN);
+        data.set(card3, Components.Tribe.DRAGON);
 
+        data.set(card4, Components.Color.NEUTRAL);
+        data.set(card4, Components.Color.WHITE);
+        data.set(card4, Components.Color.RED);
+        data.set(card4, Components.Color.GREEN);
+        data.set(card4, Components.Color.BLUE);
+        data.set(card4, Components.Color.BLACK);
         data.set(card4, Components.OWNED_BY, player2);
-        data.set(card4, Components.DISPLAY_NAME, "card103");
-        data.set(card4, Components.BOARD, null);
-        data.set(card4, Components.CREATURE_CARD, null);
+        data.set(card4, Components.DISPLAY_NAME, "Aether Adept");
+        data.set(card4, Components.BOARD);
+        data.set(card4, Components.CREATURE_CARD);
         data.set(card4, Components.CREATURE_ZONE, 1);
         data.set(card4, Components.ATTACK, 1);
         data.set(card4, Components.HEALTH, 1);
+        data.set(card4, Components.Tribe.GOD);
     }
 
     private void initLibraryAndHandCardsEntities(EntityData data, int player1, int player2, int handCards1, int handCards2) {
-        int librarySize = 50;
+        int librarySize = 45;
         int handSize = 5;
 
-        for (int i = 0; i < 2 * (librarySize - handSize); i++) {
+        for (int i = 0; i < 2 * librarySize; i++) {
             int card = data.createEntity();
+            data.set(card, Components.Color.NEUTRAL);
             data.set(card, Components.DISPLAY_NAME, "card" + i);
-            data.set(card, Components.OWNED_BY, i < (librarySize - handSize) ? player1 : player2);
-            data.set(card, Components.LIBRARY, i % (librarySize - handSize));
-            data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD, null);
+            data.set(card, Components.OWNED_BY, i < librarySize ? player1 : player2);
+            data.set(card, Components.LIBRARY, i % librarySize);
+            data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD);
         }
 
         data.set(handCards1, Components.OWNED_BY, player1);
@@ -75,12 +88,12 @@ public class TestGameSetup {
 
         for (int i = 0; i < 2 * handSize; i++) {
             int card = data.createEntity();
+            data.set(card, Components.Color.NEUTRAL);
             data.set(card, Components.DISPLAY_NAME, "card" + i);
             data.set(card, Components.OWNED_BY, i < handSize ? player1 : player2);
             data.set(card, Components.HAND_CARDS, i % handSize);
-            data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD, null);
+            data.set(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD);
         }
-
     }
 
     private void initPlayerAndHeroEntities(EntityData data, int player1, int player2, int hero1, int hero2) {

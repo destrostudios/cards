@@ -46,9 +46,35 @@ public class CardGuiMapper {
         String title = entityData.get(cardEntity, Components.DISPLAY_NAME);
         cardModel.setTitle(title);
 
-        ManaCost manaCost = new ManaCost(cardModel);
-        manaCost.set(Color.RED, 1);
-        manaCost.set(Color.GREEN, 1);
+        ManaCost manaCost = null;
+        Integer costEntity = entityData.get(cardEntity, Components.COST_ENTITY);
+        if (costEntity != null) {
+            manaCost = new ManaCost(cardModel);
+            Integer neutralManaAmount = entityData.get(costEntity, Components.ManaAmount.NEUTRAL);
+            if (neutralManaAmount != null) {
+                manaCost.set(Color.NEUTRAL, neutralManaAmount);
+            }
+            Integer whiteManaAmount = entityData.get(costEntity, Components.ManaAmount.WHITE);
+            if (whiteManaAmount != null) {
+                manaCost.set(Color.WHITE, whiteManaAmount);
+            }
+            Integer redManaAmount = entityData.get(costEntity, Components.ManaAmount.RED);
+            if (redManaAmount != null) {
+                manaCost.set(Color.RED, redManaAmount);
+            }
+            Integer greenManaAmount = entityData.get(costEntity, Components.ManaAmount.GREEN);
+            if (greenManaAmount != null) {
+                manaCost.set(Color.GREEN, greenManaAmount);
+            }
+            Integer blueManaAmount = entityData.get(costEntity, Components.ManaAmount.BLUE);
+            if (blueManaAmount != null) {
+                manaCost.set(Color.BLUE, blueManaAmount);
+            }
+            Integer blackManaAmount = entityData.get(costEntity, Components.ManaAmount.BLACK);
+            if (blackManaAmount != null) {
+                manaCost.set(Color.BLACK, blackManaAmount);
+            }
+        }
         cardModel.setManaCost(manaCost);
 
         List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);

@@ -10,6 +10,7 @@ public class Components {
 
     public static final ComponentDefinition<Integer> ATTACK = new ComponentDefinition<>("attack");
     public static final ComponentDefinition<Void> BOARD = new ComponentDefinition<>("board");
+    public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
     public static final ComponentDefinition<Void> CREATURE_CARD = new ComponentDefinition<>("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = new ComponentDefinition<>("creatureZone");
     public static final ComponentDefinition<Void> DAMAGED = new ComponentDefinition<>("damaged");
@@ -27,12 +28,12 @@ public class Components {
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
 
     public static class Color {
-        public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutral");
-        public static final ComponentDefinition<Void> WHITE = new ComponentDefinition<>("white");
-        public static final ComponentDefinition<Void> RED = new ComponentDefinition<>("red");
-        public static final ComponentDefinition<Void> GREEN = new ComponentDefinition<>("green");
-        public static final ComponentDefinition<Void> BLUE = new ComponentDefinition<>("blue");
-        public static final ComponentDefinition<Void> BLACK = new ComponentDefinition<>("black");
+        public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutralColor");
+        public static final ComponentDefinition<Void> WHITE = new ComponentDefinition<>("whiteColor");
+        public static final ComponentDefinition<Void> RED = new ComponentDefinition<>("redColor");
+        public static final ComponentDefinition<Void> GREEN = new ComponentDefinition<>("greenColor");
+        public static final ComponentDefinition<Void> BLUE = new ComponentDefinition<>("blueColor");
+        public static final ComponentDefinition<Void> BLACK = new ComponentDefinition<>("blackColor");
     }
 
     public static class Ability {
@@ -49,5 +50,18 @@ public class Components {
         public static final ComponentDefinition<Void> FISH = new ComponentDefinition<>("fish");
         public static final ComponentDefinition<Void> GOD = new ComponentDefinition<>("god");
         public static final ComponentDefinition<Void> HUMAN = new ComponentDefinition<>("human");
+    }
+
+    public static class Cost {
+        public static final ComponentDefinition<Integer> TAB = new ComponentDefinition<>("tabCost");
+    }
+
+    public static class ManaAmount {
+        public static final ComponentDefinition<Integer> NEUTRAL = new ComponentDefinition<>("neutralAmount");
+        public static final ComponentDefinition<Integer> WHITE = new ComponentDefinition<>("whiteAmount");
+        public static final ComponentDefinition<Integer> RED = new ComponentDefinition<>("redAmount");
+        public static final ComponentDefinition<Integer> GREEN = new ComponentDefinition<>("greenAmount");
+        public static final ComponentDefinition<Integer> BLUE = new ComponentDefinition<>("blueAmount");
+        public static final ComponentDefinition<Integer> BLACK = new ComponentDefinition<>("blackAmount");
     }
 }

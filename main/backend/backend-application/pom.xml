@@ -24,10 +24,5 @@
             <artifactId>network</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>${jm3.group}</groupId>
-            <artifactId>jme3-networking</artifactId>
-            <version>${jm3.version}</version>
-        </dependency>
     </dependencies>
 </project>

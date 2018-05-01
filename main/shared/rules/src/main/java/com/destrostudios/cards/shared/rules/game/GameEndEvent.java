@@ -6,7 +6,7 @@ import com.destrostudios.cards.shared.events.Event;
  *
  * @author Philipp
  */
-public class EndGameEvent extends Event {
+public class GameEndEvent extends Event {
 
     @Override
     public String toString() {

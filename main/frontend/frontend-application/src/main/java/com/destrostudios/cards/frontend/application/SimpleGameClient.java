@@ -1,10 +1,11 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.network.ActionNotificationMessage;
+import com.destrostudios.cards.shared.network.ActionRequestMessage;
+import com.destrostudios.cards.shared.network.SerializerSetup;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.TestGameSetup;
-import com.destrostudios.cards.shared.rules.game.StartGameEvent;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.Network;
@@ -21,34 +22,29 @@ import org.slf4j.LoggerFactory;
  *
  * @author Philipp
  */
-public class TestGameClient {
+public class SimpleGameClient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestGameClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleGameClient.class);
 
     private final Client client;
     private final Queue<Integer> randomQueue = new ArrayDeque<>();
     private final GameContext context;
     private final List<Consumer<Event>> actionCallbacks = new ArrayList<>();
 
-    public TestGameClient(String host, int port) throws IOException {
+    public SimpleGameClient(String host, int port) throws IOException {
+        SerializerSetup.ensureInitialized();
         client = Network.connectToServer(host, port);
         context = new GameContext(x -> randomQueue.poll());
         new TestGameSetup().testSetup(context.getData());
 
         client.addMessageListener((Client s, Message message) -> {
-            ActionNotificationMessage msg = (ActionNotificationMessage) message;
-            for (int rngs : msg.random) {
-                randomQueue.offer(rngs);
+            ActionNotificationMessage actionMessage = (ActionNotificationMessage) message;
+            for (int randomHistory : actionMessage.getRandomHistory()) {
+                randomQueue.offer(randomHistory);
             }
-            Event action;
-            if (msg.action == -1) {
-                action = new StartGameEvent();
-            } else {
-                action = context.getMoveGenerator().generateAvailableMoves(context.getData().entity(Components.TURN_PHASE)).get(msg.action);
-            }
-            context.getEvents().action(action);
+            context.getEvents().action(actionMessage.getAction());
             for (Consumer<Event> actionCallback : actionCallbacks) {
-                actionCallback.accept(action);
+                actionCallback.accept(actionMessage.getAction());
             }
         }, ActionNotificationMessage.class);
     }
@@ -58,8 +54,8 @@ public class TestGameClient {
         LOG.info("started client");
     }
 
-    public void requestAction(int actionIndex) {
-        client.send(new ActionRequestMessage(actionIndex));
+    public void requestAction(Event action) {
+        client.send(new ActionRequestMessage(action));
         LOG.info("sent action request");
     }
 

@@ -14,7 +14,7 @@ import java.util.*;
 public class CardGuiMapper {
 
     private static Map<ComponentDefinition, Color> colorComponents = new LinkedHashMap<>();
-    private static Map<ComponentDefinition, String> keywordcomponents = new LinkedHashMap<>();
+    private static Map<ComponentDefinition, String> keywordComponents = new LinkedHashMap<>();
     private static Map<ComponentDefinition, String> tribeComponents = new LinkedHashMap<>();
     static {
         colorComponents.put(Components.Color.NEUTRAL, Color.NEUTRAL);
@@ -24,11 +24,11 @@ public class CardGuiMapper {
         colorComponents.put(Components.Color.BLUE, Color.BLUE);
         colorComponents.put(Components.Color.BLACK, Color.BLACK);
 
-        keywordcomponents.put(Components.Ability.CHARGE, "Charge");
-        keywordcomponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
-        keywordcomponents.put(Components.Ability.HEXPROOF, "Hexproof");
-        keywordcomponents.put(Components.Ability.IMMUNE, "Immune");
-        keywordcomponents.put(Components.Ability.TAUNT, "Taunt");
+        keywordComponents.put(Components.Ability.CHARGE, "Charge");
+        keywordComponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
+        keywordComponents.put(Components.Ability.HEXPROOF, "Hexproof");
+        keywordComponents.put(Components.Ability.IMMUNE, "Immune");
+        keywordComponents.put(Components.Ability.TAUNT, "Taunt");
 
         tribeComponents.put(Components.Tribe.BEAST, "Beast");
         tribeComponents.put(Components.Tribe.DRAGON, "Dragon");
@@ -52,7 +52,7 @@ public class CardGuiMapper {
         List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);
         cardModel.setTribes(tribes);
 
-        List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordcomponents);
+        List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordComponents);
         cardModel.setKeywords(keywords);
 
         String castDescription = "Battlecry";

@@ -61,6 +61,12 @@ public class TestGameSetup {
         data.set(card3, Components.Tribe.HUMAN);
         data.set(card3, Components.Tribe.DRAGON);
         data.set(card3, Components.Ability.TAUNT);
+        int spell3 = data.createEntity();
+        int spell3Cost = data.createEntity();
+        data.set(spell3Cost, Components.Cost.TAP);
+        data.set(spell3Cost, Components.ManaAmount.RED, 2);
+        data.set(spell3, Components.COST_ENTITY, spell3Cost);
+        data.set(card3, Components.SPELL_ENTITIES, new Integer[]{spell3});
         data.set(card3, Components.FLAVOUR_TEXT, "\"I am op.\"");
         data.set(card3, Components.OWNED_BY, player2);
         data.set(card3, Components.BOARD);
@@ -86,6 +92,11 @@ public class TestGameSetup {
         data.set(card4, Components.Ability.HEXPROOF);
         data.set(card4, Components.Ability.IMMUNE);
         data.set(card4, Components.Ability.TAUNT);
+        int spell4 = data.createEntity();
+        int spell4Cost = data.createEntity();
+        data.set(spell4Cost, Components.ManaAmount.BLUE, 1);
+        data.set(spell4, Components.COST_ENTITY, spell4Cost);
+        data.set(card4, Components.SPELL_ENTITIES, new Integer[]{spell4});
         data.set(card4, Components.OWNED_BY, player2);
         data.set(card4, Components.BOARD);
         data.set(card4, Components.CREATURE_ZONE, 1);

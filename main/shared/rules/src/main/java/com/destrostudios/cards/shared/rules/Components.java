@@ -26,6 +26,7 @@ public class Components {
     public static final ComponentDefinition<Integer> OWNED_BY = new ComponentDefinition<>("ownedBy");
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
+    public static final ComponentDefinition<Integer[]> SPELL_ENTITIES = new ComponentDefinition<>("spellEntities");
 
     public static class Color {
         public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutralColor");
@@ -53,7 +54,7 @@ public class Components {
     }
 
     public static class Cost {
-        public static final ComponentDefinition<Integer> TAP = new ComponentDefinition<>("tapCost");
+        public static final ComponentDefinition<Void> TAP = new ComponentDefinition<>("tapCost");
     }
 
     public static class ManaAmount {

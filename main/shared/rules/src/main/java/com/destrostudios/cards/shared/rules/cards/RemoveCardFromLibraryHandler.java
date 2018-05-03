@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Philipp
  */
 public class RemoveCardFromLibraryHandler implements EventHandler<RemoveCardFromLibraryEvent> {
@@ -25,10 +24,13 @@ public class RemoveCardFromLibraryHandler implements EventHandler<RemoveCardFrom
 
     @Override
     public void onEvent(RemoveCardFromLibraryEvent event) {
-        int player = data.get(event.card, Components.OWNED_BY);
-        int libraryIndex = data.get(event.card, Components.LIBRARY);
-        for (int libraryCard : data.entities(Components.LIBRARY, x -> data.hasValue(x, Components.OWNED_BY, player), x -> data.get(x, Components.LIBRARY) > libraryIndex)) {
-            data.set(libraryCard, Components.LIBRARY, data.get(libraryCard, Components.LIBRARY) - 1);
+        int player = data.getComponent(event.card, Components.OWNED_BY);
+        int libraryIndex = data.getComponent(event.card, Components.LIBRARY);
+        for (int libraryCard : data.entities(Components.LIBRARY,
+                x -> data.hasValue(x, Components.OWNED_BY, player),
+                x -> data.getComponent(x, Components.LIBRARY) > libraryIndex)) {
+
+            data.setComponent(libraryCard, Components.LIBRARY, data.getComponent(libraryCard, Components.LIBRARY) - 1);
         }
         data.remove(event.card, Components.LIBRARY);
         LOG.info("removed {} from library", event.card);

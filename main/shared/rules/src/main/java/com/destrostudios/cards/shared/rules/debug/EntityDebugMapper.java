@@ -23,7 +23,7 @@ public class EntityDebugMapper {
         Map<String, Object> result = new TreeMap<>();
         for (ComponentDefinition<?> component : data.knownComponents()) {
             if (data.has(entity, component)) {
-                Object value = data.get(entity, component);
+                Object value = data.getComponent(entity, component);
                 result.put(component.getName(), value);
             }
         }

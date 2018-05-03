@@ -64,7 +64,7 @@ public class EventQueueImpl implements EventQueue {
     }
 
     @Override
-    public void response(Event event) {
+    public void fireSubevent(Event event) {
         enqueue(getQueue(depth), event);
     }
 

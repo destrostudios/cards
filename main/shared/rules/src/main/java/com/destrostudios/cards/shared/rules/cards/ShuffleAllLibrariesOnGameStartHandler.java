@@ -29,7 +29,7 @@ public class ShuffleAllLibrariesOnGameStartHandler implements EventHandler<GameS
     public void onEvent(GameStartEvent event) {
         IntArrayList players = data.entities(Components.NEXT_PLAYER);
         LOG.info("shuffling libraries of players {}", players);
-        players.stream().forEachOrdered(player -> events.response(new ShuffleLibraryEvent(player)));
+        players.stream().forEachOrdered(player -> events.fireSubevent(new ShuffleLibraryEvent(player)));
     }
 
 }

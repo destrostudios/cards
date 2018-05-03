@@ -25,9 +25,9 @@ public class AddCardToLibraryHandler implements EventHandler<AddCardToLibraryEve
 
     @Override
     public void onEvent(AddCardToLibraryEvent event) {
-        int player = data.get(event.card, Components.OWNED_BY);
+        int player = data.getComponent(event.card, Components.OWNED_BY);
         int librarySize = data.entities(Components.LIBRARY, entity -> data.hasValue(entity, Components.OWNED_BY, player)).size();
-        data.set(event.card, Components.LIBRARY, librarySize);
+        data.setComponent(event.card, Components.LIBRARY, librarySize);
         LOG.info("added {} to library", event.card);
     }
 

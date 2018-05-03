@@ -10,6 +10,6 @@ public interface EventQueue {
 
     void trigger(Event event);
 
-    void response(Event event);
+    void fireSubevent(Event event);
 
 }

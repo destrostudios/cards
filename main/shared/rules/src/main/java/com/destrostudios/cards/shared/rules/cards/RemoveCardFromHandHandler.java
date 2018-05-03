@@ -25,10 +25,13 @@ public class RemoveCardFromHandHandler implements EventHandler<RemoveCardFromHan
 
     @Override
     public void onEvent(RemoveCardFromHandEvent event) {
-        int player = data.get(event.card, Components.OWNED_BY);
-        int handIndex = data.get(event.card, Components.HAND_CARDS);
-        for (int handCard : data.entities(Components.HAND_CARDS, x -> data.hasValue(x, Components.OWNED_BY, player), x -> data.get(x, Components.HAND_CARDS) > handIndex)) {
-            data.set(handCard, Components.HAND_CARDS, data.get(handCard, Components.HAND_CARDS) - 1);
+        int player = data.getComponent(event.card, Components.OWNED_BY);
+        int handIndex = data.getComponent(event.card, Components.HAND_CARDS);
+        for (int handCard : data.entities(Components.HAND_CARDS,
+                x -> data.hasValue(x, Components.OWNED_BY, player),
+                x -> data.getComponent(x, Components.HAND_CARDS) > handIndex)) {
+
+            data.setComponent(handCard, Components.HAND_CARDS, data.getComponent(handCard, Components.HAND_CARDS) - 1);
         }
         data.remove(event.card, Components.HAND_CARDS);
         LOG.info("removed {} from hand", event.card);

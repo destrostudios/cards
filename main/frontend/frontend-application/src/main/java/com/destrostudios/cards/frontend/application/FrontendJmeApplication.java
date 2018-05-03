@@ -150,19 +150,19 @@ public class FrontendJmeApplication extends SimpleApplication implements ActionL
 
     private int getCardZoneIndex(int cardEntity) {
         if (gameClient.getGame().getData().has(cardEntity, Components.LIBRARY)) {
-            return gameClient.getGame().getData().get(cardEntity, Components.LIBRARY);
+            return gameClient.getGame().getData().getComponent(cardEntity, Components.LIBRARY);
         }
         else if (gameClient.getGame().getData().has(cardEntity, Components.HAND_CARDS)) {
-            return gameClient.getGame().getData().get(cardEntity, Components.HAND_CARDS);
+            return gameClient.getGame().getData().getComponent(cardEntity, Components.HAND_CARDS);
         }
         else if (gameClient.getGame().getData().has(cardEntity, Components.CREATURE_ZONE)) {
-            return gameClient.getGame().getData().get(cardEntity, Components.CREATURE_ZONE);
+            return gameClient.getGame().getData().getComponent(cardEntity, Components.CREATURE_ZONE);
         }
         return -1;
     }
 
     private CardZone getCardZone(int cardEntity) {
-        int playerEntity = gameClient.getGame().getData().get(cardEntity, Components.OWNED_BY);
+        int playerEntity = gameClient.getGame().getData().getComponent(cardEntity, Components.OWNED_BY);
         PlayerZones playerZones = playerZonesMap.get(playerEntity);
         if (gameClient.getGame().getData().has(cardEntity, Components.LIBRARY)) {
             return playerZones.getDeckZone();

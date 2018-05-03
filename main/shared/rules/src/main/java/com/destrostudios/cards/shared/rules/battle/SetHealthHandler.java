@@ -26,7 +26,7 @@ public class SetHealthHandler implements EventHandler<SetHealthEvent> {
     @Override
     public void onEvent(SetHealthEvent event) {
         LOG.info("setting health of {} to {}", event.target, event.health);
-        data.set(event.target, Components.HEALTH, event.health);
+        data.setComponent(event.target, Components.HEALTH, event.health);
     }
 
 }

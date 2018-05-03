@@ -44,10 +44,10 @@ public class CardGuiMapper {
         List<Color> colors = createListBasedOnComponents(entityData, cardEntity, colorComponents);
         cardModel.setColors(colors);
 
-        String title = entityData.get(cardEntity, Components.DISPLAY_NAME);
+        String title = entityData.getComponent(cardEntity, Components.DISPLAY_NAME);
         cardModel.setTitle(title);
 
-        Integer costEntity = entityData.get(cardEntity, Components.COST_ENTITY);
+        Integer costEntity = entityData.getComponent(cardEntity, Components.COST_ENTITY);
         ManaCost manaCost = createManaCost(cardModel, entityData, costEntity);
         cardModel.setManaCost(manaCost);
 
@@ -64,11 +64,11 @@ public class CardGuiMapper {
         cardModel.setDescription(description);
 
         List<Spell> spells = new LinkedList<>();
-        Integer[] spellEntities = entityData.get(cardEntity, Components.SPELL_ENTITIES);
+        Integer[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
                 Spell spell = new Spell(cardModel);
-                Integer spellCostEntity = entityData.get(spellEntity, Components.COST_ENTITY);
+                Integer spellCostEntity = entityData.getComponent(spellEntity, Components.COST_ENTITY);
                 Cost cost = createCost(spell, entityData, spellCostEntity);
                 spell.setCost(cost);
                 spell.setDescription("Spell Description");
@@ -77,16 +77,16 @@ public class CardGuiMapper {
         }
         cardModel.setSpells(spells);
 
-        Integer attackDamage = entityData.get(cardEntity, Components.ATTACK);
+        Integer attackDamage = entityData.getComponent(cardEntity, Components.ATTACK);
         cardModel.setAttackDamage(attackDamage);
 
-        Integer lifepoints = entityData.get(cardEntity, Components.HEALTH);
+        Integer lifepoints = entityData.getComponent(cardEntity, Components.HEALTH);
         cardModel.setLifepoints(lifepoints);
 
         boolean isDamaged = entityData.has(cardEntity, Components.DAMAGED);
         cardModel.setDamaged(isDamaged);
 
-        String flavourText = entityData.get(cardEntity, Components.FLAVOUR_TEXT);
+        String flavourText = entityData.getComponent(cardEntity, Components.FLAVOUR_TEXT);
         cardModel.setFlavourText(flavourText);
     }
 
@@ -113,27 +113,27 @@ public class CardGuiMapper {
     private static ManaCost createManaCost(BoardObjectModel parentModel, EntityData entityData, Integer costEntity) {
         if (costEntity != null) {
             ManaCost manaCost = new ManaCost(parentModel);
-            Integer neutralManaAmount = entityData.get(costEntity, Components.ManaAmount.NEUTRAL);
+            Integer neutralManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.NEUTRAL);
             if (neutralManaAmount != null) {
                 manaCost.set(Color.NEUTRAL, neutralManaAmount);
             }
-            Integer whiteManaAmount = entityData.get(costEntity, Components.ManaAmount.WHITE);
+            Integer whiteManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.WHITE);
             if (whiteManaAmount != null) {
                 manaCost.set(Color.WHITE, whiteManaAmount);
             }
-            Integer redManaAmount = entityData.get(costEntity, Components.ManaAmount.RED);
+            Integer redManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.RED);
             if (redManaAmount != null) {
                 manaCost.set(Color.RED, redManaAmount);
             }
-            Integer greenManaAmount = entityData.get(costEntity, Components.ManaAmount.GREEN);
+            Integer greenManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.GREEN);
             if (greenManaAmount != null) {
                 manaCost.set(Color.GREEN, greenManaAmount);
             }
-            Integer blueManaAmount = entityData.get(costEntity, Components.ManaAmount.BLUE);
+            Integer blueManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.BLUE);
             if (blueManaAmount != null) {
                 manaCost.set(Color.BLUE, blueManaAmount);
             }
-            Integer blackManaAmount = entityData.get(costEntity, Components.ManaAmount.BLACK);
+            Integer blackManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.BLACK);
             if (blackManaAmount != null) {
                 manaCost.set(Color.BLACK, blackManaAmount);
             }

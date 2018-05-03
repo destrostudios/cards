@@ -33,22 +33,22 @@ public class EntityData {
     }
 
     public <T> boolean hasValue(int entity, ComponentDefinition<T> component, T value) {
-        return has(entity, component) && Objects.equals(get(entity, component), value);
+        return has(entity, component) && Objects.equals(getComponent(entity, component), value);
     }
 
     public <T> T getOrElse(int entity, ComponentDefinition<T> component, T defaultValue) {
         return getComponentMap(component).getOrDefault(entity, defaultValue);
     }
 
-    public <T> T get(int entity, ComponentDefinition<T> component) {
+    public <T> T getComponent(int entity, ComponentDefinition<T> component) {
         return getComponentMap(component).get(entity);
     }
 
-    public void set(int entity, ComponentDefinition<Void> component) {
-        set(entity, component, null);
+    public void setComponent(int entity, ComponentDefinition<Void> component) {
+        setComponent(entity, component, null);
     }
 
-    public <T> void set(int entity, ComponentDefinition<T> component, T value) {
+    public <T> void setComponent(int entity, ComponentDefinition<T> component, T value) {
         getComponentMap(component).put(entity, value);
     }
 

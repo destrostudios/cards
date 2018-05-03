@@ -3,13 +3,11 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.events.Event;
 
 /**
- *
  * @author Philipp
  */
 public class DrawCardEvent extends Event {
 
     public int player;
-    public int card;
 
     public DrawCardEvent(int player) {
         this.player = player;
@@ -17,6 +15,6 @@ public class DrawCardEvent extends Event {
 
     @Override
     public String toString() {
-        return "DrawCardEvent{" + "player=" + player + ", card=" + card + '}';
+        return "DrawCardEvent{" + "player=" + player + '}';
     }
 }

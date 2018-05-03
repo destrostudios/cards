@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Philipp
  */
 public class DrawCardHandler implements EventHandler<DrawCardEvent> {
@@ -31,14 +30,13 @@ public class DrawCardHandler implements EventHandler<DrawCardEvent> {
             int card = library.get(0);
             for (int i = 1; i < library.size(); i++) {
                 int candidate = library.get(i);
-                if (data.get(candidate, Components.LIBRARY) > data.get(card, Components.LIBRARY)) {
+                if (data.getComponent(candidate, Components.LIBRARY) > data.getComponent(card, Components.LIBRARY)) {
                     card = candidate;
                 }
             }
-            event.card = card;
-            LOG.info("player {} is drawing card {}", event.player, event.card);
-            events.response(new RemoveCardFromLibraryEvent(event.card));
-            events.response(new AddCardToHandEvent(event.card));
+            LOG.info("player {} is drawing card {}", event.player, card);
+            events.fireSubevent(new RemoveCardFromLibraryEvent(card));
+            events.fireSubevent(new AddCardToHandEvent(card));
         } else {
             //fatigue
             LOG.info("player {} tried to draw a card but has none left", event.player);

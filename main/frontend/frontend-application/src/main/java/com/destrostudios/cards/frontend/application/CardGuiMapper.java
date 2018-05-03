@@ -83,7 +83,7 @@ public class CardGuiMapper {
         Integer lifepoints = entityData.getComponent(cardEntity, Components.HEALTH);
         cardModel.setLifepoints(lifepoints);
 
-        boolean isDamaged = entityData.has(cardEntity, Components.DAMAGED);
+        boolean isDamaged = entityData.hasComponent(cardEntity, Components.DAMAGED);
         cardModel.setDamaged(isDamaged);
 
         String flavourText = entityData.getComponent(cardEntity, Components.FLAVOUR_TEXT);
@@ -93,7 +93,7 @@ public class CardGuiMapper {
     private static <T> List<T> createListBasedOnComponents(EntityData entityData, int entity, Map<ComponentDefinition, T> componentValueMap) {
         List<T> list = new LinkedList<>();
         for (Map.Entry<ComponentDefinition, T> componentValueEntry : componentValueMap.entrySet()) {
-            if (entityData.has(entity, componentValueEntry.getKey())) {
+            if (entityData.hasComponent(entity, componentValueEntry.getKey())) {
                 list.add(componentValueEntry.getValue());
             }
         }
@@ -103,7 +103,7 @@ public class CardGuiMapper {
     private static Cost createCost(BoardObjectModel parentModel, EntityData entityData, Integer costEntity) {
         if (costEntity != null) {
             Cost cost = new Cost(parentModel);
-            cost.setTap(entityData.has(costEntity, Components.Cost.TAP));
+            cost.setTap(entityData.hasComponent(costEntity, Components.Cost.TAP));
             cost.setManaCost(createManaCost(cost, entityData, costEntity));
             return cost;
         }

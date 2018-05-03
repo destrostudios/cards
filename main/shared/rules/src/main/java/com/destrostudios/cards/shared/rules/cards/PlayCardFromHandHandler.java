@@ -23,7 +23,7 @@ public class PlayCardFromHandHandler implements EventHandler<PlayCardFromHandEve
 
     @Override
     public void onEvent(PlayCardFromHandEvent event) {
-        events.fireSubevent(new RemoveCardFromHandEvent(event.card));
-        events.fireSubevent(new AddCardToBoardEvent(event.card));
+        events.fireSubEvent(new RemoveCardFromHandEvent(event.card));
+        events.fireSubEvent(new AddCardToBoardEvent(event.card));
     }
 }

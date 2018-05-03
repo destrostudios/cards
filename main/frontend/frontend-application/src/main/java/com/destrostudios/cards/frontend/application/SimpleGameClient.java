@@ -42,7 +42,7 @@ public class SimpleGameClient {
             for (int randomHistory : actionMessage.getRandomHistory()) {
                 randomQueue.offer(randomHistory);
             }
-            context.getEvents().action(actionMessage.getAction());
+            context.getEvents().fireActionEvent(actionMessage.getAction());
             for (Consumer<Event> actionCallback : actionCallbacks) {
                 actionCallback.accept(actionMessage.getAction());
             }

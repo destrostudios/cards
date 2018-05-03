@@ -65,7 +65,7 @@ public class SimpleGameServer {
     private void applyAction(Event action) {
         IntArrayList history = trackedRandom.getHistory();
         history.clear();
-        context.getEvents().action(action);
+        context.getEvents().fireActionEvent(action);
         int[] randomHistory = new int[history.size()];
         for (int i = 0; i < randomHistory.length; i++) {
             randomHistory[i] = history.get(i);

@@ -1,19 +1,23 @@
-package com.destrostudios.cards.shared.rules.debug;
+package com.destrostudios.cards.shared.entities;
 
-import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.destrostudios.cards.shared.entities.EntityData;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.IntPredicate;
 
 /**
  *
  * @author Philipp
  */
-public class EntityDebugMapper {
+public class DebugEntityMapper {
 
-    public Map<Integer, Map<String, Object>> toDebugObjects(EntityData data) {
+    public Map<Integer, Map<String, Object>> toDebugObjects(EntityData data, IntPredicate... predicates) {
         Map<Integer, Map<String, Object>> result = new TreeMap<>();
         data.getEntities().foreach(entity -> {
+            for (IntPredicate predicate : predicates) {
+                if(!predicate.test(entity)) {
+                    return;
+                }
+            }
             result.put(entity, toDebugObject(data, entity));
         });
         return result;
@@ -22,7 +26,7 @@ public class EntityDebugMapper {
     private Map<String, Object> toDebugObject(EntityData data, int entity) {
         Map<String, Object> result = new TreeMap<>();
         for (ComponentDefinition<?> component : data.knownComponents()) {
-            if (data.has(entity, component)) {
+            if (data.hasComponent(entity, component)) {
                 Object value = data.getComponent(entity, component);
                 result.put(component.getName(), value);
             }

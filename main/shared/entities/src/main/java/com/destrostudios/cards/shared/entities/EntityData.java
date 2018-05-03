@@ -28,15 +28,15 @@ public class EntityData {
         this.entitySequence = entitySequence;
     }
 
-    public boolean has(int entity, ComponentDefinition<?> component) {
+    public boolean hasComponent(int entity, ComponentDefinition<?> component) {
         return getComponentMap(component).containsKey(entity);
     }
 
-    public <T> boolean hasValue(int entity, ComponentDefinition<T> component, T value) {
-        return has(entity, component) && Objects.equals(getComponent(entity, component), value);
+    public <T> boolean hasComponentValue(int entity, ComponentDefinition<T> component, T value) {
+        return hasComponent(entity, component) && Objects.equals(getComponent(entity, component), value);
     }
 
-    public <T> T getOrElse(int entity, ComponentDefinition<T> component, T defaultValue) {
+    public <T> T getComponentOrDefault(int entity, ComponentDefinition<T> component, T defaultValue) {
         return getComponentMap(component).getOrDefault(entity, defaultValue);
     }
 
@@ -52,7 +52,7 @@ public class EntityData {
         getComponentMap(component).put(entity, value);
     }
 
-    public void remove(int entity, ComponentDefinition<?> component) {
+    public void removeComponent(int entity, ComponentDefinition<?> component) {
         getComponentMap(component).remove(entity);
     }
 
@@ -88,11 +88,11 @@ public class EntityData {
         return result.get(0);
     }
 
-    public Set<ComponentDefinition<?>> knownComponents() {
+    Set<ComponentDefinition<?>> knownComponents() {
         return components.keySet();
     }
 
-    public IntSet getEntities() {
+    IntSet getEntities() {
         return entities;
     }
 

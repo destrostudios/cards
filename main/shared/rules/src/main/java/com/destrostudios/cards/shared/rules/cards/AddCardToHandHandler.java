@@ -26,7 +26,7 @@ public class AddCardToHandHandler implements EventHandler<AddCardToHandEvent> {
     @Override
     public void onEvent(AddCardToHandEvent event) {
         int player = data.getComponent(event.card, Components.OWNED_BY);
-        int handSize = data.entities(Components.HAND_CARDS, entity -> data.hasValue(entity, Components.OWNED_BY, player)).size();
+        int handSize = data.entities(Components.HAND_CARDS, entity -> data.hasComponentValue(entity, Components.OWNED_BY, player)).size();
         data.setComponent(event.card, Components.HAND_CARDS, handSize);
         LOG.info("added {} to hand", event.card);
     }

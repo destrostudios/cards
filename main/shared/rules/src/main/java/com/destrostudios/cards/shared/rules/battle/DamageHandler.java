@@ -25,7 +25,7 @@ public class DamageHandler implements EventHandler<DamageEvent> {
     @Override
     public void onEvent(DamageEvent event) {
         LOG.info("dealing {} damage to {}", event.damage, event.target);
-        events.fireSubevent(new SetHealthEvent(event.target, data.getOrElse(event.target, Components.HEALTH, 0) - event.damage));
+        events.fireSubEvent(new SetHealthEvent(event.target, data.getComponentOrDefault(event.target, Components.HEALTH, 0) - event.damage));
     }
 
 }

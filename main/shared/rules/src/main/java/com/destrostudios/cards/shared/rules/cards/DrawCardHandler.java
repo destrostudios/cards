@@ -25,7 +25,7 @@ public class DrawCardHandler implements EventHandler<DrawCardEvent> {
 
     @Override
     public void onEvent(DrawCardEvent event) {
-        IntArrayList library = data.entities(Components.LIBRARY, entity -> data.hasValue(entity, Components.OWNED_BY, event.player));
+        IntArrayList library = data.entities(Components.LIBRARY, entity -> data.hasComponentValue(entity, Components.OWNED_BY, event.player));
         if (library.size() != 0) {
             int card = library.get(0);
             for (int i = 1; i < library.size(); i++) {
@@ -35,8 +35,8 @@ public class DrawCardHandler implements EventHandler<DrawCardEvent> {
                 }
             }
             LOG.info("player {} is drawing card {}", event.player, card);
-            events.fireSubevent(new RemoveCardFromLibraryEvent(card));
-            events.fireSubevent(new AddCardToHandEvent(card));
+            events.fireSubEvent(new RemoveCardFromLibraryEvent(card));
+            events.fireSubEvent(new AddCardToHandEvent(card));
         } else {
             //fatigue
             LOG.info("player {} tried to draw a card but has none left", event.player);

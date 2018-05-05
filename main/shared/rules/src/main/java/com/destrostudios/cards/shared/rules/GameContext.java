@@ -1,6 +1,8 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.SimpleEntityData;
+import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.events.EventQueueImpl;
@@ -18,9 +20,9 @@ import com.destrostudios.cards.shared.rules.cards.RemoveCardFromHandEvent;
 import com.destrostudios.cards.shared.rules.cards.RemoveCardFromHandHandler;
 import com.destrostudios.cards.shared.rules.cards.RemoveCardFromLibraryEvent;
 import com.destrostudios.cards.shared.rules.cards.RemoveCardFromLibraryHandler;
+import com.destrostudios.cards.shared.rules.cards.ShuffleAllLibrariesOnGameStartHandler;
 import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEvent;
 import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryHandler;
-import com.destrostudios.cards.shared.rules.cards.ShuffleAllLibrariesOnGameStartHandler;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import java.util.function.IntUnaryOperator;
 
@@ -37,22 +39,34 @@ public class GameContext {
 
     public GameContext(IntUnaryOperator random) {
         this.random = random;
-        data = new EntityData();
+        data = new SimpleEntityData();
         dispatcher = new EventDispatcher();
         events = new EventQueueImpl(dispatcher::fire);
         initListeners();
     }
 
+    public GameContext(EntityData data, EventDispatcher dispatcher, EventQueue events, IntUnaryOperator random) {
+        this.data = data;
+        this.dispatcher = dispatcher;
+        this.events = events;
+        this.random = random;
+        initListeners();
+    }
+
     private void initListeners() {
-        dispatcher.addListeners(DamageEvent.class, new DamageHandler(data, events));
-        dispatcher.addListeners(SetHealthEvent.class, new SetHealthHandler(data, events));
-        dispatcher.addListeners(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler(data, events));
-        dispatcher.addListeners(ShuffleLibraryEvent.class, new ShuffleLibraryHandler(data, events, random));
-        dispatcher.addListeners(DrawCardEvent.class, new DrawCardHandler(data, events));
-        dispatcher.addListeners(AddCardToHandEvent.class, new AddCardToHandHandler(data, events));
-        dispatcher.addListeners(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler(data, events));
-        dispatcher.addListeners(AddCardToLibraryEvent.class, new AddCardToLibraryHandler(data, events));
-        dispatcher.addListeners(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler(data, events));
+        addGameEventHandler(DamageEvent.class, new DamageHandler());
+        addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
+        addGameEventHandler(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler());
+        addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
+        addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
+        addGameEventHandler(AddCardToHandEvent.class, new AddCardToHandHandler());
+        addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
+        addGameEventHandler(AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
+        addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
+    }
+
+    private <T extends Event> void addGameEventHandler(Class<T> eventType, GameEventHandler<T> handler) {
+        dispatcher.addListeners(eventType, event -> handler.handle(data, events, random, event));
     }
 
     public EntityData getData() {

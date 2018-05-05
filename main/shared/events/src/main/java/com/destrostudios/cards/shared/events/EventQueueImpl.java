@@ -37,7 +37,7 @@ public class EventQueueImpl implements EventQueue {
         successiveEventsCount = 0;
         processEvents();
     }
-
+    
     private void processEvents() {
         Queue<Event> queue = getQueue(depth);
         depth++;

@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.entities.collections;
 
 import java.util.Arrays;
 import java.util.PrimitiveIterator;
-import java.util.Random;
 import java.util.function.IntConsumer;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
@@ -26,6 +25,10 @@ public class IntArrayList implements Iterable<Integer> {
 
     public int get(int index) {
         return data[index];
+    }
+
+    public void set(int index, int value) {
+        data[index] = value;
     }
 
     public void add(int value) {

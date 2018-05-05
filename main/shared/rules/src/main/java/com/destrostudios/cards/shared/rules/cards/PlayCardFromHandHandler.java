@@ -1,28 +1,22 @@
 package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.GameEventHandler;
+import java.util.function.IntUnaryOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Implemented by Gerd-Emmanuel Nandzik
- **/
-public class PlayCardFromHandHandler implements EventHandler<PlayCardFromHandEvent> {
+ *
+ */
+public class PlayCardFromHandHandler implements GameEventHandler<PlayCardFromHandEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(PlayCardFromHandHandler.class);
 
-    private final EntityData data;
-    private final EventQueue events;
-
-    public PlayCardFromHandHandler(EntityData data, EventQueue events) {
-        this.data = data;
-        this.events = events;
-    }
-
     @Override
-    public void onEvent(PlayCardFromHandEvent event) {
+    public void handle(EntityData data, EventQueue events, IntUnaryOperator random, PlayCardFromHandEvent event) {
         events.fireSubEvent(new RemoveCardFromHandEvent(event.card));
         events.fireSubEvent(new AddCardToBoardEvent(event.card));
     }

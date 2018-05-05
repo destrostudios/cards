@@ -66,7 +66,10 @@ public class GameContext {
     }
 
     private <T extends Event> void addGameEventHandler(Class<T> eventType, GameEventHandler<T> handler) {
-        dispatcher.addListeners(eventType, event -> handler.handle(data, events, random, event));
+        handler.data = data;
+        handler.events = events;
+        handler.random = random;
+        dispatcher.addListeners(eventType, handler::handle);
     }
 
     public EntityData getData() {

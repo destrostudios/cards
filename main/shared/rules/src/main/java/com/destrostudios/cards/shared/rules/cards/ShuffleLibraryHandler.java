@@ -1,23 +1,20 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
-import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import java.util.function.IntUnaryOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Philipp
  */
-public class ShuffleLibraryHandler implements GameEventHandler<ShuffleLibraryEvent> {
+public class ShuffleLibraryHandler extends GameEventHandler<ShuffleLibraryEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ShuffleLibraryHandler.class);
 
     @Override
-    public void handle(EntityData data, EventQueue events, IntUnaryOperator random, ShuffleLibraryEvent event) {
+    public void handle(ShuffleLibraryEvent event) {
         IntArrayList libraryCards = data.entities(Components.LIBRARY, (cardEntity) -> data.getComponent(cardEntity, Components.OWNED_BY) == event.player);
         libraryCards.shuffle(random);
 

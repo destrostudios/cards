@@ -9,7 +9,11 @@ import java.util.function.IntUnaryOperator;
  *
  * @author Philipp
  */
-public interface GameEventHandler<T extends Event> {
+public abstract class GameEventHandler<T extends Event> {
+    
+    public EntityData data;
+    public EventQueue events;
+    public IntUnaryOperator random;
 
-    void handle(EntityData data, EventQueue events, IntUnaryOperator random, T event);
+    public abstract void handle(T event);
 }

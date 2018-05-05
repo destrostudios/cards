@@ -1,6 +1,7 @@
-package com.destrostudios.cards.shared.rules;
+package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.rules.Components;
 
 /**
  *
@@ -66,7 +67,7 @@ public class TestGameSetup {
         data.setComponent(spell3Cost, Components.Cost.TAP);
         data.setComponent(spell3Cost, Components.ManaAmount.RED, 2);
         data.setComponent(spell3, Components.COST_ENTITY, spell3Cost);
-        data.setComponent(card3, Components.SPELL_ENTITIES, new Integer[]{spell3});
+        data.setComponent(card3, Components.SPELL_ENTITIES, new int[]{spell3});
         data.setComponent(card3, Components.FLAVOUR_TEXT, "\"I am op.\"");
         data.setComponent(card3, Components.OWNED_BY, player2);
         data.setComponent(card3, Components.BOARD);
@@ -96,7 +97,7 @@ public class TestGameSetup {
         int spell4Cost = data.createEntity();
         data.setComponent(spell4Cost, Components.ManaAmount.BLUE, 1);
         data.setComponent(spell4, Components.COST_ENTITY, spell4Cost);
-        data.setComponent(card4, Components.SPELL_ENTITIES, new Integer[]{spell4});
+        data.setComponent(card4, Components.SPELL_ENTITIES, new int[]{spell4});
         data.setComponent(card4, Components.OWNED_BY, player2);
         data.setComponent(card4, Components.BOARD);
         data.setComponent(card4, Components.CREATURE_ZONE, 1);

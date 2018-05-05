@@ -4,10 +4,11 @@ import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.ActionNotificationMessage;
 import com.destrostudios.cards.shared.network.ActionRequestMessage;
+import com.destrostudios.cards.shared.network.FullGameStateMessage;
+import com.destrostudios.cards.shared.network.GameStateMessageConverter;
 import com.destrostudios.cards.shared.network.SerializerSetup;
 import com.destrostudios.cards.shared.network.TrackedRandom;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.TestGameSetup;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.jme3.network.ConnectionListener;
 import com.jme3.network.HostedConnection;
@@ -32,6 +33,7 @@ public class SimpleGameServer {
     private final Server server;
     private final TrackedRandom trackedRandom;
     private final GameContext context;
+    private final FullGameStateMessage initialSetup;
     private final List<ActionNotificationMessage> actionHistory = new ArrayList<>();
 
     public SimpleGameServer(int port) throws IOException {
@@ -40,11 +42,14 @@ public class SimpleGameServer {
         trackedRandom = new TrackedRandom(new SecureRandom());
         context = new GameContext(trackedRandom::nextInt);
         new TestGameSetup().testSetup(context.getData());
+        initialSetup = new GameStateMessageConverter().toMessage(context.getData());
+
         applyAction(new GameStartEvent());
 
         server.addConnectionListener(new ConnectionListener() {
             @Override
             public void connectionAdded(Server server, HostedConnection hc) {
+                hc.send(initialSetup);
                 for (ActionNotificationMessage message : actionHistory) {
                     hc.send(message);
                 }

@@ -64,7 +64,7 @@ public class CardGuiMapper {
         cardModel.setDescription(description);
 
         List<Spell> spells = new LinkedList<>();
-        Integer[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
+        int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
                 Spell spell = new Spell(cardModel);

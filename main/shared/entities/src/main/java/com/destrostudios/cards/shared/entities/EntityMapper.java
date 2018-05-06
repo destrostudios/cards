@@ -12,37 +12,31 @@ import java.util.function.IntPredicate;
  */
 public class EntityMapper {
 
-    public int getNextEntity(EntityData data) {
+    private final SimpleEntityData data;
+
+    public EntityMapper(EntityData data) {
+        this.data = getAsSimple(data);
+    }
+
+    private static SimpleEntityData getAsSimple(EntityData data) {
         if (data instanceof SimpleEntityData) {
-            return ((SimpleEntityData) data).getNextEntity();
+            return (SimpleEntityData) data;
         }
         if (data instanceof HasEntityData) {
-            return getNextEntity(((HasEntityData) data).getEntityData());
+            return getAsSimple(((HasEntityData) data).getEntityData());
         }
         throw new UnsupportedOperationException();
     }
 
-    public void setNextEntity(EntityData data, int value) {
-        if (data instanceof SimpleEntityData) {
-            ((SimpleEntityData) data).setNextEntity(value);
-        } else if (data instanceof HasEntityData) {
-            setNextEntity(((HasEntityData) data).getEntityData(), value);
-        } else {
-            throw new UnsupportedOperationException();
-        }
+    public int getNextEntity() {
+        return data.getNextEntity();
     }
 
-    public Map<ComponentDefinition<?>, Map<Integer, Object>> toTables(EntityData data) {
-        if (data instanceof SimpleEntityData) {
-            return toTables((SimpleEntityData) data);
-        }
-        if (data instanceof HasEntityData) {
-            return toTables(((HasEntityData) data).getEntityData());
-        }
-        throw new UnsupportedOperationException();
+    public void setNextEntity(int value) {
+        data.setNextEntity(value);
     }
 
-    public Map<ComponentDefinition<?>, Map<Integer, Object>> toTables(SimpleEntityData data) {
+    public Map<ComponentDefinition<?>, Map<Integer, Object>> toComponentTables() {
         Map<ComponentDefinition<?>, Map<Integer, Object>> result = new LinkedHashMap<>();
         data.knownComponents().forEach(component -> {
             TreeMap<Integer, Object> map = new TreeMap<>();
@@ -54,17 +48,7 @@ public class EntityMapper {
         return result;
     }
 
-    public Map<Integer, Map<ComponentDefinition<?>, Object>> toMaps(EntityData data, IntPredicate... predicates) {
-        if (data instanceof SimpleEntityData) {
-            return toMaps((SimpleEntityData) data, predicates);
-        }
-        if (data instanceof HasEntityData) {
-            return toMaps(((HasEntityData) data).getEntityData(), predicates);
-        }
-        throw new UnsupportedOperationException();
-    }
-
-    private Map<Integer, Map<ComponentDefinition<?>, Object>> toMaps(SimpleEntityData data, IntPredicate... predicates) {
+    public Map<Integer, Map<ComponentDefinition<?>, Object>> toObjectMaps(IntPredicate... predicates) {
         Map<Integer, Map<ComponentDefinition<?>, Object>> result = new TreeMap<>();
         data.getEntities().forEach(entity -> {
             for (IntPredicate predicate : predicates) {
@@ -72,12 +56,12 @@ public class EntityMapper {
                     return;
                 }
             }
-            result.put(entity, toMap(data, entity));
+            result.put(entity, toMap(entity));
         });
         return result;
     }
 
-    private Map<ComponentDefinition<?>, Object> toMap(SimpleEntityData data, int entity) {
+    private Map<ComponentDefinition<?>, Object> toMap(int entity) {
         Map<ComponentDefinition<?>, Object> result = new TreeMap<>(Comparator.comparing(ComponentDefinition::getName));
         for (ComponentDefinition<?> component : data.knownComponents()) {
             if (data.hasComponent(entity, component)) {

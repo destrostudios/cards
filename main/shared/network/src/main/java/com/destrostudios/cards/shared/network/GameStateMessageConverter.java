@@ -14,20 +14,27 @@ import java.util.stream.Collectors;
  */
 public class GameStateMessageConverter {
 
-    public FullGameStateMessage toMessage(EntityData data) {
-        Map<ComponentDefinition<?>, Map<Integer, Object>> tables = new EntityMapper().toTables(data);
+    private final EntityData data;
+
+    public GameStateMessageConverter(EntityData data) {
+        this.data = data;
+    }
+
+    public FullGameStateMessage exportStateMessage() {
+        EntityMapper mapper = new EntityMapper(data);
+        Map<ComponentDefinition<?>, Map<Integer, Object>> tables = mapper.toComponentTables();
 
         List<Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>>> list = new ArrayList<>();
         for (Map.Entry<ComponentDefinition<?>, Map<Integer, Object>> entry : tables.entrySet()) {
             list.add(new Tuple<>(entry.getKey(), entry.getValue().entrySet().stream().map(e -> new Tuple<>(e.getKey(), e.getValue())).collect(Collectors.toList())));
         }
 
-        return new FullGameStateMessage(list, new EntityMapper().getNextEntity(data));
+        return new FullGameStateMessage(list, mapper.getNextEntity());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void fromMessage(FullGameStateMessage message, EntityData data) {
-        new EntityMapper().setNextEntity(data, message.getNextEntity());
+    public void importStateMessage(FullGameStateMessage message) {
+        new EntityMapper(data).setNextEntity(message.getNextEntity());
         for (Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>> tuple : message.getList()) {
             ComponentDefinition component = tuple.getKey();
             for (Tuple<Integer, Object> tuple1 : tuple.getValue()) {

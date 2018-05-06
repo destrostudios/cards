@@ -36,10 +36,11 @@ public class SimpleGameClient {
         SerializerSetup.ensureInitialized();
         client = Network.connectToServer(host, port);
         context = new GameContext(x -> randomQueue.poll());
+        GameStateMessageConverter gameStateMessageConverter = new GameStateMessageConverter(context.getData());
 
         client.addMessageListener((Client s, Message message) -> {
             FullGameStateMessage stateMessage = (FullGameStateMessage) message;
-            new GameStateMessageConverter().fromMessage(stateMessage, context.getData());
+            gameStateMessageConverter.importStateMessage(stateMessage);
         }, FullGameStateMessage.class);
 
         client.addMessageListener((Client s, Message message) -> {

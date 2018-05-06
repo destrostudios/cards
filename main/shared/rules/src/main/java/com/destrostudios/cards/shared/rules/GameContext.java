@@ -30,22 +30,22 @@ import java.util.function.IntUnaryOperator;
  *
  * @author Philipp
  */
-public class GameContext {
+public class GameContext<EntityDataType extends EntityData> {
 
-    private final EntityData data;
+    private final EntityDataType data;
     private final EventDispatcher dispatcher;
     private final EventQueue events;
     private final IntUnaryOperator random;
 
-    public GameContext(IntUnaryOperator random) {
-        this.random = random;
-        data = new SimpleEntityData();
+    public GameContext(EntityDataType data, IntUnaryOperator random) {
+        this.data = data;
         dispatcher = new EventDispatcher();
         events = new EventQueueImpl(dispatcher::fire);
+        this.random = random;
         initListeners();
     }
 
-    public GameContext(EntityData data, EventDispatcher dispatcher, EventQueue events, IntUnaryOperator random) {
+    public GameContext(EntityDataType data, EventDispatcher dispatcher, EventQueue events, IntUnaryOperator random) {
         this.data = data;
         this.dispatcher = dispatcher;
         this.events = events;
@@ -72,7 +72,7 @@ public class GameContext {
         dispatcher.addListeners(eventType, handler::handle);
     }
 
-    public EntityData getData() {
+    public EntityDataType getData() {
         return data;
     }
 

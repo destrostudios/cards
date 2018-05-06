@@ -42,6 +42,9 @@ public abstract class SimpleCardVisualizer<CardModelType extends BoardObjectMode
 
     @Override
     public void updateVisualisation(Node node, Card<CardModelType> card, AssetManager assetManager) {
+        if (node == null){
+            System.out.println(123);
+        }
         Geometry geometry = (Geometry) node.getChild(GEOMETRY_NAME);
         PaintableImage paintableImage = paintCard(card.getModel());
         Texture2D texture = new Texture2D();

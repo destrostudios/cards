@@ -49,7 +49,9 @@ public class CardPainterAWT {
             graphics.setColor(Color.BLACK);
             String title = cardModel.getTitle();
             int textStartX = 45;
-            graphics.drawString(title, 45, 54);
+            if (title != null) {
+                graphics.drawString(title, 45, 54);
+            }
             if (cardModel.getManaCost() != null) {
                 drawCardCostManaAmount(graphics, cardModel.getManaCost(), (width - textStartX - cardCostIconSize), (46 - (cardCostIconSize / 2)));
             }

@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -22,6 +23,17 @@ public class BoardObjectModel {
     public <T> void updateIfNotEquals(T oldValue, T newValue, PropertyUpdater propertyUpdater) {
         if (!Objects.equals(oldValue, newValue)) {
             propertyUpdater.updateProperty();
+            onChanged();
+        }
+    }
+
+    public <T> void addElement(Collection<T> collection, T value) {
+        collection.add(value);
+        onChanged();
+    }
+
+    public <T> void removeElement(Collection<T> collection, T value) {
+        if (collection.remove(value)) {
             onChanged();
         }
     }

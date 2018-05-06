@@ -47,21 +47,7 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
     protected void initialize(Application app) {
         application = app;
         rayCasting = new RayCasting(application);
-        for (BoardObject<CardModelType> boardObject : board.getBoardObjects()) {
-            Node node = new Node();
-            node.setUserData("boardObjectId", boardObject.getId());
-            board.getVisualizer(boardObject).createVisualisation(node, application.getAssetManager());
-            board.getVisualizer(boardObject).updateVisualisation(node, boardObject, application.getAssetManager());
-            rootNode.attachChild(node);
-            boardObjectNodes.put(boardObject, node);
-            if (boardObject instanceof TransformedBoardObject) {
-                TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
-                transformedBoardObject.setCurrentPosition(node.getLocalTranslation());
-                transformedBoardObject.setCurrentRotation(node.getLocalRotation());
-            }
-        }
         targetArrow = new TargetArrow(application.getAssetManager());
-        
         application.getInputManager().addMapping("mouse_click_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         application.getInputManager().addMapping("mouse_click_middle", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
         application.getInputManager().addMapping("mouse_click_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
@@ -75,7 +61,7 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
         super.update(lastTimePerFrame);
         board.update(lastTimePerFrame);
         for (BoardObject boardObject : board.getBoardObjects()) {
-            Node node = boardObjectNodes.get(boardObject);
+            Node node = getOrCreateNode(boardObject);
             if (boardObject == draggedBoardObject) {
                 continue;
             }
@@ -122,6 +108,24 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
                     break;
             }
         }
+    }
+
+    private Node getOrCreateNode(BoardObject boardObject) {
+        Node node = boardObjectNodes.get(boardObject);
+        if (node == null) {
+            node = new Node();
+            node.setUserData("boardObjectId", boardObject.getId());
+            board.getVisualizer(boardObject).createVisualisation(node, application.getAssetManager());
+            board.getVisualizer(boardObject).updateVisualisation(node, boardObject, application.getAssetManager());
+            rootNode.attachChild(node);
+            boardObjectNodes.put(boardObject, node);
+            if (boardObject instanceof TransformedBoardObject) {
+                TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
+                transformedBoardObject.setCurrentPosition(node.getLocalTranslation());
+                transformedBoardObject.setCurrentRotation(node.getLocalRotation());
+            }
+        }
+        return node;
     }
 
     @Override

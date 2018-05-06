@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntPredicate;
-import java.util.function.IntSupplier;
 
 /**
  *
@@ -16,15 +15,7 @@ import java.util.function.IntSupplier;
 public class SimpleEntityData implements EntityData {
 
     private final Map<ComponentDefinition<?>, Map<Integer, Object>> components = new HashMap<>();
-    private final IntSupplier entitySequence;
-
-    public SimpleEntityData() {
-        this(new AtomicInteger(0)::incrementAndGet);
-    }
-
-    public SimpleEntityData(IntSupplier entitySequence) {
-        this.entitySequence = entitySequence;
-    }
+    private final AtomicInteger nextEntity = new AtomicInteger(0);
 
     @Override
     public boolean hasComponent(int entity, ComponentDefinition<?> component) {
@@ -64,7 +55,7 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public int createEntity() {
-        return entitySequence.getAsInt();
+        return nextEntity.getAndIncrement();
     }
 
     Set<ComponentDefinition<?>> knownComponents() {
@@ -82,5 +73,13 @@ public class SimpleEntityData implements EntityData {
     @SuppressWarnings("unchecked")
     private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
         return (Map<Integer, T>) components.computeIfAbsent(component, x -> new HashMap<>());
+    }
+
+    int getNextEntity() {
+        return nextEntity.get();
+    }
+
+    void setNextEntity(int value) {
+        nextEntity.set(value);
     }
 }

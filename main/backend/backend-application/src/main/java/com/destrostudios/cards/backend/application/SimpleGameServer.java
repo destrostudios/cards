@@ -33,7 +33,7 @@ public class SimpleGameServer {
 
     private final Server server;
     private final TrackedRandom trackedRandom;
-    private final GameContext context;
+    private final GameContext<SimpleEntityData> context;
     private final FullGameStateMessage initialSetup;
     private final List<ActionNotificationMessage> actionHistory = new ArrayList<>();
 
@@ -41,8 +41,8 @@ public class SimpleGameServer {
         SerializerSetup.ensureInitialized();
         server = Network.createServer(port);
         trackedRandom = new TrackedRandom(new SecureRandom());
-        context = new GameContext(new SimpleEntityData(), trackedRandom::nextInt);
-        new TestGameSetup().testSetup(context.getData());
+        context = new GameContext<>(new SimpleEntityData(), trackedRandom::nextInt);
+        new TestGameSetup(context.getData()).apply();
         initialSetup = new GameStateMessageConverter(context.getData()).exportStateMessage();
 
         applyAction(new GameStartEvent());
@@ -87,7 +87,7 @@ public class SimpleGameServer {
         LOG.info("server started");
     }
 
-    public GameContext getGame() {
+    public GameContext<SimpleEntityData> getGame() {
         return context;
     }
 }

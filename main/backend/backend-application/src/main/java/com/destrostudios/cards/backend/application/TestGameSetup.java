@@ -8,8 +8,14 @@ import com.destrostudios.cards.shared.rules.Components;
  * @author Philipp
  */
 public class TestGameSetup {
+    
+    private final EntityData data;
 
-    public void testSetup(EntityData data) {
+    public TestGameSetup(EntityData data) {
+        this.data = data;
+    }
+
+    public void apply() {
         int player1 = data.createEntity();
         int player2 = data.createEntity();
         int hero1 = data.createEntity();
@@ -17,12 +23,12 @@ public class TestGameSetup {
         int handCards1 = data.createEntity();
         int handCards2 = data.createEntity();
 
-        initPlayerAndHeroEntities(data, player1, player2, hero1, hero2);
-        initLibraryAndHandCardsEntities(data, player1, player2, handCards1, handCards2);
-        initBoardCardsEntities(data, player1, player2);
+        initPlayerAndHeroEntities(player1, player2, hero1, hero2);
+        initLibraryAndHandCardsEntities(player1, player2, handCards1, handCards2);
+        initBoardCardsEntities(player1, player2);
     }
 
-    private void initBoardCardsEntities(EntityData data, int player1, int player2) {
+    private void initBoardCardsEntities(int player1, int player2) {
         int card1 = data.createEntity();
         data.setComponent(card1, Components.Color.NEUTRAL);
         data.setComponent(card1, Components.CREATURE_CARD);
@@ -103,7 +109,7 @@ public class TestGameSetup {
         data.setComponent(card4, Components.CREATURE_ZONE, 1);
     }
 
-    private void initLibraryAndHandCardsEntities(EntityData data, int player1, int player2, int handCards1, int handCards2) {
+    private void initLibraryAndHandCardsEntities(int player1, int player2, int handCards1, int handCards2) {
         int librarySize = 45;
         int handSize = 5;
 
@@ -129,7 +135,7 @@ public class TestGameSetup {
         }
     }
 
-    private void initPlayerAndHeroEntities(EntityData data, int player1, int player2, int hero1, int hero2) {
+    private void initPlayerAndHeroEntities(int player1, int player2, int hero1, int hero2) {
         data.setComponent(player1, Components.DISPLAY_NAME, "player1");
         data.setComponent(player2, Components.DISPLAY_NAME, "player2");
         data.setComponent(player1, Components.NEXT_PLAYER, player2);

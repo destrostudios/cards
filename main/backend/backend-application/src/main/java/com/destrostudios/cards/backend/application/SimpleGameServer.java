@@ -1,6 +1,5 @@
 package com.destrostudios.cards.backend.application;
 
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.ActionNotificationMessage;

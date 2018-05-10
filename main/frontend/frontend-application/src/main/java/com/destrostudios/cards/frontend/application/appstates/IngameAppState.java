@@ -1,7 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cards.frontend.application.*;
-import com.destrostudios.cards.frontend.application.appstates.observers.*;
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
@@ -9,8 +8,6 @@ import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
-import com.destrostudios.cards.frontend.cardpainter.model.Color;
-import com.destrostudios.cards.shared.entities.ObserverdEntityData;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
@@ -45,7 +42,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         initCamera();
         initListeners();
         initBoard();
-        System.out.println("START");
         gameClient.start();
     }
 
@@ -106,7 +102,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
         });
         initEventListeners();
-        initEntityObservers();
     }
 
     private void initEventListeners() {
@@ -139,16 +134,18 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
             mainApplication.getStateManager().attach(new BoardAppState<>(board, mainApplication.getRootNode()));
 
-            IntArrayList cardEntities = gameClient.getGame().getData().entities(Components.OWNED_BY);
-            for (int cardEntity : cardEntities) {
-                Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
-                int cardZoneIndex = getCardZoneIndex(cardEntity);
-                if (cardZoneIndex != -1) {
-                    CardGuiMapper.updateModel(card, gameClient.getGame().getData(), cardEntity);
-                    board.triggerEvent(new ModelUpdatedEvent(card));
-                    board.triggerEvent(new MoveCardEvent(card, getCardZone(cardEntity), new Vector3f(cardZoneIndex, 0, 0)));
+            mainApplication.enqueue(() -> {
+                IntArrayList cardEntities = gameClient.getGame().getData().entities(Components.OWNED_BY);
+                for (int cardEntity : cardEntities) {
+                    Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
+                    int cardZoneIndex = getCardZoneIndex(cardEntity);
+                    if (cardZoneIndex != -1) {
+                        CardGuiMapper.updateModel(card, gameClient.getGame().getData(), cardEntity);
+                        board.triggerEvent(new ModelUpdatedEvent(card));
+                        board.triggerEvent(new MoveCardEvent(card, getCardZone(cardEntity), new Vector3f(cardZoneIndex, 0, 0)));
+                    }
                 }
-            }
+            });
         });
     }
 
@@ -178,35 +175,5 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             return playerZones.getBoardZone();
         }
         return null;
-    }
-
-    private void initEntityObservers() {
-        ObserverdEntityData observerdEntityData = gameClient.getGame().getData();
-        GuiComponentObserver[] guiComponentObservers = new GuiComponentObserver[]{
-                new CardNameObserver(cardGuiMap),
-                new AbilityObserver(cardGuiMap, Components.Ability.CHARGE, "Charge"),
-                new AbilityObserver(cardGuiMap, Components.Ability.DIVINE_SHIELD, "Divine Shield"),
-                new AbilityObserver(cardGuiMap, Components.Ability.HEXPROOF, "Hexproof"),
-                new AbilityObserver(cardGuiMap, Components.Ability.IMMUNE, "Immune"),
-                new AbilityObserver(cardGuiMap, Components.Ability.TAUNT, "Taunt"),
-                new AttackDamageObserver(cardGuiMap),
-                new CardColorObserver(cardGuiMap, Components.Color.NEUTRAL, Color.NEUTRAL),
-                new CardColorObserver(cardGuiMap, Components.Color.WHITE, Color.WHITE),
-                new CardColorObserver(cardGuiMap, Components.Color.RED, Color.RED),
-                new CardColorObserver(cardGuiMap, Components.Color.GREEN, Color.GREEN),
-                new CardColorObserver(cardGuiMap, Components.Color.BLUE, Color.BLUE),
-                new CardColorObserver(cardGuiMap, Components.Color.BLACK, Color.BLACK),
-                new FlavourTextObserver(cardGuiMap),
-                new IsDamagedObserver(cardGuiMap),
-                new LifepointsObserver(cardGuiMap),
-                new TribeObserver(cardGuiMap, Components.Tribe.BEAST, "Beast"),
-                new TribeObserver(cardGuiMap, Components.Tribe.DRAGON, "Dragon"),
-                new TribeObserver(cardGuiMap, Components.Tribe.FISH, "Fish"),
-                new TribeObserver(cardGuiMap, Components.Tribe.GOD, "God"),
-                new TribeObserver(cardGuiMap, Components.Tribe.HUMAN, "Human"),
-        };
-        for (GuiComponentObserver guiComponentObserver : guiComponentObservers) {
-            observerdEntityData.registerObserver(guiComponentObserver.getComponent(), guiComponentObserver);
-        }
     }
 }

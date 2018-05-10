@@ -41,7 +41,7 @@ public class SimpleGameServer {
         SerializerSetup.ensureInitialized();
         server = Network.createServer(port);
         trackedRandom = new TrackedRandom(new SecureRandom());
-        context = new GameContext(new SimpleEntityData(), trackedRandom::nextInt);
+        context = new GameContext(trackedRandom::nextInt);
         new TestGameSetup().testSetup(context.getData());
         initialSetup = new GameStateMessageConverter(context.getData()).exportStateMessage();
 

@@ -2,20 +2,19 @@ package com.destrostudios.cards.frontend.cardpainter.model;
 
 import com.destrostudios.cards.frontend.cardgui.BoardObjectModel;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class CardModel extends BoardObjectModel {
 
     private boolean isFront;
-    private List<Color> colors = new LinkedList<>();
+    private List<Color> colors;
     private String title;
     private ManaCost manaCost;
-    private List<String> tribes = new LinkedList<>();
-    private List<String> keywords = new LinkedList<>();
-    private String description;
+    private List<String> tribes;
+    private List<String> keywords;
     private String castDescription;
-    private List<Spell> spells = new LinkedList<>();
+    private String description;
+    private List<Spell> spells;
     private Integer attackDamage;
     private Integer lifepoints;
     private boolean isDamaged;
@@ -77,14 +76,6 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
     }
 
-    public void addColor(Color color) {
-        addElement(colors, color);
-    }
-
-    public void removeColor(Color color) {
-        removeElement(colors, color);
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -93,24 +84,20 @@ public class CardModel extends BoardObjectModel {
         this.manaCost = manaCost;
     }
 
+    public void setColors(List<Color> colors) {
+        updateIfNotEquals(this.colors, colors, () -> this.colors = colors);
+    }
+
     public void setDescription(String description) {
         updateIfNotEquals(this.description, description, () -> this.description = description);
     }
 
-    public void addKeyword(String keyword) {
-        addElement(keywords, keyword);
+    public void setKeywords(List<String> keywords) {
+        updateIfNotEquals(this.keywords, keywords, () -> this.keywords = keywords);
     }
 
-    public void removeKeyword(String keyword) {
-        removeElement(keywords, keyword);
-    }
-
-    public void addTribe(String tribe) {
-        addElement(tribes, tribe);
-    }
-
-    public void removeTribe(String tribe) {
-        removeElement(tribes, tribe);
+    public void setTribes(List<String> tribes) {
+        updateIfNotEquals(this.tribes, tribes, () -> this.tribes = tribes);
     }
 
     public void setAttackDamage(Integer attackDamage) {

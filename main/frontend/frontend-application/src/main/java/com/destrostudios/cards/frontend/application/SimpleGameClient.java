@@ -1,7 +1,5 @@
 package com.destrostudios.cards.frontend.application;
 
-import com.destrostudios.cards.shared.entities.ObserverdEntityData;
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.ActionNotificationMessage;
 import com.destrostudios.cards.shared.network.ActionRequestMessage;
@@ -31,14 +29,13 @@ public class SimpleGameClient {
 
     private final Client client;
     private final Queue<Integer> randomQueue = new ArrayDeque<>();
-    private final GameContext<ObserverdEntityData> context;
+    private final GameContext context;
     private final List<Consumer<Event>> actionCallbacks = new ArrayList<>();
 
     public SimpleGameClient(String host, int port) throws IOException {
         SerializerSetup.ensureInitialized();
         client = Network.connectToServer(host, port);
-        ObserverdEntityData entityData = new ObserverdEntityData(new SimpleEntityData());
-        context = new GameContext(entityData, x -> randomQueue.poll());
+        context = new GameContext(x -> randomQueue.poll());
         GameStateMessageConverter gameStateMessageConverter = new GameStateMessageConverter(context.getData());
 
         client.addMessageListener((Client s, Message message) -> {
@@ -72,7 +69,7 @@ public class SimpleGameClient {
         LOG.info("sent action request");
     }
 
-    public GameContext<ObserverdEntityData> getGame() {
+    public GameContext getGame() {
         return context;
     }
 

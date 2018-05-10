@@ -27,4 +27,11 @@ public class FrontendJmeApplication extends SimpleApplication {
         assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
         stateManager.attach(new IngameAppState(gameClient));
     }
+
+    public void enqueue(final Runnable runnable){
+        enqueue(() -> {
+            runnable.run();
+            return null;
+        });
+    }
 }

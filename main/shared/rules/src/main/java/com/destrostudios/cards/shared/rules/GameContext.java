@@ -1,7 +1,6 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;

@@ -42,7 +42,7 @@ public class SimpleGameServer {
         server = Network.createServer(port);
         trackedRandom = new TrackedRandom(new SecureRandom());
         context = new GameContext(trackedRandom::nextInt);
-        new TestGameSetup().testSetup(context.getData());
+        new TestGameSetup(context.getData()).apply();
         initialSetup = new GameStateMessageConverter(context.getData()).exportStateMessage();
 
         applyAction(new GameStartEvent());

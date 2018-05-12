@@ -1,6 +1,8 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.events.InstantEventQueueImpl;
+import com.destrostudios.cards.shared.events.IterableEventQueueImpl;
 import com.destrostudios.cards.shared.network.ActionNotificationMessage;
 import com.destrostudios.cards.shared.network.ActionRequestMessage;
 import com.destrostudios.cards.shared.network.SerializerSetup;
@@ -35,7 +37,8 @@ public class SimpleGameClient {
     public SimpleGameClient(String host, int port) throws IOException {
         SerializerSetup.ensureInitialized();
         client = Network.connectToServer(host, port);
-        context = new GameContext(x -> randomQueue.poll());
+        GameContext.EventQueueProvider eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> new InstantEventQueueImpl(new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher));
+        context = new GameContext(eventQueueProvider, x -> randomQueue.poll());
         GameStateMessageConverter gameStateMessageConverter = new GameStateMessageConverter(context.getData());
 
         client.addMessageListener((Client s, Message message) -> {

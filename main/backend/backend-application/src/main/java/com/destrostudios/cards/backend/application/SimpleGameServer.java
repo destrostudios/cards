@@ -1,7 +1,7 @@
 package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
-import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.events.*;
 import com.destrostudios.cards.shared.network.ActionNotificationMessage;
 import com.destrostudios.cards.shared.network.ActionRequestMessage;
 import com.destrostudios.cards.shared.network.FullGameStateMessage;
@@ -40,7 +40,8 @@ public class SimpleGameServer {
         SerializerSetup.ensureInitialized();
         server = Network.createServer(port);
         trackedRandom = new TrackedRandom(new SecureRandom());
-        context = new GameContext(trackedRandom::nextInt);
+        GameContext.EventQueueProvider eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> new InstantEventQueueImpl(new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher));
+        context = new GameContext(eventQueueProvider, trackedRandom::nextInt);
         new TestGameSetup(context.getData()).apply();
         initialSetup = new GameStateMessageConverter(context.getData()).exportStateMessage();
 

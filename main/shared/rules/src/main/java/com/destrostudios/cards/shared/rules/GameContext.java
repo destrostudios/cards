@@ -5,13 +5,14 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
-import com.destrostudios.cards.shared.events.EventQueueImpl;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageHandler;
 import com.destrostudios.cards.shared.rules.battle.SetHealthEvent;
 import com.destrostudios.cards.shared.rules.battle.SetHealthHandler;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+
+import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
 
 /**
@@ -27,12 +28,12 @@ public class GameContext {
     private final EventQueue events;
     private final IntUnaryOperator random;
 
-    public GameContext(IntUnaryOperator random) {
+    public GameContext(EventQueueProvider eventQueueProvider, IntUnaryOperator random) {
         data = new SimpleEntityData();
         preDispatcher = new EventDispatcher();
         dispatcher = new EventDispatcher();
         postDispatcher = new EventDispatcher();
-        events = new EventQueueImpl(dispatcher::fire, preDispatcher::fire, postDispatcher::fire);
+        this.events = eventQueueProvider.provideEventQueue(preDispatcher::fire, dispatcher::fire, postDispatcher::fire);
         this.random = random;
         initListeners();
     }
@@ -76,6 +77,10 @@ public class GameContext {
 
     public IntUnaryOperator getRandom() {
         return random;
+    }
+
+    public interface EventQueueProvider {
+        EventQueue provideEventQueue(Consumer<Event> preDispatcher, Consumer<Event> dispatcher, Consumer<Event> postDispatcher);
     }
 
 }

@@ -25,9 +25,9 @@ public class IterableEventQueueImpl implements IterableEventQueue {
     private Event firstEvent = null;
     private Event activeEvent = null;
 
-    public IterableEventQueueImpl(Consumer<Event> eventConsumer, Consumer<Event> preConsumer, Consumer<Event> postConsumer) {
-        this.eventConsumer = eventConsumer;
+    public IterableEventQueueImpl(Consumer<Event> preConsumer, Consumer<Event> eventConsumer, Consumer<Event> postConsumer) {
         this.preConsumer = preConsumer;
+        this.eventConsumer = eventConsumer;
         this.postConsumer = postConsumer;
     }
 

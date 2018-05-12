@@ -10,6 +10,7 @@ import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
+import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
@@ -122,7 +123,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void initEventListeners() {
-        gameClient.getGame().getDispatcher().addListeners(GameStartEvent.class, event -> {
+        gameClient.getGame().getPostDispatcher().addListeners(GameStartEvent.class, event -> {
             IntArrayList players = gameClient.getGame().getData().entities(Components.NEXT_PLAYER);
             Vector3f offset = new Vector3f(0, 0, 2);
             for (int i = 0; i < players.size(); i++) {
@@ -153,11 +154,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             boardAppState.setDraggedCardProjectionZ(0.9975f);
             mainApplication.getStateManager().attach(boardAppState);
         });
-        // TODO: Global postEvent listener
-        gameClient.getGame().getDispatcher().addListeners(DamageEvent.class, event -> updateBoard());
-        gameClient.getGame().getDispatcher().addListeners(DrawCardEvent.class, event -> updateBoard());
-        gameClient.getGame().getDispatcher().addListeners(GameStartEvent.class, event -> updateBoard());
-        gameClient.getGame().getDispatcher().addListeners(PlayCardFromHandEvent.class, event -> updateBoard());
+        gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateBoard());
     }
 
     private void updateBoard() {

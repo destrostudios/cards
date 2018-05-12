@@ -1,10 +1,6 @@
 package com.destrostudios.cards.shared.events;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -14,7 +10,7 @@ import java.util.function.Predicate;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class EventDispatcher {
 
-    private final Map<Predicate, List<EventHandler>> listeners = new HashMap<>();
+    private final Map<Predicate, List<EventHandler>> listeners = new LinkedHashMap<>();
 
     public <T extends Event> void addListeners(Class<T> eventType, EventHandler<T>... listeners) {
         addListeners(eventType::isAssignableFrom, listeners);
@@ -30,18 +26,18 @@ public class EventDispatcher {
     }
 
     public void fire(Event event) {
-        boolean found = false;
         for (Map.Entry<Predicate, List<EventHandler>> entry : listeners.entrySet()) {
             if (entry.getKey().test(event.getClass())) {
-                found = true;
-                for (EventHandler eventHandler : entry.getValue()) {
-                    eventHandler.onEvent(event);
-                    if (event.isCancelled()) {
-                        return;
+                List<EventHandler> eventHandlers = entry.getValue();
+                if (eventHandlers != null) {
+                    for (EventHandler eventHandler : eventHandlers) {
+                        eventHandler.onEvent(event);
+                        if (event.isCancelled()) {
+                            return;
+                        }
                     }
                 }
             }
         }
-        assert found : "no handlers for " + event;
     }
 }

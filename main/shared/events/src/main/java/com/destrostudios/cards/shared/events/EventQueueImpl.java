@@ -59,8 +59,9 @@ public class EventQueueImpl implements EventQueue {
                 LOG.debug("{} was cancelled", activeEvent);
                 getQueue(depth).clear();
             } else {
+                Event processedEvent = activeEvent;
                 processEvents();
-                postConsumer.accept(activeEvent);
+                postConsumer.accept(processedEvent);
             }
         }
         depth--;

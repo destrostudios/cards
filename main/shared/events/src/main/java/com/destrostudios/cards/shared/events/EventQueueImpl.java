@@ -19,13 +19,19 @@ public class EventQueueImpl implements EventQueue {
     private static final int ROOT_QUEUE = 0;
 
     private final List<Queue<Event>> eventStack = new ArrayList<>();
-    private final Consumer<Event> eventConsumer;
+    private final Consumer<Event> eventConsumer, preConsumer, postConsumer;
     private int depth = 0;
     private int successiveEventsCount;
     private Event activeEvent = null;
 
     public EventQueueImpl(Consumer<Event> eventConsumer) {
+        this(eventConsumer, x -> {}, x -> {});
+    }
+
+    public EventQueueImpl(Consumer<Event> eventConsumer, Consumer<Event> preConsumer, Consumer<Event> postConsumer) {
         this.eventConsumer = eventConsumer;
+        this.preConsumer = preConsumer;
+        this.postConsumer = postConsumer;
     }
 
     @Override
@@ -47,12 +53,14 @@ public class EventQueueImpl implements EventQueue {
                 throw new IllegalStateException("successive events limit reached");
             }
             LOG.debug("handling {}", activeEvent);
+            preConsumer.accept(activeEvent);
             eventConsumer.accept(activeEvent);
             if (activeEvent.isCancelled()) {
                 LOG.debug("{} was cancelled", activeEvent);
                 getQueue(depth).clear();
             } else {
                 processEvents();
+                postConsumer.accept(activeEvent);
             }
         }
         depth--;

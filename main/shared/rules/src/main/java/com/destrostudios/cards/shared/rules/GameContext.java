@@ -10,19 +10,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageHandler;
 import com.destrostudios.cards.shared.rules.battle.SetHealthEvent;
 import com.destrostudios.cards.shared.rules.battle.SetHealthHandler;
-import com.destrostudios.cards.shared.rules.cards.AddCardToHandEvent;
-import com.destrostudios.cards.shared.rules.cards.AddCardToHandHandler;
-import com.destrostudios.cards.shared.rules.cards.AddCardToLibraryEvent;
-import com.destrostudios.cards.shared.rules.cards.AddCardToLibraryHandler;
-import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
-import com.destrostudios.cards.shared.rules.cards.DrawCardHandler;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromHandEvent;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromHandHandler;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromLibraryEvent;
-import com.destrostudios.cards.shared.rules.cards.RemoveCardFromLibraryHandler;
-import com.destrostudios.cards.shared.rules.cards.ShuffleAllLibrariesOnGameStartHandler;
-import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEvent;
-import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryHandler;
+import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import java.util.function.IntUnaryOperator;
 
@@ -54,15 +42,17 @@ public class GameContext {
     }
 
     private void initListeners() {
-        addGameEventHandler(DamageEvent.class, new DamageHandler());
-        addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
-        addGameEventHandler(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler());
-        addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
-        addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
+        addGameEventHandler(AddCardToBoardEvent.class, new AddCardToBoardHandler());
         addGameEventHandler(AddCardToHandEvent.class, new AddCardToHandHandler());
-        addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addGameEventHandler(AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
+        addGameEventHandler(DamageEvent.class, new DamageHandler());
+        addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
+        addGameEventHandler(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler());
+        addGameEventHandler(PlayCardFromHandEvent.class, new PlayCardFromHandHandler());
+        addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
+        addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
+        addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
     }
 
     private <T extends Event> void addGameEventHandler(Class<T> eventType, GameEventHandler<T> handler) {

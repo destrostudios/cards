@@ -19,4 +19,8 @@ public class CardGuiMap {
         }
         return card;
     }
+
+    public int getEntity(Card<CardModel> card) {
+        return gameEntities.get(card);
+    }
 }

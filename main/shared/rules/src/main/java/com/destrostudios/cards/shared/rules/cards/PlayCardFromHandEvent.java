@@ -8,6 +8,9 @@ import com.destrostudios.cards.shared.events.Event;
 public class PlayCardFromHandEvent extends Event {
     public int card;
 
+    // Used by serializer
+    private PlayCardFromHandEvent() { }
+
     public PlayCardFromHandEvent(int card) {
         this.card = card;
     }

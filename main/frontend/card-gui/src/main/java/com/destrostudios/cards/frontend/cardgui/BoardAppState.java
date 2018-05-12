@@ -42,6 +42,7 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
         }
     };
     private TargetArrow targetArrow;
+    private float draggedCardProjectionZ = 0.8f;
 
     @Override
     protected void initialize(Application app) {
@@ -78,7 +79,7 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
         }
         if (draggedNode != null) {
             Vector2f cursorPosition = application.getInputManager().getCursorPosition();
-            Vector3f cursorWorldLocation = application.getCamera().getWorldCoordinates(cursorPosition, 0.8f);
+            Vector3f cursorWorldLocation = application.getCamera().getWorldCoordinates(cursorPosition, draggedCardProjectionZ);
 
             Interactivity interactivity = draggedBoardObject.getInteractivity();
             switch (interactivity.getType()) {
@@ -218,7 +219,11 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
         }
         return null;
     }
-    
+
+    public void setDraggedCardProjectionZ(float draggedCardProjectionZ) {
+        this.draggedCardProjectionZ = draggedCardProjectionZ;
+    }
+
     // TODO: Other appstate interface methods
 
     @Override

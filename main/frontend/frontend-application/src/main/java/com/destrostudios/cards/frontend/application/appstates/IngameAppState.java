@@ -3,6 +3,7 @@ package com.destrostudios.cards.frontend.application.appstates;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.events.*;
+import com.destrostudios.cards.frontend.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
@@ -10,7 +11,9 @@ import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.battle.*;
+import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.game.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;
@@ -98,7 +101,21 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
             @Override
             public void onInteractivity(BoardObject boardObject, BoardObject target) {
-                System.out.println(boardObject + "\t" + target);
+                if (boardObject instanceof Card) {
+                    Card<CardModel> card = (Card) boardObject;
+                    int cardEntity = cardGuiMap.getEntity(card);
+                    int playerEntity = gameClient.getGame().getData().getComponent(cardEntity, Components.OWNED_BY);
+                    PlayerZones playerZones = playerZonesMap.get(playerEntity);
+                    if (card.getZonePosition().getZone() == playerZones.getHandZone()) {
+                        gameClient.requestAction(new PlayCardFromHandEvent(cardEntity));
+                    }
+                    else if (card.getZonePosition().getZone() == playerZones.getDeckZone()) {
+                        gameClient.requestAction(new DrawCardEvent(playerEntity));
+                    }
+                    else if (card.getZonePosition().getZone() == playerZones.getBoardZone()) {
+                        gameClient.requestAction(new DamageEvent(cardEntity, 1));
+                    }
+                }
             }
         });
         initEventListeners();
@@ -132,48 +149,56 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 board.addZone(boardZone);
                 playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, boardZone));
             }
-            mainApplication.getStateManager().attach(new BoardAppState<>(board, mainApplication.getRootNode()));
+            BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode());
+            boardAppState.setDraggedCardProjectionZ(0.9975f);
+            mainApplication.getStateManager().attach(boardAppState);
+        });
+        // TODO: Global postEvent listener
+        gameClient.getGame().getDispatcher().addListeners(DamageEvent.class, event -> updateBoard());
+        gameClient.getGame().getDispatcher().addListeners(DrawCardEvent.class, event -> updateBoard());
+        gameClient.getGame().getDispatcher().addListeners(GameStartEvent.class, event -> updateBoard());
+        gameClient.getGame().getDispatcher().addListeners(PlayCardFromHandEvent.class, event -> updateBoard());
+    }
 
-            mainApplication.enqueue(() -> {
-                IntArrayList cardEntities = gameClient.getGame().getData().entities(Components.OWNED_BY);
-                for (int cardEntity : cardEntities) {
-                    Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
-                    int cardZoneIndex = getCardZoneIndex(cardEntity);
-                    if (cardZoneIndex != -1) {
-                        CardGuiMapper.updateModel(card, gameClient.getGame().getData(), cardEntity);
-                        board.triggerEvent(new ModelUpdatedEvent(card));
-                        board.triggerEvent(new MoveCardEvent(card, getCardZone(cardEntity), new Vector3f(cardZoneIndex, 0, 0)));
+    private void updateBoard() {
+        mainApplication.enqueue(() -> {
+            IntArrayList cardEntities = gameClient.getGame().getData().entities(Components.OWNED_BY);
+            for (int cardEntity : cardEntities) {
+                CardZone cardZone = null;
+                Integer cardZoneIndex;
+                Interactivity interactivity = null;
+
+                int playerEntity = gameClient.getGame().getData().getComponent(cardEntity, Components.OWNED_BY);
+                PlayerZones playerZones = playerZonesMap.get(playerEntity);
+
+                cardZoneIndex = gameClient.getGame().getData().getComponent(cardEntity, Components.LIBRARY);
+                if (cardZoneIndex != null) {
+                    cardZone = playerZones.getDeckZone();
+                    interactivity = new ClickInteractivity();
+                }
+                else {
+                    cardZoneIndex = gameClient.getGame().getData().getComponent(cardEntity, Components.HAND_CARDS);
+                    if (cardZoneIndex != null) {
+                        cardZone = playerZones.getHandZone();
+                        interactivity = new DragToPlayInteractivity();
+                    }
+                    else {
+                        cardZoneIndex = gameClient.getGame().getData().getComponent(cardEntity, Components.CREATURE_ZONE);
+                        if (cardZoneIndex != null) {
+                            cardZone = playerZones.getBoardZone();
+                            interactivity = new ClickInteractivity();
+                        }
                     }
                 }
-            });
+
+                if (cardZoneIndex != null) {
+                    Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
+                    CardGuiMapper.updateModel(card, gameClient.getGame().getData(), cardEntity);
+                    board.triggerEvent(new ModelUpdatedEvent(card));
+                    board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
+                    card.setInteractivity(interactivity);
+                }
+            }
         });
-    }
-
-    private int getCardZoneIndex(int cardEntity) {
-        if (gameClient.getGame().getData().hasComponent(cardEntity, Components.LIBRARY)) {
-            return gameClient.getGame().getData().getComponent(cardEntity, Components.LIBRARY);
-        }
-        else if (gameClient.getGame().getData().hasComponent(cardEntity, Components.HAND_CARDS)) {
-            return gameClient.getGame().getData().getComponent(cardEntity, Components.HAND_CARDS);
-        }
-        else if (gameClient.getGame().getData().hasComponent(cardEntity, Components.CREATURE_ZONE)) {
-            return gameClient.getGame().getData().getComponent(cardEntity, Components.CREATURE_ZONE);
-        }
-        return -1;
-    }
-
-    private CardZone getCardZone(int cardEntity) {
-        int playerEntity = gameClient.getGame().getData().getComponent(cardEntity, Components.OWNED_BY);
-        PlayerZones playerZones = playerZonesMap.get(playerEntity);
-        if (gameClient.getGame().getData().hasComponent(cardEntity, Components.LIBRARY)) {
-            return playerZones.getDeckZone();
-        }
-        else if (gameClient.getGame().getData().hasComponent(cardEntity, Components.HAND_CARDS)) {
-            return playerZones.getHandZone();
-        }
-        else if (gameClient.getGame().getData().hasComponent(cardEntity, Components.CREATURE_ZONE)) {
-            return playerZones.getBoardZone();
-        }
-        return null;
     }
 }

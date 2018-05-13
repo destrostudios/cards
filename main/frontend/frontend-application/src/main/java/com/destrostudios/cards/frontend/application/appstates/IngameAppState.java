@@ -2,6 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.cardgui.*;
+import com.destrostudios.cards.frontend.cardgui.animations.*;
 import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
@@ -123,7 +124,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void initEventListeners() {
-        gameClient.getGame().getPostDispatcher().addListeners(GameStartEvent.class, event -> {
+        gameClient.getGame().getPreDispatcher().addListeners(GameStartEvent.class, event -> {
             IntArrayList players = gameClient.getGame().getData().entities(Components.NEXT_PLAYER);
             Vector3f offset = new Vector3f(0, 0, 2);
             for (int i = 0; i < players.size(); i++) {
@@ -155,6 +156,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             mainApplication.getStateManager().attach(boardAppState);
         });
         gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateBoard());
+        gameClient.getGame().getPreDispatcher().addListeners(DamageEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
     }
 
     private void updateBoard() {
@@ -197,5 +199,13 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             }
         });
+    }
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        if (!board.isAnimationQueueBlocking()) {
+            gameClient.getGame().getEvents().processNextEvent();
+        }
     }
 }

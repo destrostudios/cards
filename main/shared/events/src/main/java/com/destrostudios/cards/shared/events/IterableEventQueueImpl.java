@@ -16,13 +16,12 @@ public class IterableEventQueueImpl implements IterableEventQueue {
 
     private static final Logger LOG = LoggerFactory.getLogger(IterableEventQueueImpl.class);
     private static final int SUCCESSIVE_EVENTS_LIMIT = 1000;
-    private static final int ROOT_QUEUE = 0;
 
     private final List<Queue<Event>> eventStack = new ArrayList<>();
     private final Consumer<Event> eventConsumer, preConsumer, postConsumer;
     private int depth = 0;
     private int successiveEventsCount;
-    private Event firstEvent = null;
+    private Event initialEvent = null;
     private Event activeEvent = null;
 
     public IterableEventQueueImpl(Consumer<Event> preConsumer, Consumer<Event> eventConsumer, Consumer<Event> postConsumer) {
@@ -33,46 +32,12 @@ public class IterableEventQueueImpl implements IterableEventQueue {
 
     @Override
     public void fireActionEvent(Event action) {
-        if (depth != 0) {
+        if (hasNext()) {
             throw new IllegalStateException("actions may not be enqueued during event handling");
         }
-        enqueue(getQueue(ROOT_QUEUE), action);
+        enqueue(getQueue(0), action);
         successiveEventsCount = 0;
-        firstEvent = action;
-    }
-
-    @Override
-    public boolean processNextEvent() {
-        depth++;
-        Queue<Event> queue = getQueue(depth);
-        if (queue.isEmpty()) {
-            if (depth > 0) {
-                depth -= 2;
-                if (activeEvent != null) {
-                    postConsumer.accept(activeEvent);
-                    activeEvent = null;
-                }
-                return true;
-            }
-            else {
-                postConsumer.accept(firstEvent);
-                activeEvent = null;
-                return false;
-            }
-        }
-        activeEvent = queue.poll();
-        successiveEventsCount++;
-        if (successiveEventsCount > SUCCESSIVE_EVENTS_LIMIT) {
-            throw new IllegalStateException("successive events limit reached");
-        }
-        LOG.debug("handling {}", activeEvent);
-        preConsumer.accept(activeEvent);
-        eventConsumer.accept(activeEvent);
-        if (activeEvent.isCancelled()) {
-            LOG.debug("{} was cancelled", activeEvent);
-            getQueue(depth).clear();
-        }
-        return true;
+        initialEvent = action;
     }
 
     @Override
@@ -97,4 +62,43 @@ public class IterableEventQueueImpl implements IterableEventQueue {
         return eventStack.get(depth);
     }
 
+    @Override
+    public void processNextEvent() {
+        depth++;
+        Queue<Event> queue = getQueue(depth);
+        if (queue.isEmpty()) {
+            if (depth > 0) {
+                depth -= 2;
+                if (activeEvent != null) {
+                    postConsumer.accept(activeEvent);
+                    activeEvent = null;
+                }
+            }
+            else {
+                if (initialEvent != null) {
+                    postConsumer.accept(initialEvent);
+                    initialEvent = null;
+                }
+                activeEvent = null;
+            }
+            return;
+        }
+        activeEvent = queue.poll();
+        successiveEventsCount++;
+        if (successiveEventsCount > SUCCESSIVE_EVENTS_LIMIT) {
+            throw new IllegalStateException("successive events limit reached");
+        }
+        LOG.debug("handling {}", activeEvent);
+        preConsumer.accept(activeEvent);
+        eventConsumer.accept(activeEvent);
+        if (activeEvent.isCancelled()) {
+            LOG.debug("{} was cancelled", activeEvent);
+            getQueue(depth).clear();
+        }
+    }
+
+    @Override
+    public boolean hasNext() {
+        return (initialEvent != null);
+    }
 }

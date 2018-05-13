@@ -10,7 +10,8 @@ public class InstantEventQueueImpl implements EventQueue {
     @Override
     public void fireActionEvent(Event event) {
         iterableEventQueue.fireActionEvent(event);
-        while (iterableEventQueue.processNextEvent()) {
+        while (iterableEventQueue.hasNext()) {
+            iterableEventQueue.processNextEvent();
         }
     }
 

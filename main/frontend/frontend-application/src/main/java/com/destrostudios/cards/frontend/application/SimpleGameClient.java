@@ -1,8 +1,9 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.events.InstantEventQueueImpl;
+import com.destrostudios.cards.shared.events.IterableEventQueue;
 import com.destrostudios.cards.shared.events.IterableEventQueueImpl;
+import com.destrostudios.cards.shared.events.QueuedIterableEventQueue;
 import com.destrostudios.cards.shared.network.ActionNotificationMessage;
 import com.destrostudios.cards.shared.network.ActionRequestMessage;
 import com.destrostudios.cards.shared.network.SerializerSetup;
@@ -14,10 +15,7 @@ import com.jme3.network.Message;
 import com.jme3.network.Network;
 import java.io.IOException;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
-import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,14 +29,16 @@ public class SimpleGameClient {
 
     private final Client client;
     private final Queue<Integer> randomQueue = new ArrayDeque<>();
-    private final GameContext context;
-    private final List<Consumer<Event>> actionCallbacks = new ArrayList<>();
+    private final GameContext<QueuedIterableEventQueue> context;
 
     public SimpleGameClient(String host, int port) throws IOException {
         SerializerSetup.ensureInitialized();
         client = Network.connectToServer(host, port);
-        GameContext.EventQueueProvider eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> new InstantEventQueueImpl(new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher));
-        context = new GameContext(eventQueueProvider, x -> randomQueue.poll());
+        GameContext.EventQueueProvider<QueuedIterableEventQueue> eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> {
+            IterableEventQueue iterableEventQueue = new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher);
+            return new QueuedIterableEventQueue(iterableEventQueue);
+        };
+        context = new GameContext<>(eventQueueProvider, x -> randomQueue.poll());
         GameStateMessageConverter gameStateMessageConverter = new GameStateMessageConverter(context.getData());
 
         client.addMessageListener((Client s, Message message) -> {
@@ -52,9 +52,6 @@ public class SimpleGameClient {
                 randomQueue.offer(randomHistory);
             }
             context.getEvents().fireActionEvent(actionMessage.getAction());
-            for (Consumer<Event> actionCallback : actionCallbacks) {
-                actionCallback.accept(actionMessage.getAction());
-            }
         }, ActionNotificationMessage.class);
         client.addErrorListener((Client source, Throwable t) -> {
             t.printStackTrace(System.err);
@@ -72,12 +69,8 @@ public class SimpleGameClient {
         LOG.info("sent action request");
     }
 
-    public GameContext getGame() {
+    public GameContext<QueuedIterableEventQueue> getGame() {
         return context;
-    }
-
-    public void addActionCallback(Consumer<Event> callback) {
-        actionCallbacks.add(callback);
     }
 
 }

@@ -78,4 +78,8 @@ public class Board<CardModelType extends BoardObjectModel> implements GameLoopLi
     public InteractivityListener getInteractivityListener() {
         return interactivityListener;
     }
+
+    public boolean isAnimationQueueBlocking() {
+        return animationQueue.isBlocking();
+    }
 }

@@ -19,16 +19,16 @@ import java.util.function.IntUnaryOperator;
  *
  * @author Philipp
  */
-public class GameContext {
+public class GameContext<EventQueueType extends EventQueue> {
 
     private final EntityData data;
     private final EventDispatcher preDispatcher;
     private final EventDispatcher dispatcher;
     private final EventDispatcher postDispatcher;
-    private final EventQueue events;
+    private final EventQueueType events;
     private final IntUnaryOperator random;
 
-    public GameContext(EventQueueProvider eventQueueProvider, IntUnaryOperator random) {
+    public GameContext(EventQueueProvider<EventQueueType> eventQueueProvider, IntUnaryOperator random) {
         data = new SimpleEntityData();
         preDispatcher = new EventDispatcher();
         dispatcher = new EventDispatcher();
@@ -67,11 +67,15 @@ public class GameContext {
         return preDispatcher;
     }
 
+    public EventDispatcher getDispatcher() {
+        return dispatcher;
+    }
+
     public EventDispatcher getPostDispatcher() {
         return postDispatcher;
     }
 
-    public EventQueue getEvents() {
+    public EventQueueType getEvents() {
         return events;
     }
 
@@ -79,8 +83,8 @@ public class GameContext {
         return random;
     }
 
-    public interface EventQueueProvider {
-        EventQueue provideEventQueue(Consumer<Event> preDispatcher, Consumer<Event> dispatcher, Consumer<Event> postDispatcher);
+    public interface EventQueueProvider<EventQueueType extends EventQueue> {
+        EventQueueType provideEventQueue(Consumer<Event> preDispatcher, Consumer<Event> dispatcher, Consumer<Event> postDispatcher);
     }
 
 }

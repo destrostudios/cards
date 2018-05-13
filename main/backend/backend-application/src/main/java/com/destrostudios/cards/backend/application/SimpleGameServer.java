@@ -2,9 +2,7 @@ package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.*;
-import com.destrostudios.cards.shared.network.ActionNotificationMessage;
-import com.destrostudios.cards.shared.network.ActionRequestMessage;
-import com.destrostudios.cards.shared.network.FullGameStateMessage;
+import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.cards.shared.network.GameStateMessageConverter;
 import com.destrostudios.cards.shared.network.SerializerSetup;
 import com.destrostudios.cards.shared.network.TrackedRandom;
@@ -51,9 +49,6 @@ public class SimpleGameServer {
             @Override
             public void connectionAdded(Server server, HostedConnection hc) {
                 hc.send(initialSetup);
-                for (ActionNotificationMessage message : actionHistory) {
-                    hc.send(message);
-                }
                 LOG.info("added connection {}", hc);
             }
 
@@ -62,6 +57,14 @@ public class SimpleGameServer {
                 LOG.info("removed connection {}", hc);
             }
         });
+
+        server.addMessageListener((HostedConnection hc, Message msg) -> {
+            for (ActionNotificationMessage message : actionHistory) {
+                hc.send(message);
+            }
+            LOG.info("sent action history to connection {}", hc);
+        }, ClientReadyMessage.class);
+
         server.addMessageListener((HostedConnection s, Message msg) -> {
             ActionRequestMessage message = (ActionRequestMessage) msg;
             applyAction(message.getAction());

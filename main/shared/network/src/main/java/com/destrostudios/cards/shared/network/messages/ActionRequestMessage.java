@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.shared.network.messages;
 
 import com.destrostudios.cards.shared.events.Event;
 import com.jme3.network.AbstractMessage;

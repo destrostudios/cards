@@ -15,7 +15,6 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
-import com.destrostudios.cards.shared.rules.game.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;
@@ -30,6 +29,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
 
@@ -40,6 +40,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private Board<CardModel> board;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap = new CardGuiMap();
+    private boolean hasPreparedBoard = false;
+    private boolean isInitialized = false;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -47,7 +49,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         initCamera();
         initListeners();
         initBoard();
-        gameClient.start();
+        gameClient.connect();
     }
 
     private void initCamera() {
@@ -120,12 +122,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             }
         });
-        initEventListeners();
+        initGameListeners();
     }
 
-    private void initEventListeners() {
-        gameClient.getGame().getPreDispatcher().addListeners(GameStartEvent.class, event -> {
-            IntArrayList players = gameClient.getGame().getData().entities(Components.NEXT_PLAYER);
+    private void initGameListeners() {
+        gameClient.addFullGameStateListener(entityData -> {
+            IntArrayList players = entityData.entities(Components.NEXT_PLAYER);
             Vector3f offset = new Vector3f(0, 0, 2);
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {
@@ -154,9 +156,15 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode());
             boardAppState.setDraggedCardProjectionZ(0.9975f);
             mainApplication.getStateManager().attach(boardAppState);
+            updateBoard();
+            hasPreparedBoard = true;
         });
         gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateBoard());
         gameClient.getGame().getPreDispatcher().addListeners(DamageEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
+        gameClient.getGame().getPreDispatcher().addListeners(ShuffleLibraryEvent.class, event -> {
+            LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
+            //board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
+        });
     }
 
     private void updateBoard() {
@@ -204,6 +212,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void update(float tpf) {
         super.update(tpf);
+        if ((!isInitialized) && hasPreparedBoard) {
+            gameClient.markAsReady();
+            isInitialized = true;
+        }
         if (!board.isAnimationQueueBlocking()) {
             gameClient.getGame().getEvents().processNextEvent();
         }

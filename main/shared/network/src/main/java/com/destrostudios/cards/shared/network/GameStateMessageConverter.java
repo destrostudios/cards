@@ -3,6 +3,8 @@ package com.destrostudios.cards.shared.network;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.EntityMapper;
+import com.destrostudios.cards.shared.network.messages.FullGameStateMessage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

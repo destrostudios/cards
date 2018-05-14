@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.network;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.PlayCardFromHandEvent;
@@ -17,6 +18,7 @@ public class SerializerSetup {
         registerClasses(
                 Tuple.class,
                 FullGameStateMessage.class,
+                ClientReadyMessage.class,
                 ActionNotificationMessage.class,
                 ActionRequestMessage.class,
                     DamageEvent.class,

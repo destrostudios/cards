@@ -1,6 +1,7 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.shared.network.messages;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.network.Tuple;
 import com.jme3.network.AbstractMessage;
 import java.util.List;
 

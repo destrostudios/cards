@@ -50,4 +50,8 @@ public class AnimationQueue implements GameLoopListener {
             blockingAnimation = animation;
         }
     }
+
+    public boolean isBlocking() {
+        return (blockingAnimation != null);
+    }
 }

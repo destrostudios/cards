@@ -12,7 +12,8 @@ public class EventDispatcher {
 
     private final Map<Predicate, List<EventHandler>> listeners = new LinkedHashMap<>();
 
-    public <T extends Event> void addListeners(Class<T> eventType, EventHandler<T>... listeners) {
+    @SafeVarargs
+    public final <T extends Event> void addListeners(Class<T> eventType, EventHandler<T>... listeners) {
         addListeners(eventType::isAssignableFrom, listeners);
     }
 

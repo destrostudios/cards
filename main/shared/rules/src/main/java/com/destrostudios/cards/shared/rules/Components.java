@@ -28,6 +28,7 @@ public class Components {
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
     public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spellEntities");
+    public static final ComponentDefinition<Void> ACTIVE_PLAYER = new ComponentDefinition<>("activePlayer");
 
     public static class Color {
         public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutralColor");

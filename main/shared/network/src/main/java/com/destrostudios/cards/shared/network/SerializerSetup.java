@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.PlayCardFromHandEvent;
+import com.destrostudios.cards.shared.rules.game.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.jme3.network.serializing.Serializer;
 
@@ -24,6 +25,7 @@ public class SerializerSetup {
                     DamageEvent.class,
                     DrawCardEvent.class,
                     GameStartEvent.class,
+                    EndTurnEvent.class,
                     PlayCardFromHandEvent.class
         );
         Serializer.registerClass(ComponentDefinition.class, new ComponentDefinitionSerializer());

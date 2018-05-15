@@ -11,6 +11,7 @@ import com.destrostudios.cards.shared.rules.battle.SetHealthEvent;
 import com.destrostudios.cards.shared.rules.battle.SetHealthHandler;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.game.SetStartingPlayerHandler;
 
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
@@ -44,12 +45,19 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
         addGameEventHandler(DamageEvent.class, new DamageHandler());
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
-        addGameEventHandler(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler());
+        addGameEventHandlers(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler(), new SetStartingPlayerHandler());
         addGameEventHandler(PlayCardFromHandEvent.class, new PlayCardFromHandHandler());
         addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
         addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
+    }
+    
+    @SafeVarargs
+    private final <T extends Event> void addGameEventHandlers(Class<T> eventType, GameEventHandler<T>... handlers) {
+        for (GameEventHandler<T> handler : handlers) {
+            addGameEventHandler(eventType, handler);
+        }
     }
 
     private <T extends Event> void addGameEventHandler(Class<T> eventType, GameEventHandler<T> handler) {

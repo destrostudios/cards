@@ -10,17 +10,15 @@ import java.util.LinkedList;
  */
 public class Board<CardModelType extends BoardObjectModel> implements GameLoopListener {
 
-    public Board(BoardObjectVisualizer<CardZone> zoneVisualizer, BoardObjectVisualizer<Card<CardModelType>> cardVisualizer, InteractivityListener interactivityListener) {
+    public Board(BoardObjectVisualizer<CardZone> zoneVisualizer, BoardObjectVisualizer<Card<CardModelType>> cardVisualizer) {
         this.zoneVisualizer = zoneVisualizer;
         this.cardVisualizer = cardVisualizer;
-        this.interactivityListener = interactivityListener;
     }
     private int nextId;
-    private HashMap<Integer, BoardObject> boardObjects = new HashMap<Integer, BoardObject>();
-    private LinkedList<CardZone> zones = new LinkedList<CardZone>();
+    private HashMap<Integer, BoardObject> boardObjects = new HashMap<>();
+    private LinkedList<CardZone> zones = new LinkedList<>();
     private BoardObjectVisualizer<CardZone> zoneVisualizer;
     private BoardObjectVisualizer<Card<CardModelType>> cardVisualizer;
-    private InteractivityListener interactivityListener;
     private AnimationQueue animationQueue = new AnimationQueue();
     
     public void register(BoardObject boardObject) {
@@ -73,10 +71,6 @@ public class Board<CardModelType extends BoardObjectModel> implements GameLoopLi
             return zoneVisualizer;
         }
         return null;
-    }
-
-    public InteractivityListener getInteractivityListener() {
-        return interactivityListener;
     }
 
     public boolean isAnimationQueueBlocking() {

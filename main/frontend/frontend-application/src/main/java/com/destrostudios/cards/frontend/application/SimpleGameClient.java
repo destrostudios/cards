@@ -32,6 +32,7 @@ public class SimpleGameClient {
     private final Queue<Integer> randomQueue = new ArrayDeque<>();
     private final GameContext<QueuedIterableEventQueue> context;
     private final List<FullGameStateListener> fullGameStateListeners = new LinkedList<>();
+    private int playerEntity;
 
     public SimpleGameClient(String host, int port) throws IOException {
         SerializerSetup.ensureInitialized();
@@ -45,7 +46,8 @@ public class SimpleGameClient {
 
         client.addMessageListener((Client s, Message message) -> {
             FullGameStateMessage stateMessage = (FullGameStateMessage) message;
-            gameStateMessageConverter.importStateMessage(stateMessage);
+            gameStateMessageConverter.importState(stateMessage.getFullGameState());
+            playerEntity = stateMessage.getPlayerEntity();
             fullGameStateListeners.forEach(fullGameStateListener -> fullGameStateListener.onFullGameStateUpdated(context.getData()));
         }, FullGameStateMessage.class);
 
@@ -79,6 +81,10 @@ public class SimpleGameClient {
 
     public GameContext<QueuedIterableEventQueue> getGame() {
         return context;
+    }
+
+    public int getPlayerEntity() {
+        return playerEntity;
     }
 
     public void addFullGameStateListener(FullGameStateListener fullGameStateListener) {

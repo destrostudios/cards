@@ -5,13 +5,9 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
-import com.destrostudios.cards.shared.rules.battle.DamageEvent;
-import com.destrostudios.cards.shared.rules.battle.DamageHandler;
-import com.destrostudios.cards.shared.rules.battle.SetHealthEvent;
-import com.destrostudios.cards.shared.rules.battle.SetHealthHandler;
+import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
-import com.destrostudios.cards.shared.rules.game.GameStartEvent;
-import com.destrostudios.cards.shared.rules.game.SetStartingPlayerHandler;
+import com.destrostudios.cards.shared.rules.game.*;
 
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
@@ -45,12 +41,14 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
         addGameEventHandler(DamageEvent.class, new DamageHandler());
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
+        addGameEventHandler(EndTurnEvent.class, new EndTurnHandler());
         addGameEventHandlers(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler(), new SetStartingPlayerHandler());
         addGameEventHandler(PlayCardFromHandEvent.class, new PlayCardFromHandHandler());
         addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
         addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
+        addGameEventHandler(StartTurnEvent.class, new DrawCardOnStartTurnHandler());
     }
     
     @SafeVarargs

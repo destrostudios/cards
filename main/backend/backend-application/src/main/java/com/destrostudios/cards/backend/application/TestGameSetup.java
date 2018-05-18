@@ -10,25 +10,26 @@ import com.destrostudios.cards.shared.rules.Components;
 public class TestGameSetup {
     
     private final EntityData data;
+    private final int[] players = new int[2];
 
     public TestGameSetup(EntityData data) {
         this.data = data;
     }
 
     public void apply() {
-        int player1 = data.createEntity();
-        int player2 = data.createEntity();
+        players[0] = data.createEntity();
+        players[1] = data.createEntity();
         int hero1 = data.createEntity();
         int hero2 = data.createEntity();
         int handCards1 = data.createEntity();
         int handCards2 = data.createEntity();
 
-        initPlayerAndHeroEntities(player1, player2, hero1, hero2);
-        initLibraryAndHandCardsEntities(player1, player2, handCards1, handCards2);
-        initBoardCardsEntities(player1, player2);
+        initPlayerAndHeroEntities(hero1, hero2);
+        initLibraryAndHandCardsEntities(handCards1, handCards2);
+        initBoardCardsEntities();
     }
 
-    private void initBoardCardsEntities(int player1, int player2) {
+    private void initBoardCardsEntities() {
         int card1 = data.createEntity();
         data.setComponent(card1, Components.Color.NEUTRAL);
         data.setComponent(card1, Components.CREATURE_CARD);
@@ -39,7 +40,7 @@ public class TestGameSetup {
         data.setComponent(card1, Components.COST_ENTITY, cost1);
         data.setComponent(card1, Components.ATTACK, 2);
         data.setComponent(card1, Components.HEALTH, 2);
-        data.setComponent(card1, Components.OWNED_BY, player1);
+        data.setComponent(card1, Components.OWNED_BY, players[0]);
         data.setComponent(card1, Components.BOARD);
         data.setComponent(card1, Components.CREATURE_ZONE, 0);
 
@@ -49,7 +50,7 @@ public class TestGameSetup {
         int cost2 = data.createEntity();
         data.setComponent(cost2, Components.ManaAmount.WHITE, 2);
         data.setComponent(card2, Components.COST_ENTITY, cost2);
-        data.setComponent(card2, Components.OWNED_BY, player1);
+        data.setComponent(card2, Components.OWNED_BY, players[0]);
         data.setComponent(card2, Components.BOARD);
         data.setComponent(card2, Components.ENCHANTMENT_ZONE, 0);
 
@@ -75,7 +76,7 @@ public class TestGameSetup {
         data.setComponent(spell3, Components.COST_ENTITY, spell3Cost);
         data.setComponent(card3, Components.SPELL_ENTITIES, new int[]{spell3});
         data.setComponent(card3, Components.FLAVOUR_TEXT, "\"I am op.\"");
-        data.setComponent(card3, Components.OWNED_BY, player2);
+        data.setComponent(card3, Components.OWNED_BY, players[1]);
         data.setComponent(card3, Components.BOARD);
         data.setComponent(card3, Components.CREATURE_ZONE, 0);
 
@@ -104,12 +105,12 @@ public class TestGameSetup {
         data.setComponent(spell4Cost, Components.ManaAmount.BLUE, 1);
         data.setComponent(spell4, Components.COST_ENTITY, spell4Cost);
         data.setComponent(card4, Components.SPELL_ENTITIES, new int[]{spell4});
-        data.setComponent(card4, Components.OWNED_BY, player2);
+        data.setComponent(card4, Components.OWNED_BY, players[1]);
         data.setComponent(card4, Components.BOARD);
         data.setComponent(card4, Components.CREATURE_ZONE, 1);
     }
 
-    private void initLibraryAndHandCardsEntities(int player1, int player2, int handCards1, int handCards2) {
+    private void initLibraryAndHandCardsEntities(int handCards1, int handCards2) {
         int librarySize = 45;
         int handSize = 5;
 
@@ -118,35 +119,39 @@ public class TestGameSetup {
             data.setComponent(card, Components.Color.NEUTRAL);
             data.setComponent(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD);
             data.setComponent(card, Components.DISPLAY_NAME, "card" + i);
-            data.setComponent(card, Components.OWNED_BY, i < librarySize ? player1 : player2);
+            data.setComponent(card, Components.OWNED_BY, i < librarySize ? players[0] : players[1]);
             data.setComponent(card, Components.LIBRARY, i % librarySize);
         }
 
-        data.setComponent(handCards1, Components.OWNED_BY, player1);
-        data.setComponent(handCards2, Components.OWNED_BY, player2);
+        data.setComponent(handCards1, Components.OWNED_BY, players[0]);
+        data.setComponent(handCards2, Components.OWNED_BY, players[1]);
 
         for (int i = 0; i < 2 * handSize; i++) {
             int card = data.createEntity();
             data.setComponent(card, Components.Color.NEUTRAL);
             data.setComponent(card, i % 2 == 0 ? Components.CREATURE_CARD : Components.SPELL_CARD);
             data.setComponent(card, Components.DISPLAY_NAME, "card" + i);
-            data.setComponent(card, Components.OWNED_BY, i < handSize ? player1 : player2);
+            data.setComponent(card, Components.OWNED_BY, i < handSize ? players[0] : players[1]);
             data.setComponent(card, Components.HAND_CARDS, i % handSize);
         }
     }
 
-    private void initPlayerAndHeroEntities(int player1, int player2, int hero1, int hero2) {
-        data.setComponent(player1, Components.DISPLAY_NAME, "player1");
-        data.setComponent(player2, Components.DISPLAY_NAME, "player2");
-        data.setComponent(player1, Components.NEXT_PLAYER, player2);
-        data.setComponent(player2, Components.NEXT_PLAYER, player1);
+    private void initPlayerAndHeroEntities(int hero1, int hero2) {
+        data.setComponent(players[0], Components.DISPLAY_NAME, "player1");
+        data.setComponent(players[1], Components.DISPLAY_NAME, "player2");
+        data.setComponent(players[0], Components.NEXT_PLAYER, players[1]);
+        data.setComponent(players[1], Components.NEXT_PLAYER, players[0]);
 
         data.setComponent(hero1, Components.DISPLAY_NAME, "hero1");
         data.setComponent(hero1, Components.HEALTH, 20);
-        data.setComponent(hero1, Components.OWNED_BY, player1);
+        data.setComponent(hero1, Components.OWNED_BY, players[0]);
 
         data.setComponent(hero2, Components.DISPLAY_NAME, "hero2");
         data.setComponent(hero2, Components.HEALTH, 20);
-        data.setComponent(hero2, Components.OWNED_BY, player2);
+        data.setComponent(hero2, Components.OWNED_BY, players[1]);
+    }
+
+    public int[] getPlayers() {
+        return players;
     }
 }

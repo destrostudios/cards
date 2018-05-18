@@ -90,7 +90,7 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
     }
     
     private void initBoardGui() {
-        board = new Board<MyCardModel>(new DebugZoneVisualizer() {
+        board = new Board<>(new DebugZoneVisualizer() {
 
             @Override
             protected Vector2f getSize(CardZone zone) {
@@ -124,36 +124,6 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
                 }
                 return paintableImage;
             }
-        }, new InteractivityListener() {
-
-            @Override
-            public void onInteractivity(BoardObject boardObject, BoardObject target) {
-                if (boardObject instanceof Card) {
-                    Card card = (Card) boardObject;
-                    MyCard myCard = gameCards.get(card);
-                    if (card.getInteractivity() instanceof ClickInteractivity) {
-                        game.getCurrentPlayer().draw();
-                        updateBoard();
-                    }
-                    else if (card.getInteractivity() instanceof DragToPlayInteractivity) {
-                        for (MyPlayer player : game.getPlayers()) {
-                            if (player.getHand().contains(myCard)) {
-                                player.getHand().removeCard(myCard);
-                                player.getBoard().addCard(myCard);
-                                updateBoard();
-                                break;
-                            }
-                        }
-                    }
-                    else if (card.getInteractivity() instanceof AimToTargetInteractivity) {
-                        Card targetCard = (Card) target;
-                        MyCard targetMyCard = gameCards.get(targetCard);
-                        myCard.setDamaged(true);
-                        targetMyCard.setDamaged(true);
-                        updateBoard();
-                    }
-                }
-            }
         });
 
         int playersCount = game.getPlayers().length;
@@ -183,8 +153,29 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
         for (int i=0;i<game.getPlayers().length;i++) {
             final int opponentPlayerIndex = ((i + 1) % 2);
             MyPlayer player = game.getPlayers()[i];
-            updateZone(player.getDeck(), playerZones[i].getDeckZone(), new Vector3f(0, 1, 0), new ClickInteractivity());
-            updateZone(player.getHand(), playerZones[i].getHandZone(), new Vector3f(1, 0, 0), new DragToPlayInteractivity());
+            updateZone(player.getDeck(), playerZones[i].getDeckZone(), new Vector3f(0, 1, 0), new ClickInteractivity() {
+
+                @Override
+                public void trigger(BoardObject boardObject, BoardObject target) {
+                    game.getCurrentPlayer().draw();
+                    updateBoard();
+                }
+            });
+            updateZone(player.getHand(), playerZones[i].getHandZone(), new Vector3f(1, 0, 0), new DragToPlayInteractivity() {
+
+                @Override
+                public void trigger(BoardObject boardObject, BoardObject target) {
+                    MyCard myCard = gameCards.get(boardObject);
+                    for (MyPlayer player : game.getPlayers()) {
+                        if (player.getHand().contains(myCard)) {
+                            player.getHand().removeCard(myCard);
+                            player.getBoard().addCard(myCard);
+                            updateBoard();
+                            break;
+                        }
+                    }
+                }
+            });
             updateZone(player.getBoard(), playerZones[i].getBoardZone(), new Vector3f(1, 0, 0), new AimToTargetInteractivity(TargetSnapMode.VALID){
 
                 @Override
@@ -196,6 +187,16 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
                         }
                     }
                     return false;
+                }
+
+                @Override
+                public void trigger(BoardObject boardObject, BoardObject target) {
+                    MyCard myCard = gameCards.get(boardObject);
+                    Card targetCard = (Card) target;
+                    MyCard targetMyCard = gameCards.get(targetCard);
+                    myCard.setDamaged(true);
+                    targetMyCard.setDamaged(true);
+                    updateBoard();
                 }
             });
         }

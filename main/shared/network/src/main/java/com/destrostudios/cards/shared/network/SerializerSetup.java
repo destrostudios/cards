@@ -19,6 +19,7 @@ public class SerializerSetup {
         registerClasses(
                 Tuple.class,
                 FullGameStateMessage.class,
+                    FullGameState.class,
                 ClientReadyMessage.class,
                 ActionNotificationMessage.class,
                 ActionRequestMessage.class,

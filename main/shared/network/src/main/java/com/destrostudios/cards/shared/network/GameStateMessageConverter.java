@@ -3,7 +3,6 @@ package com.destrostudios.cards.shared.network;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.EntityMapper;
-import com.destrostudios.cards.shared.network.messages.FullGameStateMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class GameStateMessageConverter {
         this.data = data;
     }
 
-    public FullGameStateMessage exportStateMessage() {
+    public FullGameState exportState() {
         EntityMapper mapper = new EntityMapper(data);
         Map<ComponentDefinition<?>, Map<Integer, Object>> tables = mapper.toComponentTables();
 
@@ -31,13 +30,13 @@ public class GameStateMessageConverter {
             list.add(new Tuple<>(entry.getKey(), entry.getValue().entrySet().stream().map(e -> new Tuple<>(e.getKey(), e.getValue())).collect(Collectors.toList())));
         }
 
-        return new FullGameStateMessage(list, mapper.getNextEntity());
+        return new FullGameState(list, mapper.getNextEntity());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void importStateMessage(FullGameStateMessage message) {
-        new EntityMapper(data).setNextEntity(message.getNextEntity());
-        for (Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>> tuple : message.getList()) {
+    public void importState(FullGameState fullGameState) {
+        new EntityMapper(data).setNextEntity(fullGameState.getNextEntity());
+        for (Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>> tuple : fullGameState.getList()) {
             ComponentDefinition component = tuple.getKey();
             for (Tuple<Integer, Object> tuple1 : tuple.getValue()) {
                 int entity = tuple1.getKey();

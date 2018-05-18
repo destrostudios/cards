@@ -19,5 +19,7 @@ public class EndTurnHandler extends GameEventHandler<EndTurnEvent> {
         Integer nextPlayer = data.getComponent(event.player, Components.NEXT_PLAYER);
         data.setComponent(nextPlayer, Components.ACTIVE_PLAYER);
         LOG.info("Active player changed from {} to {}.", event.player, nextPlayer);
+
+        events.fireChainEvent(new StartTurnEvent(nextPlayer));
     }
 }

@@ -1,10 +1,9 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cards.frontend.application.*;
+import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoardService;
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.animations.*;
-import com.destrostudios.cards.frontend.cardgui.events.*;
-import com.destrostudios.cards.frontend.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
@@ -13,8 +12,10 @@ import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.game.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;
@@ -30,6 +31,7 @@ import com.jme3.renderer.Camera;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
 
@@ -42,6 +44,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private CardGuiMap cardGuiMap = new CardGuiMap();
     private boolean hasPreparedBoard = false;
     private boolean isInitialized = false;
+    private UpdateBoardService updateBoardService;
+    // TODO: Cleanup, solve better
+    private EndTurnEvent sendableEndTurnEvent;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -65,7 +70,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void initListeners() {
         InputManager inputManager = mainApplication.getInputManager();
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addListener(this, "space");
+        inputManager.addMapping("end", new KeyTrigger(KeyInput.KEY_END));
+        inputManager.addMapping("delete", new KeyTrigger(KeyInput.KEY_DELETE));
+        inputManager.addListener(this, "space", "end", "delete");
     }
 
     @Override
@@ -74,6 +81,16 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
             mainApplication.getInputManager().setCursorVisible(flyByCamera.isEnabled());
             flyByCamera.setEnabled(!flyByCamera.isEnabled());
+        }
+        else if ("end".equals(name) && isPressed) {
+            if (sendableEndTurnEvent != null) {
+                gameClient.requestAction(sendableEndTurnEvent);
+            }
+        }
+        // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
+        else if ("delete".equals(name) && isPressed) {
+            int activePlayerEntity = gameClient.getGame().getData().entity(Components.ACTIVE_PLAYER);
+            gameClient.requestAction(new EndTurnEvent(activePlayerEntity));
         }
     }
 
@@ -101,27 +118,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 CardPainterJME.drawCard(paintableImage, cardModel);
                 return paintableImage;
             }
-        }, new InteractivityListener() {
-
-            @Override
-            public void onInteractivity(BoardObject boardObject, BoardObject target) {
-                if (boardObject instanceof Card) {
-                    Card<CardModel> card = (Card) boardObject;
-                    int cardEntity = cardGuiMap.getEntity(card);
-                    int playerEntity = gameClient.getGame().getData().getComponent(cardEntity, Components.OWNED_BY);
-                    PlayerZones playerZones = playerZonesMap.get(playerEntity);
-                    if (card.getZonePosition().getZone() == playerZones.getHandZone()) {
-                        gameClient.requestAction(new PlayCardFromHandEvent(cardEntity));
-                    }
-                    else if (card.getZonePosition().getZone() == playerZones.getDeckZone()) {
-                        gameClient.requestAction(new DrawCardEvent(playerEntity));
-                    }
-                    else if (card.getZonePosition().getZone() == playerZones.getBoardZone()) {
-                        gameClient.requestAction(new DamageEvent(cardEntity, 1));
-                    }
-                }
-            }
         });
+        updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         initGameListeners();
     }
 
@@ -156,10 +154,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode());
             boardAppState.setDraggedCardProjectionZ(0.9975f);
             mainApplication.getStateManager().attach(boardAppState);
-            updateBoard();
+            updateAndResetBoard();
+            updatePossibleActions();
             hasPreparedBoard = true;
         });
-        gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateBoard());
+        gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateAndResetBoard());
         gameClient.getGame().getPreDispatcher().addListeners(DamageEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
         gameClient.getGame().getPreDispatcher().addListeners(ShuffleLibraryEvent.class, event -> {
             LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
@@ -167,45 +166,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
     }
 
-    private void updateBoard() {
+    private void updateAndResetBoard() {
         mainApplication.enqueue(() -> {
-            IntArrayList cardEntities = gameClient.getGame().getData().entities(Components.OWNED_BY);
-            for (int cardEntity : cardEntities) {
-                CardZone cardZone = null;
-                Integer cardZoneIndex;
-                Interactivity interactivity = null;
-
-                int playerEntity = gameClient.getGame().getData().getComponent(cardEntity, Components.OWNED_BY);
-                PlayerZones playerZones = playerZonesMap.get(playerEntity);
-
-                cardZoneIndex = gameClient.getGame().getData().getComponent(cardEntity, Components.LIBRARY);
-                if (cardZoneIndex != null) {
-                    cardZone = playerZones.getDeckZone();
-                    interactivity = new ClickInteractivity();
-                }
-                else {
-                    cardZoneIndex = gameClient.getGame().getData().getComponent(cardEntity, Components.HAND_CARDS);
-                    if (cardZoneIndex != null) {
-                        cardZone = playerZones.getHandZone();
-                        interactivity = new DragToPlayInteractivity();
-                    }
-                    else {
-                        cardZoneIndex = gameClient.getGame().getData().getComponent(cardEntity, Components.CREATURE_ZONE);
-                        if (cardZoneIndex != null) {
-                            cardZone = playerZones.getBoardZone();
-                            interactivity = new ClickInteractivity();
-                        }
-                    }
-                }
-
-                if (cardZoneIndex != null) {
-                    Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
-                    CardGuiMapper.updateModel(card, gameClient.getGame().getData(), cardEntity);
-                    board.triggerEvent(new ModelUpdatedEvent(card));
-                    board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
-                    card.setInteractivity(interactivity);
-                }
-            }
+            updateBoardService.updateAndResetInteractivities();
+            sendableEndTurnEvent = null;
         });
     }
 
@@ -216,8 +180,30 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             gameClient.markAsReady();
             isInitialized = true;
         }
-        if (!board.isAnimationQueueBlocking()) {
-            gameClient.getGame().getEvents().processNextEvent();
+        processNextEvents();
+    }
+
+    private void processNextEvents() {
+        if (gameClient.getGame().getEvents().hasNext()) {
+            while (!board.isAnimationQueueBlocking()) {
+                gameClient.getGame().getEvents().processNextEvent();
+                if (!gameClient.getGame().getEvents().hasNext()) {
+                    updatePossibleActions();
+                    break;
+                }
+            }
         }
+    }
+
+    private void updatePossibleActions() {
+        mainApplication.enqueue(() -> {
+            List<Event> possibleEvents = PlayerActionsGenerator.generatePossibleActions(gameClient.getGame().getData(), gameClient.getPlayerEntity());
+            updateBoardService.updateInteractivities(possibleEvents);
+            for (Event event : possibleEvents) {
+                if (event instanceof EndTurnEvent) {
+                    sendableEndTurnEvent = (EndTurnEvent) event;
+                }
+            }
+        });
     }
 }

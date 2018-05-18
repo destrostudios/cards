@@ -2,6 +2,7 @@ package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.*;
+import com.destrostudios.cards.shared.network.FullGameState;
 import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.cards.shared.network.GameStateMessageConverter;
 import com.destrostudios.cards.shared.network.SerializerSetup;
@@ -31,8 +32,9 @@ public class SimpleGameServer {
     private final Server server;
     private final TrackedRandom trackedRandom;
     private final GameContext context;
-    private final FullGameStateMessage initialSetup;
+    private final FullGameState initialGameState;
     private final List<ActionNotificationMessage> actionHistory = new ArrayList<>();
+    private final TestGameSetup testGameSetup;
 
     public SimpleGameServer(int port) throws IOException {
         SerializerSetup.ensureInitialized();
@@ -40,15 +42,20 @@ public class SimpleGameServer {
         trackedRandom = new TrackedRandom(new SecureRandom());
         GameContext.EventQueueProvider eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> new InstantEventQueueImpl(new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher));
         context = new GameContext(eventQueueProvider, trackedRandom::nextInt);
-        new TestGameSetup(context.getData()).apply();
-        initialSetup = new GameStateMessageConverter(context.getData()).exportStateMessage();
+
+        testGameSetup = new TestGameSetup(context.getData());
+        testGameSetup.apply();
+
+        GameStateMessageConverter gameStateMessageConverter = new GameStateMessageConverter(context.getData());
+        initialGameState = gameStateMessageConverter.exportState();
 
         applyAction(new GameStartEvent());
 
         server.addConnectionListener(new ConnectionListener() {
             @Override
             public void connectionAdded(Server server, HostedConnection hc) {
-                hc.send(initialSetup);
+                int playerEntity = testGameSetup.getPlayers()[hc.getId()];
+                hc.send(new FullGameStateMessage(initialGameState, playerEntity));
                 LOG.info("added connection {}", hc);
             }
 
@@ -88,9 +95,5 @@ public class SimpleGameServer {
     public void start() {
         server.start();
         LOG.info("server started");
-    }
-
-    public GameContext getGame() {
-        return context;
     }
 }

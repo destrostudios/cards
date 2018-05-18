@@ -143,7 +143,7 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
                         if (interactivity != null) {
                             switch (interactivity.getType()) {
                                 case CLICK:
-                                    board.getInteractivityListener().onInteractivity(boardObject, null);
+                                    boardObject.triggerInteraction(null);
                                     break;
                                 case DRAG:
                                     setDraggedBoardObject(boardObject);
@@ -160,13 +160,13 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
                     if (draggedBoardObject != null) {
                         switch (draggedBoardObject.getInteractivity().getType()) {
                             case DRAG:
-                                board.getInteractivityListener().onInteractivity(draggedBoardObject, null);
+                                draggedBoardObject.triggerInteraction(null);
                                 break;
 
                             case AIM:
                                 BoardObject hoveredBoardObject = getHoveredInteractivityTarget(true);
                                 if (hoveredBoardObject != null) {
-                                    board.getInteractivityListener().onInteractivity(draggedBoardObject, hoveredBoardObject);
+                                    draggedBoardObject.triggerInteraction(hoveredBoardObject);
                                 }
                                 break;
                         }

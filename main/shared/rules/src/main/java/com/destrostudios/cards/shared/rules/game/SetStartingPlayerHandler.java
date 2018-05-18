@@ -20,5 +20,7 @@ public class SetStartingPlayerHandler extends GameEventHandler<GameStartEvent> {
         int player = players.get(random.applyAsInt(players.size()));
         data.setComponent(player, Components.ACTIVE_PLAYER);
         LOG.info("starting player is {}.", player);
+
+        events.fireChainEvent(new StartTurnEvent(player));
     }
 }

@@ -1,12 +1,13 @@
 package com.destrostudios.cards.frontend.cardgui.interactivities;
 
+import com.destrostudios.cards.frontend.cardgui.BoardObjectModel;
 import com.destrostudios.cards.frontend.cardgui.Interactivity;
 
 /**
  *
  * @author Carl
  */
-public class DragToPlayInteractivity extends Interactivity {
+public abstract class DragToPlayInteractivity<ModelType extends BoardObjectModel> extends Interactivity<ModelType> {
     
     public DragToPlayInteractivity() {
         super(Type.DRAG);

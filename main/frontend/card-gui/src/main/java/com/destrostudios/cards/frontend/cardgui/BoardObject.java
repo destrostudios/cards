@@ -9,7 +9,7 @@ public class BoardObject<ModelType extends BoardObjectModel> implements GameLoop
     private int id = -1;
     private ModelType model;
     private boolean checkForVisualisationUpdate;
-    private Interactivity interactivity;
+    private Interactivity<ModelType> interactivity;
 
     @Override
     public void update(float lastTimePerFrame) {
@@ -49,11 +49,15 @@ public class BoardObject<ModelType extends BoardObjectModel> implements GameLoop
         setInteractivity(null);
     }
 
-    public void setInteractivity(Interactivity interactivity) {
+    public void setInteractivity(Interactivity<ModelType> interactivity) {
         this.interactivity = interactivity;
     }
 
-    public Interactivity getInteractivity() {
+    public Interactivity<ModelType> getInteractivity() {
         return interactivity;
+    }
+
+    public void triggerInteraction(BoardObject target) {
+        interactivity.trigger(this, target);
     }
 }

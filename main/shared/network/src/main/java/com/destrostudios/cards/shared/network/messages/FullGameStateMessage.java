@@ -1,9 +1,7 @@
 package com.destrostudios.cards.shared.network.messages;
 
-import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.destrostudios.cards.shared.network.Tuple;
+import com.destrostudios.cards.shared.network.FullGameState;
 import com.jme3.network.AbstractMessage;
-import java.util.List;
 
 /**
  *
@@ -11,22 +9,23 @@ import java.util.List;
  */
 public class FullGameStateMessage extends AbstractMessage {
 
-    private List<Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>>> list;
-    private int nextEntity;
+    private FullGameState fullGameState;
+    private int playerEntity;
 
-    public FullGameStateMessage() {
+    private FullGameStateMessage() {
+
     }
 
-    public FullGameStateMessage(List<Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>>> list, int nextEntity) {
-        this.list = list;
-        this.nextEntity = nextEntity;
+    public FullGameStateMessage(FullGameState fullGameState, int playerEntity) {
+        this.fullGameState = fullGameState;
+        this.playerEntity = playerEntity;
     }
 
-    public List<Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>>> getList() {
-        return list;
+    public FullGameState getFullGameState() {
+        return fullGameState;
     }
 
-    public int getNextEntity() {
-        return nextEntity;
+    public int getPlayerEntity() {
+        return playerEntity;
     }
 }

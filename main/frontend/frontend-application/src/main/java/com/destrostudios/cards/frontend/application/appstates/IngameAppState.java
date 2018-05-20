@@ -154,7 +154,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             hasPreparedBoard = true;
         });
         gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateAndResetBoard());
-        gameClient.getGame().getPreDispatcher().addListeners(DamageEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
+        gameClient.getGame().getPreDispatcher().addListeners(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
         gameClient.getGame().getPreDispatcher().addListeners(ShuffleLibraryEvent.class, event -> {
             LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             //board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));

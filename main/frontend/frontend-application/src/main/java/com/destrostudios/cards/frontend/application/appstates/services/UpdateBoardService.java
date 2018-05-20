@@ -100,7 +100,7 @@ public class UpdateBoardService {
                     }
                 });
             }
-            else if (event instanceof DamageEvent) {
+            else if (event instanceof DamageEvent) {//TODO: replace with BattleEvent
                 DamageEvent damageEvent = (DamageEvent) event;
                 Card<CardModel> cardToDamage = cardGuiMap.getOrCreateCard(damageEvent.target);
                 cardToDamage.setInteractivity(new ClickInteractivity<CardModel>() {

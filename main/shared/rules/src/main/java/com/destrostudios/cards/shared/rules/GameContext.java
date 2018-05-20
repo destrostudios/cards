@@ -39,6 +39,7 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(AddCardToBoardEvent.class, new AddCardToBoardHandler());
         addGameEventHandler(AddCardToHandEvent.class, new AddCardToHandHandler());
         addGameEventHandler(AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
+        addGameEventHandler(BattleEvent.class, new BattleHandler());
         addGameEventHandler(DamageEvent.class, new DamageHandler());
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
         addGameEventHandler(EndTurnEvent.class, new EndTurnHandler());

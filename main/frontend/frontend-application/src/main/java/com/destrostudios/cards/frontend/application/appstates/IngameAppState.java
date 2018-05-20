@@ -130,9 +130,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 if (i == 1) {
                     offset.addLocal(0, 0, -6);
                 }
-                IntervalZone deckZone = new IntervalZone(
-                        offset.add(10, 0, 0),
-                        new Vector3f(0.04f, 0, 0)) {
+                IntervalZone deckZone = new IntervalZone(offset.add(10, 0, 0), new Vector3f(0.04f, 0, 0)) {
 
                     // TODO: Cleanup
                     @Override

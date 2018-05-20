@@ -1,4 +1,4 @@
-package com.destrostudios.cards.frontend.cardgui.animations;
+package com.destrostudios.cards.frontend.cardgui.animations.samples;
 
 import com.destrostudios.cards.frontend.cardgui.Animation;
 import com.jme3.asset.AssetManager;

@@ -4,47 +4,32 @@ import com.destrostudios.cards.frontend.cardgui.FloatInterpolate;
 import com.destrostudios.cards.frontend.cardgui.transformations.speeds.TimeBasedPositionTransformationSpeed;
 import com.jme3.math.Vector3f;
 
-public class SimpleTargetPositionTransformation extends PositionTransformation {
+public class SimpleTargetPositionTransformation extends SimpleTargetedTransformation<Vector3f> {
+
+    public SimpleTargetPositionTransformation() {
+        this(new Vector3f());
+    }
 
     public SimpleTargetPositionTransformation(Vector3f targetPosition) {
         this(targetPosition, new TimeBasedPositionTransformationSpeed(1.5f));
     }
 
     public SimpleTargetPositionTransformation(Vector3f targetPosition, TransformationSpeed<Vector3f> transformationSpeed) {
-        this.transformationSpeed = transformationSpeed;
-        setTargetPosition(targetPosition, true);
-    }
-    private Vector3f targetPosition = new Vector3f();
-    private TransformationSpeed<Vector3f> transformationSpeed;
-
-    public void setTargetPosition(Vector3f targetPosition, boolean resetSpeed) {
-        if (!targetPosition.equals(this.targetPosition)) {
-            this.targetPosition.set(targetPosition);
-            if (resetSpeed) {
-                transformationSpeed.reset();
-            }
-        }
+        super(new Vector3f(), targetPosition, transformationSpeed);
     }
 
     @Override
-    public void update(float lastTimePerFrame) {
-        super.update(lastTimePerFrame);
-        transformationSpeed.update(lastTimePerFrame);
+    public void setValue(Vector3f destinationValue, Vector3f sourceValue) {
+        destinationValue.set(sourceValue);
     }
 
     @Override
-    public Vector3f getNewValue(Vector3f currentValue, float lastTimePerFrame) {
-        float speed = transformationSpeed.getSpeed(currentValue, targetPosition);
-        return FloatInterpolate.get(currentValue, targetPosition, speed, lastTimePerFrame);
-    }
-
-    @Override
-    public boolean hasReachedTarget() {
-        return object.getCurrentPosition().equals(targetPosition);
+    protected Vector3f getNewValue(Vector3f currentValue, Vector3f targetValue, float speed, float lastTimePerFrame) {
+        return FloatInterpolate.get(currentValue, targetValue, speed, lastTimePerFrame);
     }
 
     @Override
     public SimpleTargetPositionTransformation clone() {
-        return new SimpleTargetPositionTransformation(targetPosition, transformationSpeed.clone());
+        return new SimpleTargetPositionTransformation(targetValue.clone(), transformationSpeed.clone());
     }
 }

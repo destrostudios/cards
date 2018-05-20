@@ -1,5 +1,7 @@
 package com.destrostudios.cards.frontend.cardgui;
 
+import com.destrostudios.cards.frontend.cardgui.transformations.ConstantButTargetedTransformation;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import java.util.LinkedList;
 
@@ -9,6 +11,10 @@ import java.util.LinkedList;
  */
 public abstract class CardZone extends TransformedBoardObject {
 
+    public CardZone(Vector3f position, Quaternion rotation) {
+        position().setTransformation(new ConstantButTargetedTransformation<>(position));
+        rotation().setTransformation(new ConstantButTargetedTransformation<>(rotation));
+    }
     private Board board;
     private LinkedList<Card> cards = new LinkedList<>();
     

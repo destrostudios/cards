@@ -73,8 +73,8 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
             }
             if (boardObject instanceof TransformedBoardObject) {
                 TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
-                node.setLocalTranslation(transformedBoardObject.getCurrentPosition());
-                node.setLocalRotation(transformedBoardObject.getCurrentRotation());
+                node.setLocalTranslation(transformedBoardObject.position().getCurrentValue());
+                node.setLocalRotation(transformedBoardObject.rotation().getCurrentValue());
             }
         }
         if (draggedNode != null) {
@@ -90,8 +90,8 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
                     draggedNode.rotate(-FastMath.HALF_PI, 0, FastMath.PI);
                     if (draggedBoardObject instanceof TransformedBoardObject) {
                         TransformedBoardObject transformedBoardObject = (TransformedBoardObject) draggedBoardObject;
-                        transformedBoardObject.setCurrentPosition(draggedNode.getLocalTranslation());
-                        transformedBoardObject.setCurrentRotation(draggedNode.getLocalRotation());
+                        transformedBoardObject.position().setCurrentValue(draggedNode.getLocalTranslation());
+                        transformedBoardObject.rotation().setCurrentValue(draggedNode.getLocalRotation());
                     }
                     break;
                 
@@ -122,8 +122,8 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
             boardObjectNodes.put(boardObject, node);
             if (boardObject instanceof TransformedBoardObject) {
                 TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
-                transformedBoardObject.setCurrentPosition(node.getLocalTranslation());
-                transformedBoardObject.setCurrentRotation(node.getLocalRotation());
+                transformedBoardObject.position().setCurrentValue(node.getLocalTranslation());
+                transformedBoardObject.rotation().setCurrentValue(node.getLocalRotation());
             }
         }
         return node;

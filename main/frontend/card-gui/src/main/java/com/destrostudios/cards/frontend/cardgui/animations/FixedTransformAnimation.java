@@ -1,12 +1,14 @@
 package com.destrostudios.cards.frontend.cardgui.animations;
 
 import com.destrostudios.cards.frontend.cardgui.Animation;
+import com.destrostudios.cards.frontend.cardgui.transformations.TargetedTransformation;
 import com.destrostudios.cards.frontend.cardgui.TransformedBoardObject;
-import com.destrostudios.cards.frontend.cardgui.transformations.*;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 
 import java.util.Collection;
 
-public abstract class FixedTransformAnimation<PositionTransformationType extends PositionTransformation, RotationTransformationType extends RotationTransformation> extends Animation {
+public abstract class FixedTransformAnimation<PositionTransformationType extends TargetedTransformation<Vector3f>, RotationTransformationType extends TargetedTransformation<Quaternion>> extends Animation {
 
     public FixedTransformAnimation(Collection<? extends TransformedBoardObject> transformedBoardObjects) {
         this(transformedBoardObjects, false);
@@ -29,12 +31,12 @@ public abstract class FixedTransformAnimation<PositionTransformationType extends
             if (positionTransformation != null) {
                 PositionTransformationType clonedPositionTransformation = (PositionTransformationType) positionTransformation.clone();
                 updatePositionTransform(index, transformedBoardObject, clonedPositionTransformation);
-                transformedBoardObject.setPositionTransformation(clonedPositionTransformation);
+                transformedBoardObject.position().setTransformation(clonedPositionTransformation);
             }
             if (rotationTransformation != null) {
                 RotationTransformationType clonedRotationTransformation = (RotationTransformationType) rotationTransformation.clone();
                 updateRotationTransform(index, transformedBoardObject, clonedRotationTransformation);
-                transformedBoardObject.setRotationTransformation(rotationTransformation.clone());
+                transformedBoardObject.rotation().setTransformation(clonedRotationTransformation);
             }
             index++;
         }
@@ -46,11 +48,11 @@ public abstract class FixedTransformAnimation<PositionTransformationType extends
         if (reevaluateEveryFrame) {
             int index = 0;
             for (TransformedBoardObject transformedBoardObject : transformedBoardObjects) {
-                if (!transformedBoardObject.hasReachedTargetPosition()) {
-                    updatePositionTransform(index, transformedBoardObject, (PositionTransformationType) transformedBoardObject.getPositionTransformation());
+                if (!transformedBoardObject.position().hasReachedTarget()) {
+                    updatePositionTransform(index, transformedBoardObject, (PositionTransformationType) transformedBoardObject.position().getTransformation());
                 }
-                if (!transformedBoardObject.hasReachedTargetRotation()) {
-                    updateRotationTransform(index, transformedBoardObject, (RotationTransformationType) transformedBoardObject.getRotationTransformation());
+                if (!transformedBoardObject.rotation().hasReachedTarget()) {
+                    updateRotationTransform(index, transformedBoardObject, (RotationTransformationType) transformedBoardObject.rotation().getTransformation());
                 }
                 index++;
             }

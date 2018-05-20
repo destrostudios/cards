@@ -1,7 +1,6 @@
 package com.destrostudios.cards.frontend.cardgui;
 
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
-
 /**
  *
  * @author Carl
@@ -9,21 +8,13 @@ import com.destrostudios.cards.frontend.cardgui.transformations.*;
 public class Card<ModelType extends BoardObjectModel> extends TransformedBoardObject<ModelType>{
 
     public Card(ModelType model) {
+        position().setDefaultTransformationProvider(() -> new CardInZonePositionTransformation(zonePosition));
+        rotation().setDefaultTransformationProvider(() -> new CardInZoneRotationTransformation(zonePosition));
         setModel(model);
     }
     private ZonePosition zonePosition = new ZonePosition();
 
     public ZonePosition getZonePosition() {
         return zonePosition;
-    }
-
-    @Override
-    protected PositionTransformation getDefaultPositionTransformation() {
-        return new CardInZonePositionTransformation(zonePosition);
-    }
-
-    @Override
-    protected RotationTransformation getDefaultRotationTransformation() {
-        return new CardInZoneRotationTransformation(zonePosition);
     }
 }

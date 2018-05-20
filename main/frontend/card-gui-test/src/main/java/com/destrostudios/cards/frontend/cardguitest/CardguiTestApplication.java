@@ -1,12 +1,11 @@
 package com.destrostudios.cards.frontend.cardguitest;
 
 import com.destrostudios.cards.frontend.cardgui.*;
-import com.destrostudios.cards.frontend.cardgui.animations.*;
+import com.destrostudios.cards.frontend.cardgui.animations.samples.*;
 import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
 import com.destrostudios.cards.frontend.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.cardgui.targetarrow.TargetSnapMode;
-import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.*;
 import com.destrostudios.cards.frontend.cardguitest.game.*;
@@ -133,13 +132,9 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
             if (i == 1) {
                 offset.addLocal(0, 0, -6);
             }
-            IntervalZone deckZone = new IntervalZone(new Vector3f(0, 0.04f, 0));
-            IntervalZone handZone = new IntervalZone(new Vector3f(1, 1, 1));
-            IntervalZone boardZone = new IntervalZone(new Vector3f(1, 1, 1));
-            boardZone.setPositionTransformation(new SimpleTargetPositionTransformation(offset.add(0, 0, 0)));
-            handZone.setPositionTransformation(new SimpleTargetPositionTransformation(offset.add(0, 0, 2.5f)));
-            deckZone.setPositionTransformation(new SimpleTargetPositionTransformation(offset.add(10, 0, 0)));
-            handZone.setRotationTransformation(new SimpleTargetRotationTransformation(new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X)));
+            IntervalZone deckZone = new IntervalZone(offset.add(10, 0, 0), new Vector3f(0, 0.04f, 0));
+            IntervalZone handZone = new IntervalZone(offset.add(0, 0, 2.5f), new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X), new Vector3f(1, 1, 1));
+            IntervalZone boardZone = new IntervalZone(offset.add(0, 0, 0), new Vector3f(1, 1, 1));
             board.addZone(deckZone);
             board.addZone(handZone);
             board.addZone(boardZone);

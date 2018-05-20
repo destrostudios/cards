@@ -13,7 +13,7 @@ public class CardInZonePositionTransformation extends SimpleTargetPositionTransf
 
     @Override
     public void update(float lastTimePerFrame) {
-        setTargetPosition(zonePosition.getDefaultTargetPosition(), true);
+        setTargetValue(zonePosition.getDefaultTargetPosition(), true);
         super.update(lastTimePerFrame);
     }
 }

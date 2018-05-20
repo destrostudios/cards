@@ -1,7 +1,8 @@
-package com.destrostudios.cards.frontend.cardgui.animations;
+package com.destrostudios.cards.frontend.cardgui.animations.samples;
 
 import com.destrostudios.cards.frontend.cardgui.Animation;
 import com.destrostudios.cards.frontend.cardgui.TransformedBoardObject;
+import com.destrostudios.cards.frontend.cardgui.animations.*;
 import com.destrostudios.cards.frontend.cardgui.transformations.*;
 import com.destrostudios.cards.frontend.cardgui.transformations.speeds.*;
 import com.jme3.app.Application;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class ShuffleAnimation extends StagedAnimation{
+public class ShuffleAnimation extends StagedAnimation {
 
     public ShuffleAnimation(Collection<? extends TransformedBoardObject> transformedBoardObjects, Application application) {
         this.stages = new Animation[]{
@@ -29,7 +30,7 @@ public class ShuffleAnimation extends StagedAnimation{
 
                 @Override
                 protected void updatePositionTransform(int index, TransformedBoardObject transformedBoardObject, SimpleTargetPositionTransformation positionTransformation) {
-                    positionTransformation.setTargetPosition(getTargetPosition(), false);
+                    positionTransformation.setTargetValue(getTargetPosition(), false);
                 }
 
                 @Override
@@ -47,7 +48,7 @@ public class ShuffleAnimation extends StagedAnimation{
                     targetRotation.multLocal(faceToCamera);
                     vars.release();
 
-                    rotationTransformation.setTargetRotation(targetRotation, false);
+                    //rotationTransformation.setTargetValue(targetRotation, false);
                 }
             },
             new FixedTransformAnimation<SimpleTargetPositionTransformation, SimpleTargetRotationTransformation>(transformedBoardObjects, true) {
@@ -64,7 +65,7 @@ public class ShuffleAnimation extends StagedAnimation{
                     float cardsPerHalf = (transformedBoardObjects.size() / 2);
                     float x = ((randomOrder.get(index) - cardsPerHalf) * (maximumX / cardsPerHalf));
                     targetPosition.addLocal(x, 0, 0);
-                    positionTransformation.setTargetPosition(targetPosition, false);
+                    positionTransformation.setTargetValue(targetPosition, false);
                 }
 
                 @Override

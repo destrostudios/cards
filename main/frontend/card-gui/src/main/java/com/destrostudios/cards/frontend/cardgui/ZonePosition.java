@@ -25,10 +25,10 @@ public class ZonePosition {
     }
 
     public Vector3f getDefaultTargetPosition() {
-        return zone.getCurrentPosition().add(zone.getLocalPosition(position));
+        return zone.position().getCurrentValue().add(zone.getLocalPosition(position));
     }
 
     public Quaternion getDefaultTargetRotation() {
-        return zone.getCurrentRotation();
+        return zone.rotation().getCurrentValue();
     }
 }

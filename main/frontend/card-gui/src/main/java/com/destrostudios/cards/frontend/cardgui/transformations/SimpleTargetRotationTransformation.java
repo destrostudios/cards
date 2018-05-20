@@ -4,47 +4,32 @@ import com.destrostudios.cards.frontend.cardgui.FloatInterpolate;
 import com.destrostudios.cards.frontend.cardgui.transformations.speeds.TimeBasedRotationTransformationSpeed;
 import com.jme3.math.Quaternion;
 
-public class SimpleTargetRotationTransformation extends RotationTransformation {
+public class SimpleTargetRotationTransformation extends SimpleTargetedTransformation<Quaternion> {
+
+    public SimpleTargetRotationTransformation() {
+        this(new Quaternion());
+    }
 
     public SimpleTargetRotationTransformation(Quaternion targetRotation) {
         this(targetRotation, new TimeBasedRotationTransformationSpeed(1));
     }
 
-    public SimpleTargetRotationTransformation(Quaternion targetRotation, TransformationSpeed<Quaternion> transformationSpeed) {
-        this.transformationSpeed = transformationSpeed;
-        setTargetRotation(targetRotation, true);
-    }
-    private Quaternion targetRotation = new Quaternion();
-    private TransformationSpeed<Quaternion> transformationSpeed;
-
-    public void setTargetRotation(Quaternion targetRotation, boolean resetSpeed) {
-        if (!targetRotation.equals(this.targetRotation)) {
-            this.targetRotation.set(targetRotation);
-            if (resetSpeed) {
-                transformationSpeed.reset();
-            }
-        }
+    public SimpleTargetRotationTransformation(Quaternion targetPosition, TransformationSpeed<Quaternion> transformationSpeed) {
+        super(new Quaternion(), targetPosition, transformationSpeed);
     }
 
     @Override
-    public void update(float lastTimePerFrame) {
-        super.update(lastTimePerFrame);
-        transformationSpeed.update(lastTimePerFrame);
+    public void setValue(Quaternion destinationValue, Quaternion sourceValue) {
+        destinationValue.set(sourceValue);
     }
 
     @Override
-    public Quaternion getNewValue(Quaternion currentValue, float lastTimePerFrame) {
-        float speed = transformationSpeed.getSpeed(currentValue, targetRotation);
-        return FloatInterpolate.get(currentValue, targetRotation, speed, lastTimePerFrame);
-    }
-
-    @Override
-    public boolean hasReachedTarget() {
-        return object.getCurrentRotation().equals(targetRotation);
+    protected Quaternion getNewValue(Quaternion currentValue, Quaternion targetValue, float speed, float lastTimePerFrame) {
+        return FloatInterpolate.get(currentValue, targetValue, speed, lastTimePerFrame);
     }
 
     @Override
     public SimpleTargetRotationTransformation clone() {
-        return new SimpleTargetRotationTransformation(targetRotation, transformationSpeed.clone());
+        return new SimpleTargetRotationTransformation(targetValue.clone(), transformationSpeed.clone());
     }
 }

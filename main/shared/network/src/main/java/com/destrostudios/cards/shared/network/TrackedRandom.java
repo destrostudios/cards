@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.network;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Random;
  */
 public class TrackedRandom {
 
-    private final IntArrayList history = new IntArrayList();
+    private final List<Integer> history = new ArrayList<>();
     private final Random random;
 
     public TrackedRandom(Random random) {
@@ -28,7 +29,7 @@ public class TrackedRandom {
         return result;
     }
 
-    public IntArrayList getHistory() {
+    public List<Integer> getHistory() {
         return history;
     }
 

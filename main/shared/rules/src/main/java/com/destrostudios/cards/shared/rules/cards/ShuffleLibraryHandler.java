@@ -1,8 +1,8 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import java.util.List;
 
 /**
  * @author Philipp
@@ -11,12 +11,11 @@ public class ShuffleLibraryHandler extends GameEventHandler<ShuffleLibraryEvent>
 
     @Override
     public void handle(ShuffleLibraryEvent event) {
-        IntArrayList libraryCards = data.entities(Components.LIBRARY, (cardEntity) -> data.getComponent(cardEntity, Components.OWNED_BY) == event.player);
-        libraryCards.shuffle(random);
-
-        for (int i = 0; i < libraryCards.size(); i++) {
-            int cardEntity = libraryCards.get(i);
-            data.setComponent(cardEntity, Components.LIBRARY, i);
+        List<Integer> libraryCards = data.query(Components.LIBRARY).list((cardEntity) -> data.getComponent(cardEntity, Components.OWNED_BY) == event.player);
+        
+        for (int i = libraryCards.size(); i > 0; i--) {
+            int cardEntity = libraryCards.get(random.applyAsInt(i));
+            data.setComponent(cardEntity, Components.LIBRARY, i - 1);
         }
     }
 }

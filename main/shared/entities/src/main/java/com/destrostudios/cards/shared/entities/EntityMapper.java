@@ -41,7 +41,7 @@ public class EntityMapper {
         data.knownComponents().forEach(component -> {
             TreeMap<Integer, Object> map = new TreeMap<>();
             result.put(component, map);
-            data.entities(component).foreach(entity -> {
+            data.query(component).list().forEach(entity -> {
                 map.put(entity, data.getComponent(entity, component));
             });
         });

@@ -1,8 +1,7 @@
 package com.destrostudios.cards.shared.entities;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import java.util.Objects;
-import java.util.function.IntPredicate;
+import java.util.Optional;
 
 /**
  *
@@ -20,10 +19,12 @@ public interface EntityData {
 
     <T> void removeComponent(int entity, ComponentDefinition<T> component);
 
-    IntArrayList entities(ComponentDefinition<?> component, IntPredicate... predicates);
-
     default <T> T getComponentOrDefault(int entity, ComponentDefinition<T> component, T defaultValue) {
-        return hasComponent(entity, component) ? getComponent(entity, component) : defaultValue;
+        return getOptionalComponent(entity, component).orElse(defaultValue);
+    }
+
+    default <T> Optional<T> getOptionalComponent(int entity, ComponentDefinition<T> component) {
+        return hasComponent(entity, component) ? Optional.of(getComponent(entity, component)) : Optional.empty();
     }
 
     default void setComponent(int entity, ComponentDefinition<Void> component) {
@@ -34,11 +35,5 @@ public interface EntityData {
         return hasComponent(entity, component) && Objects.equals(getComponent(entity, component), value);
     }
 
-    default int entity(ComponentDefinition<?> component, IntPredicate... predicates) {
-        IntArrayList result = entities(component, predicates);
-        if (result.size() != 1) {
-            throw new IllegalStateException(Integer.toString(result.size()));
-        }
-        return result.get(0);
-    }
+    <T> Aggregator<T> query(ComponentDefinition<T> component);
 }

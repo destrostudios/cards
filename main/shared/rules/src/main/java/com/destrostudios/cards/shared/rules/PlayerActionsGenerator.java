@@ -1,10 +1,8 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
-import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.PlayCardFromHandEvent;
 import com.destrostudios.cards.shared.rules.game.EndTurnEvent;
@@ -20,7 +18,7 @@ public class PlayerActionsGenerator {
         // TODO: Replace with actual action generation
         if (entityData.hasComponent(playerEntity, Components.ACTIVE_PLAYER)) {
             IntPredicate ownedByPlayer = cardEntity -> entityData.hasComponentValue(cardEntity, Components.OWNED_BY, playerEntity);
-            IntArrayList ownedCardEntities = entityData.entities(Components.OWNED_BY, ownedByPlayer);
+            List<Integer> ownedCardEntities = entityData.query(Components.OWNED_BY).list(ownedByPlayer);
             for (int cardEntity : ownedCardEntities) {
                 Integer cardZoneIndex = entityData.getComponent(cardEntity, Components.HAND_CARDS);
                 if (cardZoneIndex != null) {
@@ -29,9 +27,9 @@ public class PlayerActionsGenerator {
             }
             possibleEvents.add(new DrawCardEvent(playerEntity));
             possibleEvents.add(new EndTurnEvent(playerEntity));
-            
-            for (int attacker : entityData.entities(Components.CREATURE_ZONE, ownedByPlayer)) {
-                for (int defender : entityData.entities(Components.CREATURE_ZONE, cardEntity -> !entityData.hasComponentValue(cardEntity, Components.OWNED_BY, playerEntity))) {
+
+            for (int attacker : entityData.query(Components.CREATURE_ZONE).list(ownedByPlayer)) {
+                for (int defender : entityData.query(Components.CREATURE_ZONE).list(cardEntity -> !entityData.hasComponentValue(cardEntity, Components.OWNED_BY, playerEntity))) {
                     possibleEvents.add(new BattleEvent(attacker, defender));
                 }
             }

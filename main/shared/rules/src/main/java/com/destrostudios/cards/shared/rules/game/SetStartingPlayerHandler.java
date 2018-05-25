@@ -1,8 +1,8 @@
 package com.destrostudios.cards.shared.rules.game;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ public class SetStartingPlayerHandler extends GameEventHandler<GameStartEvent> {
 
     @Override
     public void handle(GameStartEvent event) {
-        IntArrayList players = data.entities(Components.NEXT_PLAYER);
+        List<Integer> players = data.query(Components.NEXT_PLAYER).list();
         int player = players.get(random.applyAsInt(players.size()));
         data.setComponent(player, Components.ACTIVE_PLAYER);
         LOG.info("starting player is {}.", player);

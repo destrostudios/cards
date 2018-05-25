@@ -17,10 +17,10 @@ public class RemoveCardFromHandHandler extends GameEventHandler<RemoveCardFromHa
     public void handle(RemoveCardFromHandEvent event) {
         int player = data.getComponent(event.card, Components.OWNED_BY);
         int handIndex = data.getComponent(event.card, Components.HAND_CARDS);
-        for (int handCard : data.entities(Components.HAND_CARDS,
-                x -> data.hasComponentValue(x, Components.OWNED_BY, player),
-                x -> data.getComponent(x, Components.HAND_CARDS) > handIndex)) {
-
+        for (int handCard : data.query(Components.HAND_CARDS).list(
+                        x -> data.hasComponentValue(x, Components.OWNED_BY, player)
+                        && data.getComponent(x, Components.HAND_CARDS) > handIndex)) {
+            
             data.setComponent(handCard, Components.HAND_CARDS, data.getComponent(handCard, Components.HAND_CARDS) - 1);
         }
         data.removeComponent(event.card, Components.HAND_CARDS);

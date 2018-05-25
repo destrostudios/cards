@@ -13,7 +13,6 @@ public class AddCardToBoardHandler extends GameEventHandler<AddCardToBoardEvent>
     public void handle(AddCardToBoardEvent event) {
         data.setComponent(event.card, Components.BOARD);
         int playerEntity = data.getComponent(event.card, Components.OWNED_BY);
-        data.setComponent(event.card, Components.CREATURE_ZONE, data.entities(Components.CREATURE_ZONE,
-                card -> data.getComponent(card, Components.OWNED_BY) == playerEntity).size());
+        data.setComponent(event.card, Components.CREATURE_ZONE, data.query(Components.CREATURE_ZONE).list(card -> data.getComponent(card, Components.OWNED_BY) == playerEntity).size());
     }
 }

@@ -1,6 +1,5 @@
 package com.destrostudios.cards.backend.application;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.*;
 import com.destrostudios.cards.shared.network.FullGameState;
 import com.destrostudios.cards.shared.network.messages.*;
@@ -79,7 +78,7 @@ public class SimpleGameServer {
     }
 
     private void applyAction(Event action) {
-        IntArrayList history = trackedRandom.getHistory();
+        List<Integer> history = trackedRandom.getHistory();
         history.clear();
         context.getEvents().fireActionEvent(action);
         int[] randomHistory = new int[history.size()];

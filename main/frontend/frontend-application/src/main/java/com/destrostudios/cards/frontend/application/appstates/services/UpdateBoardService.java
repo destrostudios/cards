@@ -12,7 +12,6 @@ import com.destrostudios.cards.frontend.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.cardgui.targetarrow.TargetSnapMode;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
@@ -40,7 +39,7 @@ public class UpdateBoardService {
 
     public void updateAndResetInteractivities() {
         EntityData entityData = gameClient.getGame().getData();
-        IntArrayList cardEntities = entityData.entities(Components.OWNED_BY);
+        List<Integer> cardEntities = entityData.query(Components.OWNED_BY).list();
         for (int cardEntity : cardEntities) {
             CardZone cardZone = null;
             Integer cardZoneIndex;
@@ -83,7 +82,7 @@ public class UpdateBoardService {
         for (Event event : possibleEvents) {
             if (event instanceof DrawCardEvent) {
                 DrawCardEvent drawCardEvent = (DrawCardEvent) event;
-                for (int ownLibraryCardEntity : entityData.entities(Components.LIBRARY, cardEntity -> entityData.hasComponentValue(cardEntity, Components.OWNED_BY, drawCardEvent.player))) {
+                for (int ownLibraryCardEntity : entityData.query(Components.LIBRARY).list(cardEntity -> entityData.hasComponentValue(cardEntity, Components.OWNED_BY, drawCardEvent.player))) {
                     Card<CardModel> libraryCard = cardGuiMap.getOrCreateCard(ownLibraryCardEntity);
                     libraryCard.setInteractivity(new ClickInteractivity<CardModel>() {
 

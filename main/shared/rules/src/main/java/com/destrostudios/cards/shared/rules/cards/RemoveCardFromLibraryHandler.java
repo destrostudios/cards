@@ -16,9 +16,9 @@ public class RemoveCardFromLibraryHandler extends GameEventHandler<RemoveCardFro
     public void handle(RemoveCardFromLibraryEvent event) {
         int player = data.getComponent(event.card, Components.OWNED_BY);
         int libraryIndex = data.getComponent(event.card, Components.LIBRARY);
-        for (int libraryCard : data.entities(Components.LIBRARY,
-                x -> data.hasComponentValue(x, Components.OWNED_BY, player),
-                x -> data.getComponent(x, Components.LIBRARY) > libraryIndex)) {
+        for (int libraryCard : data.query(Components.LIBRARY).list(
+                x -> data.hasComponentValue(x, Components.OWNED_BY, player)
+                && data.getComponent(x, Components.LIBRARY) > libraryIndex)) {
 
             data.setComponent(libraryCard, Components.LIBRARY, data.getComponent(libraryCard, Components.LIBRARY) - 1);
         }

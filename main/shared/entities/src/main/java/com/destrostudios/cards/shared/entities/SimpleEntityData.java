@@ -1,12 +1,10 @@
 package com.destrostudios.cards.shared.entities;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntPredicate;
 
 /**
  *
@@ -38,22 +36,6 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
-    public IntArrayList entities(ComponentDefinition<?> component, IntPredicate... predicates) {
-        Map<Integer, ?> map = getComponentMap(component);
-        IntArrayList list = new IntArrayList(map.size());
-        map.keySet().forEach(entity -> {
-            for (IntPredicate predicate : predicates) {
-                if (!predicate.test(entity)) {
-                    return;
-                }
-            }
-            list.add(entity);
-        });
-        list.sort();
-        return list;
-    }
-
-    @Override
     public int createEntity() {
         return nextEntity.getAndIncrement();
     }
@@ -81,5 +63,10 @@ public class SimpleEntityData implements EntityData {
 
     void setNextEntity(int value) {
         nextEntity.set(value);
+    }
+
+    @Override
+    public <T> Aggregator<T> query(ComponentDefinition<T> component) {
+        return new SimpleAggregator<>(getComponentMap(component));
     }
 }

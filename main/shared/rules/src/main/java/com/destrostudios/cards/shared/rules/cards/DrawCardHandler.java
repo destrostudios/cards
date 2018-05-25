@@ -1,8 +1,8 @@
 package com.destrostudios.cards.shared.rules.cards;
 
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +15,8 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
 
     @Override
     public void handle(DrawCardEvent event) {
-        IntArrayList library = data.entities(Components.LIBRARY, entity -> data.hasComponentValue(entity, Components.OWNED_BY, event.player));
-        if (library.size() != 0) {
+        List<Integer> library = data.query(Components.LIBRARY).list(entity -> data.hasComponentValue(entity, Components.OWNED_BY, event.player));
+        if (!library.isEmpty()) {
             int card = library.get(0);
             for (int i = 1; i < library.size(); i++) {
                 int candidate = library.get(i);

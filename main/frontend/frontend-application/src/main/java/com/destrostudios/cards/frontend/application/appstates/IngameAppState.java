@@ -8,7 +8,6 @@ import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
-import com.destrostudios.cards.shared.entities.collections.IntArrayList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
@@ -88,7 +87,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         }
         // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
         else if ("delete".equals(name) && isPressed) {
-            int activePlayerEntity = gameClient.getGame().getData().entity(Components.ACTIVE_PLAYER);
+            int activePlayerEntity = gameClient.getGame().getData().query(Components.ACTIVE_PLAYER).unique().getAsInt();
             gameClient.requestAction(new EndTurnEvent(activePlayerEntity));
         }
     }
@@ -124,7 +123,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private void initGameListeners() {
         gameClient.addFullGameStateListener(entityData -> {
-            IntArrayList players = entityData.entities(Components.NEXT_PLAYER);
+            List<Integer> players = entityData.query(Components.NEXT_PLAYER).list();
             Vector3f offset = new Vector3f(0, 0, 2);
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {

@@ -16,7 +16,7 @@ public class AddCardToLibraryHandler extends GameEventHandler<AddCardToLibraryEv
     @Override
     public void handle(AddCardToLibraryEvent event) {
         int player = data.getComponent(event.card, Components.OWNED_BY);
-        int librarySize = data.query(Components.LIBRARY).count(entity -> data.hasComponentValue(entity, Components.OWNED_BY, player));
+        int librarySize = data.query(Components.LIBRARY).count(hasComponentValue(Components.OWNED_BY, player));
         data.setComponent(event.card, Components.LIBRARY, librarySize);
         LOG.info("added {} to library", event.card);
     }

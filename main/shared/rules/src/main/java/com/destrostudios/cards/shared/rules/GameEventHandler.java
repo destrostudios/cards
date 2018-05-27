@@ -1,8 +1,10 @@
 package com.destrostudios.cards.shared.rules;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
+import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
 
 /**
@@ -16,4 +18,12 @@ public abstract class GameEventHandler<T extends Event> {
     public IntUnaryOperator random;
 
     public abstract void handle(T event);
+
+    protected <T> IntPredicate hasComponentValue(ComponentDefinition<T> component, T value) {
+        return x -> data.hasComponentValue(x, component, value);
+    }
+
+    protected IntPredicate hasComponent(ComponentDefinition<?> component) {
+        return x -> data.hasComponent(x, component);
+    }
 }

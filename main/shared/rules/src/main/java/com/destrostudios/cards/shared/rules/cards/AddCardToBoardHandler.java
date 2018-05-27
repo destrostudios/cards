@@ -24,7 +24,7 @@ public class AddCardToBoardHandler extends GameEventHandler<AddCardToBoardEvent>
         }
 
         int playerEntity = data.getComponent(event.card, Components.OWNED_BY);
-        data.setComponent(event.card, zoneComponent, data.query(zoneComponent).list(card -> data.getComponent(card, Components.OWNED_BY) == playerEntity).size());
+        data.setComponent(event.card, zoneComponent, data.query(zoneComponent).count(hasComponentValue(Components.OWNED_BY, playerEntity)));
         data.setComponent(event.card, Components.BOARD);
     }
 }

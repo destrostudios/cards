@@ -39,21 +39,9 @@ public interface Aggregator<T> {
         return unique(x -> true);
     }
 
-    void list(List<Integer> out, IntPredicate predicate);
-
-    default void list(List<Integer> out) {
-        list(out, x -> true);
-    }
-
-    default List<Integer> list(IntPredicate predicate) {
-        List<Integer> result = new ArrayList<>();
-        list(result, predicate);
-        return result;
-    }
+    List<Integer> list(IntPredicate predicate);
 
     default List<Integer> list() {
-        List<Integer> result = new ArrayList<>();
-        list(result);
-        return result;
+        return list(x -> true);
     }
 }

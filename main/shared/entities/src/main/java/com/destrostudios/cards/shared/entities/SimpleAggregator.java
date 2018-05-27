@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,7 +9,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BinaryOperator;
 import java.util.function.IntPredicate;
-import java.util.stream.Collectors;
 
 public class SimpleAggregator<T> implements Aggregator<T> {
 
@@ -43,6 +43,12 @@ public class SimpleAggregator<T> implements Aggregator<T> {
     }
 
     @Override
+    public List<Integer> list(IntPredicate predicate) {
+        List<Integer> result = new ArrayList<>();
+        list(result, predicate);
+        return result;
+    }
+
     public void list(List<Integer> out, IntPredicate predicate) {
         map.keySet().stream().mapToInt(x -> x).filter(predicate).sorted().boxed().forEach(out::add);
     }

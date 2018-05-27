@@ -15,7 +15,7 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
 
     @Override
     public void handle(DrawCardEvent event) {
-        List<Integer> library = data.query(Components.LIBRARY).list(entity -> data.hasComponentValue(entity, Components.OWNED_BY, event.player));
+        List<Integer> library = data.query(Components.LIBRARY).list(hasComponentValue(Components.OWNED_BY, event.player));
         if (!library.isEmpty()) {
             int card = library.get(0);
             for (int i = 1; i < library.size(); i++) {

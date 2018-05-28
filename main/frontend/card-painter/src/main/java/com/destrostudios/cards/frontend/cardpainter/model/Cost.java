@@ -6,9 +6,6 @@ import java.util.Objects;
 
 public class Cost extends BoardObjectModel {
 
-    public Cost(BoardObjectModel parentModel) {
-        super(parentModel);
-    }
     private boolean isTap;
     private ManaCost manaCost;
 

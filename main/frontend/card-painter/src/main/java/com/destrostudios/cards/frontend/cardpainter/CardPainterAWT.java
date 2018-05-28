@@ -82,14 +82,16 @@ public class CardPainterAWT {
                 tmpY += 18;
             }
             List<Spell> spells = cardModel.getSpells();
-            for (Spell spell : spells) {
-                tmpX = textStartX;
-                if (spell.getCost() != null) {
-                    drawCost(graphics, spell.getCost(), lineWidth, tmpX, textStartX, tmpY);
-                    tmpX += 3;
+            if (spells != null) {
+                for (Spell spell : spells) {
+                    tmpX = textStartX;
+                    if (spell.getCost() != null) {
+                        drawCost(graphics, spell.getCost(), lineWidth, tmpX, textStartX, tmpY);
+                        tmpX += 3;
+                    }
+                    drawSpellDescription(graphics, spell.getDescription(), lineWidth, tmpX, textStartX, tmpY);
+                    tmpY += 18;
                 }
-                drawSpellDescription(graphics, spell.getDescription(), lineWidth, tmpX, textStartX, tmpY);
-                tmpY += 18;
             }
             String flavourText = cardModel.getFlavourText();
             if(flavourText != null){

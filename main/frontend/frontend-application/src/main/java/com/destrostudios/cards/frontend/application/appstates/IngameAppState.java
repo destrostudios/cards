@@ -99,11 +99,17 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             protected Vector2f getSize(CardZone zone) {
                 for (PlayerZones playerZones : playerZonesMap.values()) {
                     if (zone == playerZones.getDeckZone()) {
-                        return new Vector2f(1.2f, 1.2f);
+                        return new Vector2f(2, 2);
                     } else if (zone == playerZones.getHandZone()) {
-                        return new Vector2f(6, 2);
-                    } else if (zone == playerZones.getBoardZone()) {
-                        return new Vector2f(10, 3);
+                        return new Vector2f(10, 2);
+                    } else if (zone == playerZones.getLandZone()) {
+                        return new Vector2f(15, 2);
+                    } else if (zone == playerZones.getCreatureZone()) {
+                        return new Vector2f(10, 2);
+                    } else if (zone == playerZones.getEnchantmentZone()) {
+                        return new Vector2f(5, 2);
+                    } else if (zone == playerZones.getGraveyardZone()) {
+                        return new Vector2f(2, 2);
                     }
                 }
                 return super.getSize(zone);
@@ -124,12 +130,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void initGameListeners() {
         gameClient.addFullGameStateListener(entityData -> {
             List<Integer> players = entityData.query(Components.NEXT_PLAYER).list();
-            Vector3f offset = new Vector3f(0, 0, 2);
+            Vector3f offset = new Vector3f(0, 0, 1.3f);
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {
                     offset.addLocal(0, 0, -6);
                 }
-                IntervalZone deckZone = new IntervalZone(offset.add(10, 0, 0), new Vector3f(0.04f, 0, 0)) {
+                IntervalZone deckZone = new IntervalZone(offset.add(10, 0, 2), new Vector3f(0.04f, 0, 0)) {
 
                     // TODO: Cleanup
                     @Override
@@ -138,12 +144,26 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                         return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
                     }
                 };
-                IntervalZone handZone = new IntervalZone(offset.add(0, 0, 2.5f), new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X), new Vector3f(1, 1, 1));
-                IntervalZone boardZone = new IntervalZone(offset.add(0, 0, 0), new Vector3f(1, 1, 1));
+                IntervalZone handZone = new IntervalZone(offset.add(0, 0, 4), new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X), new Vector3f(1, 1, 1));
+                IntervalZone landZone = new IntervalZone(offset.add(0, 0, 2), new Vector3f(1, 1, 1));
+                IntervalZone creatureZone = new IntervalZone(offset.add(-2.5f, 0, 0), new Vector3f(1, 1, 1));
+                IntervalZone enchantmentZone = new IntervalZone(offset.add(5, 0, 0), new Vector3f(1, 1, 1));
+                IntervalZone graveyardZone = new IntervalZone(offset.add(10, 0, 0), new Vector3f(0.04f, 1, 1)) {
+
+                    // TODO: Cleanup
+                    @Override
+                    public Vector3f getLocalPosition(Vector3f zonePosition) {
+                        Vector3f localPosition = super.getLocalPosition(zonePosition);
+                        return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
+                    }
+                };
                 board.addZone(deckZone);
                 board.addZone(handZone);
-                board.addZone(boardZone);
-                playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, boardZone));
+                board.addZone(landZone);
+                board.addZone(creatureZone);
+                board.addZone(enchantmentZone);
+                board.addZone(graveyardZone);
+                playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, landZone, creatureZone, enchantmentZone, graveyardZone));
             }
             BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode());
             boardAppState.setDraggedCardProjectionZ(0.9975f);

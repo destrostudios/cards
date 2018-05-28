@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.rules.cards;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 
@@ -11,8 +12,19 @@ public class AddCardToBoardHandler extends GameEventHandler<AddCardToBoardEvent>
 
     @Override
     public void handle(AddCardToBoardEvent event) {
-        data.setComponent(event.card, Components.BOARD);
+        ComponentDefinition<Integer> zoneComponent = null;
+        if (data.hasComponent(event.card, Components.LAND_CARD)) {
+            zoneComponent = Components.LAND_ZONE;
+        }
+        else if (data.hasComponent(event.card, Components.CREATURE_CARD)) {
+            zoneComponent = Components.CREATURE_ZONE;
+        }
+        else if (data.hasComponent(event.card, Components.ENCHANTMENT_CARD)) {
+            zoneComponent = Components.ENCHANTMENT_ZONE;
+        }
+
         int playerEntity = data.getComponent(event.card, Components.OWNED_BY);
-        data.setComponent(event.card, Components.CREATURE_ZONE, data.query(Components.CREATURE_ZONE).list(card -> data.getComponent(card, Components.OWNED_BY) == playerEntity).size());
+        data.setComponent(event.card, zoneComponent, data.query(zoneComponent).list(card -> data.getComponent(card, Components.OWNED_BY) == playerEntity).size());
+        data.setComponent(event.card, Components.BOARD);
     }
 }

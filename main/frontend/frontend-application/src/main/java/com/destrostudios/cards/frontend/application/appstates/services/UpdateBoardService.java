@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 public class UpdateBoardService {
 
@@ -47,6 +48,7 @@ public class UpdateBoardService {
             int playerEntity = entityData.getComponent(cardEntity, Components.OWNED_BY);
             PlayerZones playerZones = playerZonesMap.get(playerEntity);
 
+            // TODO: Yeah...
             cardZoneIndex = entityData.getComponent(cardEntity, Components.LIBRARY);
             if (cardZoneIndex != null) {
                 cardZone = playerZones.getDeckZone();
@@ -57,9 +59,27 @@ public class UpdateBoardService {
                     cardZone = playerZones.getHandZone();
                 }
                 else {
-                    cardZoneIndex = entityData.getComponent(cardEntity, Components.CREATURE_ZONE);
+                    cardZoneIndex = entityData.getComponent(cardEntity, Components.LAND_ZONE);
                     if (cardZoneIndex != null) {
-                        cardZone = playerZones.getBoardZone();
+                        cardZone = playerZones.getLandZone();
+                    }
+                    else {
+                        cardZoneIndex = entityData.getComponent(cardEntity, Components.CREATURE_ZONE);
+                        if (cardZoneIndex != null) {
+                            cardZone = playerZones.getCreatureZone();
+                        }
+                        else {
+                            cardZoneIndex = entityData.getComponent(cardEntity, Components.ENCHANTMENT_ZONE);
+                            if (cardZoneIndex != null) {
+                                cardZone = playerZones.getEnchantmentZone();
+                            }
+                            else {
+                                cardZoneIndex = entityData.getComponent(cardEntity, Components.GRAVEYARD);
+                                if (cardZoneIndex != null) {
+                                    cardZone = playerZones.getGraveyardZone();
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -88,18 +108,22 @@ public class UpdateBoardService {
 
                         @Override
                         public void trigger(BoardObject<CardModel> boardObject, BoardObject target) {
-                            gameClient.requestAction(new DrawCardEvent(drawCardEvent.player));
+                            gameClient.requestAction(drawCardEvent);
                         }
                     });
                 }
             }
-            else if (event instanceof PlayCardFromHandEvent) {
-                PlayCardFromHandEvent playCardFromHandEvent = (PlayCardFromHandEvent) event;
-                Card<CardModel> handCard = cardGuiMap.getOrCreateCard(playCardFromHandEvent.card);
+            else if (event instanceof PlaySpellEvent) {
+                PlaySpellEvent playSpellEvent = (PlaySpellEvent) event;
+                // TODO: Improve?
+                int cardEntity = entityData.query(Components.SPELL_ENTITIES)
+                        .unique(currentCardEntity -> IntStream.of(entityData.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
+                        .anyMatch(entity -> entity == playSpellEvent.spell)).getAsInt();
+                Card<CardModel> handCard = cardGuiMap.getOrCreateCard(cardEntity);
                 handCard.setInteractivity(new DragToPlayInteractivity<CardModel>() {
                     @Override
                     public void trigger(BoardObject<CardModel> boardObject, BoardObject target) {
-                        gameClient.requestAction(new PlayCardFromHandEvent(playCardFromHandEvent.card));
+                        gameClient.requestAction(playSpellEvent);
                     }
                 });
             }

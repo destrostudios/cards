@@ -44,7 +44,7 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
         addGameEventHandler(EndTurnEvent.class, new EndTurnHandler());
         addGameEventHandlers(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler(), new SetStartingPlayerHandler());
-        addGameEventHandler(PlayCardFromHandEvent.class, new PlayCardFromHandHandler());
+        addGameEventHandler(PlaySpellEvent.class, new PlaySpellHandler());
         addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());

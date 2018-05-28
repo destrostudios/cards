@@ -8,9 +8,6 @@ import java.util.Objects;
 
 public class ManaCost extends BoardObjectModel {
 
-    public ManaCost(BoardObjectModel parentModel) {
-        super(parentModel);
-    }
     private Map<Color, Integer> manaCost = new LinkedHashMap<>();
 
     public void set(Color color, int cost) {

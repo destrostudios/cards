@@ -77,11 +77,11 @@ public class CardModel extends BoardObjectModel {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        updateIfNotEquals(this.title, title, () -> this.title = title);
     }
 
     public void setManaCost(ManaCost manaCost) {
-        this.manaCost = manaCost;
+        updateIfNotEquals(this.manaCost, manaCost, () -> this.manaCost = manaCost);
     }
 
     public void setColors(List<Color> colors) {

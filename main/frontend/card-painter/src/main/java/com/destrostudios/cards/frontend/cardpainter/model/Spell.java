@@ -6,9 +6,6 @@ import java.util.Objects;
 
 public class Spell extends BoardObjectModel {
 
-    public Spell(BoardObjectModel parentModel) {
-        super(parentModel);
-    }
     private Cost cost;
     private String description;
 

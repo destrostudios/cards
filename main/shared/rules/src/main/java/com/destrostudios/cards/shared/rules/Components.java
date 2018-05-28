@@ -10,7 +10,6 @@ public class Components {
 
     public static final ComponentDefinition<Integer> ATTACK = new ComponentDefinition<>("attack");
     public static final ComponentDefinition<Void> BOARD = new ComponentDefinition<>("board");
-    public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
     public static final ComponentDefinition<Void> CREATURE_CARD = new ComponentDefinition<>("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = new ComponentDefinition<>("creatureZone");
     public static final ComponentDefinition<Void> DAMAGED = new ComponentDefinition<>("damaged");
@@ -22,6 +21,7 @@ public class Components {
     public static final ComponentDefinition<Integer> HEALTH = new ComponentDefinition<>("health");
     public static final ComponentDefinition<Integer> LIBRARY = new ComponentDefinition<>("library");
     public static final ComponentDefinition<Integer> GRAVEYARD = new ComponentDefinition<>("graveyard");
+    public static final ComponentDefinition<Void> LAND_CARD = new ComponentDefinition<>("landCard");
     public static final ComponentDefinition<Integer> LAND_ZONE = new ComponentDefinition<>("landZone");
     public static final ComponentDefinition<Integer> NEXT_PLAYER = new ComponentDefinition<>("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = new ComponentDefinition<>("ownedBy");
@@ -53,6 +53,19 @@ public class Components {
         public static final ComponentDefinition<Void> FISH = new ComponentDefinition<>("fish");
         public static final ComponentDefinition<Void> GOD = new ComponentDefinition<>("god");
         public static final ComponentDefinition<Void> HUMAN = new ComponentDefinition<>("human");
+    }
+
+    public static class Spell {
+        public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
+
+        public static class CastCondition {
+            public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
+            public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
+        }
+
+        public static class Effect {
+            public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoardEffect");
+        }
     }
 
     public static class Cost {

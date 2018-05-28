@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
-import com.destrostudios.cards.shared.rules.cards.PlayCardFromHandEvent;
+import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.jme3.network.serializing.Serializer;
@@ -27,7 +27,7 @@ public class SerializerSetup {
                     DrawCardEvent.class,
                     GameStartEvent.class,
                     EndTurnEvent.class,
-                    PlayCardFromHandEvent.class
+                    PlaySpellEvent.class
         );
         Serializer.registerClass(ComponentDefinition.class, new ComponentDefinitionSerializer());
     }

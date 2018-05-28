@@ -2,10 +2,9 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.battle.BattleEvent;
-import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
-import com.destrostudios.cards.shared.rules.cards.PlayCardFromHandEvent;
-import com.destrostudios.cards.shared.rules.game.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.battle.*;
+import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.game.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -20,9 +19,14 @@ public class PlayerActionsGenerator {
             IntPredicate ownedByPlayer = cardEntity -> entityData.hasComponentValue(cardEntity, Components.OWNED_BY, playerEntity);
             List<Integer> ownedCardEntities = entityData.query(Components.OWNED_BY).list(ownedByPlayer);
             for (int cardEntity : ownedCardEntities) {
-                Integer cardZoneIndex = entityData.getComponent(cardEntity, Components.HAND_CARDS);
-                if (cardZoneIndex != null) {
-                    possibleEvents.add(new PlayCardFromHandEvent(cardEntity));
+                int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
+                if (spellEntities != null) {
+                    for (int spellEntity : spellEntities) {
+                        if ((entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_HAND) && entityData.hasComponent(cardEntity, Components.HAND_CARDS))
+                         || (entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_BOARD) && entityData.hasComponent(cardEntity, Components.BOARD))) {
+                            possibleEvents.add(new PlaySpellEvent(spellEntity));
+                        }
+                    }
                 }
             }
             possibleEvents.add(new DrawCardEvent(playerEntity));

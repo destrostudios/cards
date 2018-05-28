@@ -5,7 +5,7 @@ import java.io.IOException;
 public class BackendApplication {
 
     public static void main(String[] args) {
-        new BackendApplication(7563);
+        new BackendApplication(33900);
         while (true) {
             try {
                 Thread.sleep(60000);

@@ -8,14 +8,20 @@ import com.destrostudios.cards.frontend.cardgui.CardZone;
  */
 public class PlayerZones {
 
-    public PlayerZones(CardZone deckZone, CardZone handZone, CardZone boardZone) {
+    public PlayerZones(CardZone deckZone, CardZone handZone, CardZone landZone, CardZone creatureZone, CardZone enchantmentZone, CardZone graveyardZone) {
         this.deckZone = deckZone;
         this.handZone = handZone;
-        this.boardZone = boardZone;
+        this.landZone = landZone;
+        this.creatureZone = creatureZone;
+        this.enchantmentZone = enchantmentZone;
+        this.graveyardZone = graveyardZone;
     }
     private CardZone deckZone;
     private CardZone handZone;
-    private CardZone boardZone;
+    private CardZone landZone;
+    private CardZone creatureZone;
+    private CardZone enchantmentZone;
+    private CardZone graveyardZone;
 
     public CardZone getDeckZone() {
         return deckZone;
@@ -25,7 +31,19 @@ public class PlayerZones {
         return handZone;
     }
 
-    public CardZone getBoardZone() {
-        return boardZone;
+    public CardZone getLandZone() {
+        return landZone;
+    }
+
+    public CardZone getCreatureZone() {
+        return creatureZone;
+    }
+
+    public CardZone getEnchantmentZone() {
+        return enchantmentZone;
+    }
+
+    public CardZone getGraveyardZone() {
+        return graveyardZone;
     }
 }

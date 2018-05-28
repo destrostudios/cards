@@ -1,6 +1,5 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destrostudios.cards.frontend.cardgui.BoardObjectModel;
 import com.destrostudios.cards.frontend.cardgui.Card;
 import com.destrostudios.cards.frontend.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
@@ -47,10 +46,6 @@ public class CardGuiMapper {
         String title = entityData.getComponent(cardEntity, Components.DISPLAY_NAME);
         cardModel.setTitle(title);
 
-        Integer costEntity = entityData.getComponent(cardEntity, Components.COST_ENTITY);
-        ManaCost manaCost = createManaCost(cardModel, entityData, costEntity);
-        cardModel.setManaCost(manaCost);
-
         List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);
         cardModel.setTribes(tribes);
 
@@ -63,18 +58,27 @@ public class CardGuiMapper {
         String description = "Description";
         cardModel.setDescription(description);
 
+        boolean checkedDefaultPlaySpell = false;
+        ManaCost manaCost = null;
         List<Spell> spells = new LinkedList<>();
         int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
-                Spell spell = new Spell(cardModel);
-                Integer spellCostEntity = entityData.getComponent(spellEntity, Components.COST_ENTITY);
-                Cost cost = createCost(spell, entityData, spellCostEntity);
-                spell.setCost(cost);
-                spell.setDescription("Spell Description");
-                spells.add(spell);
+                Integer spellCostEntity = entityData.getComponent(spellEntity, Components.Spell.COST_ENTITY);
+                if ((!checkedDefaultPlaySpell) && entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_HAND)) {
+                    manaCost = createManaCost(entityData, spellCostEntity);
+                    checkedDefaultPlaySpell = true;
+                }
+                else {
+                    Spell spell = new Spell();
+                    Cost cost = createCost(entityData, spellCostEntity);
+                    spell.setCost(cost);
+                    spell.setDescription("Spell Description");
+                    spells.add(spell);
+                }
             }
         }
+        cardModel.setManaCost(manaCost);
         cardModel.setSpells(spells);
 
         Integer attackDamage = entityData.getComponent(cardEntity, Components.ATTACK);
@@ -100,19 +104,19 @@ public class CardGuiMapper {
         return list;
     }
 
-    private static Cost createCost(BoardObjectModel parentModel, EntityData entityData, Integer costEntity) {
+    private static Cost createCost(EntityData entityData, Integer costEntity) {
         if (costEntity != null) {
-            Cost cost = new Cost(parentModel);
+            Cost cost = new Cost();
             cost.setTap(entityData.hasComponent(costEntity, Components.Cost.TAP));
-            cost.setManaCost(createManaCost(cost, entityData, costEntity));
+            cost.setManaCost(createManaCost(entityData, costEntity));
             return cost;
         }
         return null;
     }
 
-    private static ManaCost createManaCost(BoardObjectModel parentModel, EntityData entityData, Integer costEntity) {
+    private static ManaCost createManaCost(EntityData entityData, Integer costEntity) {
         if (costEntity != null) {
-            ManaCost manaCost = new ManaCost(parentModel);
+            ManaCost manaCost = new ManaCost();
             Integer neutralManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.NEUTRAL);
             if (neutralManaAmount != null) {
                 manaCost.set(Color.NEUTRAL, neutralManaAmount);

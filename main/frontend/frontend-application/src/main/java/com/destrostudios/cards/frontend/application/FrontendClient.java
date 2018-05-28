@@ -7,7 +7,7 @@ import java.io.IOException;
 public class FrontendClient {
 
     public static void main(String[] args) {
-        new FrontendClient("localhost", 7563);
+        new FrontendClient("localhost", 33900);
     }
 
     public FrontendClient(String host, int port) {

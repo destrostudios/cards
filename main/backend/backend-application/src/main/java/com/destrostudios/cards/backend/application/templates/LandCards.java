@@ -14,8 +14,8 @@ public class LandCards extends CardsUtil {
         return land(data, "Plains", Components.Color.WHITE);
     }
 
-    public static int mountains(EntityData data) {
-        return land(data, "Mountains", Components.Color.RED);
+    public static int mountain(EntityData data) {
+        return land(data, "Mountain", Components.Color.RED);
     }
 
     public static int forest(EntityData data) {

@@ -52,9 +52,7 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
         application.getInputManager().addMapping("mouse_click_left", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         application.getInputManager().addMapping("mouse_click_middle", new MouseButtonTrigger(MouseInput.BUTTON_MIDDLE));
         application.getInputManager().addMapping("mouse_click_right", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        application.getInputManager().addListener(this, new String[]{
-            "mouse_click_left","mouse_click_middle","mouse_click_right"
-        });
+        application.getInputManager().addListener(this, "mouse_click_left", "mouse_click_middle", "mouse_click_right");
     }
 
     @Override

@@ -19,10 +19,6 @@ public interface EntityData {
 
     <T> void removeComponent(int entity, ComponentDefinition<T> component);
 
-    default <T> T getComponentOrDefault(int entity, ComponentDefinition<T> component, T defaultValue) {
-        return getOptionalComponent(entity, component).orElse(defaultValue);
-    }
-
     default <T> Optional<T> getOptionalComponent(int entity, ComponentDefinition<T> component) {
         return hasComponent(entity, component) ? Optional.of(getComponent(entity, component)) : Optional.empty();
     }

@@ -1,8 +1,13 @@
 package com.destrostudios.cards.backend.application;
 
+import com.destrostudios.cards.backend.application.templates.CardPool;
+import com.destrostudios.cards.backend.application.templates.LandCards;
+import com.destrostudios.cards.backend.application.templates.TestCards;
+import com.destrostudios.cards.backend.application.templates.TestLibraries;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  *
@@ -22,12 +27,20 @@ public class TestGameSetup {
         players[1] = data.createEntity();
         int hero1 = data.createEntity();
         int hero2 = data.createEntity();
-        int handCards1 = data.createEntity();
-        int handCards2 = data.createEntity();
 
         initPlayerAndHeroEntities(hero1, hero2);
-        initLibraryAndHandCardsEntities(handCards1, handCards2);
-        initBoardCardsEntities();
+        initLibrary(players[0], TestLibraries.red(), 20);
+        initLibrary(players[1], TestLibraries.red(), 20);
+//        initLibraryAndHandCardsEntities();
+//        initBoardCardsEntities();
+    }
+    
+    private void initLibrary(int player, CardPool cards, int librarySize) {
+        for (int i = 0; i < librarySize; i++) {
+            int card = cards.selectRandomCard(ThreadLocalRandom.current()::nextInt).create(data);
+            data.setComponent(card, Components.OWNED_BY, player);
+            data.setComponent(card, Components.LIBRARY, i);
+        }
     }
 
     private void initBoardCardsEntities() {
@@ -70,89 +83,27 @@ public class TestGameSetup {
         data.setComponent(card2, Components.BOARD);
         data.setComponent(card2, Components.ENCHANTMENT_ZONE, 0);
 
-        int card3 = data.createEntity();
-        data.setComponent(card3, Components.Color.BLUE);
-        data.setComponent(card3, Components.Color.RED);
-        data.setComponent(card3, Components.CREATURE_CARD);
-        data.setComponent(card3, Components.DISPLAY_NAME, "Shyvana");
-        data.setComponent(card3, Components.ATTACK, 1);
-        data.setComponent(card3, Components.HEALTH, 1);
-        data.setComponent(card3, Components.DAMAGED);
-        data.setComponent(card3, Components.Tribe.HUMAN);
-        data.setComponent(card3, Components.Tribe.DRAGON);
-        data.setComponent(card3, Components.Ability.TAUNT);
-        int playSpell3 = data.createEntity();
-        data.setComponent(playSpell3, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(playSpell3, Components.Spell.Effect.ADD_TO_BOARD);
-        int playSpell3Cost = data.createEntity();
-        data.setComponent(playSpell3Cost, Components.ManaAmount.RED, 1);
-        data.setComponent(playSpell3Cost, Components.ManaAmount.BLUE, 1);
-        data.setComponent(playSpell3, Components.Spell.COST_ENTITY, playSpell3Cost);
-        int boardSpell3 = data.createEntity();
-        int boardSpell3Cost = data.createEntity();
-        data.setComponent(boardSpell3Cost, Components.Cost.TAP);
-        data.setComponent(boardSpell3Cost, Components.ManaAmount.RED, 2);
-        data.setComponent(boardSpell3, Components.Spell.COST_ENTITY, boardSpell3Cost);
-        data.setComponent(card3, Components.SPELL_ENTITIES, new int[]{playSpell3, boardSpell3});
-        data.setComponent(card3, Components.FLAVOUR_TEXT, "\"I am op.\"");
+        int card3 = TestCards.shyvana(data);
         data.setComponent(card3, Components.OWNED_BY, players[1]);
         data.setComponent(card3, Components.BOARD);
         data.setComponent(card3, Components.CREATURE_ZONE, 0);
 
-        int card4 = data.createEntity();
-        data.setComponent(card4, Components.Color.NEUTRAL);
-        data.setComponent(card4, Components.Color.WHITE);
-        data.setComponent(card4, Components.Color.RED);
-        data.setComponent(card4, Components.Color.GREEN);
-        data.setComponent(card4, Components.Color.BLUE);
-        data.setComponent(card4, Components.Color.BLACK);
-        data.setComponent(card4, Components.CREATURE_CARD);
-        data.setComponent(card4, Components.DISPLAY_NAME, "Aether Adept");
-        data.setComponent(card4, Components.ATTACK, 1);
-        data.setComponent(card4, Components.HEALTH, 1);
-        data.setComponent(card4, Components.Tribe.GOD);
-        data.setComponent(card4, Components.Ability.CHARGE);
-        data.setComponent(card4, Components.Ability.DIVINE_SHIELD);
-        data.setComponent(card4, Components.Ability.HEXPROOF);
-        data.setComponent(card4, Components.Ability.IMMUNE);
-        data.setComponent(card4, Components.Ability.TAUNT);
-        int playSpell4 = data.createEntity();
-        data.setComponent(playSpell4, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(playSpell4, Components.Spell.Effect.ADD_TO_BOARD);
-        int playSpell4Cost = data.createEntity();
-        data.setComponent(playSpell4Cost, Components.ManaAmount.NEUTRAL, 1);
-        data.setComponent(playSpell4, Components.Spell.COST_ENTITY, playSpell4Cost);
-        int boardSpell4 = data.createEntity();
-        int boardSpell4Cost = data.createEntity();
-        data.setComponent(boardSpell4Cost, Components.ManaAmount.BLUE, 1);
-        data.setComponent(boardSpell4, Components.Spell.COST_ENTITY, boardSpell4Cost);
-        data.setComponent(card4, Components.SPELL_ENTITIES, new int[]{playSpell4, boardSpell4});
+        int card4 = TestCards.aetherAdept(data);
+        
         data.setComponent(card4, Components.OWNED_BY, players[1]);
         data.setComponent(card4, Components.BOARD);
         data.setComponent(card4, Components.CREATURE_ZONE, 1);
     }
 
     private int initSimpleLandOnBoard(ComponentDefinition<Void> colorComponent, String displayName, int ownerEntity, int zoneIndex) {
-        int landCard = data.createEntity();
-        data.setComponent(landCard, colorComponent);
-        data.setComponent(landCard, Components.LAND_CARD);
-        data.setComponent(landCard, Components.DISPLAY_NAME, displayName);
-        int playSpell = data.createEntity();
-        data.setComponent(playSpell, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(playSpell, Components.Spell.Effect.ADD_TO_BOARD);
-        int tapSpell = data.createEntity();
-        data.setComponent(tapSpell, Components.Spell.CastCondition.FROM_BOARD);
-        int tapSpellCost = data.createEntity();
-        data.setComponent(tapSpellCost, Components.Cost.TAP);
-        data.setComponent(tapSpell, Components.Spell.COST_ENTITY, tapSpellCost);
-        data.setComponent(landCard, Components.SPELL_ENTITIES, new int[]{playSpell, tapSpell});
+        int landCard = LandCards.land(data, displayName, colorComponent);
         data.setComponent(landCard, Components.OWNED_BY, ownerEntity);
         data.setComponent(landCard, Components.BOARD);
         data.setComponent(landCard, Components.LAND_ZONE, zoneIndex);
         return landCard;
     }
 
-    private void initLibraryAndHandCardsEntities(int handCards1, int handCards2) {
+    private void initLibraryAndHandCardsEntities() {
         int librarySize = 48;
         int handSize = 5;
 
@@ -165,9 +116,6 @@ public class TestGameSetup {
             data.setComponent(card, Components.LIBRARY, i % librarySize);
             addSimplePlayFromHandSpell(card, 1);
         }
-
-        data.setComponent(handCards1, Components.OWNED_BY, players[0]);
-        data.setComponent(handCards2, Components.OWNED_BY, players[1]);
 
         for (int i = 0; i < 2 * handSize; i++) {
             int card = data.createEntity();

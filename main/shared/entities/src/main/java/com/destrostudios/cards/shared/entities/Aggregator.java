@@ -33,9 +33,9 @@ public interface Aggregator<T> {
         return compute(operator, x -> true);
     }
 
-    OptionalInt unique(IntPredicate predicate);
+    OptionalInt unique(IntPredicate predicate) throws IllegalStateException;
 
-    default OptionalInt unique() {
+    default OptionalInt unique() throws IllegalStateException {
         return unique(x -> true);
     }
 

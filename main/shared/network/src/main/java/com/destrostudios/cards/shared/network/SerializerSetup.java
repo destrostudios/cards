@@ -5,8 +5,10 @@ import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
-import com.destrostudios.cards.shared.rules.game.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseEvent;
 import com.jme3.network.serializing.Serializer;
 
 /**
@@ -16,8 +18,7 @@ import com.jme3.network.serializing.Serializer;
 public class SerializerSetup {
 
     static {
-        registerClasses(
-                Tuple.class,
+        registerClasses(Tuple.class,
                 FullGameStateMessage.class,
                     FullGameState.class,
                 ClientReadyMessage.class,
@@ -26,8 +27,10 @@ public class SerializerSetup {
                     BattleEvent.class,
                     DrawCardEvent.class,
                     GameStartEvent.class,
-                    EndTurnEvent.class,
-                    PlaySpellEvent.class
+                    PlaySpellEvent.class,
+                    EndAttackPhaseEvent.class,
+                    EndBlockPhaseEvent.class,
+                    EndMainPhaseEvent.class
         );
         Serializer.registerClass(ComponentDefinition.class, new ComponentDefinitionSerializer());
     }

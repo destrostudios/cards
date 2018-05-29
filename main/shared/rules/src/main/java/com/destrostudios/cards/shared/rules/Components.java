@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 
 /**
  *
@@ -28,9 +29,15 @@ public class Components {
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
     public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spellEntities");
-    public static final ComponentDefinition<Void> ACTIVE_PLAYER = new ComponentDefinition<>("activePlayer");
+
+    public static class Game {
+
+        public static final ComponentDefinition<TurnPhase> TURN_PHASE = new ComponentDefinition<>("turnPhase");
+
+    }
 
     public static class Color {
+
         public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutralColor");
         public static final ComponentDefinition<Void> WHITE = new ComponentDefinition<>("whiteColor");
         public static final ComponentDefinition<Void> RED = new ComponentDefinition<>("redColor");
@@ -40,6 +47,7 @@ public class Components {
     }
 
     public static class Ability {
+
         public static final ComponentDefinition<Void> CHARGE = new ComponentDefinition<>("charge");
         public static final ComponentDefinition<Void> DIVINE_SHIELD = new ComponentDefinition<>("divineShield");
         public static final ComponentDefinition<Void> HEXPROOF = new ComponentDefinition<>("hexproof");
@@ -48,6 +56,7 @@ public class Components {
     }
 
     public static class Tribe {
+
         public static final ComponentDefinition<Void> BEAST = new ComponentDefinition<>("beast");
         public static final ComponentDefinition<Void> DRAGON = new ComponentDefinition<>("dragon");
         public static final ComponentDefinition<Void> FISH = new ComponentDefinition<>("fish");
@@ -56,23 +65,32 @@ public class Components {
     }
 
     public static class Spell {
+
         public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
 
         public static class CastCondition {
+
             public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
             public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
+            
+            public static final ComponentDefinition<Void> ATTACK_PHASE = new ComponentDefinition<>("castableInAttackPhase");
+            public static final ComponentDefinition<Void> BLOCK_PHASE = new ComponentDefinition<>("castableInBlockPhase");
+            public static final ComponentDefinition<Void> MAIN_PHASE = new ComponentDefinition<>("castableInMainPhase");
         }
 
         public static class Effect {
+
             public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoardEffect");
         }
     }
 
     public static class Cost {
+
         public static final ComponentDefinition<Void> TAP = new ComponentDefinition<>("tapCost");
     }
 
     public static class ManaAmount {
+
         public static final ComponentDefinition<Integer> NEUTRAL = new ComponentDefinition<>("neutralAmount");
         public static final ComponentDefinition<Integer> WHITE = new ComponentDefinition<>("whiteAmount");
         public static final ComponentDefinition<Integer> RED = new ComponentDefinition<>("redAmount");

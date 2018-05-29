@@ -1,5 +1,8 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoardService;
 import com.destrostudios.cards.frontend.cardgui.*;
@@ -14,6 +17,7 @@ import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.game.*;
+import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;
@@ -44,7 +48,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private boolean isInitialized = false;
     private UpdateBoardService updateBoardService;
     // TODO: Cleanup, solve better
-    private EndTurnEvent sendableEndTurnEvent;
+    private Event sendableEndTurnEvent;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -79,16 +83,27 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
             mainApplication.getInputManager().setCursorVisible(flyByCamera.isEnabled());
             flyByCamera.setEnabled(!flyByCamera.isEnabled());
-        }
-        else if ("end".equals(name) && isPressed) {
+        } else if ("end".equals(name) && isPressed) {
             if (sendableEndTurnEvent != null) {
                 gameClient.requestAction(sendableEndTurnEvent);
             }
-        }
-        // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
+        } // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
         else if ("delete".equals(name) && isPressed) {
-            int activePlayerEntity = gameClient.getGame().getData().query(Components.ACTIVE_PLAYER).unique().getAsInt();
-            gameClient.requestAction(new EndTurnEvent(activePlayerEntity));
+            int activePlayerEntity = gameClient.getGame().getData().query(Components.Game.TURN_PHASE).unique().getAsInt();
+            switch (gameClient.getGame().getData().getComponent(activePlayerEntity, Components.Game.TURN_PHASE)) {
+                case ATTACK:
+                    gameClient.requestAction(new EndAttackPhaseEvent(activePlayerEntity));
+                    break;
+                case BLOCK:
+                    gameClient.requestAction(new EndBlockPhaseEvent(activePlayerEntity));
+                    break;
+                case MAIN:
+                    gameClient.requestAction(new EndMainPhaseEvent(activePlayerEntity));
+                    break;
+                default:
+                    throw new AssertionError(gameClient.getGame().getData().getComponent(activePlayerEntity, Components.Game.TURN_PHASE).name());
+
+            }
         }
     }
 
@@ -211,11 +226,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private void updatePossibleActions() {
         mainApplication.enqueue(() -> {
-            List<Event> possibleEvents = PlayerActionsGenerator.generatePossibleActions(gameClient.getGame().getData(), gameClient.getPlayerEntity());
+            List<Event> possibleEvents = gameClient.getGame().getActionGenerator().generatePossibleActions(gameClient.getPlayerEntity());
             updateBoardService.updateInteractivities(possibleEvents);
             for (Event event : possibleEvents) {
-                if (event instanceof EndTurnEvent) {
-                    sendableEndTurnEvent = (EndTurnEvent) event;
+                if (event instanceof EndAttackPhaseEvent || event instanceof EndBlockPhaseEvent || event instanceof EndMainPhaseEvent) {
+                    sendableEndTurnEvent = event;
                 }
             }
         });

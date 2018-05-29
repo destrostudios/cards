@@ -1,5 +1,12 @@
 package com.destrostudios.cards.shared.rules;
 
+import com.destrostudios.cards.shared.rules.game.phases.attack.DrawCardOnStartAttackPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -8,7 +15,12 @@ import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.game.*;
-
+import com.destrostudios.cards.shared.rules.game.phases.attack.StartAttackPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.attack.StartAttackPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.block.StartBlockPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.block.StartBlockPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.main.StartMainPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.main.StartMainPhaseHandler;
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
 
@@ -24,6 +36,7 @@ public class GameContext<EventQueueType extends EventQueue> {
     private final EventDispatcher postDispatcher;
     private final EventQueueType events;
     private final IntUnaryOperator random;
+    private final PlayerActionsGenerator actionGenerator;
 
     public GameContext(EventQueueProvider<EventQueueType> eventQueueProvider, IntUnaryOperator random) {
         data = new SimpleEntityData();
@@ -32,6 +45,7 @@ public class GameContext<EventQueueType extends EventQueue> {
         postDispatcher = new EventDispatcher();
         this.events = eventQueueProvider.provideEventQueue(preDispatcher::fire, dispatcher::fire, postDispatcher::fire);
         this.random = random;
+        actionGenerator = new PlayerActionsGenerator(data);
         initListeners();
     }
 
@@ -42,14 +56,23 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(BattleEvent.class, new BattleHandler());
         addGameEventHandler(DamageEvent.class, new DamageHandler());
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
-        addGameEventHandler(EndTurnEvent.class, new EndTurnHandler());
-        addGameEventHandlers(GameStartEvent.class, new ShuffleAllLibrariesOnGameStartHandler(), new SetStartingPlayerHandler());
+        addGameEventHandlers(StartAttackPhaseEvent.class,
+                new StartAttackPhaseHandler(),
+                new DrawCardOnStartAttackPhaseHandler());
+        addGameEventHandler(StartBlockPhaseEvent.class, new StartBlockPhaseHandler());
+        addGameEventHandler(StartMainPhaseEvent.class, new StartMainPhaseHandler());
+        addGameEventHandler(EndAttackPhaseEvent.class, new EndAttackPhaseHandler());
+        addGameEventHandler(EndBlockPhaseEvent.class, new EndBlockPhaseHandler());
+        addGameEventHandler(EndMainPhaseEvent.class, new EndMainPhaseHandler());
+        addGameEventHandlers(GameStartEvent.class,
+                new ShuffleAllLibrariesOnGameStartHandler(),
+                new DrawCardsOnGameStartHandler(),
+                new SetStartingPlayerHandler());
         addGameEventHandler(PlaySpellEvent.class, new PlaySpellHandler());
         addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
         addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
-        addGameEventHandler(StartTurnEvent.class, new DrawCardOnStartTurnHandler());
     }
     
     @SafeVarargs
@@ -88,6 +111,10 @@ public class GameContext<EventQueueType extends EventQueue> {
 
     public IntUnaryOperator getRandom() {
         return random;
+    }
+
+    public PlayerActionsGenerator getActionGenerator() {
+        return actionGenerator;
     }
 
     public interface EventQueueProvider<EventQueueType extends EventQueue> {

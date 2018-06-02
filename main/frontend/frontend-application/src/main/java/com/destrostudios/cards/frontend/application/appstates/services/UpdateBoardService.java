@@ -3,10 +3,7 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 import com.destrostudios.cards.frontend.application.CardGuiMap;
 import com.destrostudios.cards.frontend.application.PlayerZones;
 import com.destrostudios.cards.frontend.application.SimpleGameClient;
-import com.destrostudios.cards.frontend.cardgui.Board;
-import com.destrostudios.cards.frontend.cardgui.BoardObject;
-import com.destrostudios.cards.frontend.cardgui.Card;
-import com.destrostudios.cards.frontend.cardgui.CardZone;
+import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.events.*;
 import com.destrostudios.cards.frontend.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.cardgui.targetarrow.TargetSnapMode;
@@ -14,6 +11,7 @@ import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.SpellTargetValidator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.jme3.math.Vector3f;
@@ -119,13 +117,54 @@ public class UpdateBoardService {
                 int cardEntity = entityData.query(Components.SPELL_ENTITIES)
                         .unique(currentCardEntity -> IntStream.of(entityData.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
                         .anyMatch(entity -> entity == playSpellEvent.spell)).getAsInt();
-                Card<CardModel> handCard = cardGuiMap.getOrCreateCard(cardEntity);
-                handCard.setInteractivity(new DragToPlayInteractivity<CardModel>() {
-                    @Override
-                    public void trigger(BoardObject<CardModel> boardObject, BoardObject target) {
-                        gameClient.requestAction(playSpellEvent);
-                    }
-                });
+                Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
+
+                Interactivity interactivity;
+                boolean isTargetedSpell = entityData.getOptionalComponent(playSpellEvent.spell, Components.Spell.TARGET_RULES).map(spells -> spells.length > 0).orElse(false);
+                if (isTargetedSpell) {
+                    interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
+
+                        @Override
+                        public boolean isValid(BoardObject boardObject) {
+                            if (boardObject instanceof Card) {
+                                int targetEntity = cardGuiMap.getEntity((Card) boardObject);
+                                int[] targetRules = entityData.getComponent(playSpellEvent.spell, Components.Spell.TARGET_RULES);
+                                if (targetRules != null) {
+                                    // TODO: Handle/validate sequential input for multiple targets
+                                    return SpellTargetValidator.isValidTarget(entityData, targetRules[0], targetEntity);
+                                }
+                            }
+                            return false;
+                        }
+
+                        @Override
+                        public void trigger(BoardObject boardObject, BoardObject target) {
+                            int targetEntity = cardGuiMap.getEntity((Card) target);
+                            // TODO:
+                            int[] targets = new int[]{targetEntity};
+                            gameClient.requestAction(new PlaySpellEvent(playSpellEvent.spell, targets));
+                        }
+                    };
+                }
+                else if (entityData.hasComponent(cardEntity, Components.HAND_CARDS)) {
+                    interactivity = new DragToPlayInteractivity() {
+
+                        @Override
+                        public void trigger(BoardObject boardObject, BoardObject target) {
+                            gameClient.requestAction(playSpellEvent);
+                        }
+                    };
+                }
+                else {
+                    interactivity = new ClickInteractivity() {
+
+                        @Override
+                        public void trigger(BoardObject boardObject, BoardObject target) {
+                            gameClient.requestAction(playSpellEvent);
+                        }
+                    };
+                }
+                card.setInteractivity(interactivity);
             }
             else if (event instanceof BattleEvent) {
                 BattleEvent battleEvent = (BattleEvent) event;

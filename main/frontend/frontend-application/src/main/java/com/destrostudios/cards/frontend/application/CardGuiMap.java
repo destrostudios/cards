@@ -5,11 +5,17 @@ import com.destrostudios.cards.frontend.cardgui.JMonkeyUtil;
 import com.destrostudios.cards.frontend.cardgui.transformations.SimpleTargetRotationTransformation;
 import com.destrostudios.cards.frontend.cardgui.transformations.relative.samples.HoveringTransformation;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.rules.Components;
 
 import java.util.HashMap;
 
 public class CardGuiMap {
 
+    public CardGuiMap(EntityData entityData) {
+        this.entityData = entityData;
+    }
+    private EntityData entityData;
     private HashMap<Integer, Card<CardModel>> visualCards = new HashMap<>();
     private HashMap<Card<CardModel>, Integer> gameEntities = new HashMap<>();
 
@@ -17,7 +23,7 @@ public class CardGuiMap {
         Card<CardModel> card = visualCards.get(cardEntity);
         if (card == null) {
             card = new Card<>(new CardModel());
-            initialConfiguration(card);
+            initialConfiguration(cardEntity, card);
             visualCards.put(cardEntity, card);
             gameEntities.put(card, cardEntity);
         }
@@ -29,8 +35,8 @@ public class CardGuiMap {
     }
 
     // TODO: Extract to better place. Pass as initializer interface?
-    private void initialConfiguration(final Card<CardModel> card) {
-        card.position().addRelativeTransformation(new HoveringTransformation(0.3f, 2), () -> card.getModel().isDamaged());
-        card.rotation().addRelativeTransformation(new SimpleTargetRotationTransformation(JMonkeyUtil.getQuaternion_Y(-90)), () -> ((card.getModel().getLifepoints() != null) && (card.getModel().getLifepoints() < 0)));
+    private void initialConfiguration(int cardEntity, Card<CardModel> card) {
+        card.position().addRelativeTransformation(new HoveringTransformation(0.3f, 2), () -> entityData.hasComponent(cardEntity, Components.Ability.FLYING) && entityData.hasComponent(cardEntity, Components.BOARD));
+        card.rotation().addRelativeTransformation(new SimpleTargetRotationTransformation(JMonkeyUtil.getQuaternion_Y(-90)), () -> entityData.hasComponent(cardEntity, Components.TAPPED));
     }
 }

@@ -29,6 +29,7 @@ public class Components {
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
     public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spellEntities");
+    public static final ComponentDefinition<Void> TAPPED = new ComponentDefinition<>("tapped");
 
     public static class Game {
 
@@ -50,6 +51,7 @@ public class Components {
 
         public static final ComponentDefinition<Void> CHARGE = new ComponentDefinition<>("charge");
         public static final ComponentDefinition<Void> DIVINE_SHIELD = new ComponentDefinition<>("divineShield");
+        public static final ComponentDefinition<Void> FLYING = new ComponentDefinition<>("flying");
         public static final ComponentDefinition<Void> HEXPROOF = new ComponentDefinition<>("hexproof");
         public static final ComponentDefinition<Void> IMMUNE = new ComponentDefinition<>("immune");
         public static final ComponentDefinition<Void> TAUNT = new ComponentDefinition<>("taunt");
@@ -67,6 +69,7 @@ public class Components {
     public static class Spell {
 
         public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
+        public static final ComponentDefinition<int[]> TARGET_RULES = new ComponentDefinition<>("targetRules");
 
         public static class CastCondition {
 

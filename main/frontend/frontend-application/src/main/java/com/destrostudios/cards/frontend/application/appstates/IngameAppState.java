@@ -36,11 +36,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     public IngameAppState(SimpleGameClient gameClient) {
         this.gameClient = gameClient;
+        cardGuiMap = new CardGuiMap(gameClient.getGame().getData());
     }
     private SimpleGameClient gameClient;
     private Board<CardModel> board;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
-    private CardGuiMap cardGuiMap = new CardGuiMap();
+    private CardGuiMap cardGuiMap;
     private boolean hasPreparedBoard = false;
     private boolean isInitialized = false;
     private UpdateBoardService updateBoardService;

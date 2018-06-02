@@ -1,6 +1,5 @@
 package com.destrostudios.cards.backend.application.templates;
 
-import static com.destrostudios.cards.backend.application.templates.CardsUtil.creature;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 
@@ -71,6 +70,7 @@ public class StandardCards extends CardsUtil {
             int entity = creature(data, "Dragon", 6, 5);
             data.setComponent(entity, Components.Color.RED);
             data.setComponent(entity, Components.Tribe.DRAGON);
+            data.setComponent(entity, Components.Ability.FLYING);
 
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.ManaAmount.RED, 3);

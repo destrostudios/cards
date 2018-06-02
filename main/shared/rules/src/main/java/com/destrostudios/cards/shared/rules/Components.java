@@ -32,13 +32,10 @@ public class Components {
     public static final ComponentDefinition<Void> TAPPED = new ComponentDefinition<>("tapped");
 
     public static class Game {
-
         public static final ComponentDefinition<TurnPhase> TURN_PHASE = new ComponentDefinition<>("turnPhase");
-
     }
 
     public static class Color {
-
         public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutralColor");
         public static final ComponentDefinition<Void> WHITE = new ComponentDefinition<>("whiteColor");
         public static final ComponentDefinition<Void> RED = new ComponentDefinition<>("redColor");
@@ -48,7 +45,6 @@ public class Components {
     }
 
     public static class Ability {
-
         public static final ComponentDefinition<Void> CHARGE = new ComponentDefinition<>("charge");
         public static final ComponentDefinition<Void> DIVINE_SHIELD = new ComponentDefinition<>("divineShield");
         public static final ComponentDefinition<Void> FLYING = new ComponentDefinition<>("flying");
@@ -58,7 +54,6 @@ public class Components {
     }
 
     public static class Tribe {
-
         public static final ComponentDefinition<Void> BEAST = new ComponentDefinition<>("beast");
         public static final ComponentDefinition<Void> DRAGON = new ComponentDefinition<>("dragon");
         public static final ComponentDefinition<Void> FISH = new ComponentDefinition<>("fish");
@@ -67,12 +62,10 @@ public class Components {
     }
 
     public static class Spell {
-
         public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
         public static final ComponentDefinition<Integer> TARGET_RULE = new ComponentDefinition<>("targetRule");
 
         public static class CastCondition {
-
             public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
             public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
             
@@ -82,18 +75,18 @@ public class Components {
         }
 
         public static class Effect {
-
             public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoardEffect");
+            public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damageEffect");
+            public static final ComponentDefinition<Void> TAP = new ComponentDefinition<>("tapEffect");
+            public static final ComponentDefinition<Void> UNTAP = new ComponentDefinition<>("untapEffect");
         }
     }
 
     public static class Cost {
-
         public static final ComponentDefinition<Void> TAP = new ComponentDefinition<>("tapCost");
     }
 
     public static class ManaAmount {
-
         public static final ComponentDefinition<Integer> NEUTRAL = new ComponentDefinition<>("neutralAmount");
         public static final ComponentDefinition<Integer> WHITE = new ComponentDefinition<>("whiteAmount");
         public static final ComponentDefinition<Integer> RED = new ComponentDefinition<>("redAmount");

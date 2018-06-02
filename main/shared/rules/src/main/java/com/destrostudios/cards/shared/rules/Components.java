@@ -69,7 +69,7 @@ public class Components {
     public static class Spell {
 
         public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
-        public static final ComponentDefinition<int[]> TARGET_RULES = new ComponentDefinition<>("targetRules");
+        public static final ComponentDefinition<Integer> TARGET_RULE = new ComponentDefinition<>("targetRule");
 
         public static class CastCondition {
 

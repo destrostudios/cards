@@ -120,19 +120,15 @@ public class UpdateBoardService {
                 Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
 
                 Interactivity interactivity;
-                boolean isTargetedSpell = entityData.getOptionalComponent(playSpellEvent.spell, Components.Spell.TARGET_RULES).map(spells -> spells.length > 0).orElse(false);
-                if (isTargetedSpell) {
+                Integer targetRuleEntity = entityData.getComponent(playSpellEvent.spell, Components.Spell.TARGET_RULE);
+                if (targetRuleEntity != null) {
                     interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                         @Override
                         public boolean isValid(BoardObject boardObject) {
                             if (boardObject instanceof Card) {
                                 int targetEntity = cardGuiMap.getEntity((Card) boardObject);
-                                int[] targetRules = entityData.getComponent(playSpellEvent.spell, Components.Spell.TARGET_RULES);
-                                if (targetRules != null) {
-                                    // TODO: Handle/validate sequential input for multiple targets
-                                    return SpellTargetValidator.isValidTarget(entityData, targetRules[0], targetEntity);
-                                }
+                                return SpellTargetValidator.isValidTarget(entityData, targetRuleEntity, targetEntity);
                             }
                             return false;
                         }

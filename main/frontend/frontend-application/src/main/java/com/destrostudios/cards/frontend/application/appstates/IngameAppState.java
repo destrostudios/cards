@@ -13,11 +13,8 @@ import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
-import com.destrostudios.cards.shared.rules.game.*;
-import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;
@@ -185,6 +182,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             mainApplication.getStateManager().attach(boardAppState);
             updateAndResetBoard();
             updatePossibleActions();
+            mainApplication.enqueue(() -> {
+                board.finishAllTransformations();
+            });
             hasPreparedBoard = true;
         });
         gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateAndResetBoard());

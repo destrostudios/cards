@@ -118,11 +118,6 @@ public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseA
             board.getVisualizer(boardObject).updateVisualisation(node, boardObject, application.getAssetManager());
             rootNode.attachChild(node);
             boardObjectNodes.put(boardObject, node);
-            if (boardObject instanceof TransformedBoardObject) {
-                TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
-                transformedBoardObject.position().setCurrentValue(node.getLocalTranslation());
-                transformedBoardObject.rotation().setCurrentValue(node.getLocalRotation());
-            }
         }
         return node;
     }

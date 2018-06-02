@@ -14,7 +14,8 @@ public class ShuffleLibraryHandler extends GameEventHandler<ShuffleLibraryEvent>
         List<Integer> libraryCards = data.query(Components.LIBRARY).list(hasComponentValue(Components.OWNED_BY, event.player));
         
         for (int i = libraryCards.size(); i > 0; i--) {
-            int cardEntity = libraryCards.get(random.applyAsInt(i));
+            int cardIndex = random.applyAsInt(i);
+            int cardEntity = libraryCards.remove(cardIndex);
             data.setComponent(cardEntity, Components.LIBRARY, i - 1);
         }
     }

@@ -8,6 +8,10 @@ public abstract class TargetedTransformation<ValueType> extends DynamicTransform
     }
     protected ValueType targetValue;
 
+    public void finish() {
+        setCurrentValue(targetValue);
+    }
+
     protected void setTargetValue(ValueType targetValue) {
         setValue(this.targetValue, targetValue);
     }

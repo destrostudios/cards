@@ -3,8 +3,10 @@ package com.destrostudios.cards.frontend.cardpainter;
 import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 
+import javax.imageio.ImageIO;
 import java.awt.Image;
-import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -23,12 +25,16 @@ public class CardImages{
         String key = (filePath + "_" + width + "_" + height);
         Image image = imageCache.get(key);
         if(image == null){
-            image = Toolkit.getDefaultToolkit().createImage(FileAssets.ROOT + filePath);
-            if((width != -1) && (height != -1)){
-                int scaleMode = (filePath.endsWith(".gif")?Image.SCALE_FAST:Image.SCALE_SMOOTH);
-                image = image.getScaledInstance(width, height, scaleMode);
+            try {
+                image = ImageIO.read(new File(FileAssets.ROOT + filePath));
+                if((width != -1) && (height != -1)){
+                    int scaleMode = (filePath.endsWith(".gif")?Image.SCALE_FAST:Image.SCALE_SMOOTH);
+                    image = image.getScaledInstance(width, height, scaleMode);
+                }
+                imageCache.put(key, image);
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-            imageCache.put(key, image);
         }
         return image;
     }

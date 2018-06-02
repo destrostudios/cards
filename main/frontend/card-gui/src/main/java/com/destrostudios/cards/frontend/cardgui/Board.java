@@ -59,8 +59,14 @@ public class Board<CardModelType extends BoardObjectModel> implements GameLoopLi
         animationQueue.update(lastTimePerFrame);
     }
 
-    public LinkedList<CardZone> getZones() {
-        return zones;
+    public void finishAllTransformations() {
+        for (BoardObject boardObject : boardObjects.values()) {
+            if (boardObject instanceof TransformedBoardObject) {
+                TransformedBoardObject transformedBoardObject = (TransformedBoardObject) boardObject;
+                transformedBoardObject.position().finish();
+                transformedBoardObject.rotation().finish();
+            }
+        }
     }
 
     public BoardObjectVisualizer getVisualizer(BoardObject boardObject) {

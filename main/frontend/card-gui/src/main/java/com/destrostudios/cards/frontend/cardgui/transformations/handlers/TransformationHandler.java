@@ -29,7 +29,7 @@ public abstract class TransformationHandler<ValueType, TransformationType extend
             setTransformation(defaultTransformationProvider.get());
             isFixed = false;
         }
-        transformation.update(lastTimePerFrame);
+        updateTransformation(lastTimePerFrame);
         setValue(currentValue, transformation.getCurrentValue());
         if (!isFixed) {
             for (RelativeTransformation<ValueType> relativeTransformation : relativeTransformations) {
@@ -39,6 +39,10 @@ public abstract class TransformationHandler<ValueType, TransformationType extend
                 }
             }
         }
+    }
+
+    protected void updateTransformation(float lastTimePerFrame) {
+        transformation.update(lastTimePerFrame);
     }
 
     public void reset() {

@@ -7,10 +7,19 @@ public abstract class TargetedTransformationHandler<ValueType> extends StatePres
     public TargetedTransformationHandler(ValueType value) {
         super(value);
     }
+    private boolean finishNextFrame;
 
     @Override
-    public void setCurrentValue(ValueType currentValue) {
-        super.setCurrentValue(currentValue);
+    protected void updateTransformation(float lastTimePerFrame) {
+        super.updateTransformation(lastTimePerFrame);
+        if (finishNextFrame) {
+            transformation.finish();
+            finishNextFrame = false;
+        }
+    }
+
+    public void finish() {
+        finishNextFrame = true;
     }
 
     public boolean hasReachedTarget() {

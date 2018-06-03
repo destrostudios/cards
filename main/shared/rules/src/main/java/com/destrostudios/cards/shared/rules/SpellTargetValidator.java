@@ -51,10 +51,16 @@ public class SpellTargetValidator {
 
     public static boolean isValidTarget(EntityData entityData, int targetRuleEntity, int targetEntity) {
         for (ComponentDefinition componentDefinition : simpleRequirableComponents) {
-            Object requiredComponent = entityData.getComponent(targetRuleEntity, componentDefinition);
-            if (requiredComponent != null) {
-                Object targetComponent = entityData.getComponent(targetEntity, componentDefinition);
-                if (!Objects.equals(requiredComponent, targetComponent)) {
+            // Check has instead of (get != null) because of Void type
+            if (entityData.hasComponent(targetRuleEntity, componentDefinition)) {
+                Object requiredComponent = entityData.getComponent(targetRuleEntity, componentDefinition);
+                if (entityData.hasComponent(targetEntity, componentDefinition)) {
+                    Object targetComponent = entityData.getComponent(targetEntity, componentDefinition);
+                    if (!Objects.equals(requiredComponent, targetComponent)) {
+                        return false;
+                    }
+                }
+                else {
                     return false;
                 }
             }

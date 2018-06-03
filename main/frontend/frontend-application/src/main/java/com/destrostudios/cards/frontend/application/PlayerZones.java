@@ -2,6 +2,8 @@ package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.frontend.cardgui.CardZone;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Carl
@@ -15,6 +17,12 @@ public class PlayerZones {
         this.creatureZone = creatureZone;
         this.enchantmentZone = enchantmentZone;
         this.graveyardZone = graveyardZone;
+        zones.add(deckZone);
+        zones.add(handZone);
+        zones.add(landZone);
+        zones.add(creatureZone);
+        zones.add(enchantmentZone);
+        zones.add(graveyardZone);
     }
     private CardZone deckZone;
     private CardZone handZone;
@@ -22,6 +30,7 @@ public class PlayerZones {
     private CardZone creatureZone;
     private CardZone enchantmentZone;
     private CardZone graveyardZone;
+    private ArrayList<CardZone> zones = new ArrayList<>(6);
 
     public CardZone getDeckZone() {
         return deckZone;
@@ -45,5 +54,9 @@ public class PlayerZones {
 
     public CardZone getGraveyardZone() {
         return graveyardZone;
+    }
+
+    public ArrayList<CardZone> getZones() {
+        return zones;
     }
 }

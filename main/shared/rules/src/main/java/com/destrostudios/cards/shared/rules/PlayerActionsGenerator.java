@@ -94,7 +94,7 @@ public class PlayerActionsGenerator {
     }
 
     private void generateBlocks(int player, Consumer<Event> out) {
-        if (data.hasComponentValue(player, Components.Game.TURN_PHASE, TurnPhase.ATTACK)) {
+        if (data.hasComponentValue(player, Components.Game.TURN_PHASE, TurnPhase.BLOCK)) {
             for (int defender : data.query(Components.CREATURE_ZONE).list(ownedBy(player).and(x -> !data.hasComponent(x, Components.DECLARED_BLOCK)))) {
                 for (int attacker : data.query(Components.CREATURE_ZONE).list(x -> data.hasComponentValue(x, Components.DECLARED_ATTACK, player))) {
                     out.accept(new DeclareBlockEvent(defender, attacker));

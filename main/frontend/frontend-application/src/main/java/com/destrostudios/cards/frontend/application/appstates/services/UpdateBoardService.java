@@ -34,7 +34,7 @@ public class UpdateBoardService {
     private Board<CardModel> board;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private CardGuiMap cardGuiMap;
-    private Map<Integer, List<BattleEvent>> possibleBattleEventsPerSource = new HashMap<>();
+    private Map<Integer, List<Event>> possibleDeclareBattleEventsPerSource = new HashMap<>();
 
     public void updateAndResetInteractivities() {
         EntityData entityData = gameClient.getGame().getData();
@@ -96,7 +96,7 @@ public class UpdateBoardService {
     // TODO: Cleanup / Extract
     public void updateInteractivities(List<Event> possibleEvents) {
         EntityData entityData = gameClient.getGame().getData();
-        possibleBattleEventsPerSource.clear();
+        possibleDeclareBattleEventsPerSource.clear();
         for (Event event : possibleEvents) {
             if (event instanceof DrawCardEvent) {
                 DrawCardEvent drawCardEvent = (DrawCardEvent) event;
@@ -162,41 +162,75 @@ public class UpdateBoardService {
                 }
                 card.setInteractivity(interactivity);
             }
-            else if (event instanceof BattleEvent) {
-                BattleEvent battleEvent = (BattleEvent) event;
-                List<BattleEvent> battleEventsOfSource = possibleBattleEventsPerSource.computeIfAbsent(battleEvent.source, (entity) -> new LinkedList<>());
-                battleEventsOfSource.add(battleEvent);
+            else if (event instanceof DeclareAttackEvent) {
+                DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) event;
+                addPossibleDeclareBattleEvent(declareAttackEvent.source, event);
+            }
+            else if (event instanceof DeclareBlockEvent) {
+                DeclareBlockEvent declareBlockEvent = (DeclareBlockEvent) event;
+                addPossibleDeclareBattleEvent(declareBlockEvent.source, event);
             }
         }
-        for (Map.Entry<Integer, List<BattleEvent>> battleEventsEntry : possibleBattleEventsPerSource.entrySet()) {
-            int attackingEntity = battleEventsEntry.getKey();
-            List<BattleEvent> battleEventsOfSource = battleEventsEntry.getValue();
-            Card<CardModel> attackingCard = cardGuiMap.getOrCreateCard(attackingEntity);
-            attackingCard.setInteractivity(new AimToTargetInteractivity<CardModel>(TargetSnapMode.VALID) {
+        for (Map.Entry<Integer, List<Event>> declareBattleEventsEntry : possibleDeclareBattleEventsPerSource.entrySet()) {
+            int declaringEntity = declareBattleEventsEntry.getKey();
+            List<Event> declareBattleEventsOfSource = declareBattleEventsEntry.getValue();
+            Card<CardModel> declaringCard = cardGuiMap.getOrCreateCard(declaringEntity);
+            declaringCard.setInteractivity(new AimToTargetInteractivity<CardModel>(TargetSnapMode.VALID) {
 
                 @Override
                 public boolean isValid(BoardObject boardObject) {
-                    return (getBattleEvent(boardObject) != null);
+                    return (getDeclareBattleEvent(boardObject) != null);
                 }
 
                 @Override
                 public void trigger(BoardObject<CardModel> boardObject, BoardObject target) {
-                    gameClient.requestAction(getBattleEvent(target));
+                    gameClient.requestAction(getDeclareBattleEvent(target));
                 }
 
-                private Event getBattleEvent(BoardObject targetBoardObject) {
+                private Event getDeclareBattleEvent(BoardObject targetBoardObject) {
+                    Integer targetEntity = null;
                     if (targetBoardObject instanceof Card) {
                         Card<CardModel> targetCard = (Card) targetBoardObject;
-                        int targetEntity = cardGuiMap.getEntity(targetCard);
-                        for (BattleEvent battleEvent : battleEventsOfSource) {
-                            if (battleEvent.target == targetEntity) {
-                                return battleEvent;
+                        targetEntity = cardGuiMap.getEntity(targetCard);
+                    }
+                    else if (targetBoardObject instanceof CardZone) {
+                        CardZone targetCardZone = (CardZone) targetBoardObject;
+                        for (Map.Entry<Integer, PlayerZones> playerZonesEntry : playerZonesMap.entrySet()) {
+                            int playerEntity = playerZonesEntry.getKey();
+                            PlayerZones playerZones = playerZonesEntry.getValue();
+                            for (CardZone cardZone : playerZones.getZones()) {
+                                if (cardZone == targetCardZone) {
+                                    targetEntity = playerEntity;
+                                    break;
+                                }
                             }
+                            if (targetEntity != null) {
+                                break;
+                            }
+                        }
+                    }
+                    for (Event declareBattleEvent : declareBattleEventsOfSource) {
+                        boolean isDeclaredTarget = false;
+                        if (declareBattleEvent instanceof DeclareAttackEvent) {
+                            DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) declareBattleEvent;
+                            isDeclaredTarget = (declareAttackEvent.target == targetEntity);
+                        }
+                        else if (declareBattleEvent instanceof DeclareBlockEvent) {
+                            DeclareBlockEvent declareBlockEvent = (DeclareBlockEvent) declareBattleEvent;
+                            isDeclaredTarget = (declareBlockEvent.target == targetEntity);
+                        }
+                        if (isDeclaredTarget) {
+                            return declareBattleEvent;
                         }
                     }
                     return null;
                 }
             });
         }
+    }
+
+    private void addPossibleDeclareBattleEvent(int declaringEntity, Event event) {
+        List<Event> declareBattleEventsOfSource = possibleDeclareBattleEventsPerSource.computeIfAbsent(declaringEntity, (entity) -> new LinkedList<>());
+        declareBattleEventsOfSource.add(event);
     }
 }

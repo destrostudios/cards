@@ -62,9 +62,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private void initCamera() {
         Camera camera = mainApplication.getCamera();
-        camera.setLocation(new Vector3f(1.8497083f, 3.8661501f, 6.470482f));
-        camera.setRotation(new Quaternion(-1.2625942E-4f, 0.9192482f, -0.3936784f, -1.636999E-4f));
-        camera.setFrustumPerspective(45, (float) camera.getWidth() / camera.getHeight(), 0.01f, 1000f);
+        camera.setFrustumPerspective(45, (float) camera.getWidth() / camera.getHeight(), 0.01f, 1000);
         FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
         flyByCamera.setMoveSpeed(100);
         flyByCamera.setEnabled(false);
@@ -92,21 +90,20 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         else if ("delete".equals(name) && isPressed) {
             int activePlayerEntity = gameClient.getGame().getData().query(Components.Game.TURN_PHASE).unique().getAsInt();
             switch (gameClient.getGame().getData().getComponent(activePlayerEntity, Components.Game.TURN_PHASE)) {
+                case MAIN_ONE:
+                    gameClient.requestAction(new EndMainPhaseOneEvent(activePlayerEntity));
+                    break;
                 case ATTACK:
                     gameClient.requestAction(new EndAttackPhaseEvent(activePlayerEntity));
                     break;
                 case BLOCK:
                     gameClient.requestAction(new EndBlockPhaseEvent(activePlayerEntity));
                     break;
-                case MAIN_ONE:
-                    gameClient.requestAction(new EndMainPhaseOneEvent(activePlayerEntity));
-                    break;
                 case MAIN_TWO:
                     gameClient.requestAction(new EndMainPhaseTwoEvent(activePlayerEntity));
                     break;
                 default:
                     throw new AssertionError(gameClient.getGame().getData().getComponent(activePlayerEntity, Components.Game.TURN_PHASE).name());
-
             }
         }
     }
@@ -150,20 +147,24 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         gameClient.addFullGameStateListener(entityData -> {
             List<Integer> players = entityData.query(Components.NEXT_PLAYER).list();
             Vector3f offset = new Vector3f(0, 0, ZONE_HEIGHT);
+            float directionX = 1;
             float directionZ = 1;
             Quaternion zoneRotation = Quaternion.IDENTITY;
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {
-                    offset.addLocal(0, 0, 0);
+                    offset.addLocal(3.5f, 0, 0);
+                    directionX *= -1;
                     directionZ *= -1;
                     zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
                 }
 
+                float x = 0.5f;
                 float z = (ZONE_HEIGHT / 2);
-
-                CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(0.5f, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                CenteredIntervalZone enchantmentZone = new CenteredIntervalZone(offset.add(3.75f, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(5, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 1, 1)) {
+                CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+                x += 3.25f;
+                CenteredIntervalZone enchantmentZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+                x += 1.25f;
+                SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 1, 1)) {
 
                     // TODO: Cleanup
                     @Override
@@ -173,9 +174,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     }
                 };
 
+                x = 1.25f;
                 z += ZONE_HEIGHT;
-                CenteredIntervalZone landZone = new CenteredIntervalZone(offset.add(1.25f, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(5, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 0, 0)) {
+                CenteredIntervalZone landZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+                x += 3.75f;
+                SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 0, 0)) {
 
                     // TODO: Cleanup
                     @Override
@@ -185,9 +188,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     }
                 };
 
+                x = 1.5f;
                 z += (ZONE_HEIGHT - 0.25f);
                 Quaternion handRotation = zoneRotation.mult(new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X));
-                CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(1.5f, 0, directionZ * z), handRotation, new Vector3f(1, 1, 1));
+                CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
 
                 board.addZone(deckZone);
                 board.addZone(handZone);
@@ -206,6 +210,15 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 board.finishAllTransformations();
             });
             hasPreparedBoard = true;
+
+            Camera camera = mainApplication.getCamera();
+            camera.setLocation(new Vector3f(1.8497083f, 3.8661501f, 6.470482f));
+            camera.lookAtDirection(new Vector3f(0, -0.7237764f, -0.6900346f), Vector3f.UNIT_Y);
+            // TODO: Maybe check this other than the exact hardcoded entity
+            if (gameClient.getPlayerEntity() == 1) {
+                camera.setLocation(camera.getLocation().add(0, 0, -10.3f));
+                camera.setRotation(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(camera.getRotation()));
+            }
         });
         gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateAndResetBoard());
         gameClient.getGame().getPreDispatcher().addListeners(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));

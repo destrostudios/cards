@@ -10,7 +10,9 @@ public class StartBlockPhaseEvent extends Event {
 
     public int player;
 
+    // Used by serializer
     private StartBlockPhaseEvent() {
+        this(0);
     }
 
     public StartBlockPhaseEvent(int player) {

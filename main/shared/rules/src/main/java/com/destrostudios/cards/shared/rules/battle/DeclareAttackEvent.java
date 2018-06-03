@@ -10,7 +10,9 @@ public class DeclareAttackEvent extends Event {
 
     public int source, target;
 
+    // Used by serializer
     private DeclareAttackEvent() {
+        this(0, 0);
     }
 
     public DeclareAttackEvent(int source, int target) {

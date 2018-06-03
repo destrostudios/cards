@@ -26,6 +26,7 @@ public class CardGuiMapper {
         keywordComponents.put(Components.Ability.HEXPROOF, "Hexproof");
         keywordComponents.put(Components.Ability.IMMUNE, "Immune");
         keywordComponents.put(Components.Ability.TAUNT, "Taunt");
+        keywordComponents.put(Components.Ability.VIGILANCE, "Vigilance");
 
         tribeComponents.put(Components.Tribe.BEAST, "Beast");
         tribeComponents.put(Components.Tribe.DRAGON, "Dragon");

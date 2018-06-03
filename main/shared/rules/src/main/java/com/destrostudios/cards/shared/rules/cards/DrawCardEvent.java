@@ -10,7 +10,9 @@ public class DrawCardEvent extends Event {
     public int player;
 
     // Used by serializer
-    private DrawCardEvent() { }
+    private DrawCardEvent() {
+        this(0);
+    }
 
     public DrawCardEvent(int player) {
         this.player = player;

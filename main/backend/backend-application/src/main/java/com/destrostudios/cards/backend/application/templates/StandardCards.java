@@ -45,6 +45,7 @@ public class StandardCards extends CardsUtil {
         public static int ogre(EntityData data) {
             int entity = creature(data, "Ogre", 4, 3);
             data.setComponent(entity, Components.Color.RED);
+            data.setComponent(entity, Components.Ability.VIGILANCE);
 
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.ManaAmount.RED, 2);

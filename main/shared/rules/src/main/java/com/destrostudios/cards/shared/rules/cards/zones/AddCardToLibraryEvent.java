@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.rules.cards;
+package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.events.Event;
 
@@ -7,7 +7,7 @@ import com.destrostudios.cards.shared.events.Event;
  * @author Philipp
  */
 public class AddCardToLibraryEvent extends Event {
-    public int card;
+    public final int card;
 
     public AddCardToLibraryEvent(int card) {
         this.card = card;

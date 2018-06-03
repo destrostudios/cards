@@ -8,7 +8,7 @@ import com.destrostudios.cards.shared.events.Event;
  */
 public class SetHealthEvent extends Event {
 
-    public int target, health;
+    public final int target, health;
 
     public SetHealthEvent(int target, int health) {
         this.target = target;

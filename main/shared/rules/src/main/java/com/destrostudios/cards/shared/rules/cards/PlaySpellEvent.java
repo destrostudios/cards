@@ -7,7 +7,9 @@ public class PlaySpellEvent extends Event {
     public int[] targets;
 
     // Used by serializer
-    private PlaySpellEvent() { }
+    private PlaySpellEvent() {
+        this(0, null);
+    }
 
     public PlaySpellEvent(int spell) {
         this(spell, new int[0]);

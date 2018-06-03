@@ -10,7 +10,9 @@ public class EndMainPhaseTwoEvent extends Event {
 
     public int player;
 
+    // Used by serializer
     private EndMainPhaseTwoEvent() {
+        this(0);
     }
 
     public EndMainPhaseTwoEvent(int player) {

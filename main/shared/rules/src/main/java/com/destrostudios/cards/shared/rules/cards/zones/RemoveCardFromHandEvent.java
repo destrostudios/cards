@@ -1,13 +1,9 @@
-package com.destrostudios.cards.shared.rules.cards;
+package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.events.Event;
 
-/**
- *
- * @author Philipp
- */
 public class RemoveCardFromHandEvent extends Event {
-    public int card;
+    public final int card;
 
     public RemoveCardFromHandEvent(int card) {
         this.card = card;

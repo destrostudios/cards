@@ -53,6 +53,7 @@ public class Components {
         public static final ComponentDefinition<Void> HEXPROOF = new ComponentDefinition<>("hexproof");
         public static final ComponentDefinition<Void> IMMUNE = new ComponentDefinition<>("immune");
         public static final ComponentDefinition<Void> TAUNT = new ComponentDefinition<>("taunt");
+        public static final ComponentDefinition<Void> VIGILANCE = new ComponentDefinition<>("vigilance");
     }
 
     public static class Tribe {

@@ -10,7 +10,9 @@ public class BattleEvent extends Event {
 
     public int source, target;
 
+    // Used by serializer
     private BattleEvent() {
+        this(0, 0);
     }
 
     public BattleEvent(int source, int target) {

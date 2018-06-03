@@ -3,6 +3,9 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import java.util.List;
+
+import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.RemoveCardFromLibraryEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

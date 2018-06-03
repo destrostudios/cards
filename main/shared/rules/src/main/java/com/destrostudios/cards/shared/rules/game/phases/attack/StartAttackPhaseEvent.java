@@ -10,7 +10,9 @@ public class StartAttackPhaseEvent extends Event {
 
     public int player;
 
+    // Used by serializer
     private StartAttackPhaseEvent() {
+        this(0);
     }
 
     public StartAttackPhaseEvent(int player) {

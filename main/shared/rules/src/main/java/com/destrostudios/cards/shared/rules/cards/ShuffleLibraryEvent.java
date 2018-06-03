@@ -8,7 +8,7 @@ import com.destrostudios.cards.shared.events.Event;
  */
 public class ShuffleLibraryEvent extends Event {
 
-    public int player;
+    public final int player;
 
     public ShuffleLibraryEvent(int player) {
         this.player = player;

@@ -10,7 +10,9 @@ public class EndAttackPhaseEvent extends Event {
 
     public int player;
 
+    // Used by serializer
     private EndAttackPhaseEvent() {
+        this(0);
     }
 
     public EndAttackPhaseEvent(int player) {

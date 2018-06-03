@@ -3,18 +3,18 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.events.Event;
 
 /**
- *
  * @author Philipp
  */
-public class RemoveCardFromLibraryEvent extends Event {
-    public int card;
+public class TapEvent extends Event {
 
-    public RemoveCardFromLibraryEvent(int card) {
+    public final int card;
+
+    public TapEvent(int card) {
         this.card = card;
     }
 
     @Override
     public String toString() {
-        return "RemoveCardFromLibraryEvent{" + "card=" + card + '}';
+        return "TapCardEvent{" + "card=" + card + '}';
     }
 }

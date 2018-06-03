@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.rules.game.phases.attack;
+package com.destrostudios.cards.shared.rules.game.phases.main;
 
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;

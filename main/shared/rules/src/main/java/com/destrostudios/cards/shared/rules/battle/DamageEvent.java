@@ -11,7 +11,9 @@ public class DamageEvent extends Event {
     public int target, damage;
 
     // Used by serializer
-    private DamageEvent() { }
+    private DamageEvent() {
+        this(0, 0);
+    }
 
     public DamageEvent(int target, int damage) {
         this.target = target;

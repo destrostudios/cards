@@ -36,6 +36,7 @@ public class SpellTargetValidator {
         simpleRequirableComponents.add(Components.Ability.HEXPROOF);
         simpleRequirableComponents.add(Components.Ability.IMMUNE);
         simpleRequirableComponents.add(Components.Ability.TAUNT);
+        simpleRequirableComponents.add(Components.Ability.VIGILANCE);
         simpleRequirableComponents.add(Components.Color.NEUTRAL);
         simpleRequirableComponents.add(Components.Color.WHITE);
         simpleRequirableComponents.add(Components.Color.RED);

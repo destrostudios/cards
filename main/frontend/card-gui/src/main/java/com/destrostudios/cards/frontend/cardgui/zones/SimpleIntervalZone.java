@@ -8,13 +8,13 @@ import com.jme3.math.Vector3f;
  *
  * @author Carl
  */
-public class IntervalZone extends CardZone{
+public class SimpleIntervalZone extends CardZone{
 
-    public IntervalZone(Vector3f position, Vector3f interval) {
+    public SimpleIntervalZone(Vector3f position, Vector3f interval) {
         this(position, new Quaternion(), interval);
     }
 
-    public IntervalZone(Vector3f position, Quaternion rotation, Vector3f interval) {
+    public SimpleIntervalZone(Vector3f position, Quaternion rotation, Vector3f interval) {
         super(position, rotation);
         this.interval = interval;
     }

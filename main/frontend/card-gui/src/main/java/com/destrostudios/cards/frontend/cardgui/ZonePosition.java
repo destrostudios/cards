@@ -24,6 +24,10 @@ public class ZonePosition {
         this.position = position;
     }
 
+    public Vector3f getPosition() {
+        return position;
+    }
+
     public Vector3f getDefaultTargetPosition() {
         return zone.position().getCurrentValue().add(zone.getLocalPosition(position));
     }

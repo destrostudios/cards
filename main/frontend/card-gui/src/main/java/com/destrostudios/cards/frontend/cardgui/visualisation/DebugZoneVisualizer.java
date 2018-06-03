@@ -25,7 +25,7 @@ public class DebugZoneVisualizer implements BoardObjectVisualizer<CardZone> {
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         material.getAdditionalRenderState().setWireframe(true);
         geometry.setMaterial(material);
-        geometry.setLocalTranslation(0, -0.3f, 0);
+        geometry.setLocalTranslation(0, -0.1f, 0);
         node.attachChild(geometry);
     }
 

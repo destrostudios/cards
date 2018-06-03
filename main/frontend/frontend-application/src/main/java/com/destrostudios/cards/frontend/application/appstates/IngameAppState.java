@@ -8,7 +8,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoa
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.animations.samples.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
-import com.destrostudios.cards.frontend.cardgui.zones.IntervalZone;
+import com.destrostudios.cards.frontend.cardgui.zones.*;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.events.Event;
@@ -38,6 +38,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         this.gameClient = gameClient;
         cardGuiMap = new CardGuiMap(gameClient.getGame().getData());
     }
+    private static final float ZONE_HEIGHT = 1.3f;
     private SimpleGameClient gameClient;
     private Board<CardModel> board;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
@@ -59,8 +60,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private void initCamera() {
         Camera camera = mainApplication.getCamera();
-        camera.setLocation(new Vector3f(2.584369f, 14.878008f, 0.86850137f));
-        camera.setRotation(new Quaternion(-0.001344382f, 0.72532254f, -0.6884064f, -0.0014168395f));
+        camera.setLocation(new Vector3f(1.8497083f, 3.8661501f, 6.470482f));
+        camera.setRotation(new Quaternion(-1.2625942E-4f, 0.9192482f, -0.3936784f, -1.636999E-4f));
         camera.setFrustumPerspective(45, (float) camera.getWidth() / camera.getHeight(), 0.01f, 1000f);
         FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
         flyByCamera.setMoveSpeed(100);
@@ -112,17 +113,17 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             protected Vector2f getSize(CardZone zone) {
                 for (PlayerZones playerZones : playerZonesMap.values()) {
                     if (zone == playerZones.getDeckZone()) {
-                        return new Vector2f(2, 2);
+                        return new Vector2f(1, ZONE_HEIGHT);
                     } else if (zone == playerZones.getHandZone()) {
-                        return new Vector2f(10, 2);
+                        return new Vector2f(5, ZONE_HEIGHT - 0.1f);
                     } else if (zone == playerZones.getLandZone()) {
-                        return new Vector2f(15, 2);
+                        return new Vector2f(6.5f, ZONE_HEIGHT);
                     } else if (zone == playerZones.getCreatureZone()) {
-                        return new Vector2f(10, 2);
+                        return new Vector2f(5, ZONE_HEIGHT);
                     } else if (zone == playerZones.getEnchantmentZone()) {
-                        return new Vector2f(5, 2);
+                        return new Vector2f(1.5f, ZONE_HEIGHT);
                     } else if (zone == playerZones.getGraveyardZone()) {
-                        return new Vector2f(2, 2);
+                        return new Vector2f(1, ZONE_HEIGHT);
                     }
                 }
                 return super.getSize(zone);
@@ -143,12 +144,21 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void initGameListeners() {
         gameClient.addFullGameStateListener(entityData -> {
             List<Integer> players = entityData.query(Components.NEXT_PLAYER).list();
-            Vector3f offset = new Vector3f(0, 0, 1.3f);
+            Vector3f offset = new Vector3f(0, 0, ZONE_HEIGHT);
+            float directionZ = 1;
+            Quaternion zoneRotation = Quaternion.IDENTITY;
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {
-                    offset.addLocal(0, 0, -6);
+                    offset.addLocal(0, 0, 0);
+                    directionZ *= -1;
+                    zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
                 }
-                IntervalZone deckZone = new IntervalZone(offset.add(10, 0, 2), new Vector3f(0.04f, 0, 0)) {
+
+                float z = (ZONE_HEIGHT / 2);
+
+                CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(0.5f, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+                CenteredIntervalZone enchantmentZone = new CenteredIntervalZone(offset.add(3.75f, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+                SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(5, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 1, 1)) {
 
                     // TODO: Cleanup
                     @Override
@@ -157,11 +167,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                         return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
                     }
                 };
-                IntervalZone handZone = new IntervalZone(offset.add(0, 0, 4), new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X), new Vector3f(1, 1, 1));
-                IntervalZone landZone = new IntervalZone(offset.add(0, 0, 2), new Vector3f(1, 1, 1));
-                IntervalZone creatureZone = new IntervalZone(offset.add(-2.5f, 0, 0), new Vector3f(1, 1, 1));
-                IntervalZone enchantmentZone = new IntervalZone(offset.add(5, 0, 0), new Vector3f(1, 1, 1));
-                IntervalZone graveyardZone = new IntervalZone(offset.add(10, 0, 0), new Vector3f(0.04f, 1, 1)) {
+
+                z += ZONE_HEIGHT;
+                CenteredIntervalZone landZone = new CenteredIntervalZone(offset.add(1.25f, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+                SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(5, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 0, 0)) {
 
                     // TODO: Cleanup
                     @Override
@@ -170,6 +179,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                         return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
                     }
                 };
+
+                z += (ZONE_HEIGHT - 0.25f);
+                Quaternion handRotation = zoneRotation.mult(new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X));
+                CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(1.5f, 0, directionZ * z), handRotation, new Vector3f(1, 1, 1));
+
                 board.addZone(deckZone);
                 board.addZone(handZone);
                 board.addZone(landZone);

@@ -132,9 +132,9 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
             if (i == 1) {
                 offset.addLocal(0, 0, -6);
             }
-            IntervalZone deckZone = new IntervalZone(offset.add(10, 0, 0), new Vector3f(0, 0.04f, 0));
-            IntervalZone handZone = new IntervalZone(offset.add(0, 0, 2.5f), new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X), new Vector3f(1, 1, 1));
-            IntervalZone boardZone = new IntervalZone(offset.add(0, 0, 0), new Vector3f(1, 1, 1));
+            SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(10, 0, 0), new Vector3f(0, 0.04f, 0));
+            SimpleIntervalZone handZone = new SimpleIntervalZone(offset.add(0, 0, 2.5f), new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X), new Vector3f(1, 1, 1));
+            SimpleIntervalZone boardZone = new SimpleIntervalZone(offset.add(0, 0, 0), new Vector3f(1, 1, 1));
             board.addZone(deckZone);
             board.addZone(handZone);
             board.addZone(boardZone);

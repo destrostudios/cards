@@ -16,7 +16,7 @@ public abstract class CardZone extends TransformedBoardObject {
         rotation().setTransformation(new ConstantButTargetedTransformation<>(rotation));
     }
     private Board board;
-    private LinkedList<Card> cards = new LinkedList<>();
+    protected LinkedList<Card> cards = new LinkedList<>();
     
     public void addCard(Card card, Vector3f position) {
         board.register(card);

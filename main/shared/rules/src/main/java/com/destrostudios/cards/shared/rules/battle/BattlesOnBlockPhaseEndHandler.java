@@ -17,7 +17,7 @@ public class BattlesOnBlockPhaseEndHandler extends GameEventHandler<EndBlockPhas
 
     @Override
     public void handle(EndBlockPhaseEvent event) {
-        for (int attacker : data.query(Components.DECLARED_ATTACK).list(hasComponentValue(Components.OWNED_BY, event.player))) {
+        for (int attacker : data.query(Components.DECLARED_ATTACK).list()) {
             List<Integer> blockers = data.query(Components.DECLARED_BLOCK).list(hasComponentValue(Components.DECLARED_BLOCK, attacker));
             if (blockers.isEmpty()) {
                 int target = data.getComponent(attacker, Components.DECLARED_ATTACK);

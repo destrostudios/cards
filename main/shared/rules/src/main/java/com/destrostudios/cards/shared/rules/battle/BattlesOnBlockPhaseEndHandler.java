@@ -19,7 +19,7 @@ public class BattlesOnBlockPhaseEndHandler extends GameEventHandler<EndBlockPhas
     public void handle(EndBlockPhaseEvent event) {
         for (int attacker : data.query(Components.DECLARED_ATTACK).list(hasComponentValue(Components.OWNED_BY, event.player))) {
             List<Integer> blockers = data.query(Components.DECLARED_BLOCK).list(hasComponentValue(Components.DECLARED_BLOCK, attacker));
-            if(blockers.isEmpty()) {
+            if (blockers.isEmpty()) {
                 int target = data.getComponent(attacker, Components.DECLARED_ATTACK);
                 LOG.info("{} is unblocked, attacking {}", attacker, target);
                 events.fireChainEvent(new BattleEvent(attacker, target));
@@ -27,8 +27,10 @@ public class BattlesOnBlockPhaseEndHandler extends GameEventHandler<EndBlockPhas
                 LOG.info("{} is blocked by {}", attacker, blockers);
                 for (int blocker : blockers) {
                     events.fireChainEvent(new BattleEvent(attacker, blocker));
+                    data.removeComponent(blocker, Components.DECLARED_BLOCK);
                 }
             }
+            data.removeComponent(attacker, Components.DECLARED_ATTACK);
         }
     }
 }

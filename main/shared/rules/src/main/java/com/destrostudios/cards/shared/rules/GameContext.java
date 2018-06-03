@@ -52,7 +52,9 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(DamageEvent.class, new DamageHandler());
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
         addGameEventHandler(EndAttackPhaseEvent.class, new EndAttackPhaseHandler());
-        addGameEventHandler(EndBlockPhaseEvent.class, new EndBlockPhaseHandler());
+        addGameEventHandlers(EndBlockPhaseEvent.class,
+                new EndBlockPhaseHandler(),
+                new BattlesOnBlockPhaseEndHandler());
         addGameEventHandler(EndMainPhaseOneEvent.class, new EndMainPhaseOneHandler());
         addGameEventHandler(EndMainPhaseTwoEvent.class, new EndMainPhaseTwoHandler());
         addGameEventHandlers(GameStartEvent.class,
@@ -70,7 +72,8 @@ public class GameContext<EventQueueType extends EventQueue> {
                 new StartMainPhaseOneHandler(),
                 new DrawCardOnMainPhaseOneHandler());
         addGameEventHandler(StartMainPhaseTwoEvent.class, new StartMainPhaseTwoHandler());
-
+        addGameEventHandler(DeclareAttackEvent.class, new DeclareAttackHandler());
+        addGameEventHandler(DeclareBlockEvent.class, new DeclareBlockHandler());
     }
     
     @SafeVarargs

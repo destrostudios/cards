@@ -22,9 +22,6 @@ public class EntityMapper {
         if (data instanceof SimpleEntityData) {
             return (SimpleEntityData) data;
         }
-        if (data instanceof HasEntityData) {
-            return getAsSimple(((HasEntityData) data).getEntityData());
-        }
         throw new UnsupportedOperationException();
     }
 

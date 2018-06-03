@@ -2,7 +2,8 @@ package com.destrostudios.cards.shared.network;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.network.messages.*;
-import com.destrostudios.cards.shared.rules.battle.BattleEvent;
+import com.destrostudios.cards.shared.rules.battle.DeclareAttackEvent;
+import com.destrostudios.cards.shared.rules.battle.DeclareBlockEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
@@ -25,7 +26,8 @@ public class SerializerSetup {
                 ClientReadyMessage.class,
                 ActionNotificationMessage.class,
                 ActionRequestMessage.class,
-                    BattleEvent.class,
+                    DeclareAttackEvent.class,
+                    DeclareBlockEvent.class,
                     DrawCardEvent.class,
                     GameStartEvent.class,
                     PlaySpellEvent.class,

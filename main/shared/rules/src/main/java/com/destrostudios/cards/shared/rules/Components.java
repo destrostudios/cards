@@ -30,6 +30,8 @@ public class Components {
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
     public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spellEntities");
     public static final ComponentDefinition<Void> TAPPED = new ComponentDefinition<>("tapped");
+    public static final ComponentDefinition<Integer> DECLARED_ATTACK = new ComponentDefinition<>("declaredAttack");
+    public static final ComponentDefinition<Integer> DECLARED_BLOCK = new ComponentDefinition<>("declaredBlock");
 
     public static class Game {
         public static final ComponentDefinition<TurnPhase> TURN_PHASE = new ComponentDefinition<>("turnPhase");
@@ -68,7 +70,7 @@ public class Components {
         public static class CastCondition {
             public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
             public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
-            
+
             public static final ComponentDefinition<Void> ATTACK_PHASE = new ComponentDefinition<>("castableInAttackPhase");
             public static final ComponentDefinition<Void> BLOCK_PHASE = new ComponentDefinition<>("castableInBlockPhase");
             public static final ComponentDefinition<Void> MAIN_PHASE = new ComponentDefinition<>("castableInMainPhase");

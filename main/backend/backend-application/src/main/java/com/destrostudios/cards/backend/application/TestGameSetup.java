@@ -14,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author Philipp
  */
 public class TestGameSetup {
-    
+
     private final EntityData data;
     private final int[] players = new int[2];
 
@@ -25,16 +25,14 @@ public class TestGameSetup {
     public void apply() {
         players[0] = data.createEntity();
         players[1] = data.createEntity();
-        int hero1 = data.createEntity();
-        int hero2 = data.createEntity();
 
-        initPlayerAndHeroEntities(hero1, hero2);
+        initPlayers();
         initLibrary(players[0], TestLibraries.red(), 20);
         initLibrary(players[1], TestLibraries.red(), 20);
 //        initLibraryAndHandCardsEntities();
 //        initBoardCardsEntities();
     }
-    
+
     private void initLibrary(int player, CardPool cards, int librarySize) {
         for (int i = 0; i < librarySize; i++) {
             int card = cards.selectRandomCard(ThreadLocalRandom.current()::nextInt).create(data);
@@ -89,7 +87,7 @@ public class TestGameSetup {
         data.setComponent(card3, Components.CREATURE_ZONE, 0);
 
         int card4 = TestCards.aetherAdept(data);
-        
+
         data.setComponent(card4, Components.OWNED_BY, players[1]);
         data.setComponent(card4, Components.BOARD);
         data.setComponent(card4, Components.CREATURE_ZONE, 1);
@@ -120,7 +118,7 @@ public class TestGameSetup {
         for (int i = 0; i < 2 * handSize; i++) {
             int card = data.createEntity();
             data.setComponent(card, Components.Color.NEUTRAL);
-            switch(i % 4) {
+            switch (i % 4) {
                 case 0:
                     data.setComponent(card, Components.DISPLAY_NAME, "Creature #" + i);
                     data.setComponent(card, Components.CREATURE_CARD);
@@ -156,19 +154,14 @@ public class TestGameSetup {
         data.setComponent(card, Components.SPELL_ENTITIES, new int[]{playSpell});
     }
 
-    private void initPlayerAndHeroEntities(int hero1, int hero2) {
+    private void initPlayers() {
         data.setComponent(players[0], Components.DISPLAY_NAME, "player1");
-        data.setComponent(players[1], Components.DISPLAY_NAME, "player2");
+        data.setComponent(players[0], Components.HEALTH, 20);
         data.setComponent(players[0], Components.NEXT_PLAYER, players[1]);
+
+        data.setComponent(players[1], Components.DISPLAY_NAME, "player2");
+        data.setComponent(players[1], Components.HEALTH, 20);
         data.setComponent(players[1], Components.NEXT_PLAYER, players[0]);
-
-        data.setComponent(hero1, Components.DISPLAY_NAME, "hero1");
-        data.setComponent(hero1, Components.HEALTH, 20);
-        data.setComponent(hero1, Components.OWNED_BY, players[0]);
-
-        data.setComponent(hero2, Components.DISPLAY_NAME, "hero2");
-        data.setComponent(hero2, Components.HEALTH, 20);
-        data.setComponent(hero2, Components.OWNED_BY, players[1]);
     }
 
     public int[] getPlayers() {

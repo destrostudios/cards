@@ -18,7 +18,9 @@ public class StandardCards extends CardsUtil {
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.ManaAmount.RED, 1);
             int summon = summon(data, summonCost);
-
+            
+            int attackCost = data.createEntity();
+            data.setComponent(attackCost, Components.Cost.TAP);
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
             data.setComponent(entity, Components.FLAVOUR_TEXT, "\"Ouch.\"");
             return entity;
@@ -33,6 +35,8 @@ public class StandardCards extends CardsUtil {
             data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 1);
             int summon = summon(data, summonCost);
 
+            int attackCost = data.createEntity();
+            data.setComponent(attackCost, Components.Cost.TAP);
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
             data.setComponent(entity, Components.FLAVOUR_TEXT, "\"Hungry.\"");
             return entity;
@@ -47,6 +51,8 @@ public class StandardCards extends CardsUtil {
             data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 1);
             int summon = summon(data, summonCost);
 
+            int attackCost = data.createEntity();
+            data.setComponent(attackCost, Components.Cost.TAP);
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
             data.setComponent(entity, Components.FLAVOUR_TEXT, "\"Die!\"");
             return entity;
@@ -61,6 +67,8 @@ public class StandardCards extends CardsUtil {
             data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 2);
             int summon = summon(data, summonCost);
 
+            int attackCost = data.createEntity();
+            data.setComponent(attackCost, Components.Cost.TAP);
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
             data.setComponent(entity, Components.FLAVOUR_TEXT, "\"This hat is nice.\"");
             return entity;
@@ -77,6 +85,8 @@ public class StandardCards extends CardsUtil {
             data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 2);
             int summon = summon(data, summonCost);
 
+            int attackCost = data.createEntity();
+            data.setComponent(attackCost, Components.Cost.TAP);
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
             data.setComponent(entity, Components.FLAVOUR_TEXT, "\"Fragile creatures.\"");
             return entity;
@@ -101,6 +111,8 @@ public class StandardCards extends CardsUtil {
             data.setComponent(tapForManaCost, Components.ManaAmount.GREEN, -1);//Kappa
             data.setComponent(tapForMana, Components.Spell.COST_ENTITY, tapForManaCost);
 
+            int attackCost = data.createEntity();
+            data.setComponent(attackCost, Components.Cost.TAP);
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon, tapForMana});
             data.setComponent(entity, Components.FLAVOUR_TEXT, "\"None can own the land's bounty. The gods made this world for all to share its riches. And I'm not just saying that because you caught me stealing your fruit.\"");
             return entity;

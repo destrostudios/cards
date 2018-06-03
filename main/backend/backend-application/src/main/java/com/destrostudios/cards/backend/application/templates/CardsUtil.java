@@ -16,6 +16,7 @@ public class CardsUtil {
         data.setComponent(entity, Components.CREATURE_CARD);
         data.setComponent(entity, Components.ATTACK, attack);
         data.setComponent(entity, Components.HEALTH, health);
+        
         return entity;
     }
     

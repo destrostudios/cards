@@ -6,19 +6,19 @@ import com.destrostudios.cards.shared.events.Event;
  *
  * @author Philipp
  */
-public class StartMainPhaseEvent extends Event {
+public class StartMainPhaseTwoEvent extends Event {
 
     public int player;
 
-    private StartMainPhaseEvent() {
+    private StartMainPhaseTwoEvent() {
     }
 
-    public StartMainPhaseEvent(int player) {
+    public StartMainPhaseTwoEvent(int player) {
         this.player = player;
     }
 
     @Override
     public String toString() {
-        return StartMainPhaseEvent.class.getSimpleName() + "{player=" + player + '}';
+        return StartMainPhaseTwoEvent.class.getSimpleName() + "{player=" + player + '}';
     }
 }

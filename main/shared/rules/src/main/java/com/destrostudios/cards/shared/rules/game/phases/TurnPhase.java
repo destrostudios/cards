@@ -1,9 +1,8 @@
 package com.destrostudios.cards.shared.rules.game.phases;
 
 /**
- *
  * @author Philipp
  */
 public enum TurnPhase {
-    ATTACK, BLOCK, MAIN
+    MAIN_ONE, ATTACK, BLOCK, MAIN_TWO
 }

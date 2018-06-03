@@ -2,10 +2,11 @@ package com.destrostudios.cards.shared.rules.game;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.game.phases.main.StartMainPhaseEvent;
-import java.util.List;
+import com.destrostudios.cards.shared.rules.game.phases.main.StartMainPhaseOneEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  *
@@ -20,6 +21,6 @@ public class SetStartingPlayerHandler extends GameEventHandler<GameStartEvent> {
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
         int player = players.get(random.applyAsInt(players.size()));
         LOG.info("starting player is {}.", player);
-        events.fireChainEvent(new StartMainPhaseEvent(player));
+        events.fireChainEvent(new StartMainPhaseOneEvent(player));
     }
 }

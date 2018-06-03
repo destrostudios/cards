@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
-import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseOneEvent;
 import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
 import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
 import com.destrostudios.cards.frontend.application.*;
@@ -15,6 +15,7 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;
@@ -38,6 +39,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         this.gameClient = gameClient;
         cardGuiMap = new CardGuiMap(gameClient.getGame().getData());
     }
+
     private static final float ZONE_HEIGHT = 1.3f;
     private SimpleGameClient gameClient;
     private Board<CardModel> board;
@@ -96,8 +98,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 case BLOCK:
                     gameClient.requestAction(new EndBlockPhaseEvent(activePlayerEntity));
                     break;
-                case MAIN:
-                    gameClient.requestAction(new EndMainPhaseEvent(activePlayerEntity));
+                case MAIN_ONE:
+                    gameClient.requestAction(new EndMainPhaseOneEvent(activePlayerEntity));
+                    break;
+                case MAIN_TWO:
+                    gameClient.requestAction(new EndMainPhaseTwoEvent(activePlayerEntity));
                     break;
                 default:
                     throw new AssertionError(gameClient.getGame().getData().getComponent(activePlayerEntity, Components.Game.TURN_PHASE).name());
@@ -244,7 +249,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             List<Event> possibleEvents = gameClient.getGame().getActionGenerator().generatePossibleActions(gameClient.getPlayerEntity());
             updateBoardService.updateInteractivities(possibleEvents);
             for (Event event : possibleEvents) {
-                if (event instanceof EndAttackPhaseEvent || event instanceof EndBlockPhaseEvent || event instanceof EndMainPhaseEvent) {
+                if (event instanceof EndAttackPhaseEvent || event instanceof EndBlockPhaseEvent || event instanceof EndMainPhaseOneEvent) {
                     sendableEndTurnEvent = event;
                 }
             }

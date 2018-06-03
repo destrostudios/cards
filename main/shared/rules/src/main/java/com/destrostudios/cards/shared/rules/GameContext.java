@@ -1,12 +1,5 @@
 package com.destrostudios.cards.shared.rules;
 
-import com.destrostudios.cards.shared.rules.game.phases.attack.DrawCardOnStartAttackPhaseHandler;
-import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseHandler;
-import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseHandler;
-import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseHandler;
-import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -14,13 +7,15 @@ import com.destrostudios.cards.shared.events.EventDispatcher;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
-import com.destrostudios.cards.shared.rules.game.*;
-import com.destrostudios.cards.shared.rules.game.phases.attack.StartAttackPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.attack.StartAttackPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.game.SetStartingPlayerHandler;
+import com.destrostudios.cards.shared.rules.game.phases.attack.*;
+import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
+import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseHandler;
 import com.destrostudios.cards.shared.rules.game.phases.block.StartBlockPhaseEvent;
 import com.destrostudios.cards.shared.rules.game.phases.block.StartBlockPhaseHandler;
-import com.destrostudios.cards.shared.rules.game.phases.main.StartMainPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.main.StartMainPhaseHandler;
+import com.destrostudios.cards.shared.rules.game.phases.main.*;
+
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
 
@@ -56,14 +51,10 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(BattleEvent.class, new BattleHandler());
         addGameEventHandler(DamageEvent.class, new DamageHandler());
         addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
-        addGameEventHandlers(StartAttackPhaseEvent.class,
-                new StartAttackPhaseHandler(),
-                new DrawCardOnStartAttackPhaseHandler());
-        addGameEventHandler(StartBlockPhaseEvent.class, new StartBlockPhaseHandler());
-        addGameEventHandler(StartMainPhaseEvent.class, new StartMainPhaseHandler());
         addGameEventHandler(EndAttackPhaseEvent.class, new EndAttackPhaseHandler());
         addGameEventHandler(EndBlockPhaseEvent.class, new EndBlockPhaseHandler());
-        addGameEventHandler(EndMainPhaseEvent.class, new EndMainPhaseHandler());
+        addGameEventHandler(EndMainPhaseOneEvent.class, new EndMainPhaseOneHandler());
+        addGameEventHandler(EndMainPhaseTwoEvent.class, new EndMainPhaseTwoHandler());
         addGameEventHandlers(GameStartEvent.class,
                 new ShuffleAllLibrariesOnGameStartHandler(),
                 new DrawCardsOnGameStartHandler(),
@@ -73,6 +64,13 @@ public class GameContext<EventQueueType extends EventQueue> {
         addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addGameEventHandler(SetHealthEvent.class, new SetHealthHandler());
         addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
+        addGameEventHandlers(StartAttackPhaseEvent.class, new StartAttackPhaseHandler());
+        addGameEventHandler(StartBlockPhaseEvent.class, new StartBlockPhaseHandler());
+        addGameEventHandlers(StartMainPhaseOneEvent.class,
+                new StartMainPhaseOneHandler(),
+                new DrawCardOnMainPhaseOneHandler());
+        addGameEventHandler(StartMainPhaseTwoEvent.class, new StartMainPhaseTwoHandler());
+
     }
     
     @SafeVarargs

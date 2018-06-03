@@ -7,13 +7,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author Philipp
  */
 public class DrawCardsOnGameStartHandler extends GameEventHandler<GameStartEvent> {
 
     private static final int HAND_SIZE = 5;
-    private static final Logger LOG = LoggerFactory.getLogger(ShuffleLibraryHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DrawCardsOnGameStartHandler.class);
 
     @Override
     public void handle(GameStartEvent event) {

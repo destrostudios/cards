@@ -14,7 +14,7 @@ public class TestLibraries {
         cards.put(StandardCards.Red::ogre, 3);
         cards.put(StandardCards.Red::giant, 2);
         cards.put(StandardCards.Red::dragon, 1);
-        cards.put(StandardCards.Red::camel, 2);
+        cards.put(StandardCards.Red::camel, 3);
         return cards;
     }
 }

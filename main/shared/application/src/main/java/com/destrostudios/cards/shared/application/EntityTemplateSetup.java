@@ -76,10 +76,14 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.CastCondition.FROM_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.CastCondition.FROM_HAND));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.CastCondition.MAIN_PHASE));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.Effect.DAMAGE));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.Effect.GAIN_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.TAP));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.UNTAP));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.Zones.ADD_TO_BOARD));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.Zones.ADD_TO_GRAVEYARD));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TargetRules.ALLY));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TargetRules.OPPONENT));
 
         EntityTemplate.addLoader((entityData, entity, templateName, parameters) -> xmlTemplateManager.loadTemplate(entityData, entity, templateName, parameters));
     }

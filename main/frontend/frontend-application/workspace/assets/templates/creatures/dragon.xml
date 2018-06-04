@@ -17,7 +17,7 @@
                         <neutralMana>2</neutralMana>
                     </entity>
                 </cost>
-                <addToBoardEffect/>
+                <addToBoard/>
             </entity>
         </spells>
         <flavourText>"Fragile creatures."</flavourText>

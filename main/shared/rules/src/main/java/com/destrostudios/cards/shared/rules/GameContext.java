@@ -8,6 +8,7 @@ import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
+import com.destrostudios.cards.shared.rules.effects.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.phases.attack.*;
 import com.destrostudios.cards.shared.rules.game.phases.block.*;
@@ -94,6 +95,7 @@ public class GameContext<EventQueueType extends EventQueue> {
                 new StartMainPhaseOneHandler());
         addGameEventHandler(StartMainPhaseTwoEvent.class, new StartMainPhaseTwoHandler());
         addGameEventHandler(TapEvent.class, new TapHandler());
+        addGameEventHandler(TriggerEffectEvent.class, new TriggerEffectHandler());
         addGameEventHandler(UntapEvent.class, new UntapHandler());
     }
     

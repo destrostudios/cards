@@ -83,24 +83,9 @@ public class StandardCards extends CardsUtil {
 
     public static class Green {
 
-        public static int satyr(EntityData data) {
-            int entity = creature(data, "Voyaging Satyr", 1, 2);
-            data.setComponent(entity, Components.Color.GREEN);
-
-            int summonCost = data.createEntity();
-            data.setComponent(summonCost, Components.ManaAmount.GREEN, 1);
-            data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 1);
-            int summon = summon(data, summonCost);
-
-            int tapForMana = data.createEntity();
-            boardActivated(data, tapForMana);
-            int tapForManaCost = data.createEntity();
-            data.setComponent(tapForManaCost, Components.Cost.TAP);
-            data.setComponent(tapForManaCost, Components.ManaAmount.GREEN, -1);//Kappa
-            data.setComponent(tapForMana, Components.Spell.COST_ENTITY, tapForManaCost);
-
-            data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon, tapForMana});
-            data.setComponent(entity, Components.FLAVOUR_TEXT, "\"None can own the land's bounty. The gods made this world for all to share its riches. And I'm not just saying that because you caught me stealing your fruit.\"");
+        public static int voyagingSatyr(EntityData data) {
+            int entity = data.createEntity();
+            EntityTemplate.loadTemplate(data, entity, "creatures/voyaging_satyr");
             return entity;
         }
     }

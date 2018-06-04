@@ -42,11 +42,11 @@ public class TestGameSetup {
     }
 
     private void initBoardCardsEntities() {
-        initSimpleLandOnBoard(Components.Color.GREEN, "Forest", players[0], 0);
-        initSimpleLandOnBoard(Components.Color.GREEN, "Forest", players[0], 1);
-        initSimpleLandOnBoard(Components.Color.GREEN, "Forest", players[1], 0);
-        initSimpleLandOnBoard(Components.Color.BLUE, "Island", players[1], 1);
-        initSimpleLandOnBoard(Components.Color.BLUE, "Island", players[1], 2);
+        initSimpleLandOnBoard("Forest", Components.Color.GREEN, Components.ManaAmount.GREEN, players[0], 0);
+        initSimpleLandOnBoard("Forest", Components.Color.GREEN, Components.ManaAmount.GREEN, players[0], 1);
+        initSimpleLandOnBoard("Forest", Components.Color.GREEN, Components.ManaAmount.GREEN, players[1], 0);
+        initSimpleLandOnBoard("Island", Components.Color.BLUE, Components.ManaAmount.BLUE, players[1], 1);
+        initSimpleLandOnBoard("Island", Components.Color.BLUE, Components.ManaAmount.BLUE, players[1], 2);
 
         int card1 = data.createEntity();
         data.setComponent(card1, Components.Color.NEUTRAL);
@@ -56,7 +56,7 @@ public class TestGameSetup {
         data.setComponent(card1, Components.HEALTH, 2);
         int playSpell1 = data.createEntity();
         data.setComponent(playSpell1, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(playSpell1, Components.Spell.Effect.ADD_TO_BOARD);
+        data.setComponent(playSpell1, Components.Spell.Effect.Zones.ADD_TO_BOARD);
         int playSpell1Cost = data.createEntity();
         data.setComponent(playSpell1Cost, Components.ManaAmount.WHITE, 3);
         data.setComponent(playSpell1Cost, Components.ManaAmount.GREEN, 1);
@@ -72,7 +72,7 @@ public class TestGameSetup {
         data.setComponent(card2, Components.DISPLAY_NAME, "card101");
         int playSpell2 = data.createEntity();
         data.setComponent(playSpell2, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(playSpell2, Components.Spell.Effect.ADD_TO_BOARD);
+        data.setComponent(playSpell2, Components.Spell.Effect.Zones.ADD_TO_BOARD);
         int playSpell2Cost = data.createEntity();
         data.setComponent(playSpell2Cost, Components.ManaAmount.WHITE, 2);
         data.setComponent(playSpell2, Components.Spell.COST_ENTITY, playSpell2Cost);
@@ -93,8 +93,8 @@ public class TestGameSetup {
         data.setComponent(card4, Components.CREATURE_ZONE, 1);
     }
 
-    private int initSimpleLandOnBoard(ComponentDefinition<Void> colorComponent, String displayName, int ownerEntity, int zoneIndex) {
-        int landCard = LandCards.land(data, displayName, colorComponent);
+    private int initSimpleLandOnBoard(String displayName, ComponentDefinition<Void> colorComponent, ComponentDefinition<Integer> manaAmountComponent, int ownerEntity, int zoneIndex) {
+        int landCard = LandCards.land(data, displayName, colorComponent, manaAmountComponent, 1);
         data.setComponent(landCard, Components.OWNED_BY, ownerEntity);
         data.setComponent(landCard, Components.BOARD);
         data.setComponent(landCard, Components.LAND_ZONE, zoneIndex);
@@ -146,7 +146,7 @@ public class TestGameSetup {
         int playSpell = data.createEntity();
         data.setComponent(playSpell, Components.Spell.CastCondition.FROM_HAND);
         if (!data.hasComponent(card, Components.SPELL_CARD)) {
-            data.setComponent(playSpell, Components.Spell.Effect.ADD_TO_BOARD);
+            data.setComponent(playSpell, Components.Spell.Effect.Zones.ADD_TO_BOARD);
         }
         int playSpellCost = data.createEntity();
         data.setComponent(playSpellCost, Components.ManaAmount.NEUTRAL, neutralManaAmount);

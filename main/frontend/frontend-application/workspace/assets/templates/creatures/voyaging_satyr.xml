@@ -1,18 +1,18 @@
 <template>
     <entity>
-        <displayName>Camel</displayName>
-        <redColor/>
+        <displayName>Voyaging Satyr</displayName>
+        <greenColor/>
         <creatureCard/>
-        <beast/>
-        <attack>2</attack>
-        <health>3</health>
+        <attack>1</attack>
+        <health>2</health>
         <spells>
             <entity>
                 <castableInMainPhase/>
                 <castableFromHand/>
                 <cost>
                     <entity>
-                        <redMana>2</redMana>
+                        <greenMana>1</greenMana>
+                        <neutralMana>1</neutralMana>
                     </entity>
                 </cost>
                 <addToBoard/>
@@ -22,19 +22,18 @@
                 <castableFromBoard/>
                 <cost>
                     <entity>
-                        <neutralMana>1</neutralMana>
+                        <tapCost/>
                     </entity>
                 </cost>
                 <targetRule>
                     <entity>
-                        <ally/>
-                        <creatureCard/>
-                        <board/>
+                        <landCard/>
+                        <tapped/>
                     </entity>
                 </targetRule>
-                <damage>1</damage>
-                <tapEffect/>
+                <untapEffect/>
             </entity>
         </spells>
+        <flavourText>"None can own the land's bounty. The gods made this world for all to share its riches. And I'm not just saying that because you caught me stealing your fruit."</flavourText>
     </entity>
 </template>

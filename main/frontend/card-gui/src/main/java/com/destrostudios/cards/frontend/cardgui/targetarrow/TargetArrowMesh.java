@@ -12,11 +12,13 @@ import java.util.LinkedList;
  */
 public class TargetArrowMesh extends Mesh{
 
-    public TargetArrowMesh(int resolution, float width){
+    public TargetArrowMesh(int resolution, float width, float arcHeight){
         this.resolution = resolution;
         this.width = width;
+        this.arcHeight = arcHeight;
         setupConstantBuffers();
     }
+    private float arcHeight;
     private int resolution;
     private float width;
     private LinkedList<Float> positions = new LinkedList<>();
@@ -72,7 +74,6 @@ public class TargetArrowMesh extends Mesh{
         float interval = (distance / resolution);
         float halfWidth = (width / 2);
 
-        float arcHeight = 0.5f;
         float paraboleOffsetX = (resolution / -2f);
         float paraboleOffsetY = arcHeight;
         float paraboleFactor = ((-4f * arcHeight) / (resolution * resolution));

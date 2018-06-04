@@ -8,4 +8,9 @@ public class AddCardToCreatureZoneEvent extends Event {
     public AddCardToCreatureZoneEvent(int card) {
         this.card = card;
     }
+
+    @Override
+    public String toString() {
+        return "AddCardToCreatureZoneEvent{" + "card=" + card + '}';
+    }
 }

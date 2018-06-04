@@ -19,4 +19,9 @@ public class PlaySpellEvent extends Event {
         this.spell = spell;
         this.targets = targets;
     }
+
+    @Override
+    public String toString() {
+        return "PlaySpellEvent{" + "spell=" + spell + ", targets=" + targets + '}';
+    }
 }

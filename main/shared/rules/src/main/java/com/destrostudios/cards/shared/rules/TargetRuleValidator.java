@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class SpellTargetValidator {
+public class TargetRuleValidator {
 
     private static final List<ComponentDefinition> simpleRequirableComponents = new LinkedList<>();
     static {
@@ -50,7 +50,17 @@ public class SpellTargetValidator {
         simpleRequirableComponents.add(Components.Tribe.HUMAN);
     }
 
-    public static boolean isValidTarget(EntityData entityData, int targetRuleEntity, int targetEntity) {
+    public static boolean isValidTarget(EntityData entityData, int targetRuleEntity, int sourceEntity, int targetEntity) {
+        if (entityData.hasComponent(targetRuleEntity, Components.Spell.TargetRules.ALLY)) {
+            if (checkOwners(entityData, sourceEntity, targetEntity, false)) {
+                return false;
+            }
+        }
+        if (entityData.hasComponent(targetRuleEntity, Components.Spell.TargetRules.OPPONENT)) {
+            if (checkOwners(entityData, sourceEntity, targetEntity, true)) {
+                return false;
+            }
+        }
         for (ComponentDefinition componentDefinition : simpleRequirableComponents) {
             // Check has instead of (get != null) because of Void type
             if (entityData.hasComponent(targetRuleEntity, componentDefinition)) {
@@ -67,5 +77,11 @@ public class SpellTargetValidator {
             }
         }
         return true;
+    }
+
+    private static boolean checkOwners(EntityData entityData, int sourceEntity, int targetEntity, boolean expectedEquality) {
+        Integer owner = entityData.getComponent(sourceEntity, Components.OWNED_BY);
+        Integer targetOwner = entityData.getComponent(targetEntity, Components.OWNED_BY);
+        return (Objects.equals(owner, targetOwner) == expectedEquality);
     }
 }

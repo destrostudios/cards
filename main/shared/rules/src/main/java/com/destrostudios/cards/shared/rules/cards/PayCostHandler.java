@@ -13,6 +13,8 @@ public class PayCostHandler extends GameEventHandler<PayCostEvent> {
     public void handle(PayCostEvent event) {
         LOG.info("Paying cost {}", event.cost);
 
+        // TODO: Create own subevents/handlers/however-we-want-it for everything
+
         if (data.hasComponent(event.cost, Components.Cost.TAP)) {
             data.setComponent(event.card, Components.TAPPED);
         }

@@ -8,4 +8,9 @@ public class AddCardToLandZoneEvent extends Event {
     public AddCardToLandZoneEvent(int card) {
         this.card = card;
     }
+
+    @Override
+    public String toString() {
+        return "AddCardToLandZoneEvent{" + "card=" + card + '}';
+    }
 }

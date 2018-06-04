@@ -8,4 +8,9 @@ public class AddCardToGraveyardEvent extends Event {
     public AddCardToGraveyardEvent(int card) {
         this.card = card;
     }
+
+    @Override
+    public String toString() {
+        return "AddCardToGraveyardEvent{" + "card=" + card + '}';
+    }
 }

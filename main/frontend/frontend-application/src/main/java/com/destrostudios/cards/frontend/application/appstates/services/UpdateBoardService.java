@@ -11,7 +11,7 @@ import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.SpellTargetValidator;
+import com.destrostudios.cards.shared.rules.TargetRuleValidator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.jme3.math.Vector3f;
@@ -128,7 +128,7 @@ public class UpdateBoardService {
                         public boolean isValid(BoardObject boardObject) {
                             if (boardObject instanceof Card) {
                                 int targetEntity = cardGuiMap.getEntity((Card) boardObject);
-                                return SpellTargetValidator.isValidTarget(entityData, targetRuleEntity, targetEntity);
+                                return TargetRuleValidator.isValidTarget(entityData, targetRuleEntity, cardEntity, targetEntity);
                             }
                             return false;
                         }

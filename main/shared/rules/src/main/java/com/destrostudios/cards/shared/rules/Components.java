@@ -77,11 +77,21 @@ public class Components {
             public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
         }
 
+        public static class TargetRules {
+            public static final ComponentDefinition<Void> ALLY = new ComponentDefinition<>("ally");
+            public static final ComponentDefinition<Void> OPPONENT = new ComponentDefinition<>("opponent");
+        }
+
         public static class Effect {
-            public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoardEffect");
-            public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damageEffect");
+            public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damage");
+            public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
             public static final ComponentDefinition<Void> TAP = new ComponentDefinition<>("tapEffect");
             public static final ComponentDefinition<Void> UNTAP = new ComponentDefinition<>("untapEffect");
+
+            public static class Zones {
+                public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoard");
+                public static final ComponentDefinition<Void> ADD_TO_GRAVEYARD = new ComponentDefinition<>("addToGraveyard");
+            }
         }
     }
 

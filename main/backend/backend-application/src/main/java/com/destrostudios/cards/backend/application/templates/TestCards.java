@@ -52,7 +52,7 @@ public class TestCards extends CardsUtil {
         data.setComponent(card4, Components.Ability.TAUNT);
         int playSpell4 = data.createEntity();
         data.setComponent(playSpell4, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(playSpell4, Components.Spell.Effect.ADD_TO_BOARD);
+        data.setComponent(playSpell4, Components.Spell.Effect.Zones.ADD_TO_BOARD);
         int playSpell4Cost = data.createEntity();
         data.setComponent(playSpell4Cost, Components.ManaAmount.NEUTRAL, 1);
         data.setComponent(playSpell4, Components.Spell.COST_ENTITY, playSpell4Cost);

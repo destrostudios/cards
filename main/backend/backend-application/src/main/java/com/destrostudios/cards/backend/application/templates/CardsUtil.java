@@ -24,7 +24,7 @@ public class CardsUtil {
         int entity = data.createEntity();
         handActivated(data, entity);
         data.setComponent(entity, Components.Spell.COST_ENTITY, cost);
-        data.setComponent(entity, Components.Spell.Effect.ADD_TO_BOARD);
+        data.setComponent(entity, Components.Spell.Effect.Zones.ADD_TO_BOARD);
         return entity;
     }
     

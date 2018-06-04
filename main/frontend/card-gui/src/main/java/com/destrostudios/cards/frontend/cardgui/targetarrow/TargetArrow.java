@@ -17,7 +17,7 @@ import com.jme3.texture.Texture;
 public class TargetArrow {
     
     public TargetArrow(AssetManager assetManager) {
-        targetArrowMesh = new TargetArrowMesh(10, 1);
+        targetArrowMesh = new TargetArrowMesh(10, 1, 0.25f);
         geometry = new Geometry("targetArrow", targetArrowMesh);
         Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         Texture texture = assetManager.loadTexture(new TextureKey("images/target_arrow.png", false));

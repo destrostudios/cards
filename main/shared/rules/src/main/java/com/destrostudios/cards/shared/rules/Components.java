@@ -28,7 +28,7 @@ public class Components {
     public static final ComponentDefinition<Integer> OWNED_BY = new ComponentDefinition<>("ownedBy");
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
-    public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spellEntities");
+    public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spells");
     public static final ComponentDefinition<Void> TAPPED = new ComponentDefinition<>("tapped");
     public static final ComponentDefinition<Integer> DECLARED_ATTACK = new ComponentDefinition<>("declaredAttack");
     public static final ComponentDefinition<Integer> DECLARED_BLOCK = new ComponentDefinition<>("declaredBlock");
@@ -65,16 +65,16 @@ public class Components {
     }
 
     public static class Spell {
-        public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("costEntity");
+        public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("cost");
         public static final ComponentDefinition<Integer> TARGET_RULE = new ComponentDefinition<>("targetRule");
 
         public static class CastCondition {
-            public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
-            public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
-
             public static final ComponentDefinition<Void> ATTACK_PHASE = new ComponentDefinition<>("castableInAttackPhase");
             public static final ComponentDefinition<Void> BLOCK_PHASE = new ComponentDefinition<>("castableInBlockPhase");
             public static final ComponentDefinition<Void> MAIN_PHASE = new ComponentDefinition<>("castableInMainPhase");
+
+            public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
+            public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
         }
 
         public static class Effect {
@@ -90,11 +90,11 @@ public class Components {
     }
 
     public static class ManaAmount {
-        public static final ComponentDefinition<Integer> NEUTRAL = new ComponentDefinition<>("neutralAmount");
-        public static final ComponentDefinition<Integer> WHITE = new ComponentDefinition<>("whiteAmount");
-        public static final ComponentDefinition<Integer> RED = new ComponentDefinition<>("redAmount");
-        public static final ComponentDefinition<Integer> GREEN = new ComponentDefinition<>("greenAmount");
-        public static final ComponentDefinition<Integer> BLUE = new ComponentDefinition<>("blueAmount");
-        public static final ComponentDefinition<Integer> BLACK = new ComponentDefinition<>("blackAmount");
+        public static final ComponentDefinition<Integer> NEUTRAL = new ComponentDefinition<>("neutralMana");
+        public static final ComponentDefinition<Integer> WHITE = new ComponentDefinition<>("whiteMana");
+        public static final ComponentDefinition<Integer> RED = new ComponentDefinition<>("redMana");
+        public static final ComponentDefinition<Integer> GREEN = new ComponentDefinition<>("greenMana");
+        public static final ComponentDefinition<Integer> BLUE = new ComponentDefinition<>("blueMana");
+        public static final ComponentDefinition<Integer> BLACK = new ComponentDefinition<>("blackMana");
     }
 }

@@ -23,6 +23,7 @@ public class CardGuiMapper {
 
         keywordComponents.put(Components.Ability.CHARGE, "Charge");
         keywordComponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
+        keywordComponents.put(Components.Ability.FLYING, "Flying");
         keywordComponents.put(Components.Ability.HEXPROOF, "Hexproof");
         keywordComponents.put(Components.Ability.IMMUNE, "Immune");
         keywordComponents.put(Components.Ability.TAUNT, "Taunt");

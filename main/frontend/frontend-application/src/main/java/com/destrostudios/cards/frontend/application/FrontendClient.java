@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.application;
 
-import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
+import com.destrostudios.cards.shared.application.ApplicationSetup;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ public class FrontendClient {
     }
 
     public FrontendClient(String host, int port) {
-        FileAssets.readRootFile();
+        ApplicationSetup.setup();
 
         try {
             System.out.println("Starting client...");

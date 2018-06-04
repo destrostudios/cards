@@ -10,16 +10,16 @@ import java.util.function.IntUnaryOperator;
  */
 public class CardPool {
 
-    private final Map<EntityTemplate, Integer> weightedCards = new HashMap<>();
+    private final Map<EntityCreator, Integer> weightedCards = new HashMap<>();
 
-    public void put(EntityTemplate card, int weight) {
+    public void put(EntityCreator card, int weight) {
         weightedCards.put(card, weight);
     }
 
-    public EntityTemplate selectRandomCard(IntUnaryOperator random) {
+    public EntityCreator selectRandomCard(IntUnaryOperator random) {
         int sum = 0;
-        EntityTemplate selected = null;
-        for (Map.Entry<EntityTemplate, Integer> entry : weightedCards.entrySet()) {
+        EntityCreator selected = null;
+        for (Map.Entry<EntityCreator, Integer> entry : weightedCards.entrySet()) {
             int weight = entry.getValue();
             sum += weight;
             if (random.applyAsInt(sum) < weight) {

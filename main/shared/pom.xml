@@ -9,10 +9,13 @@
     <artifactId>shared</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>rules</module>
+        <module>application</module>
         <module>entities</module>
+        <module>entities-templates</module>
         <module>events</module>
+        <module>files</module>
         <module>network</module>
+        <module>rules</module>
     </modules>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

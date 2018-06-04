@@ -1,4 +1,4 @@
-package com.destrostudios.cards.frontend.cardgui.files;
+package com.destrostudios.cards.shared.files;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

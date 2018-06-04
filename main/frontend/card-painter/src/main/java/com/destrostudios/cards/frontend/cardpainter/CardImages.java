@@ -1,8 +1,7 @@
 package com.destrostudios.cards.frontend.cardpainter;
 
-import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
-
+import com.destrostudios.cards.shared.files.FileAssets;
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.io.File;

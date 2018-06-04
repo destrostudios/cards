@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.destrostudios.cards</groupId>
-        <artifactId>frontend</artifactId>
+        <artifactId>shared</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>card-gui</artifactId>
+    <artifactId>application</artifactId>
     <packaging>jar</packaging>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -16,24 +16,18 @@
     <dependencies>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
+            <artifactId>entities-templates</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
             <artifactId>files</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>${jm3.group}</groupId>
-            <artifactId>jme3-core</artifactId>
-            <version>${jm3.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${jm3.group}</groupId>
-            <artifactId>jme3-desktop</artifactId>
-            <version>${jm3.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>${jm3.group}</groupId>
-            <artifactId>jme3-lwjgl</artifactId>
-            <version>${jm3.version}</version>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>rules</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

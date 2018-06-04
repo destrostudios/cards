@@ -1,10 +1,14 @@
 package com.destrostudios.cards.backend.application;
 
+import com.destrostudios.cards.shared.application.ApplicationSetup;
+
 import java.io.IOException;
 
 public class BackendApplication {
 
     public static void main(String[] args) {
+        ApplicationSetup.setup();
+
         new BackendApplication(33900);
         while (true) {
             try {

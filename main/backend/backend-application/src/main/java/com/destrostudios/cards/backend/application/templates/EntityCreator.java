@@ -6,8 +6,6 @@ import com.destrostudios.cards.shared.entities.EntityData;
  *
  * @author Philipp
  */
-public interface EntityTemplate {
-
+public interface EntityCreator {
     int create(EntityData data);
-    
 }

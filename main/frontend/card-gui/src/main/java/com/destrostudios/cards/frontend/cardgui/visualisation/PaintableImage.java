@@ -1,13 +1,13 @@
 package com.destrostudios.cards.frontend.cardgui.visualisation;
 
-import com.destrostudios.cards.frontend.cardgui.files.FileAssets;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
+import com.destrostudios.cards.shared.files.FileAssets;
 import com.jme3.texture.Image;
 import com.jme3.texture.Image.Format;
 import com.jme3.texture.image.ColorSpace;
 import com.jme3.util.BufferUtils;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
  
 public class PaintableImage{
     

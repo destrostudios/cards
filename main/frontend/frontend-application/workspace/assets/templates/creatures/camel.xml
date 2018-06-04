@@ -1,0 +1,22 @@
+<template>
+    <entity>
+        <displayName>Camel</displayName>
+        <redColor/>
+        <creatureCard/>
+        <beast/>
+        <attack>2</attack>
+        <health>3</health>
+        <spells>
+            <entity>
+                <castableInMainPhase/>
+                <castableFromHand/>
+                <cost>
+                    <entity>
+                        <redMana>2</redMana>
+                    </entity>
+                </cost>
+                <addToBoardEffect/>
+            </entity>
+        </spells>
+    </entity>
+</template>

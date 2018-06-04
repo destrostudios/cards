@@ -1,4 +1,4 @@
-package com.destrostudios.cards.frontend.cardgui.files;
+package com.destrostudios.cards.shared.files;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;

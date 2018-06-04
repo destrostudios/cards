@@ -29,16 +29,14 @@ public class CardsUtil {
     }
     
     protected static int handActivated(EntityData data, int entity) {
-        data.setComponent(entity, Components.Spell.CastCondition.FROM_HAND);
-        data.setComponent(entity, Components.Spell.CastCondition.ATTACK_PHASE);
         data.setComponent(entity, Components.Spell.CastCondition.MAIN_PHASE);
+        data.setComponent(entity, Components.Spell.CastCondition.FROM_HAND);
         return entity;
     }
     
     protected static int boardActivated(EntityData data, int entity) {
-        data.setComponent(entity, Components.Spell.CastCondition.FROM_BOARD);
-        data.setComponent(entity, Components.Spell.CastCondition.ATTACK_PHASE);
         data.setComponent(entity, Components.Spell.CastCondition.MAIN_PHASE);
+        data.setComponent(entity, Components.Spell.CastCondition.FROM_BOARD);
         return entity;
     }
 }

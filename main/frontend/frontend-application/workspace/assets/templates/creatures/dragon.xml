@@ -1,0 +1,25 @@
+<template>
+    <entity>
+        <displayName>Dragon</displayName>
+        <redColor/>
+        <creatureCard/>
+        <dragon/>
+        <flying/>
+        <attack>6</attack>
+        <health>5</health>
+        <spells>
+            <entity>
+                <castableInMainPhase/>
+                <castableFromHand/>
+                <cost>
+                    <entity>
+                        <redMana>3</redMana>
+                        <neutralMana>2</neutralMana>
+                    </entity>
+                </cost>
+                <addToBoardEffect/>
+            </entity>
+        </spells>
+        <flavourText>"Fragile creatures."</flavourText>
+    </entity>
+</template>

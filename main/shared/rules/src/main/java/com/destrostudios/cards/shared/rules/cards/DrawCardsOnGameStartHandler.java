@@ -19,7 +19,7 @@ public class DrawCardsOnGameStartHandler extends GameEventHandler<GameStartEvent
         LOG.info("drawing initial hands");
         for (int player : data.query(Components.NEXT_PLAYER).list()) {
             for (int i = 0; i < HAND_SIZE; i++) {
-                events.fireSubEvent(new DrawCardEvent(player));
+                events.fire(new DrawCardEvent(player));
             }
         }
     }

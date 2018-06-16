@@ -9,16 +9,23 @@ public abstract class Event {
     private Event parent;
     private boolean cancelled;
 
-    public Event getParent() {
+    void setParent(Event parent) {
+        this.parent = parent;
+    }
+
+    Event getParent() {
         return parent;
     }
 
-    public boolean isCancelled() {
-        return cancelled;
+    Event getRoot() {
+        return ((parent != null) ? parent.getRoot() : this);
     }
 
-    void setParent(Event parent) {
-        this.parent = parent;
+    public boolean isCancelled() {
+        if ((parent != null) && parent.isCancelled()) {
+            return true;
+        }
+        return cancelled;
     }
 
     public void cancel() {

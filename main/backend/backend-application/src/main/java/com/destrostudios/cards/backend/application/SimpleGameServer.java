@@ -39,8 +39,7 @@ public class SimpleGameServer {
         SerializerSetup.ensureInitialized();
         server = Network.createServer(port);
         trackedRandom = new TrackedRandom(new SecureRandom());
-        GameContext.EventQueueProvider eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> new InstantEventQueueImpl(new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher));
-        context = new GameContext(eventQueueProvider, trackedRandom::nextInt);
+        context = new GameContext(trackedRandom::nextInt);
 
         testGameSetup = new TestGameSetup(context.getData());
         testGameSetup.apply();
@@ -80,7 +79,10 @@ public class SimpleGameServer {
     private void applyAction(Event action) {
         List<Integer> history = trackedRandom.getHistory();
         history.clear();
-        context.getEvents().fireActionEvent(action);
+        context.getEvents().fire(action);
+        while (context.getEvents().hasNextTriggeredHandler()) {
+            context.getEvents().triggerNextHandler();
+        }
         int[] randomHistory = new int[history.size()];
         for (int i = 0; i < randomHistory.length; i++) {
             randomHistory[i] = history.get(i);

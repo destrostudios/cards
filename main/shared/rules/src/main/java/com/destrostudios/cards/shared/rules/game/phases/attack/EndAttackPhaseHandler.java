@@ -19,7 +19,7 @@ public class EndAttackPhaseHandler extends GameEventHandler<EndAttackPhaseEvent>
         data.removeComponent(event.player, Components.Game.TURN_PHASE);
         LOG.debug("attack phase of {} ended.", event.player);
         int nextPlayer = data.getComponent(event.player, Components.NEXT_PLAYER);
-        events.fireChainEvent(new StartBlockPhaseEvent(nextPlayer));
+        events.fire(new StartBlockPhaseEvent(nextPlayer));
 
     }
 }

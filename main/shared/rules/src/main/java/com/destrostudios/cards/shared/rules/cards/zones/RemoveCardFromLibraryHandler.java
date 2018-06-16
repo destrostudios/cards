@@ -11,7 +11,7 @@ public class RemoveCardFromLibraryHandler extends GameEventHandler<RemoveCardFro
 
     @Override
     public void handle(RemoveCardFromLibraryEvent event) {
-        events.fireSubEvent(new RemoveCardFromZoneEvent(event.card, Components.LIBRARY));
+        events.fire(new RemoveCardFromZoneEvent(event.card, Components.LIBRARY));
         LOG.info("removed {} from library", event.card);
     }
 }

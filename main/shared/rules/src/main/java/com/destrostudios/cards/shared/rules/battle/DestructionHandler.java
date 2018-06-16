@@ -18,7 +18,7 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
             LOG.info("Game over");
         }
         else {
-            events.fireSubEvent(new AddCardToGraveyardEvent(event.target));
+            events.fire(new AddCardToGraveyardEvent(event.target));
         }
     }
 }

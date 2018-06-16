@@ -18,6 +18,6 @@ public class EndMainPhaseTwoHandler extends GameEventHandler<EndMainPhaseTwoEven
         data.removeComponent(event.player, Components.Game.TURN_PHASE);
         LOG.debug("main phase 2 of {} ended.", event.player);
         int nextPlayer = data.getComponent(event.player, Components.NEXT_PLAYER);
-        events.fireChainEvent(new StartMainPhaseOneEvent(nextPlayer));
+        events.fire(new StartMainPhaseOneEvent(nextPlayer));
     }
 }

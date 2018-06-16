@@ -1,8 +1,5 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
-import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseOneEvent;
-import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoardService;
 import com.destrostudios.cards.frontend.cardgui.*;
@@ -11,10 +8,16 @@ import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.*;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
+import com.destrostudios.cards.shared.rules.game.phases.block.*;
+import com.destrostudios.cards.shared.rules.game.phases.main.*;
+import com.destrostudios.cards.shared.rules.game.phases.attack.*;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -30,7 +33,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
@@ -220,12 +222,25 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 camera.setRotation(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(camera.getRotation()));
             }
         });
-        gameClient.getGame().getPostDispatcher().addListeners(Event.class, event -> updateAndResetBoard());
-        gameClient.getGame().getPreDispatcher().addListeners(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
-        gameClient.getGame().getPreDispatcher().addListeners(ShuffleLibraryEvent.class, event -> {
-            LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
+        gameClient.getGame().getEvents().instant().add(Event.class, event -> updateAndResetBoard());
+
+        gameClient.getGame().getEvents().instant().add(StartMainPhaseOneEvent.class, event -> onTurnPhaseStarted());
+        gameClient.getGame().getEvents().instant().add(StartAttackPhaseEvent.class, event -> onTurnPhaseStarted());
+        gameClient.getGame().getEvents().instant().add(StartBlockPhaseEvent.class, event -> onTurnPhaseStarted());
+        gameClient.getGame().getEvents().instant().add(StartMainPhaseTwoEvent.class, event -> onTurnPhaseStarted());
+
+        gameClient.getGame().getEvents().pre().add(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
+        gameClient.getGame().getEvents().pre().add(ShuffleLibraryEvent.class, event -> {
+            //LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             //board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
         });
+    }
+
+    private void onTurnPhaseStarted() {
+        EntityData entityData = gameClient.getGame().getData();
+        int player = entityData.query(Components.Game.TURN_PHASE).unique().getAsInt();
+        TurnPhase turnPhase = entityData.getComponent(player, Components.Game.TURN_PHASE);
+        System.out.println(player + "\t" + turnPhase);
     }
 
     private void updateAndResetBoard() {
@@ -246,10 +261,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void processNextEvents() {
-        if (gameClient.getGame().getEvents().hasNext()) {
+        EventQueue eventQueue = gameClient.getGame().getEvents();
+        if (eventQueue.hasNextTriggeredHandler()) {
             while (!board.isAnimationQueueBlocking()) {
-                gameClient.getGame().getEvents().processNextEvent();
-                if (!gameClient.getGame().getEvents().hasNext()) {
+                eventQueue.triggerNextHandler();
+                if (!eventQueue.hasNextTriggeredHandler()) {
                     updatePossibleActions();
                     break;
                 }

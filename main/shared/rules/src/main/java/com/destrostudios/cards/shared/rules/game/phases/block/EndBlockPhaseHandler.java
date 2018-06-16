@@ -19,6 +19,6 @@ public class EndBlockPhaseHandler extends GameEventHandler<EndBlockPhaseEvent> {
         data.removeComponent(event.player, Components.Game.TURN_PHASE);
         LOG.debug("block phase of {} ended.", event.player);
         int nextPlayer = data.getComponent(event.player, Components.NEXT_PLAYER);
-        events.fireChainEvent(new StartMainPhaseTwoEvent(nextPlayer));
+        events.fire(new StartMainPhaseTwoEvent(nextPlayer));
     }
 }

@@ -21,30 +21,30 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         // TODO: Create own subevents/handlers/however-we-want-it for everything
 
         if (data.hasComponent(event.effect, Components.Spell.Effect.Zones.ADD_TO_BOARD)) {
-            events.fireSubEvent(new AddCardToBoardEvent(event.target));
+            events.fire(new AddCardToBoardEvent(event.target));
         }
 
         if (data.hasComponent(event.effect, Components.Spell.Effect.Zones.ADD_TO_GRAVEYARD)) {
-            events.fireSubEvent(new AddCardToGraveyardEvent(event.target));
+            events.fire(new AddCardToGraveyardEvent(event.target));
         }
 
         Integer damage = data.getComponent(event.effect, Components.Spell.Effect.DAMAGE);
         if (damage != null) {
-            events.fireSubEvent(new DamageEvent(event.target, damage));
+            events.fire(new DamageEvent(event.target, damage));
         }
 
         Integer gainManaEntity = data.getComponent(event.effect, Components.Spell.Effect.GAIN_MANA);
         if (gainManaEntity != null) {
             int player = data.getComponent(event.source, Components.OWNED_BY);
-            // TODO: events.fireSubEvent(new GainManaEvent(player, gainManaEntity));
+            // TODO: events.fire(new GainManaEvent(player, gainManaEntity));
         }
 
         if (data.hasComponent(event.effect, Components.Spell.Effect.TAP)) {
-            events.fireSubEvent(new TapEvent(event.target));
+            events.fire(new TapEvent(event.target));
         }
 
         if (data.hasComponent(event.effect, Components.Spell.Effect.UNTAP)) {
-            events.fireSubEvent(new UntapEvent(event.target));
+            events.fire(new UntapEvent(event.target));
         }
     }
 }

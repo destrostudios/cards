@@ -11,7 +11,7 @@ public class AddCardToLibraryHandler extends GameEventHandler<AddCardToLibraryEv
 
     @Override
     public void handle(AddCardToLibraryEvent event) {
-        events.fireSubEvent(new AddCardToZoneEvent(event.card, Components.LIBRARY));
+        events.fire(new AddCardToZoneEvent(event.card, Components.LIBRARY));
         LOG.info("added {} to library", event.card);
     }
 }

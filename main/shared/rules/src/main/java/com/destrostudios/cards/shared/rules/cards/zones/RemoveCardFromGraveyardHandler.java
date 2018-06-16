@@ -7,6 +7,6 @@ public class RemoveCardFromGraveyardHandler extends GameEventHandler<RemoveCardF
 
     @Override
     public void handle(RemoveCardFromGraveyardEvent event) {
-        events.fireSubEvent(new RemoveCardFromZoneEvent(event.card, Components.GRAVEYARD));
+        events.fire(new RemoveCardFromZoneEvent(event.card, Components.GRAVEYARD));
     }
 }

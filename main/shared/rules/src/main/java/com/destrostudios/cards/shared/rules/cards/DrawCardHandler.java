@@ -28,8 +28,8 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
                 }
             }
             LOG.info("player {} is drawing card {}", event.player, card);
-            events.fireSubEvent(new RemoveCardFromLibraryEvent(card));
-            events.fireSubEvent(new AddCardToHandEvent(card));
+            events.fire(new RemoveCardFromLibraryEvent(card));
+            events.fire(new AddCardToHandEvent(card));
         } else {
             //fatigue
             LOG.info("player {} tried to draw a card but has none left", event.player);

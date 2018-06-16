@@ -7,6 +7,6 @@ public class AddCardToLandZoneHandler extends GameEventHandler<AddCardToLandZone
 
     @Override
     public void handle(AddCardToLandZoneEvent event) {
-        events.fireSubEvent(new AddCardToBoardZoneEvent(event.card, Components.LAND_ZONE));
+        events.fire(new AddCardToBoardZoneEvent(event.card, Components.LAND_ZONE));
     }
 }

@@ -8,13 +8,13 @@ public class RemoveCardFromBoardHandler extends GameEventHandler<RemoveCardFromB
     @Override
     public void handle(RemoveCardFromBoardEvent event) {
         if (data.hasComponent(event.card, Components.LAND_CARD)) {
-            events.fireSubEvent(new RemoveCardFromLandZoneEvent(event.card));
+            events.fire(new RemoveCardFromLandZoneEvent(event.card));
         }
         else if (data.hasComponent(event.card, Components.CREATURE_CARD)) {
-            events.fireSubEvent(new RemoveCardFromCreatureZoneEvent(event.card));
+            events.fire(new RemoveCardFromCreatureZoneEvent(event.card));
         }
         else if (data.hasComponent(event.card, Components.ENCHANTMENT_CARD)) {
-            events.fireSubEvent(new RemoveCardFromEnchantmentZoneEvent(event.card));
+            events.fire(new RemoveCardFromEnchantmentZoneEvent(event.card));
         }
         throw new AssertionError("Can't find target zone for " + event.card);
     }

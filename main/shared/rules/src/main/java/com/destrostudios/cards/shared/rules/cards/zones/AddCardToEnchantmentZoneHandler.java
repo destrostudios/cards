@@ -7,6 +7,6 @@ public class AddCardToEnchantmentZoneHandler extends GameEventHandler<AddCardToE
 
     @Override
     public void handle(AddCardToEnchantmentZoneEvent event) {
-        events.fireSubEvent(new AddCardToBoardZoneEvent(event.card, Components.ENCHANTMENT_ZONE));
+        events.fire(new AddCardToBoardZoneEvent(event.card, Components.ENCHANTMENT_ZONE));
     }
 }

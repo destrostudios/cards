@@ -7,7 +7,7 @@ public class DestroyOnNoHealthHandler extends GameEventHandler<SetHealthEvent> {
     @Override
     public void handle(SetHealthEvent event) {
         if (event.health <= 0) {
-            events.fireSubEvent(new DestructionEvent(event.target));
+            events.fire(new DestructionEvent(event.target));
         }
     }
 }

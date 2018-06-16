@@ -7,6 +7,6 @@ public class RemoveCardFromEnchantmentZoneHandler extends GameEventHandler<Remov
 
     @Override
     public void handle(RemoveCardFromEnchantmentZoneEvent event) {
-        events.fireSubEvent(new RemoveCardFromBoardZoneEvent(event.card, Components.ENCHANTMENT_ZONE));
+        events.fire(new RemoveCardFromBoardZoneEvent(event.card, Components.ENCHANTMENT_ZONE));
     }
 }

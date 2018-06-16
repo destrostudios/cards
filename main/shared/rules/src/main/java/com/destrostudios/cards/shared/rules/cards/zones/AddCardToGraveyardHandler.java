@@ -7,6 +7,6 @@ public class AddCardToGraveyardHandler extends GameEventHandler<AddCardToGraveya
 
     @Override
     public void handle(AddCardToGraveyardEvent event) {
-        events.fireSubEvent(new AddCardToZoneEvent(event.card, Components.GRAVEYARD));
+        events.fire(new AddCardToZoneEvent(event.card, Components.GRAVEYARD));
     }
 }

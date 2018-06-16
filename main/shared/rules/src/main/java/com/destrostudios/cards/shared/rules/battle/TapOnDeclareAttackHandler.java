@@ -9,7 +9,7 @@ public class TapOnDeclareAttackHandler extends GameEventHandler<DeclareAttackEve
     @Override
     public void handle(DeclareAttackEvent event) {
         if (!data.hasComponent(event.source, Components.Ability.VIGILANCE)) {
-            events.fireSubEvent(new TapEvent(event.source));
+            events.fire(new TapEvent(event.source));
         }
     }
 }

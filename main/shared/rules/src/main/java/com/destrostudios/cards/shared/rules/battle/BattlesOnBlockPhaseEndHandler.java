@@ -22,11 +22,11 @@ public class BattlesOnBlockPhaseEndHandler extends GameEventHandler<EndBlockPhas
             if (blockers.isEmpty()) {
                 int target = data.getComponent(attacker, Components.DECLARED_ATTACK);
                 LOG.info("{} is unblocked, attacking {}", attacker, target);
-                events.fireChainEvent(new BattleEvent(attacker, target));
+                events.fire(new BattleEvent(attacker, target));
             } else {
                 LOG.info("{} is blocked by {}", attacker, blockers);
                 for (int blocker : blockers) {
-                    events.fireChainEvent(new BattleEvent(attacker, blocker));
+                    events.fire(new BattleEvent(attacker, blocker));
                     data.removeComponent(blocker, Components.DECLARED_BLOCK);
                 }
             }

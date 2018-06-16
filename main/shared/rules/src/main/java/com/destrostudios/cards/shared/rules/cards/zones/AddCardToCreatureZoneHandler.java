@@ -7,6 +7,6 @@ public class AddCardToCreatureZoneHandler extends GameEventHandler<AddCardToCrea
 
     @Override
     public void handle(AddCardToCreatureZoneEvent event) {
-        events.fireSubEvent(new AddCardToBoardZoneEvent(event.card, Components.CREATURE_ZONE));
+        events.fire(new AddCardToBoardZoneEvent(event.card, Components.CREATURE_ZONE));
     }
 }

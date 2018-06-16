@@ -8,19 +8,19 @@ public class RemoveFromOtherZonesOnAddHandler extends GameEventHandler<AddCardTo
     @Override
     public void handle(AddCardToZoneEvent event) {
         if ((event.zone != Components.LIBRARY) && data.hasComponent(event.card, Components.LIBRARY)) {
-            events.fireSubEvent(new RemoveCardFromLibraryEvent(event.card));
+            events.fire(new RemoveCardFromLibraryEvent(event.card));
         }
         else if ((event.zone != Components.HAND_CARDS) && data.hasComponent(event.card, Components.HAND_CARDS)) {
-            events.fireSubEvent(new RemoveCardFromHandEvent(event.card));
+            events.fire(new RemoveCardFromHandEvent(event.card));
         }
         else if ((event.zone != Components.LAND_ZONE) && data.hasComponent(event.card, Components.LAND_ZONE)) {
-            events.fireSubEvent(new RemoveCardFromLandZoneEvent(event.card));
+            events.fire(new RemoveCardFromLandZoneEvent(event.card));
         }
         else if ((event.zone != Components.CREATURE_ZONE) && data.hasComponent(event.card, Components.CREATURE_ZONE)) {
-            events.fireSubEvent(new RemoveCardFromCreatureZoneEvent(event.card));
+            events.fire(new RemoveCardFromCreatureZoneEvent(event.card));
         }
         else if ((event.zone != Components.ENCHANTMENT_ZONE) && data.hasComponent(event.card, Components.ENCHANTMENT_ZONE)) {
-            events.fireSubEvent(new RemoveCardFromEnchantmentZoneEvent(event.card));
+            events.fire(new RemoveCardFromEnchantmentZoneEvent(event.card));
         }
     }
 }

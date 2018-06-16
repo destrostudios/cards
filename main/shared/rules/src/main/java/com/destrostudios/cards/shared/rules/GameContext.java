@@ -3,7 +3,7 @@ package com.destrostudios.cards.shared.rules;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.events.EventDispatcher;
+import com.destrostudios.cards.shared.events.EventHandlers;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
@@ -14,122 +14,102 @@ import com.destrostudios.cards.shared.rules.game.phases.attack.*;
 import com.destrostudios.cards.shared.rules.game.phases.block.*;
 import com.destrostudios.cards.shared.rules.game.phases.main.*;
 
-import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
 
 /**
  *
  * @author Philipp
  */
-public class GameContext<EventQueueType extends EventQueue> {
+public class GameContext {
 
     private final EntityData data;
-    private final EventDispatcher preDispatcher;
-    private final EventDispatcher dispatcher;
-    private final EventDispatcher postDispatcher;
-    private final EventQueueType events;
+    private final EventQueue events;
     private final IntUnaryOperator random;
     private final PlayerActionsGenerator actionGenerator;
 
-    public GameContext(EventQueueProvider<EventQueueType> eventQueueProvider, IntUnaryOperator random) {
+    public GameContext(IntUnaryOperator random) {
         data = new SimpleEntityData();
-        preDispatcher = new EventDispatcher();
-        dispatcher = new EventDispatcher();
-        postDispatcher = new EventDispatcher();
-        this.events = eventQueueProvider.provideEventQueue(preDispatcher::fire, dispatcher::fire, postDispatcher::fire);
+        events = new EventQueue();
         this.random = random;
         actionGenerator = new PlayerActionsGenerator(data);
         initListeners();
     }
 
     private void initListeners() {
-        addGameEventHandler(AddCardToBoardEvent.class, new AddCardToBoardHandler());
-        addGameEventHandler(AddCardToBoardZoneEvent.class, new AddCardToBoardZoneHandler());
-        addGameEventHandler(AddCardToCreatureZoneEvent.class, new AddCardToCreatureZoneHandler());
-        addGameEventHandler(AddCardToEnchantmentZoneEvent.class, new AddCardToEnchantmentZoneHandler());
-        addGameEventHandler(AddCardToGraveyardEvent.class, new AddCardToGraveyardHandler());
-        addGameEventHandler(AddCardToHandEvent.class, new AddCardToHandHandler());
-        addGameEventHandler(AddCardToLandZoneEvent.class, new AddCardToLandZoneHandler());
-        addGameEventHandler(AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
-        addGameEventHandlers(AddCardToZoneEvent.class,
+        addEventHandler(events.instant(), AddCardToBoardEvent.class, new AddCardToBoardHandler());
+        addEventHandler(events.instant(), AddCardToBoardZoneEvent.class, new AddCardToBoardZoneHandler());
+        addEventHandler(events.instant(), AddCardToCreatureZoneEvent.class, new AddCardToCreatureZoneHandler());
+        addEventHandler(events.instant(), AddCardToEnchantmentZoneEvent.class, new AddCardToEnchantmentZoneHandler());
+        addEventHandler(events.instant(), AddCardToGraveyardEvent.class, new AddCardToGraveyardHandler());
+        addEventHandler(events.instant(), AddCardToHandEvent.class, new AddCardToHandHandler());
+        addEventHandler(events.instant(), AddCardToLandZoneEvent.class, new AddCardToLandZoneHandler());
+        addEventHandler(events.instant(), AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
+        addEventHandlers(events.instant(), AddCardToZoneEvent.class,
                 new RemoveFromOtherZonesOnAddHandler(),
                 new AddCardToZoneHandler());
-        addGameEventHandler(BattleEvent.class, new BattleHandler());
-        addGameEventHandler(DamageEvent.class, new DamageHandler());
-        addGameEventHandlers(DeclareAttackEvent.class,
+        addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
+        addEventHandler(events.instant(), DamageEvent.class, new DamageHandler());
+        addEventHandlers(events.instant(), DeclareAttackEvent.class,
                 new DeclareAttackHandler(),
                 new TapOnDeclareAttackHandler());
-        addGameEventHandler(DeclareBlockEvent.class, new DeclareBlockHandler());
-        addGameEventHandler(DestructionEvent.class, new DestructionHandler());
-        addGameEventHandler(DrawCardEvent.class, new DrawCardHandler());
-        addGameEventHandler(EndAttackPhaseEvent.class, new EndAttackPhaseHandler());
-        addGameEventHandlers(EndBlockPhaseEvent.class,
+        addEventHandler(events.instant(), DeclareBlockEvent.class, new DeclareBlockHandler());
+        addEventHandler(events.resolved(), DestructionEvent.class, new DestructionHandler());
+        addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
+        addEventHandler(events.instant(), EndAttackPhaseEvent.class, new EndAttackPhaseHandler());
+        addEventHandlers(events.instant(), EndBlockPhaseEvent.class,
                 new EndBlockPhaseHandler(),
                 new BattlesOnBlockPhaseEndHandler());
-        addGameEventHandler(EndMainPhaseOneEvent.class, new EndMainPhaseOneHandler());
-        addGameEventHandler(EndMainPhaseTwoEvent.class, new EndMainPhaseTwoHandler());
-        addGameEventHandlers(GameStartEvent.class,
+        addEventHandler(events.instant(), EndMainPhaseOneEvent.class, new EndMainPhaseOneHandler());
+        addEventHandler(events.instant(), EndMainPhaseTwoEvent.class, new EndMainPhaseTwoHandler());
+        addEventHandlers(events.instant(), GameStartEvent.class,
                 new ShuffleAllLibrariesOnGameStartHandler(),
                 new DrawCardsOnGameStartHandler(),
                 new SetStartingPlayerHandler());
-        addGameEventHandler(PayCostEvent.class, new PayCostHandler());
-        addGameEventHandler(PlaySpellEvent.class, new PlaySpellHandler());
-        addGameEventHandler(RemoveCardFromBoardEvent.class, new RemoveCardFromBoardHandler());
-        addGameEventHandler(RemoveCardFromBoardZoneEvent.class, new RemoveCardFromBoardZoneHandler());
-        addGameEventHandler(RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
-        addGameEventHandler(RemoveCardFromEnchantmentZoneEvent.class, new RemoveCardFromEnchantmentZoneHandler());
-        addGameEventHandler(RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
-        addGameEventHandler(RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
-        addGameEventHandler(RemoveCardFromLandZoneEvent.class, new RemoveCardFromLandZoneHandler());
-        addGameEventHandler(RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
-        addGameEventHandler(RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
-        addGameEventHandlers(SetHealthEvent.class,
+        addEventHandler(events.instant(), PayCostEvent.class, new PayCostHandler());
+        addEventHandler(events.instant(), PlaySpellEvent.class, new PlaySpellHandler());
+        addEventHandler(events.instant(), RemoveCardFromBoardEvent.class, new RemoveCardFromBoardHandler());
+        addEventHandler(events.instant(), RemoveCardFromBoardZoneEvent.class, new RemoveCardFromBoardZoneHandler());
+        addEventHandler(events.instant(), RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
+        addEventHandler(events.instant(), RemoveCardFromEnchantmentZoneEvent.class, new RemoveCardFromEnchantmentZoneHandler());
+        addEventHandler(events.instant(), RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
+        addEventHandler(events.instant(), RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
+        addEventHandler(events.instant(), RemoveCardFromLandZoneEvent.class, new RemoveCardFromLandZoneHandler());
+        addEventHandler(events.instant(), RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
+        addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
+        addEventHandlers(events.instant(), SetHealthEvent.class,
                 new SetHealthHandler(),
                 new DestroyOnNoHealthHandler());
-        addGameEventHandler(ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
-        addGameEventHandlers(StartAttackPhaseEvent.class, new StartAttackPhaseHandler());
-        addGameEventHandler(StartBlockPhaseEvent.class, new StartBlockPhaseHandler());
-        addGameEventHandlers(StartMainPhaseOneEvent.class,
+        addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
+        addEventHandlers(events.instant(), StartAttackPhaseEvent.class, new StartAttackPhaseHandler());
+        addEventHandler(events.instant(), StartBlockPhaseEvent.class, new StartBlockPhaseHandler());
+        addEventHandlers(events.instant(), StartMainPhaseOneEvent.class,
                 new UntapCardsOnMainPhaseOneHandler(),
                 new DrawCardOnMainPhaseOneHandler(),
                 new StartMainPhaseOneHandler());
-        addGameEventHandler(StartMainPhaseTwoEvent.class, new StartMainPhaseTwoHandler());
-        addGameEventHandler(TapEvent.class, new TapHandler());
-        addGameEventHandler(TriggerEffectEvent.class, new TriggerEffectHandler());
-        addGameEventHandler(UntapEvent.class, new UntapHandler());
+        addEventHandler(events.instant(), StartMainPhaseTwoEvent.class, new StartMainPhaseTwoHandler());
+        addEventHandler(events.instant(), TapEvent.class, new TapHandler());
+        addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
+        addEventHandler(events.instant(), UntapEvent.class, new UntapHandler());
     }
-    
-    @SafeVarargs
-    private final <T extends Event> void addGameEventHandlers(Class<T> eventType, GameEventHandler<T>... handlers) {
+
+    private <T extends Event> void addEventHandlers(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T>... handlers) {
         for (GameEventHandler<T> handler : handlers) {
-            addGameEventHandler(eventType, handler);
+            addEventHandler(eventHandlers, eventClass, handler);
         }
     }
 
-    private <T extends Event> void addGameEventHandler(Class<T> eventType, GameEventHandler<T> handler) {
+    private <T extends Event> void addEventHandler(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T> handler) {
         handler.data = data;
         handler.events = events;
         handler.random = random;
-        dispatcher.addListeners(eventType, handler::handle);
+        eventHandlers.add(eventClass, handler::handle);
     }
 
     public EntityData getData() {
         return data;
     }
 
-    public EventDispatcher getPreDispatcher() {
-        return preDispatcher;
-    }
-
-    public EventDispatcher getDispatcher() {
-        return dispatcher;
-    }
-
-    public EventDispatcher getPostDispatcher() {
-        return postDispatcher;
-    }
-
-    public EventQueueType getEvents() {
+    public EventQueue getEvents() {
         return events;
     }
 
@@ -140,9 +120,4 @@ public class GameContext<EventQueueType extends EventQueue> {
     public PlayerActionsGenerator getActionGenerator() {
         return actionGenerator;
     }
-
-    public interface EventQueueProvider<EventQueueType extends EventQueue> {
-        EventQueueType provideEventQueue(Consumer<Event> preDispatcher, Consumer<Event> dispatcher, Consumer<Event> postDispatcher);
-    }
-
 }

@@ -2,9 +2,6 @@ package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.events.IterableEventQueue;
-import com.destrostudios.cards.shared.events.IterableEventQueueImpl;
-import com.destrostudios.cards.shared.events.QueuedIterableEventQueue;
 import com.destrostudios.cards.shared.network.SerializerSetup;
 import com.destrostudios.cards.shared.network.GameStateMessageConverter;
 import com.destrostudios.cards.shared.network.messages.*;
@@ -30,18 +27,14 @@ public class SimpleGameClient {
 
     private final Client client;
     private final Queue<Integer> randomQueue = new ArrayDeque<>();
-    private final GameContext<QueuedIterableEventQueue> context;
+    private final GameContext context;
     private final List<FullGameStateListener> fullGameStateListeners = new LinkedList<>();
     private int playerEntity;
 
     public SimpleGameClient(String host, int port) throws IOException {
         SerializerSetup.ensureInitialized();
         client = Network.connectToServer(host, port);
-        GameContext.EventQueueProvider<QueuedIterableEventQueue> eventQueueProvider = (preDispatcher, dispatcher, postDispatcher) -> {
-            IterableEventQueue iterableEventQueue = new IterableEventQueueImpl(preDispatcher, dispatcher, postDispatcher);
-            return new QueuedIterableEventQueue(iterableEventQueue);
-        };
-        context = new GameContext<>(eventQueueProvider, x -> randomQueue.poll());
+        context = new GameContext(x -> randomQueue.poll());
         GameStateMessageConverter gameStateMessageConverter = new GameStateMessageConverter(context.getData());
 
         client.addMessageListener((Client s, Message message) -> {
@@ -56,7 +49,7 @@ public class SimpleGameClient {
             for (int randomHistory : actionMessage.getRandomHistory()) {
                 randomQueue.offer(randomHistory);
             }
-            context.getEvents().fireActionEvent(actionMessage.getAction());
+            context.getEvents().fire(actionMessage.getAction());
         }, ActionNotificationMessage.class);
         client.addErrorListener((Client source, Throwable t) -> {
             t.printStackTrace(System.err);
@@ -79,7 +72,7 @@ public class SimpleGameClient {
         LOG.info("sent action request");
     }
 
-    public GameContext<QueuedIterableEventQueue> getGame() {
+    public GameContext getGame() {
         return context;
     }
 

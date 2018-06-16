@@ -7,7 +7,7 @@ public class RemoveCardFromBoardZoneHandler extends GameEventHandler<RemoveCardF
 
     @Override
     public void handle(RemoveCardFromBoardZoneEvent event) {
-        events.fireSubEvent(new RemoveCardFromZoneEvent(event.card, event.zone));
+        events.fire(new RemoveCardFromZoneEvent(event.card, event.zone));
         data.removeComponent(event.card, Components.BOARD);
     }
 }

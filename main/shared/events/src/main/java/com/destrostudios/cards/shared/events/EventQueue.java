@@ -1,15 +1,101 @@
 package com.destrostudios.cards.shared.events;
 
-/**
- *
- * @author Philipp
- */
-public interface EventQueue {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    void fireActionEvent(Event event);
+import java.util.*;
 
-    void fireChainEvent(Event event);
+@SuppressWarnings({"unchecked"})
+public class EventQueue {
 
-    void fireSubEvent(Event event);
+    private static final Logger LOG = LoggerFactory.getLogger(EventQueue.class);
 
+    private final EventHandlers preHandlers = new EventHandlers();
+    private final EventHandlers instantHandlers = new EventHandlers();
+    private final EventHandlers resolvedHandlers = new EventHandlers();
+    private Event parentEvent;
+    private LinkedList<TriggeredEventHandler> triggeredEventHandlers = new LinkedList<>();
+    private Map<Event, List<TriggeredEventHandler>> waitingResolvedEventHandlers = new HashMap<>();
+
+    public void fire(Event event) {
+        event.setParent(parentEvent);
+        triggerHandlers(preHandlers, event);
+        triggerHandlers(instantHandlers, event);
+        Event rootEvent = event.getRoot();
+        for (EventHandler eventHandler : resolvedHandlers.get(event.getClass())) {
+            waitingResolvedEventHandlers.computeIfAbsent(rootEvent, e -> new LinkedList<>()).add(new TriggeredEventHandler(event, eventHandler));
+        }
+    }
+
+    private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event) {
+        Iterator<EventHandler> eventHandlersIterator = eventHandlers.get(event.getClass()).iterator();
+        int startingIndex = 0;
+        for (TriggeredEventHandler tiggeredEventHandler : triggeredEventHandlers) {
+            if (tiggeredEventHandler.getEvent().getParent() != event.getParent()) {
+                break;
+            }
+            startingIndex++;
+        }
+        int i = startingIndex;
+        while (eventHandlersIterator.hasNext()) {
+            EventHandler eventHandler = eventHandlersIterator.next();
+            triggeredEventHandlers.add(i, new TriggeredEventHandler(event, eventHandler));
+            i++;
+        }
+    }
+
+    public boolean hasNextTriggeredHandler() {
+        return (triggeredEventHandlers.size() > 0);
+    }
+
+    public void triggerNextHandler() {
+        TriggeredEventHandler triggeredHandler = triggeredEventHandlers.poll();
+        Event event = triggeredHandler.getEvent();
+        parentEvent = event;
+        LOG.debug("handling {}", event);
+        triggeredHandler.handleEvent();
+        parentEvent = null;
+        checkCancelledEvents();
+        checkIfRootEventIsResolved(event.getRoot());
+    }
+
+    private void checkCancelledEvents() {
+        for (int i = 0; i < triggeredEventHandlers.size(); i++) {
+            TriggeredEventHandler pendingTriggeredEventHandler = triggeredEventHandlers.get(i);
+            if (pendingTriggeredEventHandler.getEvent().isCancelled()) {
+                LOG.debug("{} was cancelled", pendingTriggeredEventHandler);
+                triggeredEventHandlers.remove(i);
+                i--;
+            }
+        }
+    }
+
+    private void checkIfRootEventIsResolved(Event rootEvent) {
+        boolean isRootResolved = true;
+        for (TriggeredEventHandler pendingTriggeredHandler : triggeredEventHandlers) {
+            Event pendingRootEvent = pendingTriggeredHandler.getEvent().getRoot();
+            if (pendingRootEvent == rootEvent) {
+                isRootResolved = false;
+                break;
+            }
+        }
+        if (isRootResolved) {
+            List<TriggeredEventHandler> resolvedEventHandlers = waitingResolvedEventHandlers.remove(rootEvent);
+            if (resolvedEventHandlers != null) {
+                triggeredEventHandlers.addAll(resolvedEventHandlers);
+            }
+        }
+    }
+
+    public EventHandlers pre() {
+        return preHandlers;
+    }
+
+    public EventHandlers instant() {
+        return instantHandlers;
+    }
+
+    public EventHandlers resolved() {
+        return resolvedHandlers;
+    }
 }

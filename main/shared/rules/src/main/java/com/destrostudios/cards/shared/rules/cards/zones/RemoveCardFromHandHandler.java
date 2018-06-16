@@ -7,6 +7,6 @@ public class RemoveCardFromHandHandler extends GameEventHandler<RemoveCardFromHa
 
     @Override
     public void handle(RemoveCardFromHandEvent event) {
-        events.fireSubEvent(new RemoveCardFromZoneEvent(event.card, Components.HAND_CARDS));
+        events.fire(new RemoveCardFromZoneEvent(event.card, Components.HAND_CARDS));
     }
 }

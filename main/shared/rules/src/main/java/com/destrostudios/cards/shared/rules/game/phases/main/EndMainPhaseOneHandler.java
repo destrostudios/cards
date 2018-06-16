@@ -16,6 +16,6 @@ public class EndMainPhaseOneHandler extends GameEventHandler<EndMainPhaseOneEven
     @Override
     public void handle(EndMainPhaseOneEvent event) {
         LOG.debug("main phase 1 of {} ended.", event.player);
-        events.fireChainEvent(new StartAttackPhaseEvent(event.player));
+        events.fire(new StartAttackPhaseEvent(event.player));
     }
 }

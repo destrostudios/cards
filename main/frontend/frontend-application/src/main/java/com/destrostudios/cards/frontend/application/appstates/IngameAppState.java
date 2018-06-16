@@ -31,6 +31,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
@@ -54,10 +55,23 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        mainApplication.getStateManager().attach(new CameraAppState());
+        initCamera();
         initListeners();
         initBoard();
         gameClient.connect();
+    }
+
+    private void initCamera() {
+        // TODO: Cleanup (No anonymous class)
+        mainApplication.getStateManager().attach(new CameraAppState(){
+
+            @Override
+            public void initialize(AppStateManager stateManager, Application application) {
+                super.initialize(stateManager, application);
+                // TODO: Have a special transformation here (Will be used during shuffling animation and mulligan)
+                updateCamera(TurnPhase.MAIN_ONE);
+            }
+        });
     }
 
     private void initListeners() {
@@ -210,7 +224,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         gameClient.getGame().getEvents().pre().add(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
         gameClient.getGame().getEvents().pre().add(ShuffleLibraryEvent.class, event -> {
-            //LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
+            LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             //board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
         });
     }

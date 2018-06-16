@@ -11,15 +11,13 @@ public class AnimationQueue implements GameLoopListener {
 
     public void addAnimation(Animation animation) {
         animationsQueue.add(animation);
+        checkState();
     }
 
     @Override
     public void update(float lastTimePerFrame) {
         updatePlayingAnimations(lastTimePerFrame);
-        checkBlockingAnimation();
-        while((blockingAnimation == null) && (animationsQueue.size() > 0)){
-            startNextAnimation();
-        }
+        checkState();
     }
 
     private void updatePlayingAnimations(float lastTimePerFrame) {
@@ -34,6 +32,13 @@ public class AnimationQueue implements GameLoopListener {
             }
         }
         playingAnimations.removeAll(finishedAnimations);
+    }
+
+    private void checkState() {
+        checkBlockingAnimation();
+        while((blockingAnimation == null) && (animationsQueue.size() > 0)){
+            startNextAnimation();
+        }
     }
 
     private void checkBlockingAnimation() {

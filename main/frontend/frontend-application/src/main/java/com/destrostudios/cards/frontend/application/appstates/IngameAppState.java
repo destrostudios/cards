@@ -21,7 +21,6 @@ import com.destrostudios.cards.shared.rules.game.phases.attack.*;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -30,7 +29,6 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.Camera;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,18 +54,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        initCamera();
+        mainApplication.getStateManager().attach(new CameraAppState());
         initListeners();
         initBoard();
         gameClient.connect();
-    }
-
-    private void initCamera() {
-        Camera camera = mainApplication.getCamera();
-        camera.setFrustumPerspective(45, (float) camera.getWidth() / camera.getHeight(), 0.01f, 1000);
-        FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
-        flyByCamera.setMoveSpeed(100);
-        flyByCamera.setEnabled(false);
     }
 
     private void initListeners() {
@@ -81,9 +71,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void onAction(String name, boolean isPressed, float lastTimePerFrame) {
         if ("space".equals(name) && isPressed) {
-            FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
-            mainApplication.getInputManager().setCursorVisible(flyByCamera.isEnabled());
-            flyByCamera.setEnabled(!flyByCamera.isEnabled());
+            CameraAppState cameraAppState = getAppState(CameraAppState.class);
+            cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if ("end".equals(name) && isPressed) {
             if (sendableEndTurnEvent != null) {
                 gameClient.requestAction(sendableEndTurnEvent);
@@ -154,13 +143,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             Quaternion zoneRotation = Quaternion.IDENTITY;
             for (int i = 0; i < players.size(); i++) {
                 if (i == 1) {
-                    offset.addLocal(3.5f, 0, 0);
                     directionX *= -1;
                     directionZ *= -1;
                     zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
                 }
 
-                float x = 0.5f;
+                float x = -1.25f;
                 float z = (ZONE_HEIGHT / 2);
                 CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
                 x += 3.25f;
@@ -176,7 +164,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     }
                 };
 
-                x = 1.25f;
+                x = -0.5f;
                 z += ZONE_HEIGHT;
                 CenteredIntervalZone landZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
                 x += 3.75f;
@@ -190,7 +178,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     }
                 };
 
-                x = 1.5f;
+                x = 0;
                 z += (ZONE_HEIGHT - 0.25f);
                 Quaternion handRotation = zoneRotation.mult(new Quaternion().fromAngleAxis(FastMath.QUARTER_PI, Vector3f.UNIT_X));
                 CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
@@ -212,15 +200,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 board.finishAllTransformations();
             });
             hasPreparedBoard = true;
-
-            Camera camera = mainApplication.getCamera();
-            camera.setLocation(new Vector3f(1.8497083f, 3.8661501f, 6.470482f));
-            camera.lookAtDirection(new Vector3f(0, -0.7237764f, -0.6900346f), Vector3f.UNIT_Y);
-            // TODO: Maybe check this other than the exact hardcoded entity
-            if (gameClient.getPlayerEntity() == 1) {
-                camera.setLocation(camera.getLocation().add(0, 0, -10.3f));
-                camera.setRotation(new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(camera.getRotation()));
-            }
         });
         gameClient.getGame().getEvents().instant().add(Event.class, event -> updateAndResetBoard());
 
@@ -241,6 +220,38 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         int player = entityData.query(Components.Game.TURN_PHASE).unique().getAsInt();
         TurnPhase turnPhase = entityData.getComponent(player, Components.Game.TURN_PHASE);
         System.out.println(player + "\t" + turnPhase);
+        updateCamera(turnPhase);
+    }
+
+    private void updateCamera(TurnPhase turnPhase) {
+        CameraAppState cameraAppState = getAppState(CameraAppState.class);
+        Vector3f position = new Vector3f();
+        Quaternion rotation = new Quaternion();
+        // TODO: Maybe check this other than the exact hardcoded entity
+        boolean isPlayer2 = (gameClient.getPlayerEntity() == 1);
+        switch (turnPhase) {
+            case MAIN_ONE:
+            case MAIN_TWO:
+                position.set(0, 3.8661501f, 6.470482f);
+                if (isPlayer2) {
+                    position.addLocal(0, 0, -10.339f);
+                }
+                rotation.lookAt(new Vector3f(0, -0.7237764f, -0.6900346f), Vector3f.UNIT_Y);
+                break;
+
+            case ATTACK:
+            case BLOCK:
+                position.set(0, 3.2f, 5.2540617f);
+                if (isPlayer2) {
+                    position.addLocal(0, 0, -7.91f);
+                }
+                rotation.lookAt(new Vector3f(0, -0.7f, -0.6900346f), Vector3f.UNIT_Y);
+                break;
+        }
+        if (isPlayer2) {
+            rotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(rotation);
+        }
+        cameraAppState.moveTo(position, rotation, 0.3f);
     }
 
     private void updateAndResetBoard() {
@@ -251,8 +262,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     @Override
-    public void update(float tpf) {
-        super.update(tpf);
+    public void update(float lastTimePerFrame) {
+        super.update(lastTimePerFrame);
         if ((!isInitialized) && hasPreparedBoard) {
             gameClient.markAsReady();
             isInitialized = true;

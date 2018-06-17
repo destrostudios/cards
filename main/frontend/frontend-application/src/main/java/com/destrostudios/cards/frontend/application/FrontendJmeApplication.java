@@ -35,4 +35,8 @@ public class FrontendJmeApplication extends SimpleApplication {
             return null;
         });
     }
+
+    public AppSettings getSettings() {
+        return settings;
+    }
 }

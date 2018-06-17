@@ -56,8 +56,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         initCamera();
-        initListeners();
+        mainApplication.getStateManager().attach(new IngameHudAppState());
         initBoard();
+        initListeners();
         gameClient.connect();
     }
 
@@ -233,8 +234,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         EntityData entityData = gameClient.getGame().getData();
         int player = entityData.query(Components.Game.TURN_PHASE).unique().getAsInt();
         TurnPhase turnPhase = entityData.getComponent(player, Components.Game.TURN_PHASE);
-        System.out.println(player + "\t" + turnPhase);
         updateCamera(turnPhase);
+        // TODO: Map (Currently, it's exactly entity 0 and 1)
+        int playerIndex = player;
+        IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
+        ingameHudAppState.setCurrentPlayerAndPhase(playerIndex, turnPhase);
     }
 
     private void updateCamera(TurnPhase turnPhase) {
@@ -271,8 +275,20 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void updateAndResetBoard() {
         mainApplication.enqueue(() -> {
             updateBoardService.updateAndResetInteractivities();
+            updateHud();
             sendableEndTurnEvent = null;
         });
+    }
+
+    private void updateHud() {
+        IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
+        EntityData entityData = gameClient.getGame().getData();
+        for (int playerEntity : entityData.query(Components.NEXT_PLAYER).list()) {
+            // TODO: Map (Currently, it's exactly entity 0 and 1)
+            int playerIndex = playerEntity;
+            int health = entityData.getComponent(playerEntity, Components.HEALTH);
+            ingameHudAppState.sePlayerHealth(playerIndex, health);
+        }
     }
 
     @Override

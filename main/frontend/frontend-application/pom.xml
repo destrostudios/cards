@@ -67,7 +67,17 @@
         </dependency>
         <dependency>
             <groupId>${jm3.group}</groupId>
+            <artifactId>jme3-effects</artifactId>
+            <version>${jm3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${jm3.group}</groupId>
             <artifactId>jme3-lwjgl</artifactId>
+            <version>${jm3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${jm3.group}</groupId>
+            <artifactId>jme3-terrain</artifactId>
             <version>${jm3.version}</version>
         </dependency>
     </dependencies>

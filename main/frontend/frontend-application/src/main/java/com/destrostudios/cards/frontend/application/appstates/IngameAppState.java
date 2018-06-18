@@ -1,6 +1,7 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cards.frontend.application.*;
+import com.destrostudios.cards.frontend.application.appstates.boards.*;
 import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoardService;
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.animations.samples.*;
@@ -21,6 +22,7 @@ import com.destrostudios.cards.shared.rules.game.phases.attack.*;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
@@ -29,6 +31,8 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -56,6 +60,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         initCamera();
+        mainApplication.getStateManager().attach(new ForestBoardAppState());
         mainApplication.getStateManager().attach(new IngameHudAppState());
         initBoard();
         initListeners();
@@ -115,7 +120,14 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void initBoard() {
+        // TODO: Offer this kind of ZoneVisualizer out of the box from the cardgui
         board = new Board<>(new DebugZoneVisualizer() {
+
+            @Override
+            public void createVisualisation(Node node, AssetManager assetManager) {
+                super.createVisualisation(node, assetManager);
+                node.setCullHint(Spatial.CullHint.Always);
+            }
 
             @Override
             protected Vector2f getSize(CardZone zone) {

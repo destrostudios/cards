@@ -4,6 +4,7 @@ import com.destrostudios.cards.frontend.cardgui.BoardObjectModel;
 import com.destrostudios.cards.frontend.cardgui.Card;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -33,10 +34,15 @@ public abstract class SimpleCardVisualizer<CardModelType extends BoardObjectMode
             1, 1, 1, 0, 0, 0, 0, 1  // bottom
         });
         Geometry geometry = new Geometry(GEOMETRY_NAME, box);
-        Material material = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
+        material.setBoolean("UseMaterialColors", true);
+        material.setColor("Ambient", ColorRGBA.White);
+        material.setColor("Diffuse", new ColorRGBA(0.75f, 0.75f, 0.75f, 1));
+        material.setColor("Specular", ColorRGBA.Black);
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         geometry.setMaterial(material);
         geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
+        geometry.setShadowMode(RenderQueue.ShadowMode.CastAndReceive);
         node.attachChild(geometry);
     }
 
@@ -46,7 +52,7 @@ public abstract class SimpleCardVisualizer<CardModelType extends BoardObjectMode
         PaintableImage paintableImage = paintCard(card.getModel());
         Texture2D texture = new Texture2D();
         texture.setImage(paintableImage.getImage());
-        geometry.getMaterial().setTexture("ColorMap", texture);
+        geometry.getMaterial().setTexture("DiffuseMap", texture);
     }
 
     public abstract PaintableImage paintCard(CardModelType cardModel);

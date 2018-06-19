@@ -60,7 +60,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         initCamera();
-        mainApplication.getStateManager().attach(new ForestBoardAppState());
         mainApplication.getStateManager().attach(new IngameHudAppState());
         initBoard();
         initListeners();
@@ -195,7 +194,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 z += ZONE_HEIGHT;
                 CenteredIntervalZone landZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
                 x += 3.75f;
-                SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 0, 0)) {
+                SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 0, 0)) {
 
                     // TODO: Cleanup
                     @Override
@@ -227,6 +226,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 board.finishAllTransformations();
             });
             hasPreparedBoard = true;
+
+            mainApplication.getStateManager().attach(new ForestBoardAppState(gameClient.getPlayerEntity()));
         });
         gameClient.getGame().getEvents().instant().add(Event.class, event -> updateAndResetBoard());
 

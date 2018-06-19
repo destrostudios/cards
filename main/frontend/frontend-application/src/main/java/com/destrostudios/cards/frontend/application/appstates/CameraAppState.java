@@ -22,7 +22,7 @@ public class CameraAppState extends MyBaseAppState {
         Camera camera = mainApplication.getCamera();
         camera.setFrustumPerspective(45, (float) camera.getWidth() / camera.getHeight(), 0.01f, 1000);
         FlyByCamera flyByCamera = mainApplication.getFlyByCamera();
-        flyByCamera.setMoveSpeed(100);
+        flyByCamera.setMoveSpeed(30);
         flyByCamera.setEnabled(false);
         moveTo(camera.getLocation(), camera.getRotation());
     }

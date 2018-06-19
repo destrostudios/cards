@@ -62,8 +62,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         initCamera();
         mainApplication.getStateManager().attach(new IngameHudAppState());
         initBoard();
-        initListeners();
-        gameClient.connect();
+        initInputListeners();
+        // Enqueue so added appStates have been initialized
+        mainApplication.enqueue(() -> gameClient.connect());
     }
 
     private void initCamera() {
@@ -79,7 +80,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
     }
 
-    private void initListeners() {
+    private void initInputListeners() {
         InputManager inputManager = mainApplication.getInputManager();
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("end", new KeyTrigger(KeyInput.KEY_END));

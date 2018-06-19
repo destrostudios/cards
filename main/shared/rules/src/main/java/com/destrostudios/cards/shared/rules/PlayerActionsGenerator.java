@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DeclareAttackEvent;
 import com.destrostudios.cards.shared.rules.battle.DeclareBlockEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
@@ -10,6 +9,7 @@ import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
 import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseOneEvent;
+import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -108,17 +108,17 @@ public class PlayerActionsGenerator {
     private void generateEndPhase(int player, Consumer<Event> out) {
         data.getOptionalComponent(player, Components.Game.TURN_PHASE).ifPresent(phase -> {
             switch (phase) {
+                case MAIN_ONE:
+                    out.accept(new EndMainPhaseOneEvent(player));
+                    break;
                 case ATTACK:
                     out.accept(new EndAttackPhaseEvent(player));
                     break;
                 case BLOCK:
                     out.accept(new EndBlockPhaseEvent(player));
                     break;
-                case MAIN_ONE:
-                    out.accept(new EndMainPhaseOneEvent(player));
-                    break;
                 case MAIN_TWO:
-
+                    out.accept(new EndMainPhaseTwoEvent(player));
                     break;
                 default:
                     throw new AssertionError(phase.name());

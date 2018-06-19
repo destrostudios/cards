@@ -333,7 +333,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             List<Event> possibleEvents = gameClient.getGame().getActionGenerator().generatePossibleActions(gameClient.getPlayerEntity());
             updateBoardService.updateInteractivities(possibleEvents);
             for (Event event : possibleEvents) {
-                if (event instanceof EndAttackPhaseEvent || event instanceof EndBlockPhaseEvent || event instanceof EndMainPhaseOneEvent) {
+                if (event instanceof EndMainPhaseOneEvent || event instanceof EndAttackPhaseEvent || event instanceof EndBlockPhaseEvent || event instanceof EndMainPhaseTwoEvent) {
                     sendableEndTurnEvent = event;
                 }
             }

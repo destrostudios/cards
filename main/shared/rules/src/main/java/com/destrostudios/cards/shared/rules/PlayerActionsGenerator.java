@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.rules;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.battle.DeclareAttackEvent;
@@ -50,14 +51,14 @@ public class PlayerActionsGenerator {
 
             int[] spellEntities = data.getOptionalComponent(cardEntity, Components.SPELL_ENTITIES).orElseGet(() -> new int[0]);
             for (int spellEntity : spellEntities) {
-                if (isSpellCastable(spellEntity, phase, isHandCard, isBoardCard, isAttacking, isBlocking)) {
+                if (isSpellCastable(player, spellEntity, phase, isHandCard, isBoardCard, isAttacking, isBlocking)) {
                     out.accept(new PlaySpellEvent(spellEntity));
                 }
             }
         }
     }
 
-    private boolean isSpellCastable(int spell, TurnPhase phase, boolean isHandCard, boolean isBoardCard, boolean isAttacking, boolean isBlocking) {
+    private boolean isSpellCastable(int player, int spell, TurnPhase phase, boolean isHandCard, boolean isBoardCard, boolean isAttacking, boolean isBlocking) {
         switch (phase) {
             case ATTACK:
                 if (!data.hasComponent(spell, Components.Spell.CastCondition.ATTACK_PHASE)) {
@@ -79,8 +80,34 @@ public class PlayerActionsGenerator {
                 throw new AssertionError(phase.name());
         }
 
-        return (isHandCard && data.hasComponent(spell, Components.Spell.CastCondition.FROM_HAND))
-                || (isBoardCard && data.hasComponent(spell, Components.Spell.CastCondition.FROM_BOARD));
+        if ((data.hasComponent(spell, Components.Spell.CastCondition.FROM_HAND) && (!isHandCard)
+        || (data.hasComponent(spell, Components.Spell.CastCondition.FROM_BOARD) && (!isBoardCard)))) {
+            return false;
+        }
+
+        Integer costEntity = data.getComponent(spell, Components.Spell.COST_ENTITY);
+        if (costEntity != null) {
+            // TODO: Neutral mana handling
+            if ((!isManaCostPayable(player, costEntity, Components.ManaAmount.NEUTRAL))
+            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.WHITE))
+            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.RED))
+            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.GREEN))
+            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.BLUE))
+            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.BLACK))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isManaCostPayable(int player, int costEntity, ComponentDefinition<Integer> manaAmountComponent) {
+        Integer manaCost = data.getComponent(costEntity, manaAmountComponent);
+        if (manaCost != null) {
+            int currentMana = data.getOptionalComponent(player, manaAmountComponent).orElse(0);
+            return (currentMana >= manaCost);
+        }
+        return true;
     }
 
     private void generateAttacks(int player, Consumer<Event> out) {

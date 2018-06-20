@@ -47,6 +47,7 @@ public class GameContext {
         addEventHandlers(events.instant(), AddCardToZoneEvent.class,
                 new RemoveFromOtherZonesOnAddHandler(),
                 new AddCardToZoneHandler());
+        addEventHandler(events.instant(), AddManaEvent.class, new AddManaHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
         addEventHandler(events.instant(), DamageEvent.class, new DamageHandler());
         addEventHandlers(events.instant(), DeclareAttackEvent.class,
@@ -83,6 +84,7 @@ public class GameContext {
         addEventHandlers(events.instant(), StartAttackPhaseEvent.class, new StartAttackPhaseHandler());
         addEventHandler(events.instant(), StartBlockPhaseEvent.class, new StartBlockPhaseHandler());
         addEventHandlers(events.instant(), StartMainPhaseOneEvent.class,
+                new ResetManaOnMainPhaseOneHandler(),
                 new UntapCardsOnMainPhaseOneHandler(),
                 new DrawCardOnMainPhaseOneHandler(),
                 new StartMainPhaseOneHandler());

@@ -36,7 +36,7 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         Integer gainManaEntity = data.getComponent(event.effect, Components.Spell.Effect.GAIN_MANA);
         if (gainManaEntity != null) {
             int player = data.getComponent(event.source, Components.OWNED_BY);
-            // TODO: events.fire(new GainManaEvent(player, gainManaEntity));
+            events.fire(new AddManaEvent(player, gainManaEntity));
         }
 
         if (data.hasComponent(event.effect, Components.Spell.Effect.TAP)) {

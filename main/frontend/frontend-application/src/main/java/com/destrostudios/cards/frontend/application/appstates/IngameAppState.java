@@ -44,7 +44,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         this.gameClient = gameClient;
         cardGuiMap = new CardGuiMap(gameClient.getGame().getData());
     }
-
     private static final float ZONE_HEIGHT = 1.3f;
     private SimpleGameClient gameClient;
     private Board<CardModel> board;

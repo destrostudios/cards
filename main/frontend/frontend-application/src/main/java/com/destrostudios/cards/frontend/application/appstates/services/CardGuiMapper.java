@@ -42,6 +42,9 @@ public class CardGuiMapper {
         boolean isFront = true;
         cardModel.setFront(isFront);
 
+        // Will be set when applying the possibleActions
+        cardModel.setPlayable(false);
+
         List<Color> colors = createListBasedOnComponents(entityData, cardEntity, colorComponents);
         cardModel.setColors(colors);
 

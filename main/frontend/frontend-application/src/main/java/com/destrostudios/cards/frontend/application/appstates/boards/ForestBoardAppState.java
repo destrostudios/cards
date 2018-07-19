@@ -9,6 +9,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.post.filters.TranslucentBucketFilter;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.terrain.geomipmap.TerrainQuad;
@@ -116,5 +117,6 @@ public class ForestBoardAppState extends VisualBoardAppState {
         waterFilter.setShoreHardness(10);
         waterFilter.setUseHQShoreline(true);
         getAppState(PostFilterAppState.class).addFilter(waterFilter);
+        getAppState(PostFilterAppState.class).addFilter(new TranslucentBucketFilter());
     }
 }

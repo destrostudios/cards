@@ -7,6 +7,8 @@ import java.util.List;
 public class CardModel extends BoardObjectModel {
 
     private boolean isFront;
+    private boolean isPlayable;
+
     private List<Color> colors;
     private String title;
     private ManaCost manaCost;
@@ -22,6 +24,10 @@ public class CardModel extends BoardObjectModel {
 
     public boolean isFront() {
         return isFront;
+    }
+
+    public boolean isPlayable() {
+        return isPlayable;
     }
 
     public List<Color> getColors() {
@@ -74,6 +80,10 @@ public class CardModel extends BoardObjectModel {
 
     public void setFront(boolean isFront) {
         updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
+    }
+
+    public void setPlayable(boolean isPlayable) {
+        updateIfNotEquals(this.isPlayable, isPlayable, () -> this.isPlayable = isPlayable);
     }
 
     public void setTitle(String title) {

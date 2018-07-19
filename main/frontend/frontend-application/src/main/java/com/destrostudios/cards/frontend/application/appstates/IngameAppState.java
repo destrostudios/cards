@@ -2,12 +2,12 @@ package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
+import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoardService;
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.animations.samples.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
 import com.destrostudios.cards.frontend.cardgui.zones.*;
-import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -27,10 +27,7 @@ import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
-import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
+import com.jme3.math.*;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
@@ -147,15 +144,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
                 return super.getSize(zone);
             }
-        }, new SimpleCardVisualizer<CardModel>() {
-
-            @Override
-            public PaintableImage paintCard(CardModel cardModel) {
-                PaintableImage paintableImage = new PaintableImage(400, 560);
-                CardPainterJME.drawCard(paintableImage, cardModel);
-                return paintableImage;
-            }
-        });
+        }, new IngameCardVisualizer());
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         initGameListeners();
     }

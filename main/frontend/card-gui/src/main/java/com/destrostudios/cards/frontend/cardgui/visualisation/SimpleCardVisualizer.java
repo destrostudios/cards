@@ -20,7 +20,7 @@ import com.jme3.material.RenderState;
  */
 public abstract class SimpleCardVisualizer<CardModelType extends BoardObjectModel> implements BoardObjectVisualizer<Card<CardModelType>> {
     
-    private static final String GEOMETRY_NAME = "cardGeometry";
+    private static final String NAME_GEOMETRY = "cardGeometry";
 
     @Override
     public void createVisualisation(Node node, AssetManager assetManager) {
@@ -33,7 +33,7 @@ public abstract class SimpleCardVisualizer<CardModelType extends BoardObjectMode
             1, 1, 1, 0, 0, 0, 0, 1, // top
             1, 1, 1, 0, 0, 0, 0, 1  // bottom
         });
-        Geometry geometry = new Geometry(GEOMETRY_NAME, box);
+        Geometry geometry = new Geometry(NAME_GEOMETRY, box);
         Material material = new Material(assetManager, "Common/MatDefs/Light/Lighting.j3md");
         material.setBoolean("UseMaterialColors", true);
         material.setColor("Ambient", ColorRGBA.White);
@@ -48,7 +48,7 @@ public abstract class SimpleCardVisualizer<CardModelType extends BoardObjectMode
 
     @Override
     public void updateVisualisation(Node node, Card<CardModelType> card, AssetManager assetManager) {
-        Geometry geometry = (Geometry) node.getChild(GEOMETRY_NAME);
+        Geometry geometry = (Geometry) node.getChild(NAME_GEOMETRY);
         PaintableImage paintableImage = paintCard(card.getModel());
         Texture2D texture = new Texture2D();
         texture.setImage(paintableImage.getImage());

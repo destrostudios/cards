@@ -43,22 +43,16 @@ public class PlayerActionsGenerator {
 
         List<Integer> ownedCardEntities = data.query(Components.OWNED_BY).list(ownedBy(player));
         for (int cardEntity : ownedCardEntities) {
-            boolean isHandCard = data.hasComponent(cardEntity, Components.HAND_CARDS);
-            boolean isBoardCard = data.hasComponent(cardEntity, Components.BOARD);
-
-            boolean isAttacking = data.hasComponent(cardEntity, Components.DECLARED_ATTACK);
-            boolean isBlocking = data.hasComponent(cardEntity, Components.DECLARED_BLOCK);
-
             int[] spellEntities = data.getOptionalComponent(cardEntity, Components.SPELL_ENTITIES).orElseGet(() -> new int[0]);
             for (int spellEntity : spellEntities) {
-                if (isSpellCastable(player, spellEntity, phase, isHandCard, isBoardCard, isAttacking, isBlocking)) {
+                if (isSpellCastable(player, cardEntity, spellEntity, phase)) {
                     out.accept(new PlaySpellEvent(spellEntity));
                 }
             }
         }
     }
 
-    private boolean isSpellCastable(int player, int spell, TurnPhase phase, boolean isHandCard, boolean isBoardCard, boolean isAttacking, boolean isBlocking) {
+    private boolean isSpellCastable(int player, int card, int spell, TurnPhase phase) {
         switch (phase) {
             case ATTACK:
                 if (!data.hasComponent(spell, Components.Spell.CastCondition.ATTACK_PHASE)) {
@@ -80,13 +74,17 @@ public class PlayerActionsGenerator {
                 throw new AssertionError(phase.name());
         }
 
-        if ((data.hasComponent(spell, Components.Spell.CastCondition.FROM_HAND) && (!isHandCard)
-        || (data.hasComponent(spell, Components.Spell.CastCondition.FROM_BOARD) && (!isBoardCard)))) {
+        if ((data.hasComponent(spell, Components.Spell.CastCondition.FROM_HAND) && (!data.hasComponent(card, Components.HAND_CARDS))
+         || (data.hasComponent(spell, Components.Spell.CastCondition.FROM_BOARD) && (!data.hasComponent(card, Components.BOARD))))) {
             return false;
         }
 
         Integer costEntity = data.getComponent(spell, Components.Spell.COST_ENTITY);
         if (costEntity != null) {
+            if (data.hasComponent(costEntity, Components.Cost.TAP) && data.hasComponent(card, Components.TAPPED)) {
+                return false;
+            }
+
             // TODO: Neutral mana handling
             if ((!isManaCostPayable(player, costEntity, Components.ManaAmount.NEUTRAL))
             || (!isManaCostPayable(player, costEntity, Components.ManaAmount.WHITE))

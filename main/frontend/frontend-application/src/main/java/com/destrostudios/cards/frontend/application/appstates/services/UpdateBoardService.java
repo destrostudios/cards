@@ -161,6 +161,7 @@ public class UpdateBoardService {
                     };
                 }
                 card.setInteractivity(interactivity);
+                card.getModel().setPlayable(true);
             }
             else if (event instanceof DeclareAttackEvent) {
                 DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) event;

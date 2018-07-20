@@ -2,8 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
-import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
-import com.destrostudios.cards.frontend.application.appstates.services.UpdateBoardService;
+import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cards.frontend.cardgui.*;
 import com.destrostudios.cards.frontend.cardgui.animations.samples.*;
 import com.destrostudios.cards.frontend.cardgui.visualisation.*;
@@ -49,6 +48,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private boolean hasPreparedBoard = false;
     private boolean isInitialized = false;
     private UpdateBoardService updateBoardService;
+    private UpdateHudService updateHudService;
     // TODO: Cleanup, solve better
     private Event sendableEndTurnEvent;
 
@@ -146,6 +146,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
         }, new IngameCardVisualizer());
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
+        updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));
         initGameListeners();
     }
 
@@ -277,20 +278,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void updateAndResetBoard() {
         mainApplication.enqueue(() -> {
             updateBoardService.updateAndResetInteractivities();
-            updateHud();
+            updateHudService.update();
             sendableEndTurnEvent = null;
         });
-    }
-
-    private void updateHud() {
-        IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
-        EntityData entityData = gameClient.getGame().getData();
-        for (int playerEntity : entityData.query(Components.NEXT_PLAYER).list()) {
-            // TODO: Map (Currently, it's exactly entity 0 and 1)
-            int playerIndex = playerEntity;
-            int health = entityData.getComponent(playerEntity, Components.HEALTH);
-            ingameHudAppState.sePlayerHealth(playerIndex, health);
-        }
     }
 
     @Override

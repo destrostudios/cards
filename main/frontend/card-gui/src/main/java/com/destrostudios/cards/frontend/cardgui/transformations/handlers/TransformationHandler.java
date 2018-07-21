@@ -2,14 +2,12 @@ package com.destrostudios.cards.frontend.cardgui.transformations.handlers;
 
 import com.destrostudios.cards.frontend.cardgui.GameLoopListener;
 import com.destrostudios.cards.frontend.cardgui.transformations.Transformation;
-import com.destrostudios.cards.frontend.cardgui.transformations.relative.ConditionalRelativeTransformationWrapper;
 import com.destrostudios.cards.frontend.cardgui.transformations.relative.RelativeTransformation;
 import com.destrostudios.cards.frontend.cardgui.values.ValueCompositor;
 import com.destrostudios.cards.frontend.cardgui.values.ValueSetter;
 import com.jme3.math.Vector3f;
 
 import java.util.LinkedList;
-import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 public abstract class TransformationHandler<ValueType, TransformationType extends Transformation<ValueType>> implements ValueSetter<ValueType>, ValueCompositor<ValueType>, GameLoopListener {
@@ -34,9 +32,7 @@ public abstract class TransformationHandler<ValueType, TransformationType extend
         if (!isFixed) {
             for (RelativeTransformation<ValueType> relativeTransformation : relativeTransformations) {
                 relativeTransformation.update(lastTimePerFrame);
-                if (relativeTransformation.isEnabled()) {
-                    compositeValue(currentValue, relativeTransformation.getCurrentValue());
-                }
+                compositeValue(currentValue, relativeTransformation.getCurrentValue());
             }
         }
     }
@@ -66,15 +62,7 @@ public abstract class TransformationHandler<ValueType, TransformationType extend
         return currentValue;
     }
 
-    public void addRelativeTransformation(Transformation<ValueType> transformation) {
-        addRelativeTransformation(new RelativeTransformation<>(transformation));
-    }
-
-    public void addRelativeTransformation(Transformation<ValueType> transformation, BooleanSupplier condition) {
-        addRelativeTransformation(new ConditionalRelativeTransformationWrapper<>(transformation, condition));
-    }
-
-    private void addRelativeTransformation(RelativeTransformation<ValueType> relativeTransformation) {
+    public void addRelativeTransformation(RelativeTransformation<ValueType> relativeTransformation) {
         relativeTransformations.add(relativeTransformation);
     }
 

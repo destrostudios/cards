@@ -13,9 +13,13 @@ public abstract class SimpleTargetedTransformation<ValueType> extends TargetedTr
         if (!targetValue.equals(this.targetValue)) {
             setTargetValue(targetValue);
             if (resetSpeed) {
-                transformationSpeed.reset();
+                resetSpeed();
             }
         }
+    }
+
+    public void resetSpeed() {
+        transformationSpeed.reset();
     }
 
     @Override

@@ -7,12 +7,14 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 
 public class IngameHudAppState extends MyBaseAppState {
 
     private float margin = 10;
 
+    private Node guiNode = new Node();
     private BitmapText[] textPlayerHealth = new BitmapText[2];
     private BitmapText textCurrentPlayerAndPhase;
     private BitmapText textPlayerManaLabel;
@@ -52,14 +54,21 @@ public class IngameHudAppState extends MyBaseAppState {
         x += textPlayerManaLabel.getLineWidth();
         textPlayerManaNoneLabel.setLocalTranslation(x, y, 0);
 
-        mainApplication.getGuiNode().attachChild(textPlayerHealth[0]);
-        mainApplication.getGuiNode().attachChild(textPlayerHealth[1]);
-        mainApplication.getGuiNode().attachChild(textCurrentPlayerAndPhase);
-        mainApplication.getGuiNode().attachChild(textPlayerManaLabel);
-        mainApplication.getGuiNode().attachChild(textPlayerManaNoneLabel);
+        guiNode.attachChild(textPlayerHealth[0]);
+        guiNode.attachChild(textPlayerHealth[1]);
+        guiNode.attachChild(textCurrentPlayerAndPhase);
+        guiNode.attachChild(textPlayerManaLabel);
+        guiNode.attachChild(textPlayerManaNoneLabel);
         for (BitmapText textPlayerManaAmount : textPlayerManaAmounts) {
-            mainApplication.getGuiNode().attachChild(textPlayerManaAmount);
+            guiNode.attachChild(textPlayerManaAmount);
         }
+        mainApplication.getGuiNode().attachChild(guiNode);
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        mainApplication.getGuiNode().detachChild(guiNode);
     }
 
     public void setCurrentPlayerAndPhase(int playerIndex, TurnPhase turnPhase) {

@@ -14,6 +14,7 @@ import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 import com.destrostudios.cards.shared.rules.game.phases.block.*;
 import com.destrostudios.cards.shared.rules.game.phases.main.*;
@@ -230,6 +231,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         gameClient.getGame().getEvents().pre().add(ShuffleLibraryEvent.class, event -> {
             LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             //board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
+        });
+
+        gameClient.getGame().getEvents().instant().add(GameOverEvent.class, event -> {
+            boolean isWinner = (gameClient.getPlayerEntity() == event.winner);
+            mainApplication.getStateManager().attach(new GameOverAppState(isWinner));
         });
     }
 

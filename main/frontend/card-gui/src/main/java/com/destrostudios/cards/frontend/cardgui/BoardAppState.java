@@ -21,7 +21,7 @@ import java.util.HashMap;
  *
  * @author Carl
  */
-public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseAppState implements ActionListener{
+public class BoardAppState<CardModelType extends BoardObjectModel> extends BaseAppState implements ActionListener {
 
     public BoardAppState(Board<CardModelType> board, Node rootNode) {
         this.board = board;

@@ -67,6 +67,7 @@ public class GameContext {
                 new DrawCardsOnGameStartHandler(),
                 new SetStartingPlayerHandler());
         addEventHandler(events.instant(), PayCostEvent.class, new PayCostHandler());
+        addEventHandler(events.instant(), PayManaEvent.class, new PayManaHandler());
         addEventHandler(events.instant(), PlaySpellEvent.class, new PlaySpellHandler());
         addEventHandler(events.instant(), RemoveCardFromBoardEvent.class, new RemoveCardFromBoardHandler());
         addEventHandler(events.instant(), RemoveCardFromBoardZoneEvent.class, new RemoveCardFromBoardZoneHandler());

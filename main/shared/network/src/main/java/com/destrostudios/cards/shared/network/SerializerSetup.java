@@ -11,6 +11,7 @@ import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEve
 import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseOneEvent;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
+import com.destrostudios.cards.shared.rules.util.MixedManaAmount;
 import com.jme3.network.serializing.Serializer;
 
 /**
@@ -31,6 +32,7 @@ public class SerializerSetup {
                     DrawCardEvent.class,
                     GameStartEvent.class,
                     PlaySpellEvent.class,
+                        MixedManaAmount.class,
                     EndAttackPhaseEvent.class,
                     EndBlockPhaseEvent.class,
                     EndMainPhaseOneEvent.class,

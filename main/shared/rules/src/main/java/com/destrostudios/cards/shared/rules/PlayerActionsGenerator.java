@@ -11,6 +11,7 @@ import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEve
 import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseOneEvent;
 import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
+import com.destrostudios.cards.shared.rules.util.MixedManaAmount;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,14 +46,17 @@ public class PlayerActionsGenerator {
         for (int cardEntity : ownedCardEntities) {
             int[] spellEntities = data.getOptionalComponent(cardEntity, Components.SPELL_ENTITIES).orElseGet(() -> new int[0]);
             for (int spellEntity : spellEntities) {
-                if (isSpellCastable(player, cardEntity, spellEntity, phase)) {
-                    out.accept(new PlaySpellEvent(spellEntity));
+                if (isSpellCastable(cardEntity, spellEntity, phase)) {
+                    List<PlaySpellEvent> playSpellEvents = generatePlaySpellEvents(player, spellEntity);
+                    for (PlaySpellEvent playSpellEvent : playSpellEvents) {
+                        out.accept(playSpellEvent);
+                    }
                 }
             }
         }
     }
 
-    private boolean isSpellCastable(int player, int card, int spell, TurnPhase phase) {
+    private boolean isSpellCastable(int card, int spell, TurnPhase phase) {
         switch (phase) {
             case ATTACK:
                 if (!data.hasComponent(spell, Components.Spell.CastCondition.ATTACK_PHASE)) {
@@ -84,28 +88,49 @@ public class PlayerActionsGenerator {
             if (data.hasComponent(costEntity, Components.Cost.TAP) && data.hasComponent(card, Components.TAPPED)) {
                 return false;
             }
-
-            // TODO: Neutral mana handling
-            if ((!isManaCostPayable(player, costEntity, Components.ManaAmount.NEUTRAL))
-            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.WHITE))
-            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.RED))
-            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.GREEN))
-            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.BLUE))
-            || (!isManaCostPayable(player, costEntity, Components.ManaAmount.BLACK))) {
-                return false;
-            }
         }
 
         return true;
     }
 
-    private boolean isManaCostPayable(int player, int costEntity, ComponentDefinition<Integer> manaAmountComponent) {
-        Integer manaCost = data.getComponent(costEntity, manaAmountComponent);
-        if (manaCost != null) {
-            int currentMana = data.getOptionalComponent(player, manaAmountComponent).orElse(0);
-            return (currentMana >= manaCost);
+    private List<PlaySpellEvent> generatePlaySpellEvents(int player, int spellEntity) {
+        LinkedList<PlaySpellEvent> playSpellEvents = new LinkedList<>();
+
+        Integer costEntity = data.getComponent(spellEntity, Components.Spell.COST_ENTITY);
+        boolean manaPermutationsNeeded = false;
+        MixedManaAmount costManaAmount = null;
+        if (costEntity != null) {
+            costManaAmount = getMixedManaAmount(costEntity);
+            if (costManaAmount.isNotEmpty()) {
+                manaPermutationsNeeded = true;
+            }
         }
-        return true;
+        if (manaPermutationsNeeded) {
+            MixedManaAmount playerManaAmount = getMixedManaAmount(player);
+            List<MixedManaAmount> payableManaPermutations = ManaPermutations.generatePayablePermutations(playerManaAmount, costManaAmount);
+            for (MixedManaAmount payableManaPermutation : payableManaPermutations) {
+                playSpellEvents.add(new PlaySpellEvent(spellEntity, payableManaPermutation));
+            }
+        }
+        else {
+            playSpellEvents.add(new PlaySpellEvent(spellEntity));
+        }
+
+        return playSpellEvents;
+    }
+
+    private MixedManaAmount getMixedManaAmount(int entity) {
+        int neutralMana = getManaAmount(entity, Components.ManaAmount.NEUTRAL);
+        int whiteMana = getManaAmount(entity, Components.ManaAmount.WHITE);
+        int redMana = getManaAmount(entity, Components.ManaAmount.RED);
+        int greenMana = getManaAmount(entity, Components.ManaAmount.GREEN);
+        int blueMana = getManaAmount(entity, Components.ManaAmount.BLUE);
+        int blackMana = getManaAmount(entity, Components.ManaAmount.BLACK);
+        return new MixedManaAmount(neutralMana, whiteMana, redMana, greenMana, blueMana, blackMana);
+    }
+
+    private int getManaAmount(int entity, ComponentDefinition<Integer> manaComponent) {
+        return data.getOptionalComponent(entity, manaComponent).orElse(0);
     }
 
     private void generateAttacks(int player, Consumer<Event> out) {

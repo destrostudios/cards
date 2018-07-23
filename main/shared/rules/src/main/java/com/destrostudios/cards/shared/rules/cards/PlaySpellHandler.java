@@ -22,7 +22,7 @@ public class PlaySpellHandler extends GameEventHandler<PlaySpellEvent> {
 
         Integer cost = data.getComponent(event.spell, Components.Spell.COST_ENTITY);
         if (cost != null) {
-            events.fire(new PayCostEvent(card, cost));
+            events.fire(new PayCostEvent(card, cost, event.payedMana));
         }
 
         int effect = event.spell;

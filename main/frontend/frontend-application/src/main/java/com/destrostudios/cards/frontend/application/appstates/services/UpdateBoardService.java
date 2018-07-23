@@ -227,6 +227,7 @@ public class UpdateBoardService {
                     return null;
                 }
             });
+            declaringCard.getModel().setPlayable(true);
         }
     }
 

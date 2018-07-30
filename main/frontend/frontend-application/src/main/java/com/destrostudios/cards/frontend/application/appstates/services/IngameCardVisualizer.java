@@ -1,8 +1,8 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cards.frontend.cardgui.Card;
+import com.destrostudios.cards.frontend.cardgui.visualisation.CardBoxVisualizer;
 import com.destrostudios.cards.frontend.cardgui.visualisation.PaintableImage;
-import com.destrostudios.cards.frontend.cardgui.visualisation.SimpleCardVisualizer;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.jme3.asset.AssetManager;
@@ -19,7 +19,7 @@ import com.jme3.scene.shape.Quad;
 
 import java.util.HashMap;
 
-public class IngameCardVisualizer extends SimpleCardVisualizer<CardModel> {
+public class IngameCardVisualizer extends CardBoxVisualizer<CardModel> {
 
     private static final String NAME_GLOW_BOX = "glowBox";
 
@@ -34,17 +34,16 @@ public class IngameCardVisualizer extends SimpleCardVisualizer<CardModel> {
 
     private Geometry createGlowBox(AssetManager assetManager) {
         // TODO: Have these as setting/constants somewhere in the cardgui
-        float cardWidth = 0.4f;
-        float cardHeight = 0.6f;
-        float cardDepth = 0.01f;
+        float cardWidth = 0.8f;
+        float cardHeight = 1.2f;
         float glowExtension = 0.08f;
-        Geometry geometry = new Geometry(NAME_GLOW_BOX, new Quad(2 * (cardWidth + glowExtension), 2 * (cardHeight + glowExtension)));
+        Geometry geometry = new Geometry(NAME_GLOW_BOX, new Quad((cardWidth + (2 * glowExtension)), (cardHeight + (2 * glowExtension))));
         Material material = new Material(assetManager, "materials/glow_box/glow_box.j3md");
         material.setTexture("GlowMap", assetManager.loadTexture("textures/effects/card_glow.png"));
         material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         geometry.setMaterial(material);
         geometry.setQueueBucket(RenderQueue.Bucket.Translucent);
-        geometry.setLocalTranslation(-1 * (cardWidth + glowExtension), -0.5f * cardDepth, cardHeight + glowExtension);
+        geometry.setLocalTranslation(-1 * ((cardWidth / 2) + glowExtension), 0, (cardHeight / 2) + glowExtension);
         geometry.rotate(new Quaternion().fromAngleAxis(-1 * FastMath.HALF_PI, Vector3f.UNIT_X));
         geometry.addControl(new PulsatingMaterialParamControl("Alpha", 0.4f, 1, 2.5f));
         return geometry;

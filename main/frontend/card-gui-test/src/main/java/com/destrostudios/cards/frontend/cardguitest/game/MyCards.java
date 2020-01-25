@@ -26,10 +26,6 @@ public class MyCards {
         return cards.iterator();
     }
     
-    public int size() {
-        return cards.size();
-    }
-    
     public MyCard removeLast() {
         return cards.removeLast();
     }

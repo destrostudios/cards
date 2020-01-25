@@ -14,10 +14,9 @@ import com.jme3.asset.plugins.FileLocator;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.math.FastMath;
-import com.jme3.math.Quaternion;
-import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
+import com.jme3.math.*;
 import com.jme3.system.AppSettings;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,6 +47,7 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
         assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
 
         initCamera();
+        initLight();
         initListeners();
         initGame();
         initBoardGui();
@@ -66,6 +66,13 @@ public class CardguiTestApplication extends SimpleApplication implements ActionL
         flyCam.setEnabled(false);
         cam.setLocation(new Vector3f(2.584369f, 14.878008f, 0.86850137f));
         cam.setRotation(new Quaternion(-0.001344382f, 0.72532254f, -0.6884064f, -0.0014168395f));
+    }
+
+    private void initLight() {
+        rootNode.addLight(new AmbientLight(ColorRGBA.White.mult(0.4f)));
+        Vector3f lightDirection = new Vector3f(1, -5, -1).normalizeLocal();
+        DirectionalLight directionalLight = new DirectionalLight(lightDirection, ColorRGBA.White.mult(1.1f));
+        rootNode.addLight(directionalLight);
     }
     
     private void initListeners() {

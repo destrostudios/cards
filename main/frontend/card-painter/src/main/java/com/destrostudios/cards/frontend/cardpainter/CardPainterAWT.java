@@ -78,7 +78,7 @@ public class CardPainterAWT {
             if(description != null){
                 graphics.setFont(fontDescription);
                 tmpX = textStartX;
-                drawStringMultiLine(graphics, description, 180, tmpX, textStartX, tmpY, -2);
+                drawStringMultiLine(graphics, description, lineWidth, tmpX, textStartX, tmpY, -2);
                 tmpY += 18;
             }
             List<Spell> spells = cardModel.getSpells();

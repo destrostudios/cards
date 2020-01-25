@@ -18,17 +18,7 @@ public class FileAssets{
     public static String ROOT;
     
     public static void readRootFile(){
-        ROOT = toAbsolutePath(FileManager.getFileContent(toAbsolutePath("./assets.ini")));
-    }
-
-    // TODO: Configuration - It somehow only works with absolute paths when starting from IntellIJ
-    private static final String toAbsolutePath(String filePath) {
-        File file = new File(filePath).getAbsoluteFile();
-        String absolutePath = file.getAbsolutePath().replaceAll("\\\\", "/");
-        if (file.isDirectory()) {
-            absolutePath += "/";
-        }
-        return absolutePath;
+        ROOT = FileManager.getFileContent("./assets.ini");
     }
     
     public static boolean exists(String filePath){

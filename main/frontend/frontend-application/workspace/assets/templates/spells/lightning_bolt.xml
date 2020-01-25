@@ -1,0 +1,25 @@
+<template>
+    <entity>
+        <displayName>Lightning Bolt</displayName>
+        <redColor/>
+        <spellCard/>
+        <spells>
+            <entity>
+                <castableInMainPhase/>
+                <castableFromHand/>
+                <cost>
+                    <entity>
+                        <redMana>1</redMana>
+                    </entity>
+                </cost>
+                <targetRule>
+                    <entity>
+                        <creatureCard/>
+                        <board/>
+                    </entity>
+                </targetRule>
+                <damage>3</damage>
+            </entity>
+        </spells>
+    </entity>
+</template>

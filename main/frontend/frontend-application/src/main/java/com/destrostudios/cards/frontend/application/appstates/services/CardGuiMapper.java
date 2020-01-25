@@ -57,33 +57,34 @@ public class CardGuiMapper {
         List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordComponents);
         cardModel.setKeywords(keywords);
 
-        String castDescription = "Battlecry";
+        String castDescription = "CastDescription";
         cardModel.setCastDescription(castDescription);
-
-        String description = "Description";
-        cardModel.setDescription(description);
 
         boolean checkedDefaultPlaySpell = false;
         ManaCost manaCost = null;
+        String description = null;
         List<Spell> spells = new LinkedList<>();
         int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
                 Integer spellCostEntity = entityData.getComponent(spellEntity, Components.Spell.COST_ENTITY);
+                String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
                 if ((!checkedDefaultPlaySpell) && entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_HAND)) {
                     manaCost = createManaCost(entityData, spellCostEntity);
+                    description = spellDescription;
                     checkedDefaultPlaySpell = true;
                 }
                 else {
                     Spell spell = new Spell();
                     Cost cost = createCost(entityData, spellCostEntity);
                     spell.setCost(cost);
-                    spell.setDescription("Spell Description");
+                    spell.setDescription(spellDescription);
                     spells.add(spell);
                 }
             }
         }
         cardModel.setManaCost(manaCost);
+        cardModel.setDescription(description);
         cardModel.setSpells(spells);
 
         Integer attackDamage = entityData.getComponent(cardEntity, Components.ATTACK);

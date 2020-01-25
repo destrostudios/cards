@@ -79,6 +79,12 @@ public class StandardCards extends CardsUtil {
             EntityTemplate.loadTemplate(data, entity, "creatures/camel");
             return entity;
         }
+
+        public static int lightningBolt(EntityData data) {
+            int entity = data.createEntity();
+            EntityTemplate.loadTemplate(data, entity, "spells/lightning_bolt");
+            return entity;
+        }
     }
 
     public static class Green {

@@ -23,7 +23,7 @@ public class BackendApplication {
         try {
             System.out.println("Starting server...");
             SimpleGameServer server = new SimpleGameServer(port);
-            server.start();
+            server.startServer();
             System.out.println("Server started.");
         } catch (IOException ex) {
             throw new RuntimeException(ex);

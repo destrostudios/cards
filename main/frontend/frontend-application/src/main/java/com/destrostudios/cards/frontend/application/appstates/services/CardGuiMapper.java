@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destrostudios.cards.frontend.cardgui.Card;
+import com.destrostudios.cardgui.Card;
 import com.destrostudios.cards.frontend.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;

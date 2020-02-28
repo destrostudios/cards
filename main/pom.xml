@@ -14,11 +14,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jm3.group>org.jmonkeyengine</jm3.group>
         <jm3.version>3.2.1-stable</jm3.version>
+        <card-gui.version>ca80dbffdf90ab76957ffdcdf716b7f9ad757cd7</card-gui.version>
     </properties>
     <repositories>
         <repository>
             <id>jcenter</id>
             <url>https://jcenter.bintray.com</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
     <build>

@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.cardpainter;
 
-import com.destrostudios.cards.frontend.cardgui.visualisation.PaintableImage;
+import com.destrostudios.cardgui.samples.visualisation.PaintableImage;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 
 import java.awt.Graphics2D;

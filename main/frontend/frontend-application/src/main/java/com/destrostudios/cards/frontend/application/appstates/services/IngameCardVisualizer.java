@@ -1,8 +1,8 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destrostudios.cards.frontend.cardgui.Card;
-import com.destrostudios.cards.frontend.cardgui.visualisation.CardBoxVisualizer;
-import com.destrostudios.cards.frontend.cardgui.visualisation.PaintableImage;
+import com.destrostudios.cardgui.Card;
+import com.destrostudios.cardgui.samples.visualisation.CardBoxVisualizer;
+import com.destrostudios.cardgui.samples.visualisation.PaintableImage;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.jme3.asset.AssetManager;

@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.application;
 
-import com.destrostudios.cards.frontend.cardgui.CardZone;
+import com.destrostudios.cardgui.CardZone;
 
 import java.util.ArrayList;
 

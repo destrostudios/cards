@@ -1,9 +1,9 @@
 package com.destrostudios.cards.frontend.application;
 
-import com.destrostudios.cards.frontend.cardgui.Card;
-import com.destrostudios.cards.frontend.cardgui.JMonkeyUtil;
-import com.destrostudios.cards.frontend.cardgui.transformations.SimpleTargetRotationTransformation;
-import com.destrostudios.cards.frontend.cardgui.transformations.relative.samples.HoveringTransformation;
+import com.destrostudios.cardgui.Card;
+import com.destrostudios.cardgui.JMonkeyUtil;
+import com.destrostudios.cardgui.transformations.SimpleTargetRotationTransformation;
+import com.destrostudios.cardgui.samples.transformations.relative.HoveringTransformation;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;

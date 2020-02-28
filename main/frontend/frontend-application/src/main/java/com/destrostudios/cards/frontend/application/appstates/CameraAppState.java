@@ -1,7 +1,7 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
-import com.destrostudios.cards.frontend.cardgui.transformations.*;
-import com.destrostudios.cards.frontend.cardgui.transformations.speeds.*;
+import com.destrostudios.cardgui.transformations.*;
+import com.destrostudios.cardgui.transformations.speeds.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.FlyByCamera;

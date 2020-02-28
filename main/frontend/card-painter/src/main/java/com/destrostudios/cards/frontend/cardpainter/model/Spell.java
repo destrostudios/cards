@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.cardpainter.model;
 
-import com.destrostudios.cards.frontend.cardgui.BoardObjectModel;
+import com.destrostudios.cardgui.BoardObjectModel;
 
 import java.util.Objects;
 

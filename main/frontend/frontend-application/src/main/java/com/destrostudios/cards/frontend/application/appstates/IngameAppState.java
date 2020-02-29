@@ -208,8 +208,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 board.addZone(graveyardZone);
                 playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, landZone, creatureZone, enchantmentZone, graveyardZone));
             }
-            BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode());
-            boardAppState.setDraggedCardProjectionZ(0.9975f);
+            BoardSettings boardSettings = BoardSettings.builder()
+                    .draggedCardProjectionZ(0.9975f)
+                    .build();
+            BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode(), boardSettings);
             mainApplication.getStateManager().attach(boardAppState);
             updateAndResetBoard();
             updatePossibleActions();

@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jm3.group>org.jmonkeyengine</jm3.group>
         <jm3.version>3.2.1-stable</jm3.version>
-        <card-gui.version>ca80dbffdf90ab76957ffdcdf716b7f9ad757cd7</card-gui.version>
+        <card-gui.version>3ec6516e2305acc1b74eed954e90dca3cec3d3be</card-gui.version>
     </properties>
     <repositories>
         <repository>

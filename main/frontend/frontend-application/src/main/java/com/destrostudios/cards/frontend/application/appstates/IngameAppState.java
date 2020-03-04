@@ -1,13 +1,14 @@
 package com.destrostudios.cards.frontend.application.appstates;
 
-import com.destrostudios.cards.frontend.application.*;
-import com.destrostudios.cards.frontend.application.appstates.boards.*;
-import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cardgui.*;
+import com.destrostudios.cardgui.boardobjects.TargetArrow;
+import com.destrostudios.cardgui.samples.boardobjects.targetarrow.SimpleTargetArrowVisualizer;
 import com.destrostudios.cardgui.samples.animations.*;
 import com.destrostudios.cardgui.samples.visualisation.*;
 import com.destrostudios.cardgui.zones.*;
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.*;
+import com.destrostudios.cards.frontend.application.appstates.boards.*;
+import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
@@ -43,7 +44,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
     private static final float ZONE_HEIGHT = 1.3f;
     private SimpleGameClient gameClient;
-    private Board<CardModel> board;
+    private Board board;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap;
     private boolean hasPreparedBoard = false;
@@ -117,8 +118,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void initBoard() {
+        board = new Board();
         // TODO: Offer this kind of ZoneVisualizer out of the box from the cardgui
-        board = new Board<>(new DebugZoneVisualizer() {
+        board.register(CardZone.class, new DebugZoneVisualizer() {
 
             @Override
             public void createVisualisation(Node node, AssetManager assetManager) {
@@ -145,7 +147,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
                 return super.getSize(zone);
             }
-        }, new IngameCardVisualizer());
+        });
+        board.register(Card.class, new IngameCardVisualizer());
+        board.register(TargetArrow.class, new SimpleTargetArrowVisualizer());
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));
         initGameListeners();
@@ -211,7 +215,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             BoardSettings boardSettings = BoardSettings.builder()
                     .draggedCardProjectionZ(0.9975f)
                     .build();
-            BoardAppState boardAppState = new BoardAppState<>(board, mainApplication.getRootNode(), boardSettings);
+            BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
             mainApplication.getStateManager().attach(boardAppState);
             updateAndResetBoard();
             updatePossibleActions();

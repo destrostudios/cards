@@ -1,12 +1,11 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destrostudios.cards.frontend.application.CardGuiMap;
-import com.destrostudios.cards.frontend.application.PlayerZones;
-import com.destrostudios.cards.frontend.application.SimpleGameClient;
 import com.destrostudios.cardgui.*;
 import com.destrostudios.cardgui.events.*;
 import com.destrostudios.cardgui.interactivities.*;
-import com.destrostudios.cardgui.targetarrow.TargetSnapMode;
+import com.destrostudios.cards.frontend.application.CardGuiMap;
+import com.destrostudios.cards.frontend.application.PlayerZones;
+import com.destrostudios.cards.frontend.application.SimpleGameClient;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -24,14 +23,14 @@ import java.util.stream.IntStream;
 
 public class UpdateBoardService {
 
-    public UpdateBoardService(SimpleGameClient gameClient, Board<CardModel> board, HashMap<Integer, PlayerZones> playerZonesMap, CardGuiMap cardGuiMap) {
+    public UpdateBoardService(SimpleGameClient gameClient, Board board, HashMap<Integer, PlayerZones> playerZonesMap, CardGuiMap cardGuiMap) {
         this.gameClient = gameClient;
         this.board = board;
         this.playerZonesMap = playerZonesMap;
         this.cardGuiMap = cardGuiMap;
     }
     private SimpleGameClient gameClient;
-    private Board<CardModel> board;
+    private Board board;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private CardGuiMap cardGuiMap;
     private Map<Integer, List<Event>> possibleDeclareBattleEventsPerSource = new HashMap<>();
@@ -87,7 +86,6 @@ public class UpdateBoardService {
 
             if (cardZoneIndex != null) {
                 CardGuiMapper.updateModel(card, entityData, cardEntity);
-                board.triggerEvent(new ModelUpdatedEvent(card));
                 board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
             }
         }
@@ -210,18 +208,19 @@ public class UpdateBoardService {
                             }
                         }
                     }
-                    for (Event declareBattleEvent : declareBattleEventsOfSource) {
-                        boolean isDeclaredTarget = false;
-                        if (declareBattleEvent instanceof DeclareAttackEvent) {
-                            DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) declareBattleEvent;
-                            isDeclaredTarget = (declareAttackEvent.target == targetEntity);
-                        }
-                        else if (declareBattleEvent instanceof DeclareBlockEvent) {
-                            DeclareBlockEvent declareBlockEvent = (DeclareBlockEvent) declareBattleEvent;
-                            isDeclaredTarget = (declareBlockEvent.target == targetEntity);
-                        }
-                        if (isDeclaredTarget) {
-                            return declareBattleEvent;
+                    if (targetEntity != null) {
+                        for (Event declareBattleEvent : declareBattleEventsOfSource) {
+                            boolean isDeclaredTarget = false;
+                            if (declareBattleEvent instanceof DeclareAttackEvent) {
+                                DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) declareBattleEvent;
+                                isDeclaredTarget = (declareAttackEvent.target == targetEntity);
+                            } else if (declareBattleEvent instanceof DeclareBlockEvent) {
+                                DeclareBlockEvent declareBlockEvent = (DeclareBlockEvent) declareBattleEvent;
+                                isDeclaredTarget = (declareBlockEvent.target == targetEntity);
+                            }
+                            if (isDeclaredTarget) {
+                                return declareBattleEvent;
+                            }
                         }
                     }
                     return null;

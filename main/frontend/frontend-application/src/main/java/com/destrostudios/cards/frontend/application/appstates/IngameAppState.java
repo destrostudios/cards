@@ -29,7 +29,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.*;
-import com.jme3.scene.Node;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 
 import java.util.HashMap;
@@ -123,9 +123,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         board.register(CardZone.class, new DebugZoneVisualizer() {
 
             @Override
-            public void createVisualisation(Node node, AssetManager assetManager) {
-                super.createVisualisation(node, assetManager);
-                node.setCullHint(Spatial.CullHint.Always);
+            protected Geometry createAttachment(AssetManager assetManager) {
+                Geometry geometry = super.createAttachment(assetManager);
+                geometry.setCullHint(Spatial.CullHint.Always);
+                return geometry;
             }
 
             @Override

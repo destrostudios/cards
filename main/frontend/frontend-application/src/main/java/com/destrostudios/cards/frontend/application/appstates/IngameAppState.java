@@ -2,7 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cardgui.*;
 import com.destrostudios.cardgui.boardobjects.TargetArrow;
-import com.destrostudios.cardgui.samples.boardobjects.targetarrow.SimpleTargetArrowVisualizer;
+import com.destrostudios.cardgui.samples.boardobjects.targetarrow.*;
 import com.destrostudios.cardgui.samples.animations.*;
 import com.destrostudios.cardgui.samples.visualisation.*;
 import com.destrostudios.cardgui.zones.*;
@@ -150,7 +150,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
         });
         board.register(Card.class, new IngameCardVisualizer());
-        board.register(TargetArrow.class, new SimpleTargetArrowVisualizer());
+        board.register(TargetArrow.class, new SimpleTargetArrowVisualizer(new SimpleTargetArrowSettings()));
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));
         initGameListeners();

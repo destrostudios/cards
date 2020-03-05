@@ -100,10 +100,10 @@ public class UpdateBoardService {
                 DrawCardEvent drawCardEvent = (DrawCardEvent) event;
                 for (int ownLibraryCardEntity : entityData.query(Components.LIBRARY).list(cardEntity -> entityData.hasComponentValue(cardEntity, Components.OWNED_BY, drawCardEvent.player))) {
                     Card<CardModel> libraryCard = cardGuiMap.getOrCreateCard(ownLibraryCardEntity);
-                    libraryCard.setInteractivity(new ClickInteractivity<CardModel>() {
+                    libraryCard.setInteractivity(new ClickInteractivity() {
 
                         @Override
-                        public void trigger(BoardObject<CardModel> boardObject, BoardObject target) {
+                        public void trigger(BoardObject source, BoardObject target) {
                             gameClient.requestAction(drawCardEvent);
                         }
                     });
@@ -174,7 +174,7 @@ public class UpdateBoardService {
             int declaringEntity = declareBattleEventsEntry.getKey();
             List<Event> declareBattleEventsOfSource = declareBattleEventsEntry.getValue();
             Card<CardModel> declaringCard = cardGuiMap.getOrCreateCard(declaringEntity);
-            declaringCard.setInteractivity(new AimToTargetInteractivity<CardModel>(TargetSnapMode.VALID) {
+            declaringCard.setInteractivity(new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                 @Override
                 public boolean isValid(BoardObject boardObject) {
@@ -182,7 +182,7 @@ public class UpdateBoardService {
                 }
 
                 @Override
-                public void trigger(BoardObject<CardModel> boardObject, BoardObject target) {
+                public void trigger(BoardObject source, BoardObject target) {
                     gameClient.requestAction(getDeclareBattleEvent(target));
                 }
 

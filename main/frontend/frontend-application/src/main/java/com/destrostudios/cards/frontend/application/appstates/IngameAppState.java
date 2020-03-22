@@ -120,7 +120,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void initBoard() {
         board = new Board();
         // TODO: Offer this kind of ZoneVisualizer out of the box from the cardgui
-        board.register(CardZone.class, new DebugZoneVisualizer() {
+        board.registerVisualizer_Class(CardZone.class, new DebugZoneVisualizer() {
 
             @Override
             protected Geometry createAttachment(AssetManager assetManager) {
@@ -149,8 +149,18 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 return super.getSize(zone);
             }
         });
-        board.register(Card.class, new IngameCardVisualizer());
-        board.register(TargetArrow.class, new SimpleTargetArrowVisualizer(new SimpleTargetArrowSettings()));
+        board.registerVisualizer_ZonePosition(zonePosition -> {
+            for (PlayerZones playerZones : playerZonesMap.values()) {
+                if ((zonePosition.getZone() == playerZones.getLandZone())
+                 || (zonePosition.getZone() == playerZones.getCreatureZone())
+                 || (zonePosition.getZone() == playerZones.getEnchantmentZone())) {
+                    return true;
+                }
+            }
+            return false;
+        }, new IngameCardVisualizer_Minified());
+        board.registerVisualizer_Class(Card.class, new IngameCardVisualizer_Full());
+        board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(new SimpleTargetArrowSettings()));
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));
         initGameListeners();

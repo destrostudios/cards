@@ -19,7 +19,7 @@ import com.jme3.scene.shape.Quad;
 
 import java.util.HashMap;
 
-public class IngameCardVisualizer extends CardBoxVisualizer<CardModel> {
+public class IngameCardVisualizer_Full extends CardBoxVisualizer<CardModel> {
 
     private static final String NAME_GLOW_BOX = "glowBox";
 
@@ -57,8 +57,7 @@ public class IngameCardVisualizer extends CardBoxVisualizer<CardModel> {
             // Here we can have different colors for different effects
             glowBox.getMaterial().setColor("Color", ColorRGBA.White);
             node.attachChild(glowBox);
-        }
-        else {
+        } else {
             node.detachChild(glowBox);
         }
     }
@@ -66,7 +65,7 @@ public class IngameCardVisualizer extends CardBoxVisualizer<CardModel> {
     @Override
     public PaintableImage paintCard(CardModel cardModel) {
         PaintableImage paintableImage = new PaintableImage(400, 560);
-        CardPainterJME.drawCard(paintableImage, cardModel);
+        CardPainterJME.drawCard_Full(paintableImage, cardModel);
         return paintableImage;
     }
 }

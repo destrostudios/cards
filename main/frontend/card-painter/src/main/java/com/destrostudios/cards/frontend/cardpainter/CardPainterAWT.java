@@ -30,7 +30,7 @@ public class CardPainterAWT {
 
     private static int tmpX;
     private static int tmpY;
-    public static void drawCard(Graphics2D graphics, CardModel cardModel, int width, int height) {
+    public static void drawCard_Full(Graphics2D graphics, CardModel cardModel, int width, int height) {
         graphics = (Graphics2D) graphics.create();
         if (cardModel.isFront()) {
             List<String> drawnKeywords = new LinkedList<>();
@@ -44,7 +44,7 @@ public class CardPainterAWT {
             String imageFilePath = CardImages.getCardImageFilePath(cardModel);
             graphics.drawImage(CardImages.getCachedImage(imageFilePath, 329, 242), 35, 68, null);
             List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors = cardModel.getColors();
-            graphics.drawImage(getCardBackgroundImage(colors, width, height), 0, 0, null);
+            graphics.drawImage(getCardBackgroundImage(colors, width, height, "full"), 0, 0, null);
             graphics.setFont(fontTitle);
             graphics.setColor(Color.BLACK);
             String title = cardModel.getTitle();
@@ -100,25 +100,7 @@ public class CardPainterAWT {
                 drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, textStartX, tmpY, -2);
                 tmpY += 18;
             }
-            tmpY = 513;
-            Integer attackDamage = cardModel.getAttackDamage();
-            if (attackDamage != null) {
-                graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
-                String attackDamageText = ("" + attackDamage);
-                graphics.setFont(fontStats);
-                Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
-                tmpX = (int) (65 - (attackDamageBounds.getWidth() / 2));
-                drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, Color.WHITE);
-            }
-            Integer lifepoints = cardModel.getLifepoints();
-            if (lifepoints != null) {
-                graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
-                String lifepointsText = ("" + lifepoints);
-                graphics.setFont(fontStats);
-                Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);
-                tmpX = (int) (335 - (lifepointsBounds.getWidth() / 2));
-                drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, (cardModel.isDamaged() ? Color.RED : Color.WHITE));
-            }
+            drawStats(graphics, cardModel);
             List<String> tribes = cardModel.getTribes();
             if (tribes.size() > 0) {
                 String tribesText = "";
@@ -139,6 +121,40 @@ public class CardPainterAWT {
         graphics.dispose();
     }
 
+    public static void drawCard_Minified(Graphics2D graphics, CardModel cardModel, int width, int height) {
+        graphics = (Graphics2D) graphics.create();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(36, 36, 328, 488);
+        String imageFilePath = CardImages.getCardImageFilePath(cardModel);
+        graphics.drawImage(CardImages.getCachedImage(imageFilePath, 663, 488), -131, 36, null);
+        List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors = cardModel.getColors();
+        graphics.drawImage(getCardBackgroundImage(colors, width, height, "rect"), 0, 0, null);
+        drawStats(graphics, cardModel);
+        graphics.dispose();
+    }
+
+    private static void drawStats(Graphics2D graphics, CardModel cardModel) {
+        tmpY = 513;
+        Integer attackDamage = cardModel.getAttackDamage();
+        if (attackDamage != null) {
+            graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
+            String attackDamageText = ("" + attackDamage);
+            graphics.setFont(fontStats);
+            Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
+            tmpX = (int) (65 - (attackDamageBounds.getWidth() / 2));
+            drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, Color.WHITE);
+        }
+        Integer lifepoints = cardModel.getLifepoints();
+        if (lifepoints != null) {
+            graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
+            String lifepointsText = ("" + lifepoints);
+            graphics.setFont(fontStats);
+            Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);
+            tmpX = (int) (335 - (lifepointsBounds.getWidth() / 2));
+            drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, (cardModel.isDamaged() ? Color.RED : Color.WHITE));
+        }
+    }
+
     private static void drawOutlinedText(Graphics2D graphics, String text, int x, int y, Color outlineColor, Color textColor) {
         graphics.setColor(outlineColor);
         graphics.drawString(text, x - 1, y - 1);
@@ -155,8 +171,8 @@ public class CardPainterAWT {
     }
 
     private static HashMap<String, BufferedImage> cardBackgroundImages = new HashMap<>();
-    public static BufferedImage getCardBackgroundImage(List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors, int width, int height){
-        String key = "";
+    public static BufferedImage getCardBackgroundImage(List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors, int width, int height, String type){
+        String key = type + ",";
         for(int i=0;i<colors.size();i++){
             if(i != 0){
                 key += ",";
@@ -177,7 +193,7 @@ public class CardPainterAWT {
                         if(lineX >= width){
                             break;
                         }
-                        Image templateImage = CardImages.getCachedImage("images/templates/template_" + color.ordinal() + ".png");
+                        Image templateImage = CardImages.getCachedImage("images/templates/template_" + type + "_" + color.ordinal() + ".png");
                         float alpha;
                         if(((i < (0.5 * partWidth)) && (lineX < (partWidth / 2))) || (i > (0.5 * partWidth))){
                             alpha = 1;

@@ -9,12 +9,14 @@ import com.destrostudios.cardgui.zones.*;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
 import com.destrostudios.cards.frontend.application.appstates.services.*;
+import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
+import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 import com.destrostudios.cards.shared.rules.game.phases.block.*;
@@ -51,6 +53,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private boolean isInitialized = false;
     private UpdateBoardService updateBoardService;
     private UpdateHudService updateHudService;
+    private EntryAnimationService entryAnimationService;
     // TODO: Cleanup, solve better
     private Event sendableEndTurnEvent;
 
@@ -163,6 +166,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(new SimpleTargetArrowSettings()));
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));
+        entryAnimationService = new EntryAnimationService(mainApplication);
         initGameListeners();
     }
 
@@ -244,6 +248,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         gameClient.getGame().getEvents().instant().add(StartBlockPhaseEvent.class, event -> onTurnPhaseStarted());
         gameClient.getGame().getEvents().instant().add(StartMainPhaseTwoEvent.class, event -> onTurnPhaseStarted());
 
+        gameClient.getGame().getEvents().resolved().add(AddCardToCreatureZoneEvent.class, event -> tryPlayEntryAnimation(event.card));
         gameClient.getGame().getEvents().pre().add(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 1, 0.01f)));
         gameClient.getGame().getEvents().pre().add(ShuffleLibraryEvent.class, event -> {
             LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
@@ -303,6 +308,16 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             updateBoardService.updateAndResetInteractivities();
             updateHudService.update();
             sendableEndTurnEvent = null;
+        });
+    }
+
+    private void tryPlayEntryAnimation(int cardEntity) {
+        mainApplication.enqueue(() -> {
+            Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
+            Animation entryAnimation = entryAnimationService.getEntryAnimation(card);
+            if (entryAnimation != null) {
+                board.playAnimation(entryAnimation);
+            }
         });
     }
 

@@ -334,7 +334,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void processNextEvents() {
         EventQueue eventQueue = gameClient.getGame().getEvents();
         if (eventQueue.hasNextTriggeredHandler()) {
-            while (!board.isAnimationQueueBlocking()) {
+            while (!board.isAnimationPlaying()) {
                 eventQueue.triggerNextHandler();
                 if (!eventQueue.hasNextTriggeredHandler()) {
                     updatePossibleActions();

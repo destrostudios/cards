@@ -4,7 +4,7 @@ import com.destrostudios.cardgui.*;
 import com.destrostudios.cardgui.boardobjects.TargetArrow;
 import com.destrostudios.cardgui.samples.boardobjects.targetarrow.*;
 import com.destrostudios.cardgui.samples.animations.*;
-import com.destrostudios.cardgui.samples.visualisation.*;
+import com.destrostudios.cardgui.samples.visualization.*;
 import com.destrostudios.cardgui.zones.*;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
@@ -126,8 +126,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         board.registerVisualizer_Class(CardZone.class, new DebugZoneVisualizer() {
 
             @Override
-            protected Geometry createAttachment(AssetManager assetManager) {
-                Geometry geometry = super.createAttachment(assetManager);
+            protected Geometry createVisualizationObject(AssetManager assetManager) {
+                Geometry geometry = super.createVisualizationObject(assetManager);
                 geometry.setCullHint(Spatial.CullHint.Always);
                 return geometry;
             }
@@ -161,8 +161,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             }
             return false;
-        }, new IngameCardVisualizer_Minified());
-        board.registerVisualizer_Class(Card.class, new IngameCardVisualizer_Full());
+        }, new IngameCardVisualizer(true));
+        board.registerVisualizer_Class(Card.class, new IngameCardVisualizer(false));
         board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(new SimpleTargetArrowSettings()));
         updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
         updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));

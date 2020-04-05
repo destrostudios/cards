@@ -1,6 +1,6 @@
 package com.destrostudios.cards.frontend.cardpainter;
 
-import com.destrostudios.cardgui.samples.visualisation.PaintableImage;
+import com.destrostudios.cardgui.samples.visualization.PaintableImage;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 
 import java.awt.Graphics2D;
@@ -21,6 +21,6 @@ public class CardPainterJME {
         BufferedImage bufferedImage = new BufferedImage(paintableImage.getWidth(), paintableImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
         painter.accept(graphics);
-        paintableImage.loadImage(bufferedImage, true);
+        paintableImage.loadImage(bufferedImage, false);
     }
 }

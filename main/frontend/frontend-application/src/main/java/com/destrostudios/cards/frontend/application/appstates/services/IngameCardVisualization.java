@@ -2,8 +2,8 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cardgui.samples.visualization.CustomAttachmentVisualization;
 import com.destrostudios.cardgui.samples.visualization.GlowBox;
-import com.destrostudios.cardgui.samples.visualization.ModelledCard;
 import com.destrostudios.cardgui.samples.visualization.PaintableImage;
+import com.destrostudios.cardgui.samples.visualization.cards.modelled.FoilModelledCard;
 import com.destrostudios.cards.frontend.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
 import com.jme3.asset.AssetManager;
@@ -15,13 +15,13 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
     public IngameCardVisualization(AssetManager assetManager, boolean minified) {
         this.minified = minified;
         node = new Node();
-        modelledCard = new ModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/magic.png", ColorRGBA.Black);
+        modelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/magic.png", ColorRGBA.Black);
         node.attachChild(modelledCard.getNode());
         glowBox = new GlowBox(assetManager, 0.96f, 1.28f);
     }
     private boolean minified;
     private Node node;
-    private ModelledCard modelledCard;
+    private FoilModelledCard modelledCard;
     private GlowBox glowBox;
 
     public void updateCardFront(CardModel cardModel) {

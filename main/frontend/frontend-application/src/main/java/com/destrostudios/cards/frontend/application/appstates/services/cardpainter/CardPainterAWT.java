@@ -1,9 +1,9 @@
-package com.destrostudios.cards.frontend.cardpainter;
+package com.destrostudios.cards.frontend.application.appstates.services.cardpainter;
 
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
-import com.destrostudios.cards.frontend.cardpainter.model.Cost;
-import com.destrostudios.cards.frontend.cardpainter.model.ManaCost;
-import com.destrostudios.cards.frontend.cardpainter.model.Spell;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Cost;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.ManaCost;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Spell;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -30,7 +30,7 @@ public class CardPainterAWT {
 
     private static int tmpX;
     private static int tmpY;
-    public static void drawCard_Full(Graphics2D graphics, CardModel cardModel, int width, int height) {
+    public static void drawCardFront_Full_Content(Graphics2D graphics, CardModel cardModel, int width, int height) {
         graphics = (Graphics2D) graphics.create();
         if (cardModel.isFront()) {
             List<String> drawnKeywords = new LinkedList<>();
@@ -39,11 +39,7 @@ public class CardPainterAWT {
             if (castDescription != null) {
                 drawnKeywords.add("Cast");
             }
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(35, 68, 329, 242);
-            String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 329, 242), 35, 68, null);
-            List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors = cardModel.getColors();
+            List<com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color> colors = cardModel.getColors();
             graphics.drawImage(getCardBackgroundImage(colors, width, height, "full"), 0, 0, null);
             graphics.setFont(fontTitle);
             graphics.setColor(Color.BLACK);
@@ -100,7 +96,6 @@ public class CardPainterAWT {
                 drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, textStartX, tmpY, -2);
                 tmpY += 18;
             }
-            drawStats(graphics, cardModel);
             List<String> tribes = cardModel.getTribes();
             if (tribes.size() > 0) {
                 String tribesText = "";
@@ -121,15 +116,31 @@ public class CardPainterAWT {
         graphics.dispose();
     }
 
-    public static void drawCard_Minified(Graphics2D graphics, CardModel cardModel, int width, int height) {
+    public static void drawCardFront_Full_Artwork(Graphics2D graphics, CardModel cardModel) {
+        graphics = (Graphics2D) graphics.create();
+        if (cardModel.isFront()) {
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(35, 68, 329, 242);
+            String imageFilePath = CardImages.getCardImageFilePath(cardModel);
+            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 329, 242), 35, 68, null);
+        }
+        graphics.dispose();
+    }
+
+    public static void drawCardFront_Minified_Artwork(Graphics2D graphics, CardModel cardModel) {
         graphics = (Graphics2D) graphics.create();
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(36, 36, 328, 488);
+        graphics.fillRect(0, 0, 400, 560);
         String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-        graphics.drawImage(CardImages.getCachedImage(imageFilePath, 663, 488), -131, 36, null);
-        List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors = cardModel.getColors();
-        graphics.drawImage(getCardBackgroundImage(colors, width, height, "rect"), 0, 0, null);
-        drawStats(graphics, cardModel);
+        graphics.drawImage(CardImages.getCachedImage(imageFilePath, 761, 560), -181, 0, null);
+        graphics.dispose();
+    }
+
+    public static void drawCardFront_Front(Graphics2D graphics, CardModel cardModel) {
+        graphics = (Graphics2D) graphics.create();
+        if (cardModel.isFront()) {
+            drawStats(graphics, cardModel);
+        }
         graphics.dispose();
     }
 
@@ -171,7 +182,7 @@ public class CardPainterAWT {
     }
 
     private static HashMap<String, BufferedImage> cardBackgroundImages = new HashMap<>();
-    public static BufferedImage getCardBackgroundImage(List<com.destrostudios.cards.frontend.cardpainter.model.Color> colors, int width, int height, String type){
+    public static BufferedImage getCardBackgroundImage(List<com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color> colors, int width, int height, String type){
         String key = type + ",";
         for(int i=0;i<colors.size();i++){
             if(i != 0){
@@ -186,7 +197,7 @@ public class CardPainterAWT {
             Graphics2D imageGraphics = image.createGraphics();
             int x = 0;
             int lineX;
-            for(com.destrostudios.cards.frontend.cardpainter.model.Color color : colors){
+            for(com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color color : colors){
                 for(int i=(int) (-0.5f * partWidth);i<(1.5f * partWidth);i++){
                     lineX = (x + i);
                     if(lineX > 0){
@@ -238,7 +249,7 @@ public class CardPainterAWT {
     private static void drawSpellCostManaAmount(Graphics2D graphics, ManaCost manaCost, int lineWidth, int startX, int followingX, int y){
         tmpX = startX;
         tmpY = y;
-        for(com.destrostudios.cards.frontend.cardpainter.model.Color color : com.destrostudios.cards.frontend.cardpainter.model.Color.values()){
+        for(com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color color : com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color.values()){
             Integer amount = manaCost.get(color);
             if (amount != null) {
                 for (int i = 0; i < amount; i++) {
@@ -256,7 +267,7 @@ public class CardPainterAWT {
     private static void drawCardCostManaAmount(Graphics2D graphics, ManaCost manaCost, int endX, int y){
         tmpX = endX;
         tmpY = y;
-        for(com.destrostudios.cards.frontend.cardpainter.model.Color color : com.destrostudios.cards.frontend.cardpainter.model.Color.values()){
+        for(com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color color : com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color.values()){
             Integer amount = manaCost.get(color);
             if (amount != null) {
                 for (int i = 0; i < amount; i++) {

@@ -2,7 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cardgui.Card;
 import com.destrostudios.cardgui.samples.visualization.CustomAttachmentVisualizer;
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;

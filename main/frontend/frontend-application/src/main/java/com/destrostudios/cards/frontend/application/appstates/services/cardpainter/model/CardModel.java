@@ -1,6 +1,7 @@
-package com.destrostudios.cards.frontend.cardpainter.model;
+package com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model;
 
 import com.destrostudios.cardgui.BoardObjectModel;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class CardModel extends BoardObjectModel {
     private Integer lifepoints;
     private boolean isDamaged;
     private String flavourText;
+    private Foil foil;
 
     public boolean isFront() {
         return isFront;
@@ -78,6 +80,10 @@ public class CardModel extends BoardObjectModel {
         return flavourText;
     }
 
+    public Foil getFoil() {
+        return foil;
+    }
+
     public void setFront(boolean isFront) {
         updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
     }
@@ -132,5 +138,9 @@ public class CardModel extends BoardObjectModel {
 
     public void setFlavourText(String flavourText) {
         updateIfNotEquals(this.flavourText, flavourText, () -> this.flavourText = flavourText);
+    }
+
+    public void setFoil(Foil foil) {
+        this.foil = foil;
     }
 }

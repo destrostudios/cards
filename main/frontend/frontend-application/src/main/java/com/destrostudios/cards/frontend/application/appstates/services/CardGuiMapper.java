@@ -1,7 +1,7 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cardgui.Card;
-import com.destrostudios.cards.frontend.cardpainter.model.*;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
@@ -98,6 +98,8 @@ public class CardGuiMapper {
 
         String flavourText = entityData.getComponent(cardEntity, Components.FLAVOUR_TEXT);
         cardModel.setFlavourText(flavourText);
+
+        cardModel.setFoil(entityData.getComponent(cardEntity, Components.FOIL));
     }
 
     private static <T> List<T> createListBasedOnComponents(EntityData entityData, int entity, Map<ComponentDefinition, T> componentValueMap) {

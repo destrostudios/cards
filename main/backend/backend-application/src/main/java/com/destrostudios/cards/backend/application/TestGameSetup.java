@@ -4,6 +4,7 @@ import com.destrostudios.cards.backend.application.templates.CardPool;
 import com.destrostudios.cards.backend.application.templates.TestLibraries;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,8 +34,16 @@ public class TestGameSetup {
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
         for (int i = 0; i < librarySize; i++) {
             int card = cards.selectRandomCard(ThreadLocalRandom.current()::nextInt).create(data);
+            setRandomFoil(card);
             data.setComponent(card, Components.OWNED_BY, player);
             data.setComponent(card, Components.LIBRARY, i);
+        }
+    }
+
+    private void setRandomFoil(int card) {
+        switch ((int) (Math.random() * 5)) {
+            case 0: data.setComponent(card, Components.FOIL, Foil.IMAGE); break;
+            case 1: data.setComponent(card, Components.FOIL, Foil.FULL); break;
         }
     }
 

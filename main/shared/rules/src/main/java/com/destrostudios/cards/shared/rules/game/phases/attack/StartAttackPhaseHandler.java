@@ -3,7 +3,6 @@ package com.destrostudios.cards.shared.rules.game.phases.attack;
 import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.game.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -9,7 +9,7 @@ import com.destrostudios.cardgui.zones.*;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
 import com.destrostudios.cards.frontend.application.appstates.services.*;
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;

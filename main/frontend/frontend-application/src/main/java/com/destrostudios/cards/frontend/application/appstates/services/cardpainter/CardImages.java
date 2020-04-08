@@ -1,9 +1,10 @@
-package com.destrostudios.cards.frontend.cardpainter;
+package com.destrostudios.cards.frontend.application.appstates.services.cardpainter;
 
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.files.FileAssets;
+
 import javax.imageio.ImageIO;
-import java.awt.Image;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;

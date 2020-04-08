@@ -9,7 +9,6 @@
     <artifactId>frontend</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>card-painter</module>
         <module>frontend-application</module>
     </modules>
     <properties>

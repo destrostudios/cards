@@ -6,7 +6,7 @@ import com.destrostudios.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.application.CardGuiMap;
 import com.destrostudios.cards.frontend.application.PlayerZones;
 import com.destrostudios.cards.frontend.application.SimpleGameClient;
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;

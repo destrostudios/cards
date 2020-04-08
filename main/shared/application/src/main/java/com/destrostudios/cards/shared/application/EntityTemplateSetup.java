@@ -6,6 +6,7 @@ import com.destrostudios.cards.shared.entities.templates.XMLTemplateManager;
 import com.destrostudios.cards.shared.entities.templates.xmlparser.*;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 
 public class EntityTemplateSetup {
@@ -24,6 +25,13 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.ENCHANTMENT_CARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.ENCHANTMENT_ZONE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.FLAVOUR_TEXT));
+        xmlTemplateManager.registerComponent(new XMLComponentParser<Foil>(Components.FOIL) {
+
+            @Override
+            public Foil parseValue() {
+                return Foil.valueOf(element.getText());
+            }
+        });
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.GRAVEYARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.HAND_CARDS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.HEALTH));

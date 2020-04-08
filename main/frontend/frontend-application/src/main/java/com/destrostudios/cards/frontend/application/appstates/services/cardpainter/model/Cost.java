@@ -1,4 +1,4 @@
-package com.destrostudios.cards.frontend.cardpainter.model;
+package com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model;
 
 import com.destrostudios.cardgui.BoardObjectModel;
 

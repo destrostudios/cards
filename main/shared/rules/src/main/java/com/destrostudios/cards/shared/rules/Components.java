@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.game.phases.TurnPhase;
 
 /**
@@ -32,6 +33,7 @@ public class Components {
     public static final ComponentDefinition<Void> TAPPED = new ComponentDefinition<>("tapped");
     public static final ComponentDefinition<Integer> DECLARED_ATTACK = new ComponentDefinition<>("declaredAttack");
     public static final ComponentDefinition<Integer> DECLARED_BLOCK = new ComponentDefinition<>("declaredBlock");
+    public static final ComponentDefinition<Foil> FOIL = new ComponentDefinition<>("foil");
 
     public static class Game {
         public static final ComponentDefinition<TurnPhase> TURN_PHASE = new ComponentDefinition<>("turnPhase");

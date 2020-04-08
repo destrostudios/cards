@@ -3,7 +3,7 @@ package com.destrostudios.cards.frontend.application;
 import com.destrostudios.cardgui.Card;
 import com.destrostudios.cardgui.transformations.SimpleTargetRotationTransformation;
 import com.destrostudios.cardgui.samples.transformations.relative.HoveringTransformation;
-import com.destrostudios.cards.frontend.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 

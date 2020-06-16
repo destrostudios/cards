@@ -229,6 +229,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
             BoardSettings boardSettings = BoardSettings.builder()
                     .dragProjectionZ(0.9975f)
+                    .hoverInspectionDelay(1f)
+                    .isInspectable(this::isOnField)
                     .build();
             BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
             mainApplication.getStateManager().attach(boardAppState);
@@ -259,6 +261,21 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             boolean isWinner = (gameClient.getPlayerEntity() == event.winner);
             mainApplication.getStateManager().attach(new GameOverAppState(isWinner));
         });
+    }
+
+    private boolean isOnField(TransformedBoardObject<?> transformedBoardObject) {
+        if (transformedBoardObject instanceof Card) {
+            Card<?> card = (Card<?>) transformedBoardObject;
+            CardZone cardZone = card.getZonePosition().getZone();
+            for (PlayerZones playerZones : playerZonesMap.values()) {
+                if ((cardZone == playerZones.getLandZone())
+                 || (cardZone == playerZones.getCreatureZone())
+                 || (cardZone == playerZones.getEnchantmentZone())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void onTurnPhaseStarted() {

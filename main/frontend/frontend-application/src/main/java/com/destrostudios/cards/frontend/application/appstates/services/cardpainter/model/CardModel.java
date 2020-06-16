@@ -1,11 +1,15 @@
 package com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model;
 
 import com.destrostudios.cardgui.BoardObjectModel;
+import com.destrostudios.cardgui.annotations.IsBoardObjectInspected;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
 import java.util.List;
 
 public class CardModel extends BoardObjectModel {
+
+    @IsBoardObjectInspected
+    private boolean isInspected;
 
     private boolean isFront;
     private boolean isPlayable;
@@ -23,6 +27,10 @@ public class CardModel extends BoardObjectModel {
     private boolean isDamaged;
     private String flavourText;
     private Foil foil;
+
+    public boolean isInspected() {
+        return isInspected;
+    }
 
     public boolean isFront() {
         return isFront;

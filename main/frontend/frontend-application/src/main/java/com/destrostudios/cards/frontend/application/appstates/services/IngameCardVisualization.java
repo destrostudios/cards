@@ -39,7 +39,7 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         PaintableImage imageForContent = ((cardModel.getFoil() == Foil.FULL) ? imageFoil : imageBack);
         PaintableImage imageForArtwork = ((cardModel.getFoil() != null) ? imageFoil : imageBack);
 
-        if (minified) {
+        if (minified && (!cardModel.isInspected())) {
             CardPainterJME.drawCardFront_Minified_Artwork(imageForArtwork, cardModel);
         } else {
             CardPainterJME.drawCardFront_Full_Content(imageForContent, cardModel);

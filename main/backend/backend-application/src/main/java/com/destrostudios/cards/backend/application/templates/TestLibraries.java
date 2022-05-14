@@ -8,7 +8,6 @@ public class TestLibraries {
 
     public static CardPool red() {
         CardPool cards = new CardPool();
-        cards.put(LandCards::mountain, 8);
         cards.put(StandardCards.Red::goblin, 5);
         cards.put(StandardCards.Red::orc, 4);
         cards.put(StandardCards.Red::ogre, 3);

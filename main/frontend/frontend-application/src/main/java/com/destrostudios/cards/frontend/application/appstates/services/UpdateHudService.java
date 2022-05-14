@@ -31,13 +31,8 @@ public class UpdateHudService {
     }
 
     private void updatePlayerMana() {
-        int neutralMana = getPlayerMana(Components.ManaAmount.NEUTRAL);
-        int whiteMana = getPlayerMana(Components.ManaAmount.WHITE);
-        int redMana = getPlayerMana(Components.ManaAmount.RED);
-        int greenMana = getPlayerMana(Components.ManaAmount.GREEN);
-        int blueMana = getPlayerMana(Components.ManaAmount.BLUE);
-        int blackMana = getPlayerMana(Components.ManaAmount.BLACK);
-        ingameHudAppState.sePlayerMana(neutralMana, whiteMana, redMana, greenMana, blueMana, blackMana);
+        int manaAmount = getPlayerMana(Components.MANA);
+        ingameHudAppState.setPlayerMana(manaAmount);
     }
 
     private int getPlayerMana(ComponentDefinition<Integer> manaAmountComponent) {

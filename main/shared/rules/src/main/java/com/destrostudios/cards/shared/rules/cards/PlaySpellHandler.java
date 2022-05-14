@@ -22,17 +22,19 @@ public class PlaySpellHandler extends GameEventHandler<PlaySpellEvent> {
 
         Integer cost = data.getComponent(event.spell, Components.Spell.COST_ENTITY);
         if (cost != null) {
-            events.fire(new PayCostEvent(card, cost, event.payedMana));
+            events.fire(new PayCostEvent(card, cost));
         }
 
-        int effect = event.spell;
-        if (data.hasComponent(event.spell, Components.Spell.TARGET_RULE)) {
-            for (int target : event.targets) {
-                events.fire(new TriggerEffectEvent(card, target, effect));
-            }
+        Integer sourceEffect = data.getComponent(event.spell, Components.Spell.SOURCE_EFFECT);
+        if (sourceEffect != null) {
+            events.fire(new TriggerEffectEvent(card, card, sourceEffect));
         }
-        else {
-            events.fire(new TriggerEffectEvent(card, card, effect));
+
+        Integer targetEffect = data.getComponent(event.spell, Components.Spell.TARGET_EFFECT);
+        if (targetEffect != null) {
+            for (int target : event.targets) {
+                events.fire(new TriggerEffectEvent(card, target, targetEffect));
+            }
         }
     }
 }

@@ -33,8 +33,8 @@ public class CameraAppState extends MyBaseAppState {
     }
 
     public void moveTo(Vector3f position, Quaternion rotation, float duration) {
-        positionTransformation = new SimpleTargetPositionTransformation3f(position, new TimeBasedPositionTransformationSpeed3f(duration));
-        rotationTransformation = new SimpleTargetRotationTransformation(rotation, new TimeBasedRotationTransformationSpeed(duration));
+        positionTransformation = new LinearTargetVectorTransformation3f(position, new TimeBasedVectorTransformationSpeed3f(duration));
+        rotationTransformation = new LinearTargetRotationTransformation(rotation, new TimeBasedRotationTransformationSpeed(duration));
         positionTransformation.setCurrentValue(mainApplication.getCamera().getLocation());
         rotationTransformation.setCurrentValue(mainApplication.getCamera().getRotation());
     }

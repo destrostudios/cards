@@ -15,7 +15,7 @@ public class BattleHandler extends GameEventHandler<BattleEvent> {
 
     @Override
     public void handle(BattleEvent event) {
-        LOG.info("{} is attacking {}", event.source, event.target);
+        LOG.info("{} is battling {}", event.source, event.target);
         events.fire(new DamageEvent(event.target, data.getOptionalComponent(event.source, Components.ATTACK).orElse(0)));
         events.fire(new DamageEvent(event.source, data.getOptionalComponent(event.target, Components.ATTACK).orElse(0)));
     }

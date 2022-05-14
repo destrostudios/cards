@@ -17,9 +17,9 @@ public class EntryAnimationService {
     public Animation getEntryAnimation(Card<CardModel> card) {
         Integer attackDamage = card.getModel().getAttackDamage();
         if (attackDamage > 3) {
-            return new FlipEntryAnimation(card, 1.25f, 1, 0.75f);
+            return new FlipEntryAnimation(card, 1.25f, 1, 0.5f);
         } else if (attackDamage > 2) {
-            return new ShootInEntryAnimation(card, 0.75f, application);
+            return new ShootInEntryAnimation(card, 0.5f, application);
         }
         return null;
     }

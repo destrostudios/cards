@@ -21,8 +21,12 @@ public class CardPainterJME {
         drawCard(paintableImage, graphics -> CardPainterAWT.drawCardFront_Minified_Artwork(graphics, cardModel));
     }
 
-    public static void drawCardFront_Front(PaintableImage paintableImage, CardModel cardModel){
-        drawCard(paintableImage, graphics -> CardPainterAWT.drawCardFront_Front(graphics, cardModel));
+    public static void drawCardFront_ManaCost(PaintableImage paintableImage, CardModel cardModel){
+        drawCard(paintableImage, graphics -> CardPainterAWT.drawCardFront_ManaCost(graphics, cardModel));
+    }
+
+    public static void drawCardFront_Stats(PaintableImage paintableImage, CardModel cardModel){
+        drawCard(paintableImage, graphics -> CardPainterAWT.drawCardFront_Stats(graphics, cardModel));
     }
 
     private static void drawCard(PaintableImage paintableImage, Consumer<Graphics2D> painter){

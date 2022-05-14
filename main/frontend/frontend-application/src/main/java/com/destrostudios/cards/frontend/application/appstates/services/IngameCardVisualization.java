@@ -4,10 +4,12 @@ import com.destrostudios.cardgui.samples.visualization.CustomAttachmentVisualiza
 import com.destrostudios.cardgui.samples.visualization.GlowBox;
 import com.destrostudios.cardgui.samples.visualization.PaintableImage;
 import com.destrostudios.cardgui.samples.visualization.cards.modelled.FoilModelledCard;
+import com.destrostudios.cardgui.samples.visualization.cards.modelled.SimpleModelledCard;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.CardPainterJME;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.jme3.asset.AssetManager;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 
@@ -29,25 +31,44 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         int textureWidth = 400;
         int textureHeight = 560;
 
-        PaintableImage imageBack = new PaintableImage(textureWidth, textureHeight);
-        PaintableImage imageFoil = new PaintableImage(textureWidth, textureHeight);
-        PaintableImage imageFront = new PaintableImage(textureWidth, textureHeight);
-        imageBack.setBackground_Alpha(0);
-        imageFoil.setBackground_Alpha(0);
-        imageFront.setBackground_Alpha(0);
-
-        PaintableImage imageForContent = ((cardModel.getFoil() == Foil.FULL) ? imageFoil : imageBack);
-        PaintableImage imageForArtwork = ((cardModel.getFoil() != null) ? imageFoil : imageBack);
+        PaintableImage imageContent = new PaintableImage(textureWidth, textureHeight);
+        PaintableImage imageArtwork = new PaintableImage(textureWidth, textureHeight);
+        PaintableImage imageFoilMap = new PaintableImage(textureWidth, textureHeight);
+        imageContent.setBackground_Alpha(0);
+        imageArtwork.setBackground_Alpha(0);
+        imageFoilMap.setBackground_Alpha(0);
 
         if (minified && (!cardModel.isInspected())) {
-            CardPainterJME.drawCardFront_Minified_Artwork(imageForArtwork, cardModel);
+            CardPainterJME.drawCardFront_Minified_Artwork(imageArtwork, cardModel);
+            if (cardModel.getFoil() != null) {
+                imageFoilMap.setBackground_Alpha(255);
+            }
         } else {
-            CardPainterJME.drawCardFront_Full_Content(imageForContent, cardModel);
-            CardPainterJME.drawCardFront_Full_Artwork(imageForArtwork, cardModel);
+            CardPainterJME.drawCardFront_Full_Content(imageContent, cardModel);
+            CardPainterJME.drawCardFront_Full_Artwork(imageArtwork, cardModel);
+            if (cardModel.getFoil() == Foil.ARTWORK) {
+                int artworkX = 35;
+                int artworkY = 68;
+                int artworkWidth = 329;
+                int artworkHeight = 242;
+                for (int x = 0; x < artworkWidth; x++) {
+                    for (int y = 0; y < artworkHeight; y++) {
+                        imageFoilMap.setPixel_Alpha(artworkX + x, artworkY + y, 255);
+                    }
+                }
+            } else if (cardModel.getFoil() == Foil.FULL) {
+                imageFoilMap.setBackground_Alpha(255);
+            }
         }
-        CardPainterJME.drawCardFront_Front(imageFront, cardModel);
+        if (cardModel.isFront()) {
+            CardPainterJME.drawCardFront_ManaCost(imageArtwork, cardModel);
+            CardPainterJME.drawCardFront_Stats(imageArtwork, cardModel);
+        }
 
-        foilModelledCard.setFront(imageBack, imageFoil, imageFront);
+        Material material = foilModelledCard.getMaterial_Front();
+        material.setTexture("DiffuseMap1", SimpleModelledCard.flipAndCreateTexture(imageContent));
+        material.setTexture("DiffuseMap2", SimpleModelledCard.flipAndCreateTexture(imageArtwork));
+        material.setTexture("FoilMap", SimpleModelledCard.flipAndCreateTexture(imageFoilMap));
     }
 
     public void setGlow(ColorRGBA colorRGBA) {

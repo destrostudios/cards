@@ -33,9 +33,9 @@ public class UpdateBoardService {
     private Board board;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private CardGuiMap cardGuiMap;
-    private Map<Integer, List<Event>> possibleDeclareBattleEventsPerSource = new HashMap<>();
+    private Map<Integer, List<AttackEvent>> possibleAttackEventsPerSource = new HashMap<>();
 
-    public void updateAndResetInteractivities() {
+    public void update(List<Event> possibleEvents) {
         EntityData entityData = gameClient.getGame().getData();
         List<Integer> cardEntities = entityData.query(Components.OWNED_BY).list();
         for (int cardEntity : cardEntities) {
@@ -56,9 +56,9 @@ public class UpdateBoardService {
                     cardZone = playerZones.getHandZone();
                 }
                 else {
-                    cardZoneIndex = entityData.getComponent(cardEntity, Components.LAND_ZONE);
+                    cardZoneIndex = entityData.getComponent(cardEntity, Components.SPELL_ZONE);
                     if (cardZoneIndex != null) {
-                        cardZone = playerZones.getLandZone();
+                        cardZone = playerZones.getSpellZone();
                     }
                     else {
                         cardZoneIndex = entityData.getComponent(cardEntity, Components.CREATURE_ZONE);
@@ -66,15 +66,9 @@ public class UpdateBoardService {
                             cardZone = playerZones.getCreatureZone();
                         }
                         else {
-                            cardZoneIndex = entityData.getComponent(cardEntity, Components.ENCHANTMENT_ZONE);
+                            cardZoneIndex = entityData.getComponent(cardEntity, Components.GRAVEYARD);
                             if (cardZoneIndex != null) {
-                                cardZone = playerZones.getEnchantmentZone();
-                            }
-                            else {
-                                cardZoneIndex = entityData.getComponent(cardEntity, Components.GRAVEYARD);
-                                if (cardZoneIndex != null) {
-                                    cardZone = playerZones.getGraveyardZone();
-                                }
+                                cardZone = playerZones.getGraveyardZone();
                             }
                         }
                     }
@@ -82,34 +76,22 @@ public class UpdateBoardService {
             }
 
             Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
-            card.setInteractivity(null);
+            card.clearInteractivities();
 
             if (cardZoneIndex != null) {
                 CardGuiMapper.updateModel(card, entityData, cardEntity);
                 board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
             }
         }
+
+        updateInteractivities(possibleEvents);
     }
 
-    // TODO: Cleanup / Extract
-    public void updateInteractivities(List<Event> possibleEvents) {
+    private void updateInteractivities(List<Event> possibleEvents) {
         EntityData entityData = gameClient.getGame().getData();
-        possibleDeclareBattleEventsPerSource.clear();
+        possibleAttackEventsPerSource.clear();
         for (Event event : possibleEvents) {
-            if (event instanceof DrawCardEvent) {
-                DrawCardEvent drawCardEvent = (DrawCardEvent) event;
-                for (int ownLibraryCardEntity : entityData.query(Components.LIBRARY).list(cardEntity -> entityData.hasComponentValue(cardEntity, Components.OWNED_BY, drawCardEvent.player))) {
-                    Card<CardModel> libraryCard = cardGuiMap.getOrCreateCard(ownLibraryCardEntity);
-                    libraryCard.setInteractivity(new ClickInteractivity() {
-
-                        @Override
-                        public void trigger(BoardObject source, BoardObject target) {
-                            gameClient.requestAction(drawCardEvent);
-                        }
-                    });
-                }
-            }
-            else if (event instanceof PlaySpellEvent) {
+            if (event instanceof PlaySpellEvent) {
                 PlaySpellEvent playSpellEvent = (PlaySpellEvent) event;
                 // TODO: Improve?
                 int cardEntity = entityData.query(Components.SPELL_ENTITIES)
@@ -158,35 +140,33 @@ public class UpdateBoardService {
                         }
                     };
                 }
-                card.setInteractivity(interactivity);
+                InteractivitySource interactivitySource = (entityData.hasComponent(playSpellEvent.spell, Components.Spell.CastCondition.FROM_BOARD) ? InteractivitySource.MOUSE_RIGHT : InteractivitySource.MOUSE_LEFT);
+                card.setInteractivity(interactivitySource, interactivity);
                 card.getModel().setPlayable(true);
             }
-            else if (event instanceof DeclareAttackEvent) {
-                DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) event;
-                addPossibleDeclareBattleEvent(declareAttackEvent.source, event);
-            }
-            else if (event instanceof DeclareBlockEvent) {
-                DeclareBlockEvent declareBlockEvent = (DeclareBlockEvent) event;
-                addPossibleDeclareBattleEvent(declareBlockEvent.source, event);
+            else if (event instanceof AttackEvent) {
+                AttackEvent attackEvent = (AttackEvent) event;
+                List<AttackEvent> attackEventsOfSource = possibleAttackEventsPerSource.computeIfAbsent(attackEvent.source, (entity) -> new LinkedList<>());
+                attackEventsOfSource.add(attackEvent);
             }
         }
-        for (Map.Entry<Integer, List<Event>> declareBattleEventsEntry : possibleDeclareBattleEventsPerSource.entrySet()) {
-            int declaringEntity = declareBattleEventsEntry.getKey();
-            List<Event> declareBattleEventsOfSource = declareBattleEventsEntry.getValue();
-            Card<CardModel> declaringCard = cardGuiMap.getOrCreateCard(declaringEntity);
-            declaringCard.setInteractivity(new AimToTargetInteractivity(TargetSnapMode.VALID) {
+        for (Map.Entry<Integer, List<AttackEvent>> attackEventsEntry : possibleAttackEventsPerSource.entrySet()) {
+            int attackingEntity = attackEventsEntry.getKey();
+            List<AttackEvent> attackEventsOfSource = attackEventsEntry.getValue();
+            Card<CardModel> attackingCard = cardGuiMap.getOrCreateCard(attackingEntity);
+            attackingCard.setInteractivity(InteractivitySource.MOUSE_LEFT, new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                 @Override
                 public boolean isValid(BoardObject boardObject) {
-                    return (getDeclareBattleEvent(boardObject) != null);
+                    return (getAttackEvent(boardObject) != null);
                 }
 
                 @Override
                 public void trigger(BoardObject source, BoardObject target) {
-                    gameClient.requestAction(getDeclareBattleEvent(target));
+                    gameClient.requestAction(getAttackEvent(target));
                 }
 
-                private Event getDeclareBattleEvent(BoardObject targetBoardObject) {
+                private AttackEvent getAttackEvent(BoardObject targetBoardObject) {
                     Integer targetEntity = null;
                     if (targetBoardObject instanceof Card) {
                         Card<CardModel> targetCard = (Card) targetBoardObject;
@@ -209,29 +189,16 @@ public class UpdateBoardService {
                         }
                     }
                     if (targetEntity != null) {
-                        for (Event declareBattleEvent : declareBattleEventsOfSource) {
-                            boolean isDeclaredTarget = false;
-                            if (declareBattleEvent instanceof DeclareAttackEvent) {
-                                DeclareAttackEvent declareAttackEvent = (DeclareAttackEvent) declareBattleEvent;
-                                isDeclaredTarget = (declareAttackEvent.target == targetEntity);
-                            } else if (declareBattleEvent instanceof DeclareBlockEvent) {
-                                DeclareBlockEvent declareBlockEvent = (DeclareBlockEvent) declareBattleEvent;
-                                isDeclaredTarget = (declareBlockEvent.target == targetEntity);
-                            }
-                            if (isDeclaredTarget) {
-                                return declareBattleEvent;
+                        for (AttackEvent attackEvent : attackEventsOfSource) {
+                            if (attackEvent.target == targetEntity) {
+                                return attackEvent;
                             }
                         }
                     }
                     return null;
                 }
             });
-            declaringCard.getModel().setPlayable(true);
+            attackingCard.getModel().setPlayable(true);
         }
-    }
-
-    private void addPossibleDeclareBattleEvent(int declaringEntity, Event event) {
-        List<Event> declareBattleEventsOfSource = possibleDeclareBattleEventsPerSource.computeIfAbsent(declaringEntity, (entity) -> new LinkedList<>());
-        declareBattleEventsOfSource.add(event);
     }
 }

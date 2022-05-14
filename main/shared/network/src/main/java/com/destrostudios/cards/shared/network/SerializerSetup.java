@@ -2,17 +2,11 @@ package com.destrostudios.cards.shared.network;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.network.messages.*;
-import com.destrostudios.cards.shared.rules.battle.DeclareAttackEvent;
-import com.destrostudios.cards.shared.rules.battle.DeclareBlockEvent;
-import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
+import com.destrostudios.cards.shared.rules.battle.AttackEvent;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
-import com.destrostudios.cards.shared.rules.game.phases.attack.EndAttackPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.block.EndBlockPhaseEvent;
-import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseOneEvent;
-import com.destrostudios.cards.shared.rules.game.phases.main.EndMainPhaseTwoEvent;
-import com.destrostudios.cards.shared.rules.util.MixedManaAmount;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.jme3.network.serializing.Serializer;
 import com.jme3.network.serializing.serializers.EnumSerializer;
 
@@ -30,16 +24,10 @@ public class SerializerSetup {
                 ClientReadyMessage.class,
                 ActionNotificationMessage.class,
                 ActionRequestMessage.class,
-                    DeclareAttackEvent.class,
-                    DeclareBlockEvent.class,
-                    DrawCardEvent.class,
                     GameStartEvent.class,
+                    AttackEvent.class,
                     PlaySpellEvent.class,
-                        MixedManaAmount.class,
-                    EndAttackPhaseEvent.class,
-                    EndBlockPhaseEvent.class,
-                    EndMainPhaseOneEvent.class,
-                    EndMainPhaseTwoEvent.class
+                    EndTurnEvent.class
         );
         Serializer.registerClass(Foil.class, new EnumSerializer());
         Serializer.registerClass(ComponentDefinition.class, new ComponentDefinitionSerializer());

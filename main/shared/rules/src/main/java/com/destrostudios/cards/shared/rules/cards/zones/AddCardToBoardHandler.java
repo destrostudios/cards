@@ -7,14 +7,11 @@ public class AddCardToBoardHandler extends GameEventHandler<AddCardToBoardEvent>
 
     @Override
     public void handle(AddCardToBoardEvent event) {
-        if (data.hasComponent(event.card, Components.LAND_CARD)) {
-            events.fire(new AddCardToLandZoneEvent(event.card));
+        if (data.hasComponent(event.card, Components.SPELL_CARD)) {
+            events.fire(new AddCardToSpellZoneEvent(event.card));
         }
         else if (data.hasComponent(event.card, Components.CREATURE_CARD)) {
             events.fire(new AddCardToCreatureZoneEvent(event.card));
-        }
-        else if (data.hasComponent(event.card, Components.ENCHANTMENT_CARD)) {
-            events.fire(new AddCardToEnchantmentZoneEvent(event.card));
         }
         else {
             throw new AssertionError("Can't find target zone for " + event.card);

@@ -8,21 +8,23 @@
         <health>3</health>
         <spells>
             <entity>
-                <castableInMainPhase/>
                 <castableFromHand/>
                 <cost>
                     <entity>
-                        <redMana>2</redMana>
+                        <mana>2</mana>
                     </entity>
                 </cost>
-                <addToBoard/>
+                <sourceEffect>
+                    <entity>
+                        <addToBoard/>
+                    </entity>
+                </sourceEffect>
             </entity>
             <entity>
-                <castableInMainPhase/>
                 <castableFromBoard/>
                 <cost>
                     <entity>
-                        <neutralMana>1</neutralMana>
+                        <mana>1</mana>
                     </entity>
                 </cost>
                 <targetRule>
@@ -32,8 +34,11 @@
                         <board/>
                     </entity>
                 </targetRule>
-                <damage>1</damage>
-                <tapEffect/>
+                <targetEffect>
+                    <entity>
+                        <damage>1</damage>
+                    </entity>
+                </targetEffect>
             </entity>
         </spells>
     </entity>

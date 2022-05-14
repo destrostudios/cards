@@ -12,12 +12,9 @@ public class SpellDescriptionGenerator {
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardAttributeTextProviders = new LinkedHashMap<>();
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardTypeTextProviders = new LinkedHashMap<>();
     static {
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, (entityData, manaEntity) -> getGainManaAction(entityData, manaEntity));
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.TAP, (entityData, myVoid) -> "tap");
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.UNTAP, (entityData, myVoid) -> "untap");
+        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, SpellDescriptionGenerator::getGainManaAction);
         addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
 
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.TAPPED, (entityData, myVoid) -> "tapped");
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.NEUTRAL, (entityData, myVoid) -> "neutral");
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.WHITE, (entityData, myVoid) -> "white");
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.RED, (entityData, myVoid) -> "red");
@@ -26,8 +23,6 @@ public class SpellDescriptionGenerator {
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.BLACK, (entityData, myVoid) -> "black");
 
         addComponentTextProvider(targetCardTypeTextProviders, Components.CREATURE_CARD, (entityData, myVoid) -> "creature");
-        addComponentTextProvider(targetCardTypeTextProviders, Components.ENCHANTMENT_CARD, (entityData, myVoid) -> "enchantment");
-        addComponentTextProvider(targetCardTypeTextProviders, Components.LAND_CARD, (entityData, myVoid) -> "land");
         addComponentTextProvider(targetCardTypeTextProviders, Components.SPELL_CARD, (entityData, myVoid) -> "spell");
     }
 

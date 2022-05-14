@@ -28,11 +28,11 @@ public class FileAssets{
     public static ImageIcon getImageIcon(String filePath){
         return new ImageIcon(ROOT + filePath);
     }
-    
+
     public static ImageIcon getImageIcon(String filePath, int width, int height){
         return new ImageIcon(getImage(filePath, width, height));
     }
-    
+
     public static BufferedImage getImage(String filePath, int width, int height){
         BufferedImage image = getImage(filePath);
         if(width == -1){

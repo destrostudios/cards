@@ -10,23 +10,23 @@ import java.util.ArrayList;
  */
 public class PlayerZones {
 
-    public PlayerZones(CardZone deckZone, CardZone handZone, CardZone landZone, CardZone creatureZone, CardZone enchantmentZone, CardZone graveyardZone) {
+    public PlayerZones(CardZone deckZone, CardZone handZone, CardZone spellZone, CardZone creatureZone, CardZone enchantmentZone, CardZone graveyardZone) {
         this.deckZone = deckZone;
         this.handZone = handZone;
-        this.landZone = landZone;
+        this.spellZone = spellZone;
         this.creatureZone = creatureZone;
         this.enchantmentZone = enchantmentZone;
         this.graveyardZone = graveyardZone;
         zones.add(deckZone);
         zones.add(handZone);
-        zones.add(landZone);
+        zones.add(spellZone);
         zones.add(creatureZone);
         zones.add(enchantmentZone);
         zones.add(graveyardZone);
     }
     private CardZone deckZone;
     private CardZone handZone;
-    private CardZone landZone;
+    private CardZone spellZone;
     private CardZone creatureZone;
     private CardZone enchantmentZone;
     private CardZone graveyardZone;
@@ -40,8 +40,8 @@ public class PlayerZones {
         return handZone;
     }
 
-    public CardZone getLandZone() {
-        return landZone;
+    public CardZone getSpellZone() {
+        return spellZone;
     }
 
     public CardZone getCreatureZone() {

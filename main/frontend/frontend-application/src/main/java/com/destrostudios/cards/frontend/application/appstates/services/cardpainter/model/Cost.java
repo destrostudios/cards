@@ -6,22 +6,13 @@ import java.util.Objects;
 
 public class Cost extends BoardObjectModel {
 
-    private boolean isTap;
-    private ManaCost manaCost;
+    private Integer manaCost;
 
-    public void setTap(boolean isTap) {
-        updateIfNotEquals(this.isTap, isTap, () -> this.isTap = isTap);
-    }
-
-    public boolean isTap() {
-        return isTap;
-    }
-
-    public void setManaCost(ManaCost manaCost) {
+    public void setManaCost(Integer manaCost) {
         updateIfNotEquals(this.manaCost, manaCost, () -> this.manaCost = manaCost);
     }
 
-    public ManaCost getManaCost() {
+    public Integer getManaCost() {
         return manaCost;
     }
 
@@ -29,8 +20,7 @@ public class Cost extends BoardObjectModel {
     public boolean equals(Object object) {
         if (object instanceof Cost) {
             Cost cost = (Cost) object;
-            return (Objects.equals(isTap, cost.isTap)
-                && (Objects.equals(manaCost, cost.manaCost)));
+            return Objects.equals(manaCost, cost.manaCost);
         }
         return false;
     }

@@ -17,7 +17,7 @@ public class StandardCards extends CardsUtil {
             data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
-            data.setComponent(summonCost, Components.ManaAmount.RED, 1);
+            data.setComponent(summonCost, Components.MANA, 1);
             int summon = summon(data, summonCost);
 
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
@@ -30,8 +30,7 @@ public class StandardCards extends CardsUtil {
             data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
-            data.setComponent(summonCost, Components.ManaAmount.RED, 1);
-            data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 1);
+            data.setComponent(summonCost, Components.MANA, 2);
             int summon = summon(data, summonCost);
 
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
@@ -42,11 +41,9 @@ public class StandardCards extends CardsUtil {
         public static int ogre(EntityData data) {
             int entity = creature(data, "Ogre", 4, 3);
             data.setComponent(entity, Components.Color.RED);
-            data.setComponent(entity, Components.Ability.VIGILANCE);
 
             int summonCost = data.createEntity();
-            data.setComponent(summonCost, Components.ManaAmount.RED, 2);
-            data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 1);
+            data.setComponent(summonCost, Components.MANA, 3);
             int summon = summon(data, summonCost);
 
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});
@@ -59,8 +56,7 @@ public class StandardCards extends CardsUtil {
             data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
-            data.setComponent(summonCost, Components.ManaAmount.RED, 2);
-            data.setComponent(summonCost, Components.ManaAmount.NEUTRAL, 2);
+            data.setComponent(summonCost, Components.MANA, 4);
             int summon = summon(data, summonCost);
 
             data.setComponent(entity, Components.SPELL_ENTITIES, new int[]{summon});

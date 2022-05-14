@@ -13,14 +13,10 @@ public class PayCostHandler extends GameEventHandler<PayCostEvent> {
     public void handle(PayCostEvent event) {
         LOG.info("Paying cost {}", event.cost);
 
-        if (event.payedMana.isNotEmpty()) {
+        Integer mana = data.getComponent(event.cost, Components.MANA);
+        if (mana != null) {
             int player = data.getComponent(event.card, Components.OWNED_BY);
-            events.fire(new PayManaEvent(player, event.payedMana));
-        }
-
-        // TODO: Create own subevent + handler? Overkill for now?
-        if (data.hasComponent(event.cost, Components.Cost.TAP)) {
-            data.setComponent(event.card, Components.TAPPED);
+            events.fire(new PayManaEvent(player, mana));
         }
     }
 }

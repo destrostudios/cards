@@ -7,31 +7,17 @@
         <health>2</health>
         <spells>
             <entity>
-                <castableInMainPhase/>
                 <castableFromHand/>
                 <cost>
                     <entity>
-                        <greenMana>1</greenMana>
-                        <neutralMana>1</neutralMana>
+                        <mana>2</mana>
                     </entity>
                 </cost>
-                <addToBoard/>
-            </entity>
-            <entity>
-                <castableInMainPhase/>
-                <castableFromBoard/>
-                <cost>
+                <sourceEffect>
                     <entity>
-                        <tapCost/>
+                        <addToBoard/>
                     </entity>
-                </cost>
-                <targetRule>
-                    <entity>
-                        <landCard/>
-                        <tapped/>
-                    </entity>
-                </targetRule>
-                <untapEffect/>
+                </sourceEffect>
             </entity>
         </spells>
         <flavourText>"None can own the land's bounty. The gods made this world for all to share its riches. And I'm not just saying that because you caught me stealing your fruit."</flavourText>

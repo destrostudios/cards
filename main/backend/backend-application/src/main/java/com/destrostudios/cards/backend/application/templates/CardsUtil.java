@@ -9,7 +9,6 @@ import com.destrostudios.cards.shared.rules.Components;
  */
 public class CardsUtil {
 
-    
     protected static int creature(EntityData data, String name, int attack, int health) {
         int entity = data.createEntity();
         data.setComponent(entity, Components.DISPLAY_NAME, name);
@@ -19,24 +18,14 @@ public class CardsUtil {
         
         return entity;
     }
-    
+
     protected static int summon(EntityData data, int cost) {
-        int entity = data.createEntity();
-        handActivated(data, entity);
-        data.setComponent(entity, Components.Spell.COST_ENTITY, cost);
-        data.setComponent(entity, Components.Spell.Effect.Zones.ADD_TO_BOARD);
-        return entity;
-    }
-    
-    protected static int handActivated(EntityData data, int entity) {
-        data.setComponent(entity, Components.Spell.CastCondition.MAIN_PHASE);
-        data.setComponent(entity, Components.Spell.CastCondition.FROM_HAND);
-        return entity;
-    }
-    
-    protected static int boardActivated(EntityData data, int entity) {
-        data.setComponent(entity, Components.Spell.CastCondition.MAIN_PHASE);
-        data.setComponent(entity, Components.Spell.CastCondition.FROM_BOARD);
-        return entity;
+        int spell = data.createEntity();
+        data.setComponent(spell, Components.Spell.CastCondition.FROM_HAND);
+        data.setComponent(spell, Components.Spell.COST_ENTITY, cost);
+        int sourceEffect = data.createEntity();
+        data.setComponent(sourceEffect, Components.Spell.Effect.Zones.ADD_TO_BOARD);
+        data.setComponent(spell, Components.Spell.SOURCE_EFFECT, sourceEffect);
+        return spell;
     }
 }

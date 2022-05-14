@@ -16,7 +16,7 @@ public class CardModel extends BoardObjectModel {
 
     private List<Color> colors;
     private String title;
-    private ManaCost manaCost;
+    private Integer manaCost;
     private List<String> tribes;
     private List<String> keywords;
     private String castDescription;
@@ -48,7 +48,7 @@ public class CardModel extends BoardObjectModel {
         return title;
     }
 
-    public ManaCost getManaCost() {
+    public Integer getManaCost() {
         return manaCost;
     }
 
@@ -104,7 +104,7 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.title, title, () -> this.title = title);
     }
 
-    public void setManaCost(ManaCost manaCost) {
+    public void setManaCost(Integer manaCost) {
         updateIfNotEquals(this.manaCost, manaCost, () -> this.manaCost = manaCost);
     }
 

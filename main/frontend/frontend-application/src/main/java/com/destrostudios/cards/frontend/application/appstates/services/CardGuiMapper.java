@@ -21,13 +21,11 @@ public class CardGuiMapper {
         colorComponents.put(Components.Color.BLUE, Color.BLUE);
         colorComponents.put(Components.Color.BLACK, Color.BLACK);
 
-        keywordComponents.put(Components.Ability.CHARGE, "Charge");
+        keywordComponents.put(Components.Ability.SLOW, "Slow");
         keywordComponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
-        keywordComponents.put(Components.Ability.FLYING, "Flying");
         keywordComponents.put(Components.Ability.HEXPROOF, "Hexproof");
         keywordComponents.put(Components.Ability.IMMUNE, "Immune");
         keywordComponents.put(Components.Ability.TAUNT, "Taunt");
-        keywordComponents.put(Components.Ability.VIGILANCE, "Vigilance");
 
         tribeComponents.put(Components.Tribe.BEAST, "Beast");
         tribeComponents.put(Components.Tribe.DRAGON, "Dragon");
@@ -61,7 +59,7 @@ public class CardGuiMapper {
         cardModel.setCastDescription(castDescription);
 
         boolean checkedDefaultPlaySpell = false;
-        ManaCost manaCost = null;
+        Integer manaCost = null;
         String description = null;
         List<Spell> spells = new LinkedList<>();
         int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
@@ -70,7 +68,9 @@ public class CardGuiMapper {
                 Integer spellCostEntity = entityData.getComponent(spellEntity, Components.Spell.COST_ENTITY);
                 String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
                 if ((!checkedDefaultPlaySpell) && entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_HAND)) {
-                    manaCost = createManaCost(entityData, spellCostEntity);
+                    if (entityData.hasComponent(cardEntity, Components.HAND_CARDS)) {
+                        manaCost = entityData.getComponent(spellCostEntity, Components.MANA);
+                    }
                     description = spellDescription;
                     checkedDefaultPlaySpell = true;
                 }
@@ -115,41 +115,8 @@ public class CardGuiMapper {
     private static Cost createCost(EntityData entityData, Integer costEntity) {
         if (costEntity != null) {
             Cost cost = new Cost();
-            cost.setTap(entityData.hasComponent(costEntity, Components.Cost.TAP));
-            cost.setManaCost(createManaCost(entityData, costEntity));
+            cost.setManaCost(entityData.getComponent(costEntity, Components.MANA));
             return cost;
-        }
-        return null;
-    }
-
-    private static ManaCost createManaCost(EntityData entityData, Integer costEntity) {
-        if (costEntity != null) {
-            ManaCost manaCost = new ManaCost();
-            Integer neutralManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.NEUTRAL);
-            if (neutralManaAmount != null) {
-                manaCost.set(Color.NEUTRAL, neutralManaAmount);
-            }
-            Integer whiteManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.WHITE);
-            if (whiteManaAmount != null) {
-                manaCost.set(Color.WHITE, whiteManaAmount);
-            }
-            Integer redManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.RED);
-            if (redManaAmount != null) {
-                manaCost.set(Color.RED, redManaAmount);
-            }
-            Integer greenManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.GREEN);
-            if (greenManaAmount != null) {
-                manaCost.set(Color.GREEN, greenManaAmount);
-            }
-            Integer blueManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.BLUE);
-            if (blueManaAmount != null) {
-                manaCost.set(Color.BLUE, blueManaAmount);
-            }
-            Integer blackManaAmount = entityData.getComponent(costEntity, Components.ManaAmount.BLACK);
-            if (blackManaAmount != null) {
-                manaCost.set(Color.BLACK, blackManaAmount);
-            }
-            return manaCost;
         }
         return null;
     }

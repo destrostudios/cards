@@ -3,8 +3,6 @@ package com.destrostudios.cards.shared.rules.effects;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
-import com.destrostudios.cards.shared.rules.cards.TapEvent;
-import com.destrostudios.cards.shared.rules.cards.UntapEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
 import org.slf4j.Logger;
@@ -33,18 +31,10 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
             events.fire(new DamageEvent(event.target, damage));
         }
 
-        Integer gainManaEntity = data.getComponent(event.effect, Components.Spell.Effect.GAIN_MANA);
-        if (gainManaEntity != null) {
+        Integer gainedMana = data.getComponent(event.effect, Components.Spell.Effect.GAIN_MANA);
+        if (gainedMana != null) {
             int player = data.getComponent(event.source, Components.OWNED_BY);
-            events.fire(new AddManaEvent(player, gainManaEntity));
-        }
-
-        if (data.hasComponent(event.effect, Components.Spell.Effect.TAP)) {
-            events.fire(new TapEvent(event.target));
-        }
-
-        if (data.hasComponent(event.effect, Components.Spell.Effect.UNTAP)) {
-            events.fire(new UntapEvent(event.target));
+            events.fire(new AddManaEvent(player, gainedMana));
         }
     }
 }

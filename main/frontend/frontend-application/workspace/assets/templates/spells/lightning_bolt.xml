@@ -5,11 +5,10 @@
         <spellCard/>
         <spells>
             <entity>
-                <castableInMainPhase/>
                 <castableFromHand/>
                 <cost>
                     <entity>
-                        <redMana>1</redMana>
+                        <mana>1</mana>
                     </entity>
                 </cost>
                 <targetRule>
@@ -18,7 +17,16 @@
                         <board/>
                     </entity>
                 </targetRule>
-                <damage>3</damage>
+                <sourceEffect>
+                    <entity>
+                        <addToGraveyard/>
+                    </entity>
+                </sourceEffect>
+                <targetEffect>
+                    <entity>
+                        <damage>3</damage>
+                    </entity>
+                </targetEffect>
             </entity>
         </spells>
     </entity>

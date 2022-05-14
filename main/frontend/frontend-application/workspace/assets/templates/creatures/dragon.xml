@@ -9,15 +9,17 @@
         <health>5</health>
         <spells>
             <entity>
-                <castableInMainPhase/>
                 <castableFromHand/>
                 <cost>
                     <entity>
-                        <redMana>3</redMana>
-                        <neutralMana>2</neutralMana>
+                        <mana>5</mana>
                     </entity>
                 </cost>
-                <addToBoard/>
+                <sourceEffect>
+                    <entity>
+                        <addToBoard/>
+                    </entity>
+                </sourceEffect>
             </entity>
         </spells>
         <flavourText>"Fragile creatures."</flavourText>

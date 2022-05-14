@@ -2,7 +2,6 @@ package com.destrostudios.cards.frontend.application.appstates.services.cardpain
 
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Cost;
-import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.ManaCost;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Spell;
 
 import java.awt.*;
@@ -20,7 +19,7 @@ public class CardPainterAWT {
     private static final Font fontEffects = new Font("Tahoma", Font.PLAIN, 13);
     private static final Font fontFlavorText = new Font("Tahoma", Font.ITALIC, 13);
     private static final Font fontTribes = new Font("Tahoma", Font.BOLD, 13);
-    private static final Font fontStats = new Font("Tahoma", Font.BOLD, 50);
+    private static final Font fontStats = new Font("Tahoma", Font.BOLD, 100);
 
     private static final int lineWidth = 306;
     private static final int cardCostIconSize = 24;
@@ -136,19 +135,35 @@ public class CardPainterAWT {
         graphics.dispose();
     }
 
-    public static void drawCardFront_Front(Graphics2D graphics, CardModel cardModel) {
+    public static void drawCardFront_Stats(Graphics2D graphics, CardModel cardModel) {
         graphics = (Graphics2D) graphics.create();
-        if (cardModel.isFront()) {
-            drawStats(graphics, cardModel);
-        }
+        drawStats(graphics, cardModel);
         graphics.dispose();
+    }
+
+    public static void drawCardFront_ManaCost(Graphics2D graphics, CardModel cardModel) {
+        graphics = (Graphics2D) graphics.create();
+        drawManaCost(graphics, cardModel);
+        graphics.dispose();
+    }
+
+    private static void drawManaCost(Graphics2D graphics, CardModel cardModel) {
+        tmpY = 120;
+        Integer manaCost = cardModel.getManaCost();
+        if (manaCost != null) {
+            String manaCostText = ("" + manaCost);
+            graphics.setFont(fontStats);
+            Rectangle2D manaCostTextBounds = graphics.getFontMetrics().getStringBounds(manaCostText, graphics);
+            tmpX = (int) (335 - (manaCostTextBounds.getWidth() / 2));
+            drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, Color.WHITE);
+        }
     }
 
     private static void drawStats(Graphics2D graphics, CardModel cardModel) {
         tmpY = 513;
         Integer attackDamage = cardModel.getAttackDamage();
         if (attackDamage != null) {
-            graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
+            // graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
             String attackDamageText = ("" + attackDamage);
             graphics.setFont(fontStats);
             Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
@@ -157,7 +172,7 @@ public class CardPainterAWT {
         }
         Integer lifepoints = cardModel.getLifepoints();
         if (lifepoints != null) {
-            graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
+            // graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
             String lifepointsText = ("" + lifepoints);
             graphics.setFont(fontStats);
             Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);
@@ -168,15 +183,16 @@ public class CardPainterAWT {
 
     private static void drawOutlinedText(Graphics2D graphics, String text, int x, int y, Color outlineColor, Color textColor) {
         graphics.setColor(outlineColor);
-        graphics.drawString(text, x - 1, y - 1);
-        graphics.drawString(text, x + 0, y - 1);
-        graphics.drawString(text, x + 1, y - 1);
-        graphics.drawString(text, x - 1, y + 0);
+        int strength = 3;
+        graphics.drawString(text, x - strength, y - strength);
+        graphics.drawString(text, x + 0, y - strength);
+        graphics.drawString(text, x + strength, y - strength);
+        graphics.drawString(text, x - strength, y + 0);
         graphics.drawString(text, x + 0, y + 0);
-        graphics.drawString(text, x + 1, y + 0);
-        graphics.drawString(text, x - 1, y + 1);
-        graphics.drawString(text, x + 0, y + 1);
-        graphics.drawString(text, x + 1, y + 1);
+        graphics.drawString(text, x + strength, y + 0);
+        graphics.drawString(text, x - strength, y + strength);
+        graphics.drawString(text, x + 0, y + strength);
+        graphics.drawString(text, x + strength, y + strength);
         graphics.setColor(textColor);
         graphics.drawString(text, x, y);
     }
@@ -232,9 +248,6 @@ public class CardPainterAWT {
     }
 
     private static void drawCost(Graphics2D graphics, Cost cost, int lineWidth, int startX, int followingX, int y){
-        if(cost.isTap()){
-            drawTapIcon(graphics, startX, y);
-        }
         if (cost.getManaCost() != null) {
             drawSpellCostManaAmount(graphics, cost.getManaCost(), lineWidth, tmpX, followingX, y);
         }
@@ -246,35 +259,25 @@ public class CardPainterAWT {
         tmpX = x;
     }
 
-    private static void drawSpellCostManaAmount(Graphics2D graphics, ManaCost manaCost, int lineWidth, int startX, int followingX, int y){
+    private static void drawSpellCostManaAmount(Graphics2D graphics, int manaCost, int lineWidth, int startX, int followingX, int y){
         tmpX = startX;
         tmpY = y;
-        for(com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color color : com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color.values()){
-            Integer amount = manaCost.get(color);
-            if (amount != null) {
-                for (int i = 0; i < amount; i++) {
-                    if (tmpX > (followingX + lineWidth)) {
-                        tmpX = followingX;
-                        tmpY += 18;
-                    }
-                    graphics.drawImage(CardImages.getCachedImage("images/mana/" + color.ordinal() + ".png", effectsIconSize, effectsIconSize), tmpX, tmpY - 12, effectsIconSize, effectsIconSize, null);
-                    tmpX += (effectsIconSize + effectsGapSize);
-                }
+        for (int i = 0; i < manaCost; i++) {
+            if (tmpX > (followingX + lineWidth)) {
+                tmpX = followingX;
+                tmpY += 18;
             }
+            graphics.drawImage(CardImages.getCachedImage("images/mana/0.png", effectsIconSize, effectsIconSize), tmpX, tmpY - 12, effectsIconSize, effectsIconSize, null);
+            tmpX += (effectsIconSize + effectsGapSize);
         }
     }
 
-    private static void drawCardCostManaAmount(Graphics2D graphics, ManaCost manaCost, int endX, int y){
+    private static void drawCardCostManaAmount(Graphics2D graphics, int manaCost, int endX, int y){
         tmpX = endX;
         tmpY = y;
-        for(com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color color : com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color.values()){
-            Integer amount = manaCost.get(color);
-            if (amount != null) {
-                for (int i = 0; i < amount; i++) {
-                    graphics.drawImage(CardImages.getCachedImage("images/mana/" + color.ordinal() + ".png", cardCostIconSize, cardCostIconSize), tmpX, tmpY, cardCostIconSize, cardCostIconSize, null);
-                    tmpX -= (cardCostGapSize + cardCostIconSize);
-                }
-            }
+        for (int i = 0; i < manaCost; i++) {
+            graphics.drawImage(CardImages.getCachedImage("images/mana/0.png", cardCostIconSize, cardCostIconSize), tmpX, tmpY, cardCostIconSize, cardCostIconSize, null);
+            tmpX -= (cardCostGapSize + cardCostIconSize);
         }
     }
 

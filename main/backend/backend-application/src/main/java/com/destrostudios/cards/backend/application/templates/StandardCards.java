@@ -14,7 +14,6 @@ public class StandardCards extends CardsUtil {
 
         public static int goblin(EntityData data) {
             int entity = creature(data, "Goblin", 2, 1);
-            data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.MANA, 1);
@@ -27,7 +26,6 @@ public class StandardCards extends CardsUtil {
 
         public static int orc(EntityData data) {
             int entity = creature(data, "Orc", 3, 2);
-            data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.MANA, 2);
@@ -40,7 +38,6 @@ public class StandardCards extends CardsUtil {
 
         public static int ogre(EntityData data) {
             int entity = creature(data, "Ogre", 4, 3);
-            data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.MANA, 3);
@@ -53,7 +50,6 @@ public class StandardCards extends CardsUtil {
 
         public static int giant(EntityData data) {
             int entity = creature(data, "Giant", 5, 4);
-            data.setComponent(entity, Components.Color.RED);
 
             int summonCost = data.createEntity();
             data.setComponent(summonCost, Components.MANA, 4);

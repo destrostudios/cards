@@ -1,7 +1,6 @@
 <template>
     <entity>
         <displayName>Camel</displayName>
-        <redColor/>
         <creatureCard/>
         <beast/>
         <attack>2</attack>

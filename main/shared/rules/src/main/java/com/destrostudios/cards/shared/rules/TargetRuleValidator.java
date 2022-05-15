@@ -31,12 +31,6 @@ public class TargetRuleValidator {
         simpleRequirableComponents.add(Components.Ability.HEXPROOF);
         simpleRequirableComponents.add(Components.Ability.IMMUNE);
         simpleRequirableComponents.add(Components.Ability.TAUNT);
-        simpleRequirableComponents.add(Components.Color.NEUTRAL);
-        simpleRequirableComponents.add(Components.Color.WHITE);
-        simpleRequirableComponents.add(Components.Color.RED);
-        simpleRequirableComponents.add(Components.Color.GREEN);
-        simpleRequirableComponents.add(Components.Color.BLUE);
-        simpleRequirableComponents.add(Components.Color.BLACK);
         simpleRequirableComponents.add(Components.Tribe.BEAST);
         simpleRequirableComponents.add(Components.Tribe.DRAGON);
         simpleRequirableComponents.add(Components.Tribe.FISH);

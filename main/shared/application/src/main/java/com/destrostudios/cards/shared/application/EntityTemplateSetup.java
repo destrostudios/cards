@@ -45,12 +45,6 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.HEXPROOF));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.IMMUNE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.TAUNT));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Color.NEUTRAL));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Color.WHITE));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Color.RED));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Color.GREEN));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Color.BLUE));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Color.BLACK));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Tribe.BEAST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Tribe.DRAGON));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Tribe.FISH));

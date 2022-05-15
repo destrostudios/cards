@@ -1,7 +1,6 @@
 <template>
     <entity>
         <displayName>Lightning Bolt</displayName>
-        <redColor/>
         <spellCard/>
         <spells>
             <entity>

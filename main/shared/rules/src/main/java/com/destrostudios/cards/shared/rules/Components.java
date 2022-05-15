@@ -42,15 +42,6 @@ public class Components {
         public static final ComponentDefinition<Void> TAUNT = new ComponentDefinition<>("taunt");
     }
 
-    public static class Color {
-        public static final ComponentDefinition<Void> NEUTRAL = new ComponentDefinition<>("neutralColor");
-        public static final ComponentDefinition<Void> WHITE = new ComponentDefinition<>("whiteColor");
-        public static final ComponentDefinition<Void> RED = new ComponentDefinition<>("redColor");
-        public static final ComponentDefinition<Void> GREEN = new ComponentDefinition<>("greenColor");
-        public static final ComponentDefinition<Void> BLUE = new ComponentDefinition<>("blueColor");
-        public static final ComponentDefinition<Void> BLACK = new ComponentDefinition<>("blackColor");
-    }
-
     public static class Tribe {
         public static final ComponentDefinition<Void> BEAST = new ComponentDefinition<>("beast");
         public static final ComponentDefinition<Void> DRAGON = new ComponentDefinition<>("dragon");

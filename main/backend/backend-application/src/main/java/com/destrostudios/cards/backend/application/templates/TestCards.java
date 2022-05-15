@@ -11,8 +11,6 @@ public class TestCards extends CardsUtil {
 
     public static int shyvana(EntityData data) {
         int card = creature(data, "Shyvana", 1, 1);
-        data.setComponent(card, Components.Color.BLUE);
-        data.setComponent(card, Components.Color.RED);
         data.setComponent(card, Components.DAMAGED);
         data.setComponent(card, Components.Tribe.HUMAN);
         data.setComponent(card, Components.Tribe.DRAGON);
@@ -34,12 +32,6 @@ public class TestCards extends CardsUtil {
 
     public static int aetherAdept(EntityData data) {
         int card = data.createEntity();
-        data.setComponent(card, Components.Color.NEUTRAL);
-        data.setComponent(card, Components.Color.WHITE);
-        data.setComponent(card, Components.Color.RED);
-        data.setComponent(card, Components.Color.GREEN);
-        data.setComponent(card, Components.Color.BLUE);
-        data.setComponent(card, Components.Color.BLACK);
         data.setComponent(card, Components.CREATURE_CARD);
         data.setComponent(card, Components.DISPLAY_NAME, "Aether Adept");
         data.setComponent(card, Components.ATTACK, 1);

@@ -1,7 +1,6 @@
 <template>
     <entity>
         <displayName>Dragon</displayName>
-        <redColor/>
         <creatureCard/>
         <dragon/>
         <flying/>

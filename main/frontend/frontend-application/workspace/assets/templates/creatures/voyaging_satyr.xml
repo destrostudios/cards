@@ -1,7 +1,6 @@
 <template>
     <entity>
         <displayName>Voyaging Satyr</displayName>
-        <greenColor/>
         <creatureCard/>
         <attack>1</attack>
         <health>2</health>

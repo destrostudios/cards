@@ -15,12 +15,11 @@ public class SpellDescriptionGenerator {
         addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, (entityDate, mana) -> "gain " + mana + " mana");
         addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
 
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.NEUTRAL, (entityData, myVoid) -> "neutral");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.WHITE, (entityData, myVoid) -> "white");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.RED, (entityData, myVoid) -> "red");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.GREEN, (entityData, myVoid) -> "green");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.BLUE, (entityData, myVoid) -> "blue");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.BLACK, (entityData, myVoid) -> "black");
+        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.SLOW, (entityData, myVoid) -> "slow");
+        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.DIVINE_SHIELD, (entityData, myVoid) -> "divine shield");
+        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.HEXPROOF, (entityData, myVoid) -> "hexproof");
+        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.IMMUNE, (entityData, myVoid) -> "immune");
+        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.TAUNT, (entityData, myVoid) -> "taunt");
 
         addComponentTextProvider(targetCardTypeTextProviders, Components.CREATURE_CARD, (entityData, myVoid) -> "creature");
         addComponentTextProvider(targetCardTypeTextProviders, Components.SPELL_CARD, (entityData, myVoid) -> "spell");

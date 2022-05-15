@@ -11,6 +11,6 @@ public class XMLComponentParser_String extends XMLComponentParser<String> {
 
     @Override
     public String parseValue() {
-        return element.getText();
+        return xmlTemplateManager.parseValue(entityData, element.getText());
     }
 }

@@ -1,6 +1,9 @@
 <template>
     <entity>
+        <name>[name]</name>
         <creatureCard/>
+        <attack>[attack]</attack>
+        <health>[health]</health>
         <spells>
             <entity>
                 <fromHand/>

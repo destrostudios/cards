@@ -10,17 +10,9 @@ import java.util.*;
 
 public class CardGuiMapper {
 
-    private static Map<ComponentDefinition, Color> colorComponents = new LinkedHashMap<>();
     private static Map<ComponentDefinition, String> keywordComponents = new LinkedHashMap<>();
     private static Map<ComponentDefinition, String> tribeComponents = new LinkedHashMap<>();
     static {
-        colorComponents.put(Components.Color.NEUTRAL, Color.NEUTRAL);
-        colorComponents.put(Components.Color.WHITE, Color.WHITE);
-        colorComponents.put(Components.Color.RED, Color.RED);
-        colorComponents.put(Components.Color.GREEN, Color.GREEN);
-        colorComponents.put(Components.Color.BLUE, Color.BLUE);
-        colorComponents.put(Components.Color.BLACK, Color.BLACK);
-
         keywordComponents.put(Components.Ability.SLOW, "Slow");
         keywordComponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
         keywordComponents.put(Components.Ability.HEXPROOF, "Hexproof");
@@ -37,14 +29,11 @@ public class CardGuiMapper {
     public static void updateModel(Card<CardModel> card, EntityData entityData, int cardEntity) {
         CardModel cardModel = card.getModel();
 
-        boolean isFront = true;
+        boolean isFront = !entityData.hasComponent(cardEntity, Components.LIBRARY);
         cardModel.setFront(isFront);
 
         // Will be set when applying the possibleActions
         cardModel.setPlayable(false);
-
-        List<Color> colors = createListBasedOnComponents(entityData, cardEntity, colorComponents);
-        cardModel.setColors(colors);
 
         String title = entityData.getComponent(cardEntity, Components.DISPLAY_NAME);
         cardModel.setTitle(title);
@@ -55,11 +44,12 @@ public class CardGuiMapper {
         List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordComponents);
         cardModel.setKeywords(keywords);
 
-        String castDescription = "CastDescription";
+        String castDescription = null;
         cardModel.setCastDescription(castDescription);
 
         boolean checkedDefaultPlaySpell = false;
-        Integer manaCost = null;
+        Integer manaCostFullArt = null;
+        Integer manaCostDetails = null;
         String description = null;
         List<Spell> spells = new LinkedList<>();
         int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
@@ -68,8 +58,9 @@ public class CardGuiMapper {
                 Integer spellCostEntity = entityData.getComponent(spellEntity, Components.Spell.COST_ENTITY);
                 String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
                 if ((!checkedDefaultPlaySpell) && entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_HAND)) {
+                    manaCostDetails = entityData.getComponent(spellCostEntity, Components.MANA);
                     if (entityData.hasComponent(cardEntity, Components.HAND_CARDS)) {
-                        manaCost = entityData.getComponent(spellCostEntity, Components.MANA);
+                        manaCostFullArt = manaCostDetails;
                     }
                     description = spellDescription;
                     checkedDefaultPlaySpell = true;
@@ -83,7 +74,8 @@ public class CardGuiMapper {
                 }
             }
         }
-        cardModel.setManaCost(manaCost);
+        cardModel.setManaCostFullArt(manaCostFullArt);
+        cardModel.setManaCostDetails(manaCostDetails);
         cardModel.setDescription(description);
         cardModel.setSpells(spells);
 

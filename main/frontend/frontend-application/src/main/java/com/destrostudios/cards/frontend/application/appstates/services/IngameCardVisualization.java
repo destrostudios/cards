@@ -38,31 +38,36 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         imageArtwork.setBackground_Alpha(0);
         imageFoilMap.setBackground_Alpha(0);
 
-        if (minified && (!cardModel.isInspected())) {
+        boolean fullArt = minified && (!cardModel.isInspected());
+        if (fullArt) {
             CardPainterJME.drawCardFront_Minified_Artwork(imageArtwork, cardModel);
-            if (cardModel.getFoil() != null) {
-                imageFoilMap.setBackground_Alpha(255);
+            if (cardModel.isFront()) {
+                if (cardModel.getFoil() != null) {
+                    imageFoilMap.setBackground_Alpha(255);
+                }
             }
         } else {
             CardPainterJME.drawCardFront_Full_Content(imageContent, cardModel);
             CardPainterJME.drawCardFront_Full_Artwork(imageArtwork, cardModel);
-            if (cardModel.getFoil() == Foil.ARTWORK) {
-                int artworkX = 35;
-                int artworkY = 68;
-                int artworkWidth = 329;
-                int artworkHeight = 242;
-                for (int x = 0; x < artworkWidth; x++) {
-                    for (int y = 0; y < artworkHeight; y++) {
-                        imageFoilMap.setPixel_Alpha(artworkX + x, artworkY + y, 255);
+            if (cardModel.isFront()) {
+                if (cardModel.getFoil() == Foil.ARTWORK) {
+                    int artworkX = 35;
+                    int artworkY = 68;
+                    int artworkWidth = 330;
+                    int artworkHeight = 241;
+                    for (int x = 0; x < artworkWidth; x++) {
+                        for (int y = 0; y < artworkHeight; y++) {
+                            imageFoilMap.setPixel_Alpha(artworkX + x, artworkY + y, 255);
+                        }
                     }
+                } else if (cardModel.getFoil() == Foil.FULL) {
+                    imageFoilMap.setBackground_Alpha(255);
                 }
-            } else if (cardModel.getFoil() == Foil.FULL) {
-                imageFoilMap.setBackground_Alpha(255);
             }
         }
         if (cardModel.isFront()) {
-            CardPainterJME.drawCardFront_ManaCost(imageArtwork, cardModel);
-            CardPainterJME.drawCardFront_Stats(imageArtwork, cardModel);
+            CardPainterJME.drawCardFront_ManaCost(imageArtwork, cardModel, fullArt);
+            CardPainterJME.drawCardFront_Stats(imageArtwork, cardModel, fullArt);
         }
 
         Material material = foilModelledCard.getMaterial_Front();

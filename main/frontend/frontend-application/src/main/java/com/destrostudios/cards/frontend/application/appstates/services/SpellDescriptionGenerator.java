@@ -12,7 +12,7 @@ public class SpellDescriptionGenerator {
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardAttributeTextProviders = new LinkedHashMap<>();
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardTypeTextProviders = new LinkedHashMap<>();
     static {
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, SpellDescriptionGenerator::getGainManaAction);
+        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, (entityDate, mana) -> "gain " + mana + " mana");
         addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
 
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Color.NEUTRAL, (entityData, myVoid) -> "neutral");
@@ -30,21 +30,22 @@ public class SpellDescriptionGenerator {
         String description = "";
 
         // Actions
-        description += generateText(entityData, spellEntity, actionTextProvider, " and ");
-
-        // Target
-        Integer targetRuleEntity = entityData.getComponent(spellEntity, Components.Spell.TARGET_RULE);
-        if (targetRuleEntity != null) {
-            description += " " + getTargetsOwned(entityData, targetRuleEntity);
-            String targetAttributesText = generateText(entityData, targetRuleEntity, targetCardAttributeTextProviders, " ");
-            if (!targetAttributesText.isEmpty()) {
-                description += " " + targetAttributesText;
+        Integer targetEffectEntity = entityData.getComponent(spellEntity, Components.Spell.TARGET_EFFECT);
+        if (targetEffectEntity != null) {
+            description += generateText(entityData, targetEffectEntity, actionTextProvider, " and ");
+            Integer targetRuleEntity = entityData.getComponent(spellEntity, Components.Spell.TARGET_RULE);
+            if (targetRuleEntity != null) {
+                description += " " + getTargetsOwned(entityData, targetRuleEntity);
+                String targetAttributesText = generateText(entityData, targetRuleEntity, targetCardAttributeTextProviders, " ");
+                if (!targetAttributesText.isEmpty()) {
+                    description += " " + targetAttributesText;
+                }
+                description += " " + generateText(entityData, targetRuleEntity, targetCardTypeTextProviders, " or ");
             }
-            description += " " + generateText(entityData, targetRuleEntity, targetCardTypeTextProviders, " or ");
         }
 
         if (description.length() > 0) {
-            return description.substring(0, 1).toUpperCase() + description.substring(1);
+            return description.substring(0, 1).toUpperCase() + description.substring(1) + ".";
         }
         return null;
     }
@@ -81,21 +82,16 @@ public class SpellDescriptionGenerator {
         componentTextProviders.put(componentDefinition, componentTextProvider);
     }
 
-    private static String getGainManaAction(EntityData entityData, int manaEntity) {
-        // TODO: Generate text based on the manaEntity
-        return "Gain ? mana";
-    }
-
     private static String getTargetsOwned(EntityData entityData, int targetRuleEntity) {
         boolean targetsAlly = entityData.hasComponent(targetRuleEntity, Components.Spell.TargetRules.ALLY);
         boolean targetsOpponent = entityData.hasComponent(targetRuleEntity, Components.Spell.TargetRules.OPPONENT);
         if (targetsAlly) {
             if (!targetsOpponent) {
-                return "ally";
+                return "target ally";
             }
         }
         else if (targetsOpponent) {
-            return "opponent";
+            return "target opponent";
         }
         return "target";
     }

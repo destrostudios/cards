@@ -6,26 +6,22 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CardPainterAWT {
 
-    private static final Font fontTitle = new Font("Tahoma", Font.BOLD, 18);
-    private static final Font fontDescription = new Font("Tahoma", Font.PLAIN, 13);
-    private static final Font fontKeywords = new Font("Tahoma", Font.BOLD, 13);
-    private static final Font fontEffects = new Font("Tahoma", Font.PLAIN, 13);
-    private static final Font fontFlavorText = new Font("Tahoma", Font.ITALIC, 13);
-    private static final Font fontTribes = new Font("Tahoma", Font.BOLD, 13);
-    private static final Font fontStats = new Font("Tahoma", Font.BOLD, 100);
+    private static final Font fontTitle = new Font("Tahoma", Font.BOLD, 20);
+    private static final Font fontDescription = new Font("Tahoma", Font.PLAIN, 16);
+    private static final Font fontKeywords = new Font("Tahoma", Font.BOLD, 16);
+    private static final Font fontTribes = new Font("Tahoma", Font.PLAIN, 16);
+    private static final Font fontsManaCostLarge = new Font("Tahoma", Font.BOLD, 100);
+    private static final Font fontsManaCostSmall = new Font("Tahoma", Font.BOLD, 30);
+    private static final Font fontStatsLarge = new Font("Tahoma", Font.BOLD, 100);
+    private static final Font fontStatsSmall = new Font("Tahoma", Font.BOLD, 50);
 
     private static final int lineWidth = 306;
-    private static final int cardCostIconSize = 24;
-    private static final int cardCostGapSize = 2;
-    private static final int effectsIconSize = 15;
-    private static final int effectsGapSize = 2;
+    private static final int lineHeight = 24;
 
     private static int tmpX;
     private static int tmpY;
@@ -38,19 +34,15 @@ public class CardPainterAWT {
             if (castDescription != null) {
                 drawnKeywords.add("Cast");
             }
-            List<com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color> colors = cardModel.getColors();
-            graphics.drawImage(getCardBackgroundImage(colors, width, height, "full"), 0, 0, null);
+            graphics.drawImage(CardImages.getCachedImage("images/templates/template.png"), 0, 0, width, height, null);
             graphics.setFont(fontTitle);
             graphics.setColor(Color.BLACK);
             String title = cardModel.getTitle();
-            int textStartX = 45;
+            int textStartX = 43;
             if (title != null) {
-                graphics.drawString(title, 45, 54);
+                graphics.drawString(title, textStartX, 60);
             }
-            if (cardModel.getManaCost() != null) {
-                drawCardCostManaAmount(graphics, cardModel.getManaCost(), (width - textStartX - cardCostIconSize), (46 - (cardCostIconSize / 2)));
-            }
-            tmpY = 370;
+            tmpY = 348;
             if(drawnKeywords.size() > 0){
                 String keywordsText = "";
                 for(int i=0;i<drawnKeywords.size();i++){
@@ -60,57 +52,46 @@ public class CardPainterAWT {
                     String keyword = drawnKeywords.get(i);
                     keywordsText += keyword + (keyword.equals("Cast")?":":".");
                 }
-                graphics.setFont(fontKeywords);
                 tmpX = textStartX;
+                graphics.setFont(fontKeywords);
                 drawStringMultiLine(graphics, keywordsText, lineWidth, tmpX, textStartX, tmpY, -2);
                 if(castDescription != null){
                     tmpX += 3;
-                    drawSpellDescription(graphics, castDescription, lineWidth, tmpX, textStartX, tmpY);
+                    drawSpellDescription(graphics, null, castDescription, lineWidth, tmpX, textStartX, tmpY);
                 }
-                tmpY += 18;
+                tmpY += lineHeight;
             }
+            graphics.setFont(fontDescription);
             String description = cardModel.getDescription();
             if(description != null){
-                graphics.setFont(fontDescription);
                 tmpX = textStartX;
                 drawStringMultiLine(graphics, description, lineWidth, tmpX, textStartX, tmpY, -2);
-                tmpY += 18;
+                tmpY += lineHeight;
             }
             List<Spell> spells = cardModel.getSpells();
             if (spells != null) {
                 for (Spell spell : spells) {
                     tmpX = textStartX;
-                    if (spell.getCost() != null) {
-                        drawCost(graphics, spell.getCost(), lineWidth, tmpX, textStartX, tmpY);
-                        tmpX += 3;
-                    }
-                    drawSpellDescription(graphics, spell.getDescription(), lineWidth, tmpX, textStartX, tmpY);
-                    tmpY += 18;
+                    drawSpellDescription(graphics, spell.getCost(), spell.getDescription(), lineWidth, tmpX, textStartX, tmpY);
+                    tmpY += lineHeight;
                 }
             }
             String flavourText = cardModel.getFlavourText();
             if(flavourText != null){
                 tmpX = textStartX;
-                graphics.setFont(fontFlavorText);
                 drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, textStartX, tmpY, -2);
-                tmpY += 18;
+                tmpY += lineHeight;
             }
-            List<String> tribes = cardModel.getTribes();
-            if (tribes.size() > 0) {
-                String tribesText = "";
-                for (int i = 0; i < tribes.size(); i++) {
-                    if (i != 0) {
-                        tribesText += ", ";
-                    }
-                    tribesText += tribes.get(i);
-                }
+            if (cardModel.getTribes().size() > 0) {
                 graphics.setFont(fontTribes);
-                graphics.setColor(Color.BLACK);
-                graphics.drawString(tribesText, textStartX, 334);
+                String tribesText = String.join(", ", cardModel.getTribes());
+                Rectangle2D tribesBounds = graphics.getFontMetrics().getStringBounds(tribesText, graphics);
+                tmpX = (int) ((width / 2) - (tribesBounds.getWidth() / 2));
+                graphics.drawString(tribesText, tmpX, 501);
             }
         }
         else{
-            graphics.drawImage(CardImages.getCachedImage("images/back.png"), 0, 0, 300, 400, null);
+            graphics.drawImage(CardImages.getCachedImage("images/cardbacks/yugioh.png"), 0, 0, width, height, null);
         }
         graphics.dispose();
     }
@@ -119,9 +100,9 @@ public class CardPainterAWT {
         graphics = (Graphics2D) graphics.create();
         if (cardModel.isFront()) {
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(35, 68, 329, 242);
+            graphics.fillRect(35, 68, 330, 241);
             String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 329, 242), 35, 68, null);
+            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 330, 241), 35, 68, null);
         }
         graphics.dispose();
     }
@@ -135,153 +116,85 @@ public class CardPainterAWT {
         graphics.dispose();
     }
 
-    public static void drawCardFront_Stats(Graphics2D graphics, CardModel cardModel) {
+    public static void drawCardFront_Stats(Graphics2D graphics, CardModel cardModel, boolean fullArt) {
         graphics = (Graphics2D) graphics.create();
-        drawStats(graphics, cardModel);
+        drawStats(graphics, cardModel, fullArt);
         graphics.dispose();
     }
 
-    public static void drawCardFront_ManaCost(Graphics2D graphics, CardModel cardModel) {
+    public static void drawCardFront_CardCost(Graphics2D graphics, CardModel cardModel, boolean fullArt) {
         graphics = (Graphics2D) graphics.create();
-        drawManaCost(graphics, cardModel);
+        drawCardCost(graphics, cardModel, fullArt);
         graphics.dispose();
     }
 
-    private static void drawManaCost(Graphics2D graphics, CardModel cardModel) {
-        tmpY = 120;
-        Integer manaCost = cardModel.getManaCost();
+    private static void drawCardCost(Graphics2D graphics, CardModel cardModel, boolean fullArt) {
+        tmpY = (fullArt ? 120 : 62);
+        int outlineStrength = (fullArt ? 3 : 1);
+        Font font = (fullArt ? fontsManaCostLarge : fontsManaCostSmall);
+        Integer manaCost = (fullArt ? cardModel.getManaCostFullArt() : cardModel.getManaCostDetails());
         if (manaCost != null) {
             String manaCostText = ("" + manaCost);
-            graphics.setFont(fontStats);
+            graphics.setFont(font);
             Rectangle2D manaCostTextBounds = graphics.getFontMetrics().getStringBounds(manaCostText, graphics);
-            tmpX = (int) (335 - (manaCostTextBounds.getWidth() / 2));
-            drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, Color.WHITE);
+            int centerX = (fullArt ? 335 : 350);
+            tmpX = (int) (centerX - (manaCostTextBounds.getWidth() / 2));
+            drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, Color.WHITE, outlineStrength);
         }
     }
 
-    private static void drawStats(Graphics2D graphics, CardModel cardModel) {
+    private static void drawStats(Graphics2D graphics, CardModel cardModel, boolean fullArt) {
         tmpY = 513;
+        int outlineStrength = (fullArt ? 3 : 1);
+        Font font = (fullArt ? fontStatsLarge : fontStatsSmall);
         Integer attackDamage = cardModel.getAttackDamage();
         if (attackDamage != null) {
             // graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
             String attackDamageText = ("" + attackDamage);
-            graphics.setFont(fontStats);
+            graphics.setFont(font);
             Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
-            tmpX = (int) (65 - (attackDamageBounds.getWidth() / 2));
-            drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, Color.WHITE);
+            int centerX = (fullArt ? 65 : 60);
+            tmpX = (int) (centerX - (attackDamageBounds.getWidth() / 2));
+            drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, Color.WHITE, outlineStrength);
         }
         Integer lifepoints = cardModel.getLifepoints();
         if (lifepoints != null) {
             // graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
             String lifepointsText = ("" + lifepoints);
-            graphics.setFont(fontStats);
+            graphics.setFont(font);
             Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);
-            tmpX = (int) (335 - (lifepointsBounds.getWidth() / 2));
-            drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, (cardModel.isDamaged() ? Color.RED : Color.WHITE));
+            int centerX = (fullArt ? 335 : 340);
+            tmpX = (int) (centerX - (lifepointsBounds.getWidth() / 2));
+            drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, (cardModel.isDamaged() ? Color.RED : Color.WHITE), outlineStrength);
         }
     }
 
-    private static void drawOutlinedText(Graphics2D graphics, String text, int x, int y, Color outlineColor, Color textColor) {
+    private static void drawSpellDescription(Graphics2D graphics, Cost cost, String description, int lineWidth, int startX, int followingX, int y){
+        graphics.setFont(fontDescription);
+        String text = "";
+        if ((cost != null) && (cost.getManaCost() != null)) {
+            text += "(" + cost.getManaCost() + "): ";
+        }
+        text += description;
+        drawStringMultiLine(graphics, text, lineWidth, startX, followingX, y, -2);
+    }
+
+    private static void drawOutlinedText(Graphics2D graphics, String text, int x, int y, Color outlineColor, Color textColor, int outlineStrength) {
         graphics.setColor(outlineColor);
-        int strength = 3;
-        graphics.drawString(text, x - strength, y - strength);
-        graphics.drawString(text, x + 0, y - strength);
-        graphics.drawString(text, x + strength, y - strength);
-        graphics.drawString(text, x - strength, y + 0);
-        graphics.drawString(text, x + 0, y + 0);
-        graphics.drawString(text, x + strength, y + 0);
-        graphics.drawString(text, x - strength, y + strength);
-        graphics.drawString(text, x + 0, y + strength);
-        graphics.drawString(text, x + strength, y + strength);
+        graphics.drawString(text, x - outlineStrength, y - outlineStrength);
+        graphics.drawString(text, x, y - outlineStrength);
+        graphics.drawString(text, x + outlineStrength, y - outlineStrength);
+        graphics.drawString(text, x - outlineStrength, y);
+        graphics.drawString(text, x, y);
+        graphics.drawString(text, x + outlineStrength, y);
+        graphics.drawString(text, x - outlineStrength, y + outlineStrength);
+        graphics.drawString(text, x, y + outlineStrength);
+        graphics.drawString(text, x + outlineStrength, y + outlineStrength);
         graphics.setColor(textColor);
         graphics.drawString(text, x, y);
     }
 
-    private static HashMap<String, BufferedImage> cardBackgroundImages = new HashMap<>();
-    public static BufferedImage getCardBackgroundImage(List<com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color> colors, int width, int height, String type){
-        String key = type + ",";
-        for(int i=0;i<colors.size();i++){
-            if(i != 0){
-                key += ",";
-            }
-            key += colors.get(i);
-        }
-        BufferedImage image = cardBackgroundImages.get(key);
-        if(image == null){
-            int partWidth = Math.round(((float) width) / colors.size());
-            image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D imageGraphics = image.createGraphics();
-            int x = 0;
-            int lineX;
-            for(com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Color color : colors){
-                for(int i=(int) (-0.5f * partWidth);i<(1.5f * partWidth);i++){
-                    lineX = (x + i);
-                    if(lineX > 0){
-                        if(lineX >= width){
-                            break;
-                        }
-                        Image templateImage = CardImages.getCachedImage("images/templates/template_" + type + "_" + color.ordinal() + ".png");
-                        float alpha;
-                        if(((i < (0.5 * partWidth)) && (lineX < (partWidth / 2))) || (i > (0.5 * partWidth))){
-                            alpha = 1;
-                        }
-                        else{
-                            alpha = (1 - (Math.abs(((((float) i) / partWidth) - 0.5f))));
-                        }
-                        imageGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-                        while(!imageGraphics.drawImage(templateImage, lineX, 0, lineX + 1, height, lineX, 0, lineX + 1, height, null)){
-                            //http://stackoverflow.com/questions/20442295/drawimage-wont-work-but-drawrect-does
-                        }
-                    }
-                }
-                x += partWidth;
-            }
-            imageGraphics.dispose();
-            cardBackgroundImages.put(key, image);
-        }
-        return image;
-    }
-
-    private static void drawSpellDescription(Graphics2D graphics, String description, int lineWidth, int startX, int followingX, int y){
-        graphics.setFont(fontEffects);
-        drawStringMultiLine(graphics, description, lineWidth, startX, followingX, y, -2);
-    }
-
-    private static void drawCost(Graphics2D graphics, Cost cost, int lineWidth, int startX, int followingX, int y){
-        if (cost.getManaCost() != null) {
-            drawSpellCostManaAmount(graphics, cost.getManaCost(), lineWidth, tmpX, followingX, y);
-        }
-    }
-
-    private static void drawTapIcon(Graphics2D graphics, int x, int y){
-        graphics.drawImage(CardImages.getCachedImage("images/tap.png", effectsIconSize, effectsIconSize), x, y - 12, effectsIconSize, effectsIconSize, null);
-        x += (effectsIconSize + effectsGapSize);
-        tmpX = x;
-    }
-
-    private static void drawSpellCostManaAmount(Graphics2D graphics, int manaCost, int lineWidth, int startX, int followingX, int y){
-        tmpX = startX;
-        tmpY = y;
-        for (int i = 0; i < manaCost; i++) {
-            if (tmpX > (followingX + lineWidth)) {
-                tmpX = followingX;
-                tmpY += 18;
-            }
-            graphics.drawImage(CardImages.getCachedImage("images/mana/0.png", effectsIconSize, effectsIconSize), tmpX, tmpY - 12, effectsIconSize, effectsIconSize, null);
-            tmpX += (effectsIconSize + effectsGapSize);
-        }
-    }
-
-    private static void drawCardCostManaAmount(Graphics2D graphics, int manaCost, int endX, int y){
-        tmpX = endX;
-        tmpY = y;
-        for (int i = 0; i < manaCost; i++) {
-            graphics.drawImage(CardImages.getCachedImage("images/mana/0.png", cardCostIconSize, cardCostIconSize), tmpX, tmpY, cardCostIconSize, cardCostIconSize, null);
-            tmpX -= (cardCostGapSize + cardCostIconSize);
-        }
-    }
-
-    //http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring
+    // http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring
     public static void drawStringMultiLine(Graphics2D graphics, String text, int lineWidth, int startX, int followingX, int y, int linesGap){
         FontMetrics fontMetrics = graphics.getFontMetrics();
         int x = startX;
@@ -310,30 +223,5 @@ public class CardPainterAWT {
         x += fontMetrics.stringWidth(currentLine);
         tmpX = x;
         tmpY = y;
-    }
-
-    private static HashMap<String, BufferedImage> letterImages = new HashMap<>();
-    private static BufferedImage getLetterImage(Graphics graphics, String letter){
-        BufferedImage image = letterImages.get(letter);
-        if(image == null){
-            image = createStringImage(graphics, letter);
-            letterImages.put(letter, image);
-        }
-        return image;
-    }
-
-    //http://stackoverflow.com/questions/10388118/how-to-make-rotated-text-look-good-with-java2d
-    public static BufferedImage createStringImage(Graphics graphics, String text){
-        int width = (graphics.getFontMetrics().stringWidth(text) + 5);
-        int height = graphics.getFontMetrics().getHeight();
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D imageGraphics = image.createGraphics();
-        imageGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        imageGraphics.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        imageGraphics.setColor(Color.BLACK);
-        imageGraphics.setFont(graphics.getFont());
-        imageGraphics.drawString(text, 0, (height - graphics.getFontMetrics().getDescent()));
-        imageGraphics.dispose();
-        return image;
     }
 }

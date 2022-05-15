@@ -253,10 +253,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             Card<?> card = (Card<?>) transformedBoardObject;
             CardZone cardZone = card.getZonePosition().getZone();
             for (PlayerZones playerZones : playerZonesMap.values()) {
-                if (cardZone != playerZones.getDeckZone()) {
-                    return true;
+                if (cardZone == playerZones.getDeckZone()) {
+                    return false;
                 }
             }
+            return true;
         }
         return false;
     }

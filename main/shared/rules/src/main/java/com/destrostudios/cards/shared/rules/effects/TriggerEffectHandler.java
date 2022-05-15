@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules.effects;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
+import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
 import org.slf4j.Logger;
@@ -29,6 +30,14 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         Integer damage = data.getComponent(event.effect, Components.Spell.Effect.DAMAGE);
         if (damage != null) {
             events.fire(new DamageEvent(event.target, damage));
+        }
+
+        Integer draw = data.getComponent(event.effect, Components.Spell.Effect.DRAW);
+        if (draw != null) {
+            int player = data.getComponent(event.source, Components.OWNED_BY);
+            for (int i = 0; i < draw; i++) {
+                events.fire(new DrawCardEvent(player));
+            }
         }
 
         Integer gainedMana = data.getComponent(event.effect, Components.Spell.Effect.GAIN_MANA);

@@ -14,6 +14,7 @@ public class SpellDescriptionGenerator {
     static {
         addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, (entityDate, mana) -> "gain " + mana + " mana");
         addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
+        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DRAW, (entityData, draw) -> "draw " + draw + " " + ((draw == 1) ? "card" : "cards"));
 
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.SLOW, (entityData, myVoid) -> "slow");
         addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.DIVINE_SHIELD, (entityData, myVoid) -> "divine shield");
@@ -28,7 +29,13 @@ public class SpellDescriptionGenerator {
     public static String generateDescription(EntityData entityData, int spellEntity) {
         String description = "";
 
-        // Actions
+        // Source Effect
+        Integer sourceEffectEntity = entityData.getComponent(spellEntity, Components.Spell.SOURCE_EFFECT);
+        if (sourceEffectEntity != null) {
+            description += generateText(entityData, sourceEffectEntity, actionTextProvider, " and ");
+        }
+
+        // Target Effect
         Integer targetEffectEntity = entityData.getComponent(spellEntity, Components.Spell.TARGET_EFFECT);
         if (targetEffectEntity != null) {
             description += generateText(entityData, targetEffectEntity, actionTextProvider, " and ");

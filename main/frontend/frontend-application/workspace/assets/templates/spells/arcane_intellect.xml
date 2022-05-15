@@ -1,0 +1,22 @@
+<template>
+    <entity>
+        <name>Arcane Intellect</name>
+        <spellCard/>
+        <spells>
+            <entity>
+                <fromHand/>
+                <cost>
+                    <entity>
+                        <mana>3</mana>
+                    </entity>
+                </cost>
+                <sourceEffect>
+                    <entity>
+                        <addToGraveyard/>
+                        <draw>2</draw>
+                    </entity>
+                </sourceEffect>
+            </entity>
+        </spells>
+    </entity>
+</template>

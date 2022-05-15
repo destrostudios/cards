@@ -1,0 +1,24 @@
+<template>
+    <entity>
+        <name>Novice Engineer</name>
+        <creatureCard/>
+        <attack>1</attack>
+        <health>1</health>
+        <spells>
+            <entity>
+                <fromHand/>
+                <cost>
+                    <entity>
+                        <mana>2</mana>
+                    </entity>
+                </cost>
+                <sourceEffect>
+                    <entity>
+                        <addToBoard/>
+                        <draw>1</draw>
+                    </entity>
+                </sourceEffect>
+            </entity>
+        </spells>
+    </entity>
+</template>

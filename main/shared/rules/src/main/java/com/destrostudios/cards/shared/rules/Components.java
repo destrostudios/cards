@@ -68,6 +68,7 @@ public class Components {
 
         public static class Effect {
             public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damage");
+            public static final ComponentDefinition<Integer> DRAW = new ComponentDefinition<>("draw");
             public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
 
             public static class Zones {

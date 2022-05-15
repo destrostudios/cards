@@ -58,6 +58,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.CastCondition.FROM_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.CastCondition.FROM_HAND));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.Effect.DAMAGE));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.Effect.DRAW));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.Effect.GAIN_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.Zones.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.Effect.Zones.ADD_TO_GRAVEYARD));

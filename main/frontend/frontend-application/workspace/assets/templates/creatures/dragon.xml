@@ -1,25 +1,12 @@
 <template>
-    <entity>
-        <displayName>Dragon</displayName>
-        <creatureCard/>
-        <dragon/>
+    <values>
+        <manaCost>5</manaCost>
+    </values>
+    <entity template="./vanilla([manaCost])">
+        <name>Dragon</name>
         <attack>6</attack>
         <health>5</health>
-        <spells>
-            <entity>
-                <fromHand/>
-                <cost>
-                    <entity>
-                        <mana>5</mana>
-                    </entity>
-                </cost>
-                <sourceEffect>
-                    <entity>
-                        <addToBoard/>
-                    </entity>
-                </sourceEffect>
-            </entity>
-        </spells>
+        <dragon/>
         <flavourText>"Fragile creatures."</flavourText>
     </entity>
 </template>

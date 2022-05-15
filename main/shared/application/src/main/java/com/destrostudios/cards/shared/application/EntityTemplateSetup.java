@@ -18,7 +18,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.CREATURE_CARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.CREATURE_ZONE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.DAMAGED));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.DISPLAY_NAME));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.NAME));
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.FLAVOUR_TEXT));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.HAS_ATTACKED));
         xmlTemplateManager.registerComponent(new XMLComponentParser<Foil>(Components.FOIL) {

@@ -33,7 +33,7 @@ public class TestCards extends CardsUtil {
     public static int aetherAdept(EntityData data) {
         int card = data.createEntity();
         data.setComponent(card, Components.CREATURE_CARD);
-        data.setComponent(card, Components.DISPLAY_NAME, "Aether Adept");
+        data.setComponent(card, Components.NAME, "Aether Adept");
         data.setComponent(card, Components.ATTACK, 1);
         data.setComponent(card, Components.HEALTH, 1);
         data.setComponent(card, Components.Tribe.GOD);

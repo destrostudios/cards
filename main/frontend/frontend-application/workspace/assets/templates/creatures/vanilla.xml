@@ -1,15 +1,12 @@
 <template>
     <entity>
-        <name>Voyaging Satyr</name>
         <creatureCard/>
-        <attack>1</attack>
-        <health>2</health>
         <spells>
             <entity>
                 <fromHand/>
                 <cost>
                     <entity>
-                        <mana>2</mana>
+                        <mana>[manaCost]</mana>
                     </entity>
                 </cost>
                 <sourceEffect>
@@ -19,6 +16,5 @@
                 </sourceEffect>
             </entity>
         </spells>
-        <flavourText>"None can own the land's bounty. The gods made this world for all to share its riches. And I'm not just saying that because you caught me stealing your fruit."</flavourText>
     </entity>
 </template>

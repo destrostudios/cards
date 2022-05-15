@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <displayName>Lightning Bolt</displayName>
+        <name>Lightning Bolt</name>
         <spellCard/>
         <spells>
             <entity>

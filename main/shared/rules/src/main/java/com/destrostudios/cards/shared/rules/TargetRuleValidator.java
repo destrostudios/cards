@@ -16,7 +16,7 @@ public class TargetRuleValidator {
         simpleRequirableComponents.add(Components.CREATURE_CARD);
         simpleRequirableComponents.add(Components.CREATURE_ZONE);
         simpleRequirableComponents.add(Components.DAMAGED);
-        simpleRequirableComponents.add(Components.DISPLAY_NAME);
+        simpleRequirableComponents.add(Components.NAME);
         simpleRequirableComponents.add(Components.FLAVOUR_TEXT);
         simpleRequirableComponents.add(Components.GRAVEYARD);
         simpleRequirableComponents.add(Components.HAND_CARDS);

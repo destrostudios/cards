@@ -29,7 +29,7 @@ public class TestGameSetup {
     }
 
     private void initPlayer(int player, int opponent, String name, CardPool cards, int librarySize) {
-        data.setComponent(player, Components.DISPLAY_NAME, name);
+        data.setComponent(player, Components.NAME, name);
         data.setComponent(player, Components.HEALTH, 20);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
         for (int i = 0; i < librarySize; i++) {

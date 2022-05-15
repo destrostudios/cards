@@ -14,7 +14,7 @@ public class Components {
     public static final ComponentDefinition<Void> CREATURE_CARD = new ComponentDefinition<>("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = new ComponentDefinition<>("creatureZone");
     public static final ComponentDefinition<Void> DAMAGED = new ComponentDefinition<>("damaged");
-    public static final ComponentDefinition<String> DISPLAY_NAME = new ComponentDefinition<>("displayName");
+    public static final ComponentDefinition<String> NAME = new ComponentDefinition<>("name");
     public static final ComponentDefinition<String> FLAVOUR_TEXT = new ComponentDefinition<>("flavourText");
     public static final ComponentDefinition<Integer> HAND_CARDS = new ComponentDefinition<>("hand");
     public static final ComponentDefinition<Integer> HEALTH = new ComponentDefinition<>("health");

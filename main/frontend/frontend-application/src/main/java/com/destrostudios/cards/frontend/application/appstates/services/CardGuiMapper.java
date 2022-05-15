@@ -35,7 +35,7 @@ public class CardGuiMapper {
         // Will be set when applying the possibleActions
         cardModel.setPlayable(false);
 
-        String title = entityData.getComponent(cardEntity, Components.DISPLAY_NAME);
+        String title = entityData.getComponent(cardEntity, Components.NAME);
         cardModel.setTitle(title);
 
         List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);

@@ -11,7 +11,7 @@ public class CardsUtil {
 
     protected static int creature(EntityData data, String name, int attack, int health) {
         int entity = data.createEntity();
-        data.setComponent(entity, Components.DISPLAY_NAME, name);
+        data.setComponent(entity, Components.NAME, name);
         data.setComponent(entity, Components.CREATURE_CARD);
         data.setComponent(entity, Components.ATTACK, attack);
         data.setComponent(entity, Components.HEALTH, health);

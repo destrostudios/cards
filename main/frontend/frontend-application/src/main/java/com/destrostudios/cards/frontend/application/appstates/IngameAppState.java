@@ -126,9 +126,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     } else if (zone == playerZones.getSpellZone()) {
                         return new Vector2f(6.5f, ZONE_HEIGHT);
                     } else if (zone == playerZones.getCreatureZone()) {
-                        return new Vector2f(5, ZONE_HEIGHT);
-                    } else if (zone == playerZones.getEnchantmentZone()) {
-                        return new Vector2f(1.5f, ZONE_HEIGHT);
+                        return new Vector2f(6.5f, ZONE_HEIGHT);
                     } else if (zone == playerZones.getGraveyardZone()) {
                         return new Vector2f(1, ZONE_HEIGHT);
                     }
@@ -140,8 +138,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             for (PlayerZones playerZones : playerZonesMap.values()) {
                 if ((zonePosition.getZone() == playerZones.getHandZone())
                  || (zonePosition.getZone() == playerZones.getSpellZone())
-                 || (zonePosition.getZone() == playerZones.getCreatureZone())
-                 || (zonePosition.getZone() == playerZones.getEnchantmentZone())) {
+                 || (zonePosition.getZone() == playerZones.getCreatureZone())) {
                     return true;
                 }
             }
@@ -171,13 +168,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
                 }
 
-                float x = -1.25f;
+                float x = -0.5f;
                 float z = (ZONE_HEIGHT / 2);
                 CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                x += 3.25f;
-                CenteredIntervalZone enchantmentZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                x += 2.5f;
-                SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.04f, 1, 1)) {
+                x += 5;
+                SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 1, 1)) {
 
                     // TODO: Cleanup
                     @Override
@@ -210,9 +205,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 board.addZone(handZone);
                 board.addZone(spellZone);
                 board.addZone(creatureZone);
-                board.addZone(enchantmentZone);
                 board.addZone(graveyardZone);
-                playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, spellZone, creatureZone, enchantmentZone, graveyardZone));
+                playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
             }
             BoardSettings boardSettings = BoardSettings.builder()
                     .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))

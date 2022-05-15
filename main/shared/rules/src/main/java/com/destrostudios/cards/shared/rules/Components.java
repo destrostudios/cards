@@ -57,8 +57,8 @@ public class Components {
         public static final ComponentDefinition<Integer> TARGET_EFFECT = new ComponentDefinition<>("targetEffect");
 
         public static class CastCondition {
-            public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("castableFromHand");
-            public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("castableFromBoard");
+            public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("fromHand");
+            public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("fromBoard");
         }
 
         public static class TargetRules {

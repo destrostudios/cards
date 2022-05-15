@@ -6,7 +6,7 @@
         <health>2</health>
         <spells>
             <entity>
-                <castableFromHand/>
+                <fromHand/>
                 <cost>
                     <entity>
                         <mana>2</mana>

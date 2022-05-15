@@ -11,7 +11,7 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 public class EntityTemplateSetup {
 
     public static void setup() {
-        XMLTemplateManager xmlTemplateManager = new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
+        XMLTemplateManager xmlTemplateManager =new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.ATTACK));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.BOARD));
@@ -64,6 +64,6 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TargetRules.ALLY));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TargetRules.OPPONENT));
 
-        EntityTemplate.addLoader((entityData, entity, templateName, parameters) -> xmlTemplateManager.loadTemplate(entityData, entity, templateName, parameters));
+        EntityTemplate.addLoader(xmlTemplateManager::loadTemplate);
     }
 }

@@ -3,12 +3,11 @@
         <displayName>Dragon</displayName>
         <creatureCard/>
         <dragon/>
-        <flying/>
         <attack>6</attack>
         <health>5</health>
         <spells>
             <entity>
-                <castableFromHand/>
+                <fromHand/>
                 <cost>
                     <entity>
                         <mana>5</mana>

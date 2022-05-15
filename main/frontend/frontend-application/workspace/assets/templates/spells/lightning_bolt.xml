@@ -4,7 +4,7 @@
         <spellCard/>
         <spells>
             <entity>
-                <castableFromHand/>
+                <fromHand/>
                 <cost>
                     <entity>
                         <mana>1</mana>

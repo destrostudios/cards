@@ -10,19 +10,15 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-/**
- *
- * @author Carl
- */
-public class XMLTemplateManager {
+public class XMLTemplateManager{
 
-    public XMLTemplateManager(TemplateReader templateReader){
+    public XMLTemplateManager(TemplateReader templateReader) {
         this.templateReader = templateReader;
     }
     private TemplateReader templateReader;
     private HashMap<String, XMLComponentParser> xmlComponentParsers = new HashMap<>();
     private HashMap<String, Document> cachedDocuments = new HashMap<>();
-    private String currentDirectory;
+    private Stack<String> currentDirectories = new Stack<>();
     private Stack<HashMap<String, Integer>> cachedEntities = new Stack<>();
     private Stack<HashMap<String, String>> cachedValues = new Stack<>();
 
@@ -30,15 +26,10 @@ public class XMLTemplateManager {
         xmlComponentParsers.put(xmlComponentParser.getElementName(), xmlComponentParser);
     }
 
-    public void loadTemplate(EntityData entityData, int entity, String templateName, String[] parameters){
-        currentDirectory = "";
-        String[] directories = templateName.split("/");
-        for(int i=0;i<(directories.length - 1);i++){
-            currentDirectory += directories[i] + "/";
-        }
-        Document document = getDocument(templateName);
+    public void loadTemplate(EntityData entityData, int entity, EntityTemplate entityTemplate) {
+        Document document = getDocument(entityTemplate.getName());
         if (document != null) {
-            loadTemplate(entityData, entity, document, parameters);
+            loadTemplate(entityData, entity, entityTemplate, document);
         }
     }
 
@@ -48,128 +39,148 @@ public class XMLTemplateManager {
             try {
                 InputStream inputStream = templateReader.read(templateName);
                 document = new SAXBuilder().build(inputStream);
-            } catch(Exception ex) {
-                System.err.println("Error while reading template '" + templateName + "'.");
+            } catch (Exception ex) {
+                System.err.println("Error while loading template '" + templateName + "'.");
             }
             cachedDocuments.put(templateName, document);
         }
         return document;
     }
 
-    public void loadTemplate(EntityData entityData, int entity, Document document, String[] parameters){
+    public void loadTemplate(EntityData entityData, int entity, EntityTemplate template, Document document) {
         Element templateElement = document.getRootElement();
-        cachedEntities.push(new HashMap<String, Integer>(10));
-        HashMap<String, String> values = new HashMap<String, String>();
-        String defaultParameterText = templateElement.getAttributeValue("defaultParameters");
-        if(defaultParameterText != null){
-            String[] defaultParameters = defaultParameterText.split(",");
-            for(int i=0;i<defaultParameters.length;i++){
-                values.put("parameter" + i, defaultParameters[i]);
+        String currentDirectory = "";
+        String[] directories = template.getName().split("/");
+        for (int i = 0; i < (directories.length - 1); i++) {
+            currentDirectory += directories[i] + "/";
+        }
+        currentDirectories.push(currentDirectory);
+        HashMap<String, Integer> entities = new HashMap<>(10);
+        cachedEntities.push(entities);
+        HashMap<String, String> values = new HashMap<>();
+        Element valuesElement = templateElement.getChild("values");
+        if (valuesElement != null) {
+            for (Element valueElement : valuesElement.getChildren()) {
+                values.put(valueElement.getName(), valueElement.getText());
+                // Save the unmodified default value so it can be exported and accessed by parent
+                values.put("_" + valueElement.getName(), valueElement.getText());
             }
         }
-        for(int i=0;i<parameters.length;i++){
-            if(!parameters[i].equals("default")){
-                values.put("parameter" + i, parameters[i]);
-            }
+        for (Entry<String, String> parameterEntry : template.getInput().entrySet()) {
+            values.put(parameterEntry.getKey(), parameterEntry.getValue());
         }
         cachedValues.push(values);
         boolean isFirstEntity = true;
-        for(Object entityElementObject : templateElement.getChildren()){
-            Element entityElement = (Element) entityElementObject;
-            if(entityElement.getName().equals("entity")){
-                if(isFirstEntity){
-                    String id = entityElement.getAttributeValue("id");
-                    if(id != null){
-                        cachedEntities.lastElement().put(id, entity);
-                    }
-                    loadEntity(entityData, entity, entityElement);
+        for (Element entityElement : templateElement.getChildren("entity")) {
+            if (isFirstEntity) {
+                String id = entityElement.getAttributeValue("id");
+                if (id != null) {
+                    cachedEntities.lastElement().put(id, entity);
                 }
-                else{
-                    createAndLoadEntity(entityData, entityElement);
-                }
-                isFirstEntity = false;
+                loadEntity(entityData, entity, entityElement);
+            } else {
+                createAndLoadEntity(entityData, entityElement);
             }
-            else if(entityElement.getName().equals("value")){
-                String valueName = entityElement.getAttributeValue("name");
-                String value = parseValue(entityData, entityElement.getText());
-                cachedValues.lastElement().put(valueName, value);
+            isFirstEntity = false;
+        }
+        // Export
+        if (cachedValues.size() > 1) {
+            HashMap<String, String> parentTemplateValues = cachedValues.get(cachedValues.size() - 2);
+            for (Entry<String, String> output : template.getOutput().entrySet()) {
+                String name = output.getKey();
+                String value = parseValue(entityData, output.getValue());
+                parentTemplateValues.put(name, value);
             }
         }
+        currentDirectories.pop();
         cachedEntities.pop();
         cachedValues.pop();
     }
 
-    public int createAndLoadEntity(EntityData entityData, Element entityElement){
-        if(entityElement.getName().equals("empty")){
+    public int createAndLoadEntity(EntityData entityData, Element entityElement) {
+        if ((!isElementEnabled(entityData, entityElement)) || entityElement.getName().equals("empty")) {
             return -1;
         }
         Integer entity = null;
         String id = entityElement.getAttributeValue("id");
-        if(id != null){
+        if (id != null) {
             entity = cachedEntities.lastElement().get(id);
         }
-        if(entity == null){
+        if (entity == null) {
             entity = createEntity(entityData, id);
         }
         loadEntity(entityData, entity, entityElement);
         return entity;
     }
 
-    private int createEntity(EntityData entityData, String id){
+    private int createEntity(EntityData entityData, String id) {
         int entity = entityData.createEntity();
-        if(id != null){
+        if (id != null) {
             cachedEntities.lastElement().put(id, entity);
         }
         return entity;
     }
 
-    private void loadEntity(EntityData entityData, int entity, Element entityElement){
+    private void loadEntity(EntityData entityData, int entity, Element entityElement) {
         String templateXMLText = entityElement.getAttributeValue("template");
-        if(templateXMLText != null){
+        if (templateXMLText != null) {
             EntityTemplate.loadTemplate(entityData, entity, parseTemplate(entityData, templateXMLText));
         }
-        for(Object componentElementObject : entityElement.getChildren()){
-            Element componentElement = (Element) componentElementObject;
-            XMLComponentParser<Object> componentParser = getComponentParser(entityData, componentElement);
-            if (componentParser != null) {
-                Object value = componentParser.parseValue();
-                entityData.setComponent(entity, componentParser.getComponent(), value);
-            }
-        }
-    }
-
-    public String parseTemplate(EntityData entityData, String templateXMLText){
-        String template = templateXMLText.replaceAll("\\./", currentDirectory);
-        if(template.matches("(.*)\\((.*)\\)")){
-            int bracketStart = template.indexOf("(");
-            int bracketEnd = template.indexOf(")");
-            String[] parameters = template.substring(bracketStart + 1, bracketEnd).split(",");
-            template = template.substring(0, bracketStart);
-            for(String parameter : parameters){
-                template += "," + parseValue(entityData, parameter);
-            }
-        }
-        return template;
-    }
-
-    public String parseValue(EntityData entityData, String text){
-        if(text.startsWith("#")){
-            String entityID = text.substring(1);
-            Integer entity;
-            if(entityID.startsWith("#")){
-                entityID = entityID.substring(1);
-                entity = createEntity(entityData, entityID);
-            }
-            else{
-                entity = cachedEntities.lastElement().get(entityID);
-                if(entity == null){
-                    System.err.println("Undefined entity id '" + entityID + "'.");
+        for (Element componentElement : entityElement.getChildren()) {
+            if (isElementEnabled(entityData, componentElement)) {
+                XMLComponentParser<Object> componentParser = getComponentParser(entityData, componentElement);
+                if (componentParser != null) {
+                    Object value = componentParser.parseValue();
+                    entityData.setComponent(entity, componentParser.getComponent(), value);
                 }
+            }
+        }
+    }
+
+    public String parseTemplateText(EntityData entityData, String templateXMLText) {
+        return parseTemplate(entityData, templateXMLText).getText();
+    }
+
+    public EntityTemplate parseTemplate(EntityData entityData, String templateXMLText) {
+        String template = templateXMLText.replaceFirst("\\./", currentDirectories.lastElement());
+        return EntityTemplate.parseTemplate(template, text -> {
+            if (text.startsWith("#")) {
+                return text.substring(1);
+            } else if (text.startsWith("[") && text.endsWith("]")) {
+                return text.substring(1, text.length() - 1);
+            }
+            return text;
+        }, key -> parseValue(entityData, key), value -> parseValue(entityData, value));
+    }
+
+    private boolean isElementEnabled(EntityData entityData, Element element) {
+        String ifCondition = element.getAttributeValue("if");
+        return ((ifCondition == null) || parseValueBoolean(entityData, ifCondition));
+    }
+
+    private boolean parseValueBoolean(EntityData entityData, String text) {
+        String valueText = text;
+        boolean inverted = false;
+        if (valueText.startsWith("!")) {
+            valueText = valueText.substring(1);
+            inverted = true;
+        }
+        String value = parseValue(entityData, valueText);
+        boolean isTruthy = ((!value.isEmpty()) && (!value.equals("false")) && (!value.equals("0")));
+        return (isTruthy != inverted);
+    }
+
+    public String parseValue(EntityData entityData, String text) {
+        if (text.startsWith("#")) {
+            String entityId = text.substring(1);
+            Integer entity = cachedEntities.lastElement().get(entityId);
+            if (entity == null) {
+                entity = createEntity(entityData, entityId);
             }
             return entity.toString();
         }
         HashMap<String, String> values = cachedValues.lastElement();
-        for(Entry<String, String> valueEntry : values.entrySet()){
+        for (Entry<String, String> valueEntry : values.entrySet()) {
             text = text.replaceAll("\\[" + valueEntry.getKey() + "\\]", valueEntry.getValue());
         }
         return text;

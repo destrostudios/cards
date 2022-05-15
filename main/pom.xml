@@ -15,6 +15,7 @@
         <jm3.group>org.jmonkeyengine</jm3.group>
         <jm3.version>3.2.1-stable</jm3.version>
         <card-gui.version>71fd1ad18569083f78eafc64204f55f4cc4e6358</card-gui.version>
+        <version.lombok>1.18.10</version.lombok>
     </properties>
     <repositories>
         <repository>
@@ -26,6 +27,17 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+    <dependencyManagement>
+        <dependencies>
+            <!--Lombok-->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${version.lombok}</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>

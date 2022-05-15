@@ -7,7 +7,7 @@
         <health>3</health>
         <spells>
             <entity>
-                <castableFromHand/>
+                <fromHand/>
                 <cost>
                     <entity>
                         <mana>2</mana>
@@ -20,7 +20,7 @@
                 </sourceEffect>
             </entity>
             <entity>
-                <castableFromBoard/>
+                <fromBoard/>
                 <cost>
                     <entity>
                         <mana>1</mana>

@@ -35,6 +35,9 @@ public class CardGuiMapper {
         // Will be set when applying the possibleActions
         cardModel.setPlayable(false);
 
+        String type = (entityData.hasComponent(cardEntity, Components.CREATURE_CARD) ? "creature" : "spell");
+        cardModel.setType(type);
+
         String title = entityData.getComponent(cardEntity, Components.NAME);
         cardModel.setTitle(title);
 

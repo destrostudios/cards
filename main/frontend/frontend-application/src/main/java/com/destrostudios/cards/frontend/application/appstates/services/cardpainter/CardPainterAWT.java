@@ -34,7 +34,7 @@ public class CardPainterAWT {
             if (castDescription != null) {
                 drawnKeywords.add("Cast");
             }
-            graphics.drawImage(CardImages.getCachedImage("images/templates/template.png"), 0, 0, width, height, null);
+            graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, width, height, null);
             graphics.setFont(fontTitle);
             graphics.setColor(Color.BLACK);
             String title = cardModel.getTitle();

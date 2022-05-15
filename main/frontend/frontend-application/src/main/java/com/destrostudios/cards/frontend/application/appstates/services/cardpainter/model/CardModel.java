@@ -14,6 +14,7 @@ public class CardModel extends BoardObjectModel {
     private boolean isFront;
     private boolean isPlayable;
 
+    private String type;
     private String title;
     private Integer manaCostDetails;
     private Integer manaCostFullArt;
@@ -38,6 +39,10 @@ public class CardModel extends BoardObjectModel {
 
     public boolean isPlayable() {
         return isPlayable;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getTitle() {
@@ -98,6 +103,10 @@ public class CardModel extends BoardObjectModel {
 
     public void setPlayable(boolean isPlayable) {
         updateIfNotEquals(this.isPlayable, isPlayable, () -> this.isPlayable = isPlayable);
+    }
+
+    public void setType(String type) {
+        updateIfNotEquals(this.type, type, () -> this.type = type);
     }
 
     public void setTitle(String title) {

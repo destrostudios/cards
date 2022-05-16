@@ -40,7 +40,7 @@ public class XMLTemplateManager{
                 InputStream inputStream = templateReader.read(templateName);
                 document = new SAXBuilder().build(inputStream);
             } catch (Exception ex) {
-                System.err.println("Error while loading template '" + templateName + "'.");
+                System.err.println("Error while loading template '" + templateName + "': " + ex.getMessage());
             }
             cachedDocuments.put(templateName, document);
         }

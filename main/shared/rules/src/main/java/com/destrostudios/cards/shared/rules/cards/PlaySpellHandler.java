@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.effects.TriggerEffectEvent;
+import com.destrostudios.cards.shared.rules.effects.CheckEffectTriggerEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,20 +20,15 @@ public class PlaySpellHandler extends GameEventHandler<PlaySpellEvent> {
                 .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
                 .anyMatch(entity -> entity == event.spell)).getAsInt();
 
-        Integer cost = data.getComponent(event.spell, Components.Spell.COST_ENTITY);
+        Integer cost = data.getComponent(event.spell, Components.COST);
         if (cost != null) {
             events.fire(new PayCostEvent(card, cost));
         }
 
-        Integer sourceEffect = data.getComponent(event.spell, Components.Spell.SOURCE_EFFECT);
-        if (sourceEffect != null) {
-            events.fire(new TriggerEffectEvent(card, card, sourceEffect));
-        }
-
-        Integer targetEffect = data.getComponent(event.spell, Components.Spell.TARGET_EFFECT);
-        if (targetEffect != null) {
-            for (int target : event.targets) {
-                events.fire(new TriggerEffectEvent(card, target, targetEffect));
+        int[] instantEffectTriggers = data.getComponent(event.spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
+        if (instantEffectTriggers != null) {
+            for (int effectTrigger : instantEffectTriggers) {
+                events.fire(new CheckEffectTriggerEvent(card, event.targets, effectTrigger));
             }
         }
     }

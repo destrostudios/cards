@@ -11,7 +11,7 @@ public class AddCardToHandHandler extends GameEventHandler<AddCardToHandEvent> {
 
     @Override
     public void handle(AddCardToHandEvent event) {
-        events.fire(new AddCardToZoneEvent(event.card, Components.HAND_CARDS));
+        events.fire(new AddCardToZoneEvent(event.card, Components.HAND));
         LOG.info("added {} to hand", event.card);
     }
 }

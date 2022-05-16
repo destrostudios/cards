@@ -16,17 +16,19 @@ public class Components {
     public static final ComponentDefinition<Void> DAMAGED = new ComponentDefinition<>("damaged");
     public static final ComponentDefinition<String> NAME = new ComponentDefinition<>("name");
     public static final ComponentDefinition<String> FLAVOUR_TEXT = new ComponentDefinition<>("flavourText");
-    public static final ComponentDefinition<Integer> HAND_CARDS = new ComponentDefinition<>("hand");
+    public static final ComponentDefinition<Integer> HAND = new ComponentDefinition<>("hand");
     public static final ComponentDefinition<Integer> HEALTH = new ComponentDefinition<>("health");
     public static final ComponentDefinition<Integer> LIBRARY = new ComponentDefinition<>("library");
     public static final ComponentDefinition<Integer> GRAVEYARD = new ComponentDefinition<>("graveyard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");
     public static final ComponentDefinition<Integer> NEXT_PLAYER = new ComponentDefinition<>("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = new ComponentDefinition<>("ownedBy");
+    public static final ComponentDefinition<int[]> CONDITIONS = new ComponentDefinition<>("conditions");
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
     public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spells");
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = new ComponentDefinition<>("availableMana");
     public static final ComponentDefinition<Integer> MANA = new ComponentDefinition<>("mana");
+    public static final ComponentDefinition<Integer> COST = new ComponentDefinition<>("cost");
     public static final ComponentDefinition<Void> HAS_ATTACKED = new ComponentDefinition<>("hasAttacked");
     public static final ComponentDefinition<Foil> FOIL = new ComponentDefinition<>("foil");
 
@@ -50,31 +52,35 @@ public class Components {
         public static final ComponentDefinition<Void> HUMAN = new ComponentDefinition<>("human");
     }
 
+    public static class EffectTrigger {
+        public static final ComponentDefinition<int[]> EFFECTS = new ComponentDefinition<>("effects");
+    }
+
+    public static class Effect {
+        public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damage");
+        public static final ComponentDefinition<Integer> DRAW = new ComponentDefinition<>("draw");
+        public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
+
+        public static class Zones {
+            public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoard");
+            public static final ComponentDefinition<Void> ADD_TO_GRAVEYARD = new ComponentDefinition<>("addToGraveyard");
+        }
+    }
+
+    public static class Target {
+        public static final ComponentDefinition<Void> SOURCE_TARGET = new ComponentDefinition<>("sourceTarget");
+        public static final ComponentDefinition<Void> TARGET_TARGET = new ComponentDefinition<>("targetTarget");
+    }
+
+    public static class Condition {
+        public static final ComponentDefinition<Void> NOT = new ComponentDefinition<>("not");
+        public static final ComponentDefinition<Void> ALLY = new ComponentDefinition<>("ally");
+        public static final ComponentDefinition<Void> OPPONENT = new ComponentDefinition<>("opponent");
+        public static final ComponentDefinition<Void> IN_HAND = new ComponentDefinition<>("inHand");
+        public static final ComponentDefinition<Void> ON_BOARD = new ComponentDefinition<>("onBoard");
+    }
+
     public static class Spell {
-        public static final ComponentDefinition<Integer> COST_ENTITY = new ComponentDefinition<>("cost");
-        public static final ComponentDefinition<Integer> TARGET_RULE = new ComponentDefinition<>("targetRule");
-        public static final ComponentDefinition<Integer> SOURCE_EFFECT = new ComponentDefinition<>("sourceEffect");
-        public static final ComponentDefinition<Integer> TARGET_EFFECT = new ComponentDefinition<>("targetEffect");
-
-        public static class CastCondition {
-            public static final ComponentDefinition<Void> FROM_HAND = new ComponentDefinition<>("fromHand");
-            public static final ComponentDefinition<Void> FROM_BOARD = new ComponentDefinition<>("fromBoard");
-        }
-
-        public static class TargetRules {
-            public static final ComponentDefinition<Void> ALLY = new ComponentDefinition<>("ally");
-            public static final ComponentDefinition<Void> OPPONENT = new ComponentDefinition<>("opponent");
-        }
-
-        public static class Effect {
-            public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damage");
-            public static final ComponentDefinition<Integer> DRAW = new ComponentDefinition<>("draw");
-            public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
-
-            public static class Zones {
-                public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoard");
-                public static final ComponentDefinition<Void> ADD_TO_GRAVEYARD = new ComponentDefinition<>("addToGraveyard");
-            }
-        }
+        public static final ComponentDefinition<int[]> INSTANT_EFFECT_TRIGGERS = new ComponentDefinition<>("instantEffectTriggers");
     }
 }

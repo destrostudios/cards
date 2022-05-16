@@ -10,7 +10,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.TargetRuleValidator;
+import com.destrostudios.cards.shared.rules.SpellUtil;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.jme3.math.Vector3f;
@@ -51,7 +51,7 @@ public class UpdateBoardService {
                 cardZone = playerZones.getDeckZone();
             }
             else {
-                cardZoneIndex = entityData.getComponent(cardEntity, Components.HAND_CARDS);
+                cardZoneIndex = entityData.getComponent(cardEntity, Components.HAND);
                 if (cardZoneIndex != null) {
                     cardZone = playerZones.getHandZone();
                 }
@@ -100,15 +100,14 @@ public class UpdateBoardService {
                 Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
 
                 Interactivity interactivity;
-                Integer targetRuleEntity = entityData.getComponent(playSpellEvent.spell, Components.Spell.TARGET_RULE);
-                if (targetRuleEntity != null) {
+                if (SpellUtil.isTargeted(entityData, playSpellEvent.spell)) {
                     interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                         @Override
                         public boolean isValid(BoardObject boardObject) {
                             if (boardObject instanceof Card) {
                                 int targetEntity = cardGuiMap.getEntity((Card) boardObject);
-                                return TargetRuleValidator.isValidTarget(entityData, targetRuleEntity, cardEntity, targetEntity);
+                                return SpellUtil.isCastable(entityData, cardEntity, playSpellEvent.spell, new int[] { targetEntity });
                             }
                             return false;
                         }
@@ -116,13 +115,10 @@ public class UpdateBoardService {
                         @Override
                         public void trigger(BoardObject boardObject, BoardObject target) {
                             int targetEntity = cardGuiMap.getEntity((Card) target);
-                            // TODO:
-                            int[] targets = new int[]{targetEntity};
-                            gameClient.requestAction(new PlaySpellEvent(playSpellEvent.spell, targets));
+                            gameClient.requestAction(new PlaySpellEvent(playSpellEvent.spell, new int[]{ targetEntity }));
                         }
                     };
-                }
-                else if (entityData.hasComponent(cardEntity, Components.HAND_CARDS)) {
+                } else if (entityData.hasComponent(cardEntity, Components.HAND)) {
                     interactivity = new DragToPlayInteractivity() {
 
                         @Override
@@ -130,8 +126,7 @@ public class UpdateBoardService {
                             gameClient.requestAction(playSpellEvent);
                         }
                     };
-                }
-                else {
+                } else {
                     interactivity = new ClickInteractivity() {
 
                         @Override
@@ -140,7 +135,7 @@ public class UpdateBoardService {
                         }
                     };
                 }
-                InteractivitySource interactivitySource = (entityData.hasComponent(playSpellEvent.spell, Components.Spell.CastCondition.FROM_BOARD) ? InteractivitySource.MOUSE_RIGHT : InteractivitySource.MOUSE_LEFT);
+                InteractivitySource interactivitySource = (CardGuiMapper.isDefaultCastFromHandSpell(entityData, playSpellEvent.spell) ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
                 card.setInteractivity(interactivitySource, interactivity);
                 card.getModel().setPlayable(true);
             }

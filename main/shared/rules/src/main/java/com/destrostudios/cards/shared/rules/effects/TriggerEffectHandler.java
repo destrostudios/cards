@@ -19,20 +19,20 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
 
         // TODO: Create own subevents/handlers/however-we-want-it for everything
 
-        if (data.hasComponent(event.effect, Components.Spell.Effect.Zones.ADD_TO_BOARD)) {
+        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_BOARD)) {
             events.fire(new AddCardToBoardEvent(event.target));
         }
 
-        if (data.hasComponent(event.effect, Components.Spell.Effect.Zones.ADD_TO_GRAVEYARD)) {
+        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_GRAVEYARD)) {
             events.fire(new AddCardToGraveyardEvent(event.target));
         }
 
-        Integer damage = data.getComponent(event.effect, Components.Spell.Effect.DAMAGE);
+        Integer damage = data.getComponent(event.effect, Components.Effect.DAMAGE);
         if (damage != null) {
             events.fire(new DamageEvent(event.target, damage));
         }
 
-        Integer draw = data.getComponent(event.effect, Components.Spell.Effect.DRAW);
+        Integer draw = data.getComponent(event.effect, Components.Effect.DRAW);
         if (draw != null) {
             int player = data.getComponent(event.source, Components.OWNED_BY);
             for (int i = 0; i < draw; i++) {
@@ -40,7 +40,7 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
             }
         }
 
-        Integer gainedMana = data.getComponent(event.effect, Components.Spell.Effect.GAIN_MANA);
+        Integer gainedMana = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
         if (gainedMana != null) {
             int player = data.getComponent(event.source, Components.OWNED_BY);
             events.fire(new AddManaEvent(player, gainedMana));

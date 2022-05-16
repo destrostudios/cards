@@ -8,45 +8,57 @@ import java.util.*;
 
 public class SpellDescriptionGenerator {
 
-    private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> actionTextProvider = new LinkedHashMap<>();
-    private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardAttributeTextProviders = new LinkedHashMap<>();
+    private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> effectTextProvider = new LinkedHashMap<>();
+    private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> conditionTextProviders = new LinkedHashMap<>();
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardTypeTextProviders = new LinkedHashMap<>();
     static {
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.GAIN_MANA, (entityDate, mana) -> "gain " + mana + " mana");
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
-        addComponentTextProvider(actionTextProvider, Components.Spell.Effect.DRAW, (entityData, draw) -> "draw " + draw + " " + ((draw == 1) ? "card" : "cards"));
+        addComponentTextProvider(effectTextProvider, Components.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
+        addComponentTextProvider(effectTextProvider, Components.Effect.DRAW, (entityData, draw) -> "draw " + draw + " " + ((draw == 1) ? "card" : "cards"));
+        addComponentTextProvider(effectTextProvider, Components.Effect.GAIN_MANA, (entityDate, mana) -> "gain " + mana + " mana");
 
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.SLOW, (entityData, myVoid) -> "slow");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.DIVINE_SHIELD, (entityData, myVoid) -> "divine shield");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.HEXPROOF, (entityData, myVoid) -> "hexproof");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.IMMUNE, (entityData, myVoid) -> "immune");
-        addComponentTextProvider(targetCardAttributeTextProviders, Components.Ability.TAUNT, (entityData, myVoid) -> "taunt");
-
-        addComponentTextProvider(targetCardTypeTextProviders, Components.CREATURE_CARD, (entityData, myVoid) -> "creature");
-        addComponentTextProvider(targetCardTypeTextProviders, Components.SPELL_CARD, (entityData, myVoid) -> "spell");
+        addComponentTextProvider(conditionTextProviders, Components.Condition.ALLY, (entityData, myVoid) -> "ally");
+        addComponentTextProvider(conditionTextProviders, Components.Condition.OPPONENT, (entityData, myVoid) -> "opponent");
+        addComponentTextProvider(conditionTextProviders, Components.Ability.SLOW, (entityData, myVoid) -> "slow");
+        addComponentTextProvider(conditionTextProviders, Components.Ability.DIVINE_SHIELD, (entityData, myVoid) -> "divine shield");
+        addComponentTextProvider(conditionTextProviders, Components.Ability.HEXPROOF, (entityData, myVoid) -> "hexproof");
+        addComponentTextProvider(conditionTextProviders, Components.Ability.IMMUNE, (entityData, myVoid) -> "immune");
+        addComponentTextProvider(conditionTextProviders, Components.Ability.TAUNT, (entityData, myVoid) -> "taunt");
+        addComponentTextProvider(conditionTextProviders, Components.CREATURE_CARD, (entityData, myVoid) -> "creature");
+        addComponentTextProvider(conditionTextProviders, Components.SPELL_CARD, (entityData, myVoid) -> "spell");
+        addComponentTextProvider(conditionTextProviders, Components.Condition.IN_HAND, (entityData, myVoid) -> "in hand");
+        addComponentTextProvider(conditionTextProviders, Components.Condition.ON_BOARD, (entityData, myVoid) -> "on board");
     }
 
-    public static String generateDescription(EntityData entityData, int spellEntity) {
+    public static String generateDescription(EntityData data, int spell) {
         String description = "";
 
-        // Source Effect
-        Integer sourceEffectEntity = entityData.getComponent(spellEntity, Components.Spell.SOURCE_EFFECT);
-        if (sourceEffectEntity != null) {
-            description += generateText(entityData, sourceEffectEntity, actionTextProvider, " and ");
+        String targetText = "target";
+        int[] conditions = data.getComponent(spell, Components.CONDITIONS);
+        if (conditions != null) {
+            for (int condition : conditions) {
+                if (data.hasComponent(condition, Components.Target.TARGET_TARGET)) {
+                    targetText += " " + generateText(data, condition, conditionTextProviders, " ");
+                    break;
+                }
+            }
         }
 
-        // Target Effect
-        Integer targetEffectEntity = entityData.getComponent(spellEntity, Components.Spell.TARGET_EFFECT);
-        if (targetEffectEntity != null) {
-            description += generateText(entityData, targetEffectEntity, actionTextProvider, " and ");
-            Integer targetRuleEntity = entityData.getComponent(spellEntity, Components.Spell.TARGET_RULE);
-            if (targetRuleEntity != null) {
-                description += " " + getTargetsOwned(entityData, targetRuleEntity);
-                String targetAttributesText = generateText(entityData, targetRuleEntity, targetCardAttributeTextProviders, " ");
-                if (!targetAttributesText.isEmpty()) {
-                    description += " " + targetAttributesText;
+        int[] instantEffectTriggers = data.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
+        if (instantEffectTriggers != null) {
+            for (int effectTrigger : instantEffectTriggers) {
+                int[] effects = data.getComponent(effectTrigger, Components.EffectTrigger.EFFECTS);
+                for (int effect : effects) {
+                    String effectText = generateText(data, effect, effectTextProvider, " and ");
+                    if (effectText.length() > 0) {
+                        if (!description.isEmpty()) {
+                            description += " and ";
+                        }
+                        description += effectText;
+                        if (data.hasComponent(effect, Components.Target.TARGET_TARGET)) {
+                            description += " " + targetText;
+                        }
+                    }
                 }
-                description += " " + generateText(entityData, targetRuleEntity, targetCardTypeTextProviders, " or ");
             }
         }
 
@@ -86,20 +98,6 @@ public class SpellDescriptionGenerator {
 
     private static <T> void addComponentTextProvider(HashMap<ComponentDefinition, ComponentTextProvider> componentTextProviders, ComponentDefinition<T> componentDefinition, ComponentTextProvider<T> componentTextProvider) {
         componentTextProviders.put(componentDefinition, componentTextProvider);
-    }
-
-    private static String getTargetsOwned(EntityData entityData, int targetRuleEntity) {
-        boolean targetsAlly = entityData.hasComponent(targetRuleEntity, Components.Spell.TargetRules.ALLY);
-        boolean targetsOpponent = entityData.hasComponent(targetRuleEntity, Components.Spell.TargetRules.OPPONENT);
-        if (targetsAlly) {
-            if (!targetsOpponent) {
-                return "target ally";
-            }
-        }
-        else if (targetsOpponent) {
-            return "target opponent";
-        }
-        return "target";
     }
 
     private interface ComponentTextProvider<ComponentType> {

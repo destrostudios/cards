@@ -4,18 +4,28 @@
         <spellCard/>
         <spells>
             <entity>
-                <fromHand/>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
                 <cost>
                     <entity>
                         <mana>3</mana>
                     </entity>
                 </cost>
-                <sourceEffect>
+                <instantEffectTriggers>
                     <entity>
-                        <addToGraveyard/>
-                        <draw>2</draw>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToGraveyard/>
+                                <draw>2</draw>
+                            </entity>
+                        </effects>
                     </entity>
-                </sourceEffect>
+                </instantEffectTriggers>
             </entity>
         </spells>
     </entity>

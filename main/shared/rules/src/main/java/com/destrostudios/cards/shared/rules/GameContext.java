@@ -80,6 +80,7 @@ public class GameContext {
                 new SetManaToAvailableManaOnTurnStartHandler(),
                 new DrawCardOnTurnStartHandler(),
                 new ExecuteBotActionsOnTurnStartHandler());
+        addEventHandler(events.instant(), CheckEffectTriggerEvent.class, new CheckEffectTriggerHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
     }
 

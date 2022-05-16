@@ -9,11 +9,7 @@ public class PlaySpellEvent extends Event {
 
     // Used by serializer
     private PlaySpellEvent() {
-        this(0);
-    }
-
-    public PlaySpellEvent(int spell) {
-        this(spell, new int[0]);
+        this(0, null);
     }
 
     public PlaySpellEvent(int spell, int[] targets) {

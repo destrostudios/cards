@@ -7,37 +7,56 @@
         <health>3</health>
         <spells>
             <entity>
-                <fromHand/>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
                 <cost>
                     <entity>
                         <mana>2</mana>
                     </entity>
                 </cost>
-                <sourceEffect>
+                <instantEffectTriggers>
                     <entity>
-                        <addToBoard/>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToBoard/>
+                            </entity>
+                        </effects>
                     </entity>
-                </sourceEffect>
+                </instantEffectTriggers>
             </entity>
             <entity>
-                <fromBoard/>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <onBoard/>
+                    </entity>
+                    <entity>
+                        <targetTarget/>
+                        <opponent/>
+                        <creatureCard/>
+                        <onBoard/>
+                    </entity>
+                </conditions>
                 <cost>
                     <entity>
                         <mana>1</mana>
                     </entity>
                 </cost>
-                <targetRule>
+                <instantEffectTriggers>
                     <entity>
-                        <opponent/>
-                        <creatureCard/>
-                        <board/>
+                        <effects>
+                            <entity>
+                                <targetTarget/>
+                                <damage>1</damage>
+                            </entity>
+                        </effects>
                     </entity>
-                </targetRule>
-                <targetEffect>
-                    <entity>
-                        <damage>1</damage>
-                    </entity>
-                </targetEffect>
+                </instantEffectTriggers>
             </entity>
         </spells>
     </entity>

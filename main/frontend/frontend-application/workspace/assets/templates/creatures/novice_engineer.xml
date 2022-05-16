@@ -6,18 +6,28 @@
         <health>1</health>
         <spells>
             <entity>
-                <fromHand/>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
                 <cost>
                     <entity>
                         <mana>2</mana>
                     </entity>
                 </cost>
-                <sourceEffect>
+                <instantEffectTriggers>
                     <entity>
-                        <addToBoard/>
-                        <draw>1</draw>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToBoard/>
+                                <draw>1</draw>
+                            </entity>
+                        </effects>
                     </entity>
-                </sourceEffect>
+                </instantEffectTriggers>
             </entity>
         </spells>
     </entity>

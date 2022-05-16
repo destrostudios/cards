@@ -28,5 +28,4 @@ public class CardPool {
         }
         return selected;
     }
-
 }

@@ -35,44 +35,25 @@ public class PlayerActionsGenerator {
             int[] spells = data.getComponent(card, Components.SPELL_ENTITIES);
             if (spells != null) {
                 for (int spell : spells) {
-                    if (isSpellCastable(player, card, spell)) {
-                        generatePlaySpellEvents(card, spell, out);
-                    }
+                    generatePlaySpellEvents(card, spell, out);
                 }
             }
         }
-    }
-
-    private boolean isSpellCastable(int player, int card, int spell) {
-        if ((data.hasComponent(spell, Components.Spell.CastCondition.FROM_HAND) && (!data.hasComponent(card, Components.HAND_CARDS))
-         || (data.hasComponent(spell, Components.Spell.CastCondition.FROM_BOARD) && (!data.hasComponent(card, Components.BOARD))))) {
-            return false;
-        }
-
-        Integer costEntity = data.getComponent(spell, Components.Spell.COST_ENTITY);
-        if (costEntity != null) {
-            Integer manaCost = data.getComponent(costEntity, Components.MANA);
-            if (manaCost != null) {
-                int availableMana = data.getOptionalComponent(player, Components.MANA).orElse(0);
-                if (manaCost > availableMana) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     private void generatePlaySpellEvents(int card, int spell, Consumer<Event> out) {
-        Integer targetRule = data.getComponent(spell, Components.Spell.TARGET_RULE);
-        if (targetRule != null) {
+        if (SpellUtil.isTargeted(data, spell)) {
             for (int target : data.query(Components.OWNED_BY).list()) {
-                if (TargetRuleValidator.isValidTarget(data, targetRule, card, target)) {
-                    out.accept(new PlaySpellEvent(spell, new int[] { target }));
+                int[] targets = new int[] { target };
+                if (SpellUtil.isCastable(data, card, spell, targets)) {
+                    out.accept(new PlaySpellEvent(spell, targets));
                 }
             }
         } else {
-            out.accept(new PlaySpellEvent(spell));
+            int[] targets = new int[0];
+            if (SpellUtil.isCastable(data, card, spell, targets)) {
+                out.accept(new PlaySpellEvent(spell, targets));
+            }
         }
     }
 

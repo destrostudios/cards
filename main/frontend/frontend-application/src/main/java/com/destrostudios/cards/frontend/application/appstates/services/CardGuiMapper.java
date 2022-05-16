@@ -58,11 +58,11 @@ public class CardGuiMapper {
         int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
-                Integer spellCostEntity = entityData.getComponent(spellEntity, Components.Spell.COST_ENTITY);
+                Integer spellCost = entityData.getComponent(spellEntity, Components.COST);
                 String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
-                if ((!checkedDefaultPlaySpell) && entityData.hasComponent(spellEntity, Components.Spell.CastCondition.FROM_HAND)) {
-                    manaCostDetails = entityData.getComponent(spellCostEntity, Components.MANA);
-                    if (entityData.hasComponent(cardEntity, Components.HAND_CARDS)) {
+                if ((!checkedDefaultPlaySpell) && isDefaultCastFromHandSpell(entityData, spellEntity)) {
+                    manaCostDetails = entityData.getComponent(spellCost, Components.MANA);
+                    if (entityData.hasComponent(cardEntity, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
                     }
                     description = spellDescription;
@@ -70,7 +70,7 @@ public class CardGuiMapper {
                 }
                 else {
                     Spell spell = new Spell();
-                    Cost cost = createCost(entityData, spellCostEntity);
+                    Cost cost = createCost(entityData, spellCost);
                     spell.setCost(cost);
                     spell.setDescription(spellDescription);
                     spells.add(spell);
@@ -114,5 +114,17 @@ public class CardGuiMapper {
             return cost;
         }
         return null;
+    }
+
+    public static boolean isDefaultCastFromHandSpell(EntityData entityData, int spell) {
+        int[] conditions = entityData.getComponent(spell, Components.CONDITIONS);
+        if (conditions != null) {
+            for (int condition : conditions) {
+                if (entityData.hasComponent(condition, Components.Target.SOURCE_TARGET) && entityData.hasComponent(condition, Components.Condition.ON_BOARD)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

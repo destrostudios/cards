@@ -34,10 +34,15 @@ public class ConditionUtil {
     public static boolean areConditionsFulfilled(EntityData data, int entity, int source, int[] targets) {
         int[] conditions = data.getComponent(entity, Components.CONDITIONS);
         if (conditions != null) {
-            for (int condition : conditions) {
-                if (!isFulfilled(data, condition, source, targets)) {
-                    return false;
-                }
+            return areConditionsFulfilled(data, conditions, source, targets);
+        }
+        return true;
+    }
+
+    public static boolean areConditionsFulfilled(EntityData data, int[] conditions, int source, int[] targets) {
+        for (int condition : conditions) {
+            if (!isFulfilled(data, condition, source, targets)) {
+                return false;
             }
         }
         return true;

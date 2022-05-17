@@ -65,7 +65,8 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.SOURCE_TARGET));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_TARGET));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_TARGETS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.CONDITION_TARGETS));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NOT));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ALLY));

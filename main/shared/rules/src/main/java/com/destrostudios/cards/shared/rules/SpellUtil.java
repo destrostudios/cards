@@ -8,7 +8,7 @@ public class SpellUtil {
         int[] conditions = data.getComponent(entity, Components.CONDITIONS);
         if (conditions != null) {
             for (int condition : conditions) {
-                if (data.hasComponent(condition, Components.Target.TARGET_TARGET)) {
+                if (data.hasComponent(condition, Components.Target.TARGET_TARGETS)) {
                     return true;
                 }
             }

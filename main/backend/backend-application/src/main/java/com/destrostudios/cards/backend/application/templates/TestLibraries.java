@@ -19,6 +19,7 @@ public class TestLibraries {
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "creatures/novice_engineer"), 2);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/lightning_bolt"), 3);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/arcane_intellect"), 2);
+        cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/flamestrike"), 2);
         return cards;
     }
 }

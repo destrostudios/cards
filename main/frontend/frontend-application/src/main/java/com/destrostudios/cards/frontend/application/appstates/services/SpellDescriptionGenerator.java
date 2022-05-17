@@ -32,16 +32,8 @@ public class SpellDescriptionGenerator {
     public static String generateDescription(EntityData data, int spell) {
         String description = "";
 
-        String targetText = "target";
-        int[] conditions = data.getComponent(spell, Components.CONDITIONS);
-        if (conditions != null) {
-            for (int condition : conditions) {
-                if (data.hasComponent(condition, Components.Target.TARGET_TARGET)) {
-                    targetText += " " + generateText(data, condition, conditionTextProviders, " ");
-                    break;
-                }
-            }
-        }
+        int[] spellConditions = data.getComponent(spell, Components.CONDITIONS);
+        String spellTargetText = getConditionsTargetText(data, spellConditions, "target");
 
         int[] instantEffectTriggers = data.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
         if (instantEffectTriggers != null) {
@@ -50,13 +42,10 @@ public class SpellDescriptionGenerator {
                 for (int effect : effects) {
                     String effectText = generateText(data, effect, effectTextProvider, " and ");
                     if (effectText.length() > 0) {
-                        if (!description.isEmpty()) {
+                        if (description.length() > 0) {
                             description += " and ";
                         }
-                        description += effectText;
-                        if (data.hasComponent(effect, Components.Target.TARGET_TARGET)) {
-                            description += " " + targetText;
-                        }
+                        description += effectText + getEffectTargetText(data, effect, spellTargetText);
                     }
                 }
             }
@@ -68,9 +57,36 @@ public class SpellDescriptionGenerator {
         return null;
     }
 
-    private static String generateText(EntityData entityData, int entity, HashMap<ComponentDefinition, ComponentTextProvider> componentTextProviders, String joinText) {
+    private static String getEffectTargetText(EntityData data, int effect, String spellTargetText) {
+        String text = "";
+        if (data.hasComponent(effect, Components.Target.TARGET_TARGETS)) {
+            text += " " + spellTargetText;
+        }
+        int[] effectTargetConditions = data.getComponent(effect, Components.Target.CONDITION_TARGETS);
+        if (effectTargetConditions != null) {
+            if (text.length() > 0) {
+                text += " and ";
+            }
+            text += " " +getConditionsTargetText(data, effectTargetConditions, "all");
+        }
+        return text;
+    }
+
+    private static String getConditionsTargetText(EntityData data, int[] conditions, String defaultTargetText) {
+        String text = defaultTargetText;
+        if (conditions != null) {
+            for (int condition : conditions) {
+                if (data.hasComponent(condition, Components.Target.TARGET_TARGETS)) {
+                    text += " " + generateText(data, condition, conditionTextProviders, " ");
+                }
+            }
+        }
+        return text;
+    }
+
+    private static String generateText(EntityData data, int entity, HashMap<ComponentDefinition, ComponentTextProvider> componentTextProviders, String joinText) {
         String resultText = "";
-        LinkedList<String> texts = generateTexts(entityData, entity, componentTextProviders);
+        LinkedList<String> texts = generateTexts(data, entity, componentTextProviders);
         Iterator<String> textsIterator = texts.iterator();
         int i = 0;
         while (textsIterator.hasNext()) {

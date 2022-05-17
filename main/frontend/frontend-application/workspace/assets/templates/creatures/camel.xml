@@ -36,7 +36,7 @@
                         <onBoard/>
                     </entity>
                     <entity>
-                        <targetTarget/>
+                        <targetTargets/>
                         <opponent/>
                         <creatureCard/>
                         <onBoard/>
@@ -51,7 +51,7 @@
                     <entity>
                         <effects>
                             <entity>
-                                <targetTarget/>
+                                <targetTargets/>
                                 <damage>1</damage>
                             </entity>
                         </effects>

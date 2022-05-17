@@ -69,7 +69,8 @@ public class Components {
 
     public static class Target {
         public static final ComponentDefinition<Void> SOURCE_TARGET = new ComponentDefinition<>("sourceTarget");
-        public static final ComponentDefinition<Void> TARGET_TARGET = new ComponentDefinition<>("targetTarget");
+        public static final ComponentDefinition<Void> TARGET_TARGETS = new ComponentDefinition<>("targetTargets");
+        public static final ComponentDefinition<int[]> CONDITION_TARGETS = new ComponentDefinition<>("conditionTargets");
     }
 
     public static class Condition {

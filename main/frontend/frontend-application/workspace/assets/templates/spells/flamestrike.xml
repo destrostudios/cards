@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <name>Lightning Bolt</name>
+        <name>Flamestrike</name>
         <spellCard/>
         <spells>
             <entity>
@@ -9,15 +9,10 @@
                         <sourceTarget/>
                         <inHand/>
                     </entity>
-                    <entity>
-                        <targetTargets/>
-                        <creatureCard/>
-                        <onBoard/>
-                    </entity>
                 </conditions>
                 <cost>
                     <entity>
-                        <mana>1</mana>
+                        <mana>7</mana>
                     </entity>
                 </cost>
                 <instantEffectTriggers>
@@ -28,8 +23,15 @@
                                 <addToGraveyard/>
                             </entity>
                             <entity>
-                                <targetTargets/>
-                                <damage>3</damage>
+                                <conditionTargets>
+                                    <entity>
+                                        <targetTargets/>
+                                        <opponent/>
+                                        <creatureCard/>
+                                        <onBoard/>
+                                    </entity>
+                                </conditionTargets>
+                                <damage>4</damage>
                             </entity>
                         </effects>
                     </entity>

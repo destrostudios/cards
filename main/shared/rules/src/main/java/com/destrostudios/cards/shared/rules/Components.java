@@ -13,11 +13,11 @@ public class Components {
     public static final ComponentDefinition<Void> BOARD = new ComponentDefinition<>("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = new ComponentDefinition<>("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = new ComponentDefinition<>("creatureZone");
-    public static final ComponentDefinition<Void> DAMAGED = new ComponentDefinition<>("damaged");
     public static final ComponentDefinition<String> NAME = new ComponentDefinition<>("name");
     public static final ComponentDefinition<String> FLAVOUR_TEXT = new ComponentDefinition<>("flavourText");
     public static final ComponentDefinition<Integer> HAND = new ComponentDefinition<>("hand");
     public static final ComponentDefinition<Integer> HEALTH = new ComponentDefinition<>("health");
+    public static final ComponentDefinition<Integer> DAMAGED = new ComponentDefinition<>("damaged");
     public static final ComponentDefinition<Integer> LIBRARY = new ComponentDefinition<>("library");
     public static final ComponentDefinition<Integer> GRAVEYARD = new ComponentDefinition<>("graveyard");
     public static final ComponentDefinition<Integer> SPELL_ZONE = new ComponentDefinition<>("spellZone");

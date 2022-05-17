@@ -16,7 +16,6 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
     @Override
     public void handle(DamageEvent event) {
         LOG.info("dealing {} damage to {}", event.damage, event.target);
-        events.fire(new SetHealthEvent(event.target, data.getOptionalComponent(event.target, Components.HEALTH).orElse(0) - event.damage));
+        events.fire(new SetDamagedEvent(event.target, data.getOptionalComponent(event.target, Components.DAMAGED).orElse(0) + event.damage));
     }
-
 }

@@ -10,7 +10,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.SpellUtil;
+import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.jme3.math.Vector3f;

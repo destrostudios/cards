@@ -1,7 +1,8 @@
-package com.destrostudios.cards.shared.rules;
+package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.rules.Components;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,10 +14,10 @@ public class ConditionUtil {
     static {
         simpleRequirableComponents.add(Components.ATTACK);
         simpleRequirableComponents.add(Components.CREATURE_CARD);
-        simpleRequirableComponents.add(Components.DAMAGED);
         simpleRequirableComponents.add(Components.NAME);
         simpleRequirableComponents.add(Components.FLAVOUR_TEXT);
         simpleRequirableComponents.add(Components.HEALTH);
+        simpleRequirableComponents.add(Components.DAMAGED);
         simpleRequirableComponents.add(Components.OWNED_BY);
         simpleRequirableComponents.add(Components.SPELL_CARD);
         simpleRequirableComponents.add(Components.Ability.SLOW);

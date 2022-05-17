@@ -1,6 +1,7 @@
-package com.destrostudios.cards.shared.rules;
+package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.rules.Components;
 
 public class SpellUtil {
 

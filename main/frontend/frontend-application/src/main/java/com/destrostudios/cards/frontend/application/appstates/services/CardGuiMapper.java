@@ -5,6 +5,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.util.HealthUtil;
 
 import java.util.*;
 
@@ -85,7 +86,7 @@ public class CardGuiMapper {
         Integer attackDamage = entityData.getComponent(cardEntity, Components.ATTACK);
         cardModel.setAttackDamage(attackDamage);
 
-        Integer lifepoints = entityData.getComponent(cardEntity, Components.HEALTH);
+        Integer lifepoints = HealthUtil.getEffectiveHealth(entityData, cardEntity);
         cardModel.setLifepoints(lifepoints);
 
         boolean isDamaged = entityData.hasComponent(cardEntity, Components.DAMAGED);

@@ -19,5 +19,4 @@ public class BattleHandler extends GameEventHandler<BattleEvent> {
         events.fire(new DamageEvent(event.target, data.getOptionalComponent(event.source, Components.ATTACK).orElse(0)));
         events.fire(new DamageEvent(event.source, data.getOptionalComponent(event.target, Components.ATTACK).orElse(0)));
     }
-
 }

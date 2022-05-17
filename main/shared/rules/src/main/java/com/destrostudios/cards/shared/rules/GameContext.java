@@ -70,8 +70,8 @@ public class GameContext {
         addEventHandler(events.instant(), RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addEventHandler(events.instant(), RemoveCardFromSpellZoneEvent.class, new RemoveCardFromSpellZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
-        addEventHandlers(events.instant(), SetHealthEvent.class,
-                new SetHealthHandler(),
+        addEventHandlers(events.instant(), SetDamagedEvent.class,
+                new SetDamagedHandler(),
                 new DestroyOnNoHealthHandler());
         addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
         addEventHandlers(events.instant(), StartTurnEvent.class,

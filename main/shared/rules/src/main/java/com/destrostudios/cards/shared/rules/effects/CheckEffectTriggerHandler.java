@@ -1,9 +1,9 @@
 package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.ConditionUtil;
+import com.destrostudios.cards.shared.rules.util.ConditionUtil;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.TargetUtil;
+import com.destrostudios.cards.shared.rules.util.TargetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

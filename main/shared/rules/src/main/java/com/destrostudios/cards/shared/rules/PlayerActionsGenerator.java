@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.battle.AttackEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.util.SpellUtil;
 
 import java.util.LinkedList;
 import java.util.List;

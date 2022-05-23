@@ -59,6 +59,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.EffectTrigger.EFFECTS));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.DAMAGE));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.HEAL));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.DRAW));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.GAIN_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
@@ -75,6 +76,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ON_BOARD));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Spell.INSTANT_EFFECT_TRIGGERS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
 
         EntityTemplate.addLoader(xmlTemplateManager::loadTemplate);
     }

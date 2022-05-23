@@ -5,10 +5,6 @@ import com.destrostudios.cards.shared.rules.GameEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Philipp
- */
 public class SetDamagedHandler extends GameEventHandler<SetDamagedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(SetDamagedHandler.class);
@@ -16,6 +12,10 @@ public class SetDamagedHandler extends GameEventHandler<SetDamagedEvent> {
     @Override
     public void handle(SetDamagedEvent event) {
         LOG.info("setting damaged of {} to {}", event.target, event.damaged);
-        data.setComponent(event.target, Components.DAMAGED, event.damaged);
+        if (event.damaged > 0) {
+            data.setComponent(event.target, Components.DAMAGED, event.damaged);
+        } else {
+            data.removeComponent(event.target, Components.DAMAGED);
+        }
     }
 }

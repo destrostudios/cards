@@ -5,9 +5,12 @@ import com.destrostudios.cards.shared.rules.Components;
 
 public class HealthUtil {
 
-    public static int getEffectiveHealth(EntityData data, int entity) {
-        int health = data.getOptionalComponent(entity, Components.HEALTH).orElse(0);
-        int damaged = data.getOptionalComponent(entity, Components.DAMAGED).orElse(0);
-        return (health - damaged);
+    public static Integer getEffectiveHealth(EntityData data, int entity) {
+        Integer health = data.getComponent(entity, Components.HEALTH);
+        if (health != null) {
+            int damaged = data.getOptionalComponent(entity, Components.DAMAGED).orElse(0);
+            return (health - damaged);
+        }
+        return null;
     }
 }

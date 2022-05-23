@@ -58,6 +58,7 @@ public class Components {
 
     public static class Effect {
         public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damage");
+        public static final ComponentDefinition<Integer> HEAL = new ComponentDefinition<>("heal");
         public static final ComponentDefinition<Integer> DRAW = new ComponentDefinition<>("draw");
         public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
 
@@ -83,5 +84,6 @@ public class Components {
 
     public static class Spell {
         public static final ComponentDefinition<int[]> INSTANT_EFFECT_TRIGGERS = new ComponentDefinition<>("instantEffectTriggers");
+        public static final ComponentDefinition<Void> TARGET_OPTIONAL = new ComponentDefinition<>("targetOptional");
     }
 }

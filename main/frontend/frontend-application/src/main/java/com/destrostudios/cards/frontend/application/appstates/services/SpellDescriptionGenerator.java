@@ -10,9 +10,9 @@ public class SpellDescriptionGenerator {
 
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> effectTextProvider = new LinkedHashMap<>();
     private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> conditionTextProviders = new LinkedHashMap<>();
-    private static LinkedHashMap<ComponentDefinition, ComponentTextProvider> targetCardTypeTextProviders = new LinkedHashMap<>();
     static {
         addComponentTextProvider(effectTextProvider, Components.Effect.DAMAGE, (entityData, damage) -> "deal " + damage + " damage to");
+        addComponentTextProvider(effectTextProvider, Components.Effect.HEAL, (entityData, damage) -> "heal " + damage + " health of");
         addComponentTextProvider(effectTextProvider, Components.Effect.DRAW, (entityData, draw) -> "draw " + draw + " " + ((draw == 1) ? "card" : "cards"));
         addComponentTextProvider(effectTextProvider, Components.Effect.GAIN_MANA, (entityDate, mana) -> "gain " + mana + " mana");
 
@@ -67,7 +67,7 @@ public class SpellDescriptionGenerator {
             if (text.length() > 0) {
                 text += " and ";
             }
-            text += " " +getConditionsTargetText(data, effectTargetConditions, "all");
+            text += " " + getConditionsTargetText(data, effectTargetConditions, "all");
         }
         return text;
     }

@@ -100,7 +100,7 @@ public class UpdateBoardService {
                 Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
 
                 Interactivity interactivity;
-                if (SpellUtil.isTargeted(entityData, playSpellEvent.spell)) {
+                if (SpellUtil.isTargeted(entityData, playSpellEvent.spell) && (playSpellEvent.targets.length > 0)) {
                     interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                         @Override

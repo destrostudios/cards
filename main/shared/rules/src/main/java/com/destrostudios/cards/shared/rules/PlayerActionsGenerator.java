@@ -43,14 +43,18 @@ public class PlayerActionsGenerator {
     }
 
     private void generatePlaySpellEvents(int card, int spell, Consumer<Event> out) {
-        if (SpellUtil.isTargeted(data, spell)) {
+        boolean targeted = SpellUtil.isTargeted(data, spell);
+        boolean hasValidTarget = false;
+        if (targeted) {
             for (int target : data.query(Components.OWNED_BY).list()) {
                 int[] targets = new int[] { target };
                 if (SpellUtil.isCastable(data, card, spell, targets)) {
                     out.accept(new PlaySpellEvent(spell, targets));
+                    hasValidTarget = true;
                 }
             }
-        } else {
+        }
+        if ((!targeted) || (data.hasComponent(spell, Components.Spell.TARGET_OPTIONAL) && !hasValidTarget)) {
             int[] targets = new int[0];
             if (SpellUtil.isCastable(data, card, spell, targets)) {
                 out.accept(new PlaySpellEvent(spell, targets));

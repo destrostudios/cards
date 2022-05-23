@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules.effects;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
+import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
@@ -30,6 +31,11 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         Integer damage = data.getComponent(event.effect, Components.Effect.DAMAGE);
         if (damage != null) {
             events.fire(new DamageEvent(event.target, damage));
+        }
+
+        Integer heal = data.getComponent(event.effect, Components.Effect.HEAL);
+        if (heal != null) {
+            events.fire(new HealEvent(event.target, heal));
         }
 
         Integer draw = data.getComponent(event.effect, Components.Effect.DRAW);

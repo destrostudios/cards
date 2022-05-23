@@ -50,6 +50,7 @@ public class GameContext {
         addEventHandler(events.instant(), AttackEvent.class, new AttackHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
         addEventHandler(events.instant(), DamageEvent.class, new DamageHandler());
+        addEventHandler(events.instant(), HealEvent.class, new HealHandler());
         addEventHandler(events.resolved(), DestructionEvent.class, new DestructionHandler());
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,

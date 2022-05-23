@@ -149,7 +149,6 @@ public class CardPainterAWT {
         Font font = (fullArt ? fontStatsLarge : fontStatsSmall);
         Integer attackDamage = cardModel.getAttackDamage();
         if (attackDamage != null) {
-            // graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 29, 458, 73, 73, null);
             String attackDamageText = ("" + attackDamage);
             graphics.setFont(font);
             Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
@@ -159,7 +158,6 @@ public class CardPainterAWT {
         }
         Integer lifepoints = cardModel.getLifepoints();
         if (lifepoints != null) {
-            // graphics.drawImage(CardImages.getCachedImage("images/templates/stat.png"), 298, 458, 73, 73, null);
             String lifepointsText = ("" + lifepoints);
             graphics.setFont(font);
             Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);

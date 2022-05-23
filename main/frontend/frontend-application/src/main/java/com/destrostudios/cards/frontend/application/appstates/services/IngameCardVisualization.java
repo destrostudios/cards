@@ -18,7 +18,7 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
     public IngameCardVisualization(AssetManager assetManager, boolean minified) {
         this.minified = minified;
         node = new Node();
-        foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/magic.png", ColorRGBA.Black);
+        foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/yugioh.png", ColorRGBA.Black);
         node.attachChild(foilModelledCard.getNode());
         glowBox = new GlowBox(assetManager, 0.96f, 1.28f);
     }

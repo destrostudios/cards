@@ -218,8 +218,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     .build();
             BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
             mainApplication.getStateManager().attach(boardAppState);
-            updateBoard();
             mainApplication.enqueue(() -> {
+                updateVisuals();
                 board.finishAllTransformations();
             });
             hasPreparedBoard = true;
@@ -278,20 +278,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         cameraAppState.moveTo(position, rotation, 0.3f);
     }
 
-    private void updateBoard() {
-        mainApplication.enqueue(() -> {
-            List<Event> possibleEvents = gameClient.getGame().getActionGenerator().generatePossibleActions(gameClient.getPlayerEntity());
-            sendableEndTurnEvent = null;
-            for (Event event : possibleEvents) {
-                if (event instanceof EndTurnEvent) {
-                    sendableEndTurnEvent = event;
-                }
-            }
-            updateBoardService.update(possibleEvents);
-            updateHudService.update();
-        });
-    }
-
     private void tryPlayEntryAnimation(int cardEntity) {
         mainApplication.enqueue(() -> {
             Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
@@ -317,11 +303,26 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         if (eventQueue.hasNextTriggeredHandler()) {
             while (!board.isAnimationPlaying()) {
                 eventQueue.triggerNextHandler();
+                if (board.isAnimationPlaying()) {
+                    updateBoardService.update(null);
+                }
                 if (!eventQueue.hasNextTriggeredHandler()) {
-                    updateBoard();
+                    updateVisuals();
                     break;
                 }
             }
         }
+    }
+
+    private void updateVisuals() {
+        List<Event> possibleEvents = gameClient.getGame().getActionGenerator().generatePossibleActions(gameClient.getPlayerEntity());
+        sendableEndTurnEvent = null;
+        for (Event event : possibleEvents) {
+            if (event instanceof EndTurnEvent) {
+                sendableEndTurnEvent = event;
+            }
+        }
+        updateBoardService.update(possibleEvents);
+        updateHudService.update();
     }
 }

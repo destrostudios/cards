@@ -84,7 +84,9 @@ public class UpdateBoardService {
             }
         }
 
-        updateInteractivities(possibleEvents);
+        if (possibleEvents != null) {
+            updateInteractivities(possibleEvents);
+        }
     }
 
     private void updateInteractivities(List<Event> possibleEvents) {

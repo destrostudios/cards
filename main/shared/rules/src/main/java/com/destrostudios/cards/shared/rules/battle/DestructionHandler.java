@@ -23,6 +23,7 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
             events.fire(new GameOverEvent(winner));
         }
         else {
+            data.removeComponent(event.target, Components.DAMAGED);
             events.fire(new AddCardToGraveyardEvent(event.target));
         }
     }

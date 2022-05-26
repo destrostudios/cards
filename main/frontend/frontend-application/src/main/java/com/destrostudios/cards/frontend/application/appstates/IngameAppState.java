@@ -2,6 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates;
 
 import com.destrostudios.cardgui.*;
 import com.destrostudios.cardgui.boardobjects.TargetArrow;
+import com.destrostudios.cardgui.events.MoveCardEvent;
 import com.destrostudios.cardgui.samples.boardobjects.targetarrow.*;
 import com.destrostudios.cardgui.samples.animations.*;
 import com.destrostudios.cardgui.samples.visualization.*;
@@ -46,6 +47,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private static final float ZONE_HEIGHT = 1.3f;
     private SimpleGameClient gameClient;
     private Board board;
+    private SimpleIntervalZone inspectionZone;
+    private Card<CardModel> inspectionCard;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap;
     private boolean hasPreparedBoard = false;
@@ -106,6 +109,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private void initBoard() {
         board = new Board();
+
+        inspectionZone = new SimpleIntervalZone(new Vector3f(-1.29f, 5, 1.672f), Quaternion.IDENTITY, Vector3f.UNIT_XYZ);
+        board.addZone(inspectionZone);
+        inspectionCard = new Card<>(new CardModel());
+
         // TODO: Offer this kind of ZoneVisualizer out of the box from the cardgui
         board.registerVisualizer_Class(CardZone.class, new DebugZoneVisualizer() {
 
@@ -213,8 +221,28 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                     .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
                     .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
                     .dragProjectionZ(0.996f)
-                    .hoverInspectionDelay(0.75f)
+                    .hoverInspectionDelay(0f)
                     .isInspectable(this::isInspectable)
+                    .inspector(new Inspector() {
+
+                        @Override
+                        public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
+                            Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
+                            board.triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
+                            inspectionCard.finishTransformations();
+                            inspectionCard.getModel().set(card.getModel());
+                        }
+
+                        @Override
+                        public boolean isReadyToUninspect(TransformedBoardObject<?> transformedBoardObject) {
+                            return true;
+                        }
+
+                        @Override
+                        public void uninspect(TransformedBoardObject<?> transformedBoardObject) {
+                            board.unregister(inspectionCard);
+                        }
+                    })
                     .build();
             BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
             mainApplication.getStateManager().attach(boardAppState);

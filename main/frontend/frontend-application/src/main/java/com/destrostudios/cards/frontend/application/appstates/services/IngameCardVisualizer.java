@@ -9,14 +9,14 @@ import com.jme3.scene.Node;
 
 public class IngameCardVisualizer extends CustomAttachmentVisualizer<Card<CardModel>, Node, IngameCardVisualization> {
 
-    public IngameCardVisualizer(boolean minified) {
-        this.minified = minified;
+    public IngameCardVisualizer(boolean fullArt) {
+        this.fullArt = fullArt;
     }
-    private boolean minified;
+    private boolean fullArt;
 
     @Override
     protected IngameCardVisualization createVisualizationObject(AssetManager assetManager) {
-        return new IngameCardVisualization(assetManager, minified);
+        return new IngameCardVisualization(assetManager, fullArt);
     }
 
     @Override

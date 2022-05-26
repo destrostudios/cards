@@ -12,6 +12,7 @@ public class FrontendJmeApplication extends SimpleApplication {
         this.gameClient = gameClient;
         loadSettings();
         setPauseOnLostFocus(false);
+        setDisplayStatView(false);
     }
     private SimpleGameClient gameClient;
 

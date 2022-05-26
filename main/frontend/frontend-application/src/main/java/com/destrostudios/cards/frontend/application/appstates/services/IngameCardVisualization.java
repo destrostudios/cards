@@ -15,14 +15,14 @@ import com.jme3.scene.Node;
 
 public class IngameCardVisualization extends CustomAttachmentVisualization<Node> {
 
-    public IngameCardVisualization(AssetManager assetManager, boolean minified) {
-        this.minified = minified;
+    public IngameCardVisualization(AssetManager assetManager, boolean fullArt) {
+        this.fullArt = fullArt;
         node = new Node();
         foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/yugioh.png", ColorRGBA.Black);
         node.attachChild(foilModelledCard.getNode());
         glowBox = new GlowBox(assetManager, 0.96f, 1.28f);
     }
-    private boolean minified;
+    private boolean fullArt;
     private Node node;
     private FoilModelledCard foilModelledCard;
     private GlowBox glowBox;
@@ -38,7 +38,6 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         imageArtwork.setBackground_Alpha(0);
         imageFoilMap.setBackground_Alpha(0);
 
-        boolean fullArt = minified && (!cardModel.isInspected());
         if (fullArt) {
             CardPainterJME.drawCardFront_Minified_Artwork(imageArtwork, cardModel);
             if (cardModel.isFront()) {

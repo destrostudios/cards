@@ -1,15 +1,11 @@
 package com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model;
 
 import com.destrostudios.cardgui.BoardObjectModel;
-import com.destrostudios.cardgui.annotations.IsBoardObjectInspected;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
 import java.util.List;
 
 public class CardModel extends BoardObjectModel {
-
-    @IsBoardObjectInspected
-    private boolean isInspected;
 
     private boolean isFront;
     private boolean isPlayable;
@@ -28,10 +24,6 @@ public class CardModel extends BoardObjectModel {
     private boolean isDamaged;
     private String flavourText;
     private Foil foil;
-
-    public boolean isInspected() {
-        return isInspected;
-    }
 
     public boolean isFront() {
         return isFront;
@@ -95,6 +87,25 @@ public class CardModel extends BoardObjectModel {
 
     public Foil getFoil() {
         return foil;
+    }
+
+    public void set(CardModel cardModel) {
+        setFront(cardModel.isFront);
+        setPlayable(cardModel.isPlayable);
+        setType(cardModel.type);
+        setTitle(cardModel.title);
+        setManaCostFullArt(cardModel.manaCostFullArt);
+        setManaCostDetails(cardModel.manaCostDetails);
+        setDescription(cardModel.description);
+        setKeywords(cardModel.keywords);
+        setTribes(cardModel.tribes);
+        setAttackDamage(cardModel.attackDamage);
+        setLifepoints(cardModel.lifepoints);
+        setDamaged(cardModel.isDamaged);
+        setSpells(cardModel.spells);
+        setCastDescription(cardModel.castDescription);
+        setFlavourText(cardModel.flavourText);
+        setFoil(cardModel.foil);
     }
 
     public void setFront(boolean isFront) {

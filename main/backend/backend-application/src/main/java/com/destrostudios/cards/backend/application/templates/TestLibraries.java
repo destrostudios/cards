@@ -2,13 +2,9 @@ package com.destrostudios.cards.backend.application.templates;
 
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 
-/**
- *
- * @author Philipp
- */
 public class TestLibraries {
 
-    public static CardPool red() {
+    public static CardPool custom() {
         CardPool cards = new CardPool();
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "creatures/goblin"), 2);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "creatures/orc"), 1);
@@ -22,6 +18,12 @@ public class TestLibraries {
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/lightning_bolt"), 3);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/arcane_intellect"), 2);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/flamestrike"), 2);
+        return cards;
+    }
+
+    public static CardPool random() {
+        CardPool cards = new CardPool();
+        cards.put(RandomCards::randomCard, 1);
         return cards;
     }
 }

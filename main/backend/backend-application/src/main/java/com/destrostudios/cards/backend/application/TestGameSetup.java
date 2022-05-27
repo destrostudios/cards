@@ -8,10 +8,6 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- *
- * @author Philipp
- */
 public class TestGameSetup {
 
     private final EntityData data;
@@ -24,8 +20,8 @@ public class TestGameSetup {
     public void apply() {
         int player1 = data.createEntity();
         int player2 = data.createEntity();
-        initPlayer(player1, player2, "Player1", TestLibraries.red(), 20);
-        initPlayer(player2, player1, "Player2", TestLibraries.red(), 20);
+        initPlayer(player1, player2, "Player1", TestLibraries.custom(), 20);
+        initPlayer(player2, player1, "Player2", TestLibraries.random(), 20);
     }
 
     private void initPlayer(int player, int opponent, String name, CardPool cards, int librarySize) {

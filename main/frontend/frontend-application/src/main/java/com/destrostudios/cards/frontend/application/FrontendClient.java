@@ -13,7 +13,6 @@ import com.destrostudios.gametools.network.client.modules.game.GameStartClientMo
 import com.destrostudios.gametools.network.client.modules.game.LobbyClientModule;
 import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.minlog.Log;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,14 +26,11 @@ public class FrontendClient {
             System.out.println("First argument must be a jwt (usually passed by the destrostudios launcher).");
             return;
         }
-        startApplication(args[1], args[0]);
+        String hostUrl = (args.length > 1 ? args[1] : "destrostudios.com");
+        startApplication(hostUrl, args[0]);
     }
 
     private static void startApplication(String hostUrl, String jwt) throws IOException {
-        startApplication(getToolsClient(hostUrl, jwt), jwt);
-    }
-
-    private static void startApplication(ToolsClient toolsClient, String jwt) {
         try {
             FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
             System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
@@ -44,6 +40,7 @@ public class FrontendClient {
         }
         ApplicationSetup.setup();
         // Log.DEBUG();
+        ToolsClient toolsClient = getToolsClient(hostUrl, jwt);
         FrontendJmeApplication frontendJmeApplication = new FrontendJmeApplication(toolsClient);
         frontendJmeApplication.start();
     }

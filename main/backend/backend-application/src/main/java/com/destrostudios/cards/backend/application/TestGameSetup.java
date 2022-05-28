@@ -29,7 +29,7 @@ public class TestGameSetup {
 
     private void initPlayer(int player, int opponent, PlayerInfo playerInfo, int librarySize) {
         data.setComponent(player, Components.NAME, playerInfo.getLogin());
-        data.setComponent(player, Components.HEALTH, 1);
+        data.setComponent(player, Components.HEALTH, 30);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
         CardPool cardPool = (playerInfo.getDeckName().equals("custom") ? TestLibraries.custom() : TestLibraries.random());
         for (int i = 0; i < librarySize; i++) {

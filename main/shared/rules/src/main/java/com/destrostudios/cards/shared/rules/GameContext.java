@@ -1,6 +1,5 @@
 package com.destrostudios.cards.shared.rules;
 
-import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventHandlers;
@@ -11,25 +10,20 @@ import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.effects.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.*;
+import lombok.Getter;
 
-import java.util.function.IntUnaryOperator;
-
-/**
- *
- * @author Philipp
- */
 public class GameContext {
 
-    private final EntityData data;
-    private final EventQueue events;
-    private final IntUnaryOperator random;
-    private final PlayerActionsGenerator actionGenerator;
+    @Getter
+    private SimpleEntityData data;
+    @Getter
+    private EventQueue events;
+    @Getter
+    private boolean gameOver;
 
-    public GameContext(IntUnaryOperator random) {
-        data = new SimpleEntityData();
+    public GameContext(SimpleEntityData data) {
+        this.data = data;
         events = new EventQueue();
-        this.random = random;
-        actionGenerator = new PlayerActionsGenerator(data);
         initListeners();
     }
 
@@ -83,6 +77,7 @@ public class GameContext {
                 new ExecuteBotActionsOnTurnStartHandler());
         addEventHandler(events.instant(), CheckEffectTriggerEvent.class, new CheckEffectTriggerHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
+        addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));
     }
 
     private <T extends Event> void addEventHandlers(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T>... handlers) {
@@ -94,23 +89,10 @@ public class GameContext {
     private <T extends Event> void addEventHandler(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T> handler) {
         handler.data = data;
         handler.events = events;
-        handler.random = random;
-        eventHandlers.add(eventClass, handler::handle);
+        eventHandlers.add(eventClass, (event, random) -> handler.handle(event, random));
     }
 
-    public EntityData getData() {
-        return data;
-    }
-
-    public EventQueue getEvents() {
-        return events;
-    }
-
-    public IntUnaryOperator getRandom() {
-        return random;
-    }
-
-    public PlayerActionsGenerator getActionGenerator() {
-        return actionGenerator;
+    public void onGameOver() {
+        gameOver = true;
     }
 }

@@ -67,4 +67,10 @@ public class CameraAppState extends MyBaseAppState {
     public boolean isFreeCameraEnabled() {
         return mainApplication.getFlyByCamera().isEnabled();
     }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        mainApplication.getInputManager().setCursorVisible(true);
+    }
 }

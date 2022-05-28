@@ -5,7 +5,6 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 
 public class IngameHudAppState extends MyBaseAppState {
 

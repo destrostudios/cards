@@ -11,6 +11,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.TranslucentBucketFilter;
 import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Spatial;
 import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
@@ -24,7 +25,14 @@ public class ForestBoardAppState extends VisualBoardAppState {
     public ForestBoardAppState(int playerIndex) {
         super(playerIndex);
     }
-    private Vector3f lightDirection = new Vector3f(1, -5, -1).normalizeLocal();
+    private Vector3f lightDirection;
+    private AmbientLight ambientLight;
+    private DirectionalLight directionalLight;
+    private DirectionalLightShadowFilter shadowFilter;
+    private Spatial sky;
+    private TerrainQuad terrain;
+    private WaterFilter waterFilter;
+    private TranslucentBucketFilter translucentBucketFilter;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -36,15 +44,17 @@ public class ForestBoardAppState extends VisualBoardAppState {
     }
 
     private void initLightAndShadows() {
+        lightDirection = new Vector3f(1, -5, -1).normalizeLocal();
         if (playerIndex == 1) {
             lightDirection.multLocal(-1, 1, -1);
         }
 
-        mainApplication.getRootNode().addLight(new AmbientLight(ColorRGBA.White.mult(0.4f)));
-        DirectionalLight directionalLight = new DirectionalLight(lightDirection, ColorRGBA.White.mult(1.1f));
+        ambientLight = new AmbientLight(ColorRGBA.White.mult(0.4f));
+        mainApplication.getRootNode().addLight(ambientLight);
+        directionalLight = new DirectionalLight(lightDirection, ColorRGBA.White.mult(1.1f));
         mainApplication.getRootNode().addLight(directionalLight);
 
-        DirectionalLightShadowFilter shadowFilter = new DirectionalLightShadowFilter(mainApplication.getAssetManager(), 2048, 2);
+        shadowFilter = new DirectionalLightShadowFilter(mainApplication.getAssetManager(), 2048, 2);
         shadowFilter.setLight(directionalLight);
         shadowFilter.setShadowIntensity(0.4f);
         getAppState(PostFilterAppState.class).addFilter(shadowFilter);
@@ -57,7 +67,8 @@ public class ForestBoardAppState extends VisualBoardAppState {
         Texture textureSouth = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/back.png");
         Texture textureUp = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/up.png");
         Texture textureDown = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/down.png");
-        mainApplication.getRootNode().attachChild(SkyFactory.createSky(mainApplication.getAssetManager(), textureWest, textureEast, textureNorth, textureSouth, textureUp, textureDown));
+        sky = SkyFactory.createSky(mainApplication.getAssetManager(), textureWest, textureEast, textureNorth, textureSouth, textureUp, textureDown);
+        mainApplication.getRootNode().attachChild(sky);
     }
 
     private void initTerrain() {
@@ -65,7 +76,7 @@ public class ForestBoardAppState extends VisualBoardAppState {
         Texture heightMapImage = assetManager.loadTexture("textures/boards/forest_height.png");
         AbstractHeightMap heightmap = new ImageBasedHeightMap(heightMapImage.getImage());
         heightmap.load();
-        TerrainQuad terrain = new TerrainQuad("my terrain", 65, 513, heightmap.getHeightMap());
+        terrain = new TerrainQuad("terrain", 65, 513, heightmap.getHeightMap());
 
         Material material = new Material(assetManager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
         boolean triPlanarMapping = true;
@@ -99,7 +110,7 @@ public class ForestBoardAppState extends VisualBoardAppState {
     }
 
     private void initWater() {
-        WaterFilter waterFilter = new WaterFilter(mainApplication.getRootNode(), lightDirection);
+        waterFilter = new WaterFilter(mainApplication.getRootNode(), lightDirection);
         waterFilter.setCenter(new Vector3f(0, 0, 1.4f));
         waterFilter.setWaterHeight(-0.45f);
         waterFilter.setShapeType(WaterFilter.AreaShape.Square);
@@ -117,6 +128,19 @@ public class ForestBoardAppState extends VisualBoardAppState {
         waterFilter.setShoreHardness(10);
         waterFilter.setUseHQShoreline(true);
         getAppState(PostFilterAppState.class).addFilter(waterFilter);
-        getAppState(PostFilterAppState.class).addFilter(new TranslucentBucketFilter());
+        translucentBucketFilter = new TranslucentBucketFilter();
+        getAppState(PostFilterAppState.class).addFilter(translucentBucketFilter);
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        mainApplication.getRootNode().removeLight(ambientLight);
+        mainApplication.getRootNode().removeLight(directionalLight);
+        mainApplication.getRootNode().detachChild(sky);
+        mainApplication.getRootNode().detachChild(terrain);
+        getAppState(PostFilterAppState.class).removeFilter(shadowFilter);
+        getAppState(PostFilterAppState.class).removeFilter(waterFilter);
+        getAppState(PostFilterAppState.class).removeFilter(translucentBucketFilter);
     }
 }

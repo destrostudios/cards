@@ -1,15 +1,10 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.jme3.network.AbstractMessage;
 
 import java.util.List;
 
-/**
- *
- * @author Philipp
- */
-public class FullGameState extends AbstractMessage {
+public class FullGameState {
 
     private List<Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>>> list;
     private int nextEntity;

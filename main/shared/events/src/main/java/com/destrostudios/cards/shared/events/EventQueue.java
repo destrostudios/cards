@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.events;
 
+import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,17 +18,17 @@ public class EventQueue {
     private LinkedList<TriggeredEventHandler> triggeredEventHandlers = new LinkedList<>();
     private Map<Event, List<TriggeredEventHandler>> waitingResolvedEventHandlers = new HashMap<>();
 
-    public void fire(Event event) {
+    public void fire(Event event, NetworkRandom random) {
         event.setParent(parentEvent);
-        triggerHandlers(preHandlers, event);
-        triggerHandlers(instantHandlers, event);
+        triggerHandlers(preHandlers, event, random);
+        triggerHandlers(instantHandlers, event, random);
         Event rootEvent = event.getRoot();
         for (EventHandler eventHandler : resolvedHandlers.get(event.getClass())) {
-            waitingResolvedEventHandlers.computeIfAbsent(rootEvent, e -> new LinkedList<>()).add(new TriggeredEventHandler(event, eventHandler));
+            waitingResolvedEventHandlers.computeIfAbsent(rootEvent, e -> new LinkedList<>()).add(new TriggeredEventHandler(event, eventHandler, random));
         }
     }
 
-    private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event) {
+    private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event, NetworkRandom random) {
         Iterator<EventHandler> eventHandlersIterator = eventHandlers.get(event.getClass()).iterator();
         int startingIndex = 0;
         for (TriggeredEventHandler tiggeredEventHandler : triggeredEventHandlers) {
@@ -39,7 +40,7 @@ public class EventQueue {
         int i = startingIndex;
         while (eventHandlersIterator.hasNext()) {
             EventHandler eventHandler = eventHandlersIterator.next();
-            triggeredEventHandlers.add(i, new TriggeredEventHandler(event, eventHandler));
+            triggeredEventHandlers.add(i, new TriggeredEventHandler(event, eventHandler, random));
             i++;
         }
     }

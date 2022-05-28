@@ -4,20 +4,16 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
-import java.util.function.IntPredicate;
-import java.util.function.IntUnaryOperator;
+import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
-/**
- *
- * @author Philipp
- */
+import java.util.function.IntPredicate;
+
 public abstract class GameEventHandler<T extends Event> {
 
     public EntityData data;
     public EventQueue events;
-    public IntUnaryOperator random;
 
-    public abstract void handle(T event);
+    public abstract void handle(T event, NetworkRandom random);
 
     protected <T> IntPredicate hasComponentValue(ComponentDefinition<T> component, T value) {
         return x -> data.hasComponentValue(x, component, value);

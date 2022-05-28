@@ -13,10 +13,10 @@ import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
 import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
-import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
@@ -40,19 +40,20 @@ import java.util.List;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
 
-    public IngameAppState(SimpleGameClient gameClient) {
-        this.gameClient = gameClient;
-        cardGuiMap = new CardGuiMap(gameClient.getGame().getData());
+    public IngameAppState(GameService gameService) {
+        this.gameService = gameService;
+        cardGuiMap = new CardGuiMap(gameService.getGameContext().getData());
+        playerActionsGenerator = new PlayerActionsGenerator(gameService.getGameContext().getData());
     }
     private static final float ZONE_HEIGHT = 1.3f;
-    private SimpleGameClient gameClient;
+    private GameService gameService;
     private Board board;
+    private boolean isPreparedToStart;
     private SimpleIntervalZone inspectionZone;
     private Card<CardModel> inspectionCard;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private CardGuiMap cardGuiMap;
-    private boolean hasPreparedBoard = false;
-    private boolean isInitialized = false;
+    private PlayerActionsGenerator playerActionsGenerator;
     private UpdateBoardService updateBoardService;
     private UpdateHudService updateHudService;
     private EntryAnimationService entryAnimationService;
@@ -66,8 +67,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getStateManager().attach(new IngameHudAppState());
         initBoard();
         initInputListeners();
-        // Enqueue so added appStates have been initialized
-        mainApplication.enqueue(() -> gameClient.connect());
+        // Wait until the other attached appstates are initialized
+        mainApplication.enqueue(() -> {
+            isPreparedToStart = true;
+        });
     }
 
     private void initCamera() {
@@ -98,12 +101,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if ("end".equals(name) && isPressed) {
             if (sendableEndTurnEvent != null) {
-                gameClient.requestAction(sendableEndTurnEvent);
+                gameService.sendAction(sendableEndTurnEvent);
             }
         } // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
         else if ("delete".equals(name) && isPressed) {
-            int activePlayerEntity = gameClient.getGame().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
-            gameClient.requestAction(new EndTurnEvent(activePlayerEntity));
+            int activePlayerEntity = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
+            gameService.sendAction(new EndTurnEvent(activePlayerEntity));
         }
     }
 
@@ -156,116 +159,107 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(SimpleTargetArrowSettings.builder()
                 .width(0.5f)
                 .build()));
-        updateBoardService = new UpdateBoardService(gameClient, board, playerZonesMap, cardGuiMap);
-        updateHudService = new UpdateHudService(gameClient, getAppState(IngameHudAppState.class));
+        updateBoardService = new UpdateBoardService(gameService, board, playerZonesMap, cardGuiMap);
+        updateHudService = new UpdateHudService(gameService, getAppState(IngameHudAppState.class));
         entryAnimationService = new EntryAnimationService(mainApplication);
-        initGameListeners();
-    }
 
-    private void initGameListeners() {
-        gameClient.addFullGameStateListener(entityData -> {
-            List<Integer> players = entityData.query(Components.NEXT_PLAYER).list();
-            Vector3f offset = new Vector3f(0, 0, ZONE_HEIGHT);
-            float directionX = 1;
-            float directionZ = 1;
-            Quaternion zoneRotation = Quaternion.IDENTITY;
-            for (int i = 0; i < players.size(); i++) {
-                if (i == 1) {
-                    directionX *= -1;
-                    directionZ *= -1;
-                    zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
-                }
-
-                float x = -0.5f;
-                float z = (ZONE_HEIGHT / 2);
-                CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                x += 5;
-                SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 1, 1)) {
-
-                    // TODO: Cleanup
-                    @Override
-                    public Vector3f getLocalCardPosition(Vector3f zonePosition) {
-                        Vector3f localPosition = super.getLocalCardPosition(zonePosition);
-                        return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
-                    }
-                };
-
-                x = -0.5f;
-                z += ZONE_HEIGHT;
-                CenteredIntervalZone spellZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-                x += 5;
-                SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 0, 0)) {
-
-                    // TODO: Cleanup
-                    @Override
-                    public Vector3f getLocalCardPosition(Vector3f zonePosition) {
-                        Vector3f localPosition = super.getLocalCardPosition(zonePosition);
-                        return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
-                    }
-                };
-
-                x = 0;
-                z += (ZONE_HEIGHT - 0.25f);
-                Quaternion handRotation = zoneRotation.mult(new Quaternion().fromAngleAxis(0.1f * FastMath.PI, Vector3f.UNIT_X));
-                CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
-
-                board.addZone(deckZone);
-                board.addZone(handZone);
-                board.addZone(spellZone);
-                board.addZone(creatureZone);
-                board.addZone(graveyardZone);
-                playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
+        List<Integer> players = gameService.getGameContext().getData().query(Components.NEXT_PLAYER).list();
+        Vector3f offset = new Vector3f(0, 0, ZONE_HEIGHT);
+        float directionX = 1;
+        float directionZ = 1;
+        Quaternion zoneRotation = Quaternion.IDENTITY;
+        for (int i = 0; i < players.size(); i++) {
+            if (i == 1) {
+                directionX *= -1;
+                directionZ *= -1;
+                zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
             }
-            BoardSettings boardSettings = BoardSettings.builder()
-                    .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
-                    .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
-                    .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
-                    .dragProjectionZ(0.996f)
-                    .hoverInspectionDelay(0f)
-                    .isInspectable(this::isInspectable)
-                    .inspector(new Inspector() {
 
-                        @Override
-                        public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
-                            Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
-                            board.triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
-                            inspectionCard.finishTransformations();
-                            inspectionCard.getModel().set(card.getModel());
-                        }
+            float x = -0.5f;
+            float z = (ZONE_HEIGHT / 2);
+            CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+            x += 5;
+            SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 1, 1)) {
 
-                        @Override
-                        public boolean isReadyToUninspect(TransformedBoardObject<?> transformedBoardObject) {
-                            return true;
-                        }
+                // TODO: Cleanup
+                @Override
+                public Vector3f getLocalCardPosition(Vector3f zonePosition) {
+                    Vector3f localPosition = super.getLocalCardPosition(zonePosition);
+                    return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
+                }
+            };
 
-                        @Override
-                        public void uninspect(TransformedBoardObject<?> transformedBoardObject) {
-                            board.unregister(inspectionCard);
-                        }
-                    })
-                    .build();
-            BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
-            mainApplication.getStateManager().attach(boardAppState);
-            mainApplication.enqueue(() -> {
-                updateVisuals();
-                board.finishAllTransformations();
-            });
-            hasPreparedBoard = true;
+            x = -0.5f;
+            z += ZONE_HEIGHT;
+            CenteredIntervalZone spellZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
+            x += 5;
+            SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 0, 0)) {
 
-            mainApplication.getStateManager().attach(new ForestBoardAppState(gameClient.getPlayerEntity()));
-        });
+                // TODO: Cleanup
+                @Override
+                public Vector3f getLocalCardPosition(Vector3f zonePosition) {
+                    Vector3f localPosition = super.getLocalCardPosition(zonePosition);
+                    return new Vector3f(localPosition.y, localPosition.x, localPosition.z);
+                }
+            };
 
-        gameClient.getGame().getEvents().instant().add(StartTurnEvent.class, event -> onTurnStarted());
+            x = 0;
+            z += (ZONE_HEIGHT - 0.25f);
+            Quaternion handRotation = zoneRotation.mult(new Quaternion().fromAngleAxis(0.1f * FastMath.PI, Vector3f.UNIT_X));
+            CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
 
-        gameClient.getGame().getEvents().resolved().add(AddCardToCreatureZoneEvent.class, event -> tryPlayEntryAnimation(event.card));
-        gameClient.getGame().getEvents().pre().add(BattleEvent.class, event -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
-        gameClient.getGame().getEvents().pre().add(ShuffleLibraryEvent.class, event -> {
+            board.addZone(deckZone);
+            board.addZone(handZone);
+            board.addZone(spellZone);
+            board.addZone(creatureZone);
+            board.addZone(graveyardZone);
+            playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
+        }
+        BoardSettings boardSettings = BoardSettings.builder()
+                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
+                .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
+                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
+                .dragProjectionZ(0.996f)
+                .hoverInspectionDelay(0f)
+                .isInspectable(this::isInspectable)
+                .inspector(new Inspector() {
+
+                    @Override
+                    public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
+                        Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
+                        board.triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
+                        inspectionCard.finishTransformations();
+                        inspectionCard.getModel().set(card.getModel());
+                    }
+
+                    @Override
+                    public boolean isReadyToUninspect(TransformedBoardObject<?> transformedBoardObject) {
+                        return true;
+                    }
+
+                    @Override
+                    public void uninspect(TransformedBoardObject<?> transformedBoardObject) {
+                        board.unregister(inspectionCard);
+                    }
+                })
+                .build();
+        BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
+        mainApplication.getStateManager().attach(boardAppState);
+
+        mainApplication.getStateManager().attach(new ForestBoardAppState(gameService.getPlayerEntity()));
+
+        gameService.getGameContext().getEvents().instant().add(StartTurnEvent.class, (event, random) -> onTurnStarted());
+
+        gameService.getGameContext().getEvents().resolved().add(AddCardToCreatureZoneEvent.class, (event, random) -> tryPlayEntryAnimation(event.card));
+        gameService.getGameContext().getEvents().pre().add(BattleEvent.class, (event, random) -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
+        gameService.getGameContext().getEvents().pre().add(ShuffleLibraryEvent.class, (event, random) -> {
             LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             // board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
         });
 
-        gameClient.getGame().getEvents().instant().add(GameOverEvent.class, event -> {
-            boolean isWinner = (gameClient.getPlayerEntity() == event.winner);
+        gameService.getGameContext().getEvents().instant().add(GameOverEvent.class, (event, random) -> {
+            gameService.onGameOver();
+            boolean isWinner = (gameService.getPlayerEntity() == event.winner);
             mainApplication.getStateManager().attach(new GameOverAppState(isWinner));
         });
     }
@@ -285,8 +279,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void onTurnStarted() {
-        EntityData entityData = gameClient.getGame().getData();
-        int player = entityData.query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
+        int player = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
         // TODO: Map (Currently, it's exactly entity 0 and 1)
         int playerIndex = player;
         IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
@@ -299,7 +292,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         Vector3f position = new Vector3f(0, 7.361193f, 1.3f);
         Quaternion rotation = new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_X);
         // TODO: Maybe check this other than the exact hardcoded entity
-        boolean isPlayer1 = (gameClient.getPlayerEntity() == 0);
+        boolean isPlayer1 = (gameService.getPlayerEntity() == 0);
         if (isPlayer1) {
             rotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(rotation);
         }
@@ -319,15 +312,21 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void update(float lastTimePerFrame) {
         super.update(lastTimePerFrame);
-        if ((!isInitialized) && hasPreparedBoard) {
-            gameClient.markAsReady();
-            isInitialized = true;
+        if (isPreparedToStart) {
+            updateVisuals();
+            board.finishAllTransformations();
+            isPreparedToStart = false;
         }
-        processNextEvents();
+        if (!gameService.getGameContext().isGameOver()) {
+            processNextEvents();
+        }
     }
 
     private void processNextEvents() {
-        EventQueue eventQueue = gameClient.getGame().getEvents();
+        EventQueue eventQueue = gameService.getGameContext().getEvents();
+        if (!eventQueue.hasNextTriggeredHandler()) {
+            gameService.applyNextActionIfExisting();
+        }
         if (eventQueue.hasNextTriggeredHandler()) {
             while (!board.isAnimationPlaying()) {
                 eventQueue.triggerNextHandler();
@@ -343,14 +342,32 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void updateVisuals() {
-        List<Event> possibleEvents = gameClient.getGame().getActionGenerator().generatePossibleActions(gameClient.getPlayerEntity());
+        List<Event> possibleEvents;
         sendableEndTurnEvent = null;
-        for (Event event : possibleEvents) {
-            if (event instanceof EndTurnEvent) {
-                sendableEndTurnEvent = event;
+        if (gameService.getGameContext().isGameOver()) {
+            possibleEvents = null;
+        } else {
+            possibleEvents = playerActionsGenerator.generatePossibleActions(gameService.getPlayerEntity());
+            for (Event event : possibleEvents) {
+                if (event instanceof EndTurnEvent) {
+                    sendableEndTurnEvent = event;
+                }
             }
         }
         updateBoardService.update(possibleEvents);
         updateHudService.update();
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(CameraAppState.class));
+        mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(ForestBoardAppState.class));
+        mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(BoardAppState.class));
+        mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(IngameHudAppState.class));
+        mainApplication.getInputManager().deleteMapping("space");
+        mainApplication.getInputManager().deleteMapping("end");
+        mainApplication.getInputManager().deleteMapping("delete");
+        mainApplication.getInputManager().removeListener(this);
     }
 }

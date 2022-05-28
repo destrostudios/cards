@@ -61,7 +61,7 @@ public class SimpleEntityData implements EntityData {
         return nextEntity.get();
     }
 
-    void setNextEntity(int value) {
+    public void setNextEntity(int value) {
         nextEntity.set(value);
     }
 

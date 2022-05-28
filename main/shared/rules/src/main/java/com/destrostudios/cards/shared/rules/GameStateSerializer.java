@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
@@ -9,19 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Philipp
- */
-public class GameStateMessageConverter {
+public class GameStateSerializer {
 
-    private final EntityData data;
-
-    public GameStateMessageConverter(EntityData data) {
-        this.data = data;
-    }
-
-    public FullGameState exportState() {
+    public FullGameState exportState(EntityData data) {
         EntityMapper mapper = new EntityMapper(data);
         Map<ComponentDefinition<?>, Map<Integer, Object>> tables = mapper.toComponentTables();
 
@@ -31,18 +21,5 @@ public class GameStateMessageConverter {
         }
 
         return new FullGameState(list, mapper.getNextEntity());
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public void importState(FullGameState fullGameState) {
-        new EntityMapper(data).setNextEntity(fullGameState.getNextEntity());
-        for (Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>> tuple : fullGameState.getList()) {
-            ComponentDefinition component = tuple.getKey();
-            for (Tuple<Integer, Object> tuple1 : tuple.getValue()) {
-                int entity = tuple1.getKey();
-                Object value = tuple1.getValue();
-                data.setComponent(entity, component, value);
-            }
-        }
     }
 }

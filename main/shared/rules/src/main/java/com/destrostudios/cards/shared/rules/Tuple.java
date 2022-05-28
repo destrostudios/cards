@@ -1,9 +1,5 @@
-package com.destrostudios.cards.shared.network;
+package com.destrostudios.cards.shared.rules;
 
-/**
- *
- * @author Philipp
- */
 public class Tuple<K, V> {
 
     public K key;

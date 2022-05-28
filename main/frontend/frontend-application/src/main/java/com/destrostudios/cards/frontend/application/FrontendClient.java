@@ -1,26 +1,67 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.shared.application.ApplicationSetup;
+import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.network.NetworkUtil;
+import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.KryoStartGameInfo;
+import com.destrostudios.cards.shared.rules.NetworkCardsService;
+import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.gametools.network.client.ToolsClient;
+import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
+import com.destrostudios.gametools.network.client.modules.game.GameStartClientModule;
+import com.destrostudios.gametools.network.client.modules.game.LobbyClientModule;
+import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class FrontendClient {
 
-    public static void main(String[] args) {
-        new FrontendClient("localhost", 33900);
+    public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.out.println("First argument must be a jwt (usually passed by the destrostudios launcher).");
+            return;
+        }
+        startApplication(args[1], args[0]);
     }
 
-    public FrontendClient(String host, int port) {
-        ApplicationSetup.setup();
+    private static void startApplication(String hostUrl, String jwt) throws IOException {
+        startApplication(getToolsClient(hostUrl, jwt), jwt);
+    }
 
+    private static void startApplication(ToolsClient toolsClient, String jwt) {
         try {
-            System.out.println("Starting client...");
-            SimpleGameClient client = new SimpleGameClient(host, port);
-            System.out.println("Client started.");
-
-            new FrontendJmeApplication(client).start();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            FileOutputStream logFileOutputStream = new FileOutputStream("./log.txt");
+            System.setOut(new PrintStream(new MultipleOutputStream(System.out, logFileOutputStream)));
+            System.setErr(new PrintStream(new MultipleOutputStream(System.err, logFileOutputStream)));
+        } catch (FileNotFoundException ex) {
+            System.err.println("Error while accessing log file: " + ex.getMessage());
         }
+        ApplicationSetup.setup();
+        // Log.DEBUG();
+        FrontendJmeApplication frontendJmeApplication = new FrontendJmeApplication(toolsClient);
+        frontendJmeApplication.start();
+    }
+
+    private static ToolsClient getToolsClient(String hostUrl, String jwt) throws IOException {
+        Client kryoClient = new Client(10_000_000, 10_000_000);
+
+        JwtClientModule jwtModule = new JwtClientModule(kryoClient);
+        GameClientModule<GameContext, Event> gameModule = new GameClientModule<>(new NetworkCardsService(false), kryoClient);
+        LobbyClientModule<StartGameInfo> lobbyModule = new LobbyClientModule<>(KryoStartGameInfo::initialize, kryoClient);
+        GameStartClientModule<StartGameInfo> gameStartModule = new GameStartClientModule<>(KryoStartGameInfo::initialize, kryoClient);
+
+        ToolsClient client = new ToolsClient(kryoClient, jwtModule, gameModule, lobbyModule, gameStartModule);
+        client.start(10_000, hostUrl, NetworkUtil.PORT);
+
+        jwtModule.login(jwt);
+        lobbyModule.subscribeToGamesList();
+
+        return client;
     }
 }

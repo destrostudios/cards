@@ -65,3 +65,6 @@ nbactions.xml
 # jme specific #
 lwjgl64.dll
 OpenAL64.dll
+
+# Cards specific
+log.txt

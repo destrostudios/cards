@@ -1,6 +1,5 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destrostudios.cards.frontend.application.SimpleGameClient;
 import com.destrostudios.cards.frontend.application.appstates.IngameHudAppState;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
@@ -9,11 +8,11 @@ import com.destrostudios.cards.shared.rules.util.HealthUtil;
 
 public class UpdateHudService {
 
-    public UpdateHudService(SimpleGameClient gameClient, IngameHudAppState ingameHudAppState) {
-        this.gameClient = gameClient;
+    public UpdateHudService(GameService gameService, IngameHudAppState ingameHudAppState) {
+        this.gameService = gameService;
         this.ingameHudAppState = ingameHudAppState;
     }
-    private SimpleGameClient gameClient;
+    private GameService gameService;
     private IngameHudAppState ingameHudAppState;
 
     public void update() {
@@ -22,11 +21,11 @@ public class UpdateHudService {
     }
 
     private void updateHealths() {
-        EntityData entityData = gameClient.getGame().getData();
-        for (int playerEntity : entityData.query(Components.NEXT_PLAYER).list()) {
+        EntityData data = gameService.getGameContext().getData();
+        for (int playerEntity : data.query(Components.NEXT_PLAYER).list()) {
             // TODO: Map (Currently, it's exactly entity 0 and 1)
             int playerIndex = playerEntity;
-            int playerHealth = HealthUtil.getEffectiveHealth(entityData, playerEntity);
+            int playerHealth = HealthUtil.getEffectiveHealth(data, playerEntity);
             ingameHudAppState.sePlayerHealth(playerIndex, playerHealth);
         }
     }
@@ -37,7 +36,6 @@ public class UpdateHudService {
     }
 
     private int getPlayerMana(ComponentDefinition<Integer> manaAmountComponent) {
-        int playerEntity = gameClient.getPlayerEntity();
-        return gameClient.getGame().getData().getOptionalComponent(playerEntity, manaAmountComponent).orElse(0);
+        return gameService.getGameContext().getData().getOptionalComponent(gameService.getPlayerEntity(), manaAmountComponent).orElse(0);
     }
 }

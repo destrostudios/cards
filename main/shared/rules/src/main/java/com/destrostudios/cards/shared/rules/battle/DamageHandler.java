@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.battle;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +15,8 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(DamageHandler.class);
 
     @Override
-    public void handle(DamageEvent event) {
+    public void handle(DamageEvent event, NetworkRandom random) {
         LOG.info("dealing {} damage to {}", event.damage, event.target);
-        events.fire(new SetDamagedEvent(event.target, data.getOptionalComponent(event.target, Components.DAMAGED).orElse(0) + event.damage));
+        events.fire(new SetDamagedEvent(event.target, data.getOptionalComponent(event.target, Components.DAMAGED).orElse(0) + event.damage), random);
     }
 }

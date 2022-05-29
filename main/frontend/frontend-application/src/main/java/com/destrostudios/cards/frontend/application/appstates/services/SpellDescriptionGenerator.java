@@ -52,7 +52,13 @@ public class SpellDescriptionGenerator {
         }
 
         if (description.length() > 0) {
-            return description.substring(0, 1).toUpperCase() + description.substring(1) + ".";
+            description = description.substring(0, 1).toUpperCase() + description.substring(1) + ".";
+
+            Integer maximumCastsPerTurn = data.getComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN);
+            if (maximumCastsPerTurn != null) {
+                description += " (Can only be activated " + ((maximumCastsPerTurn == 1) ? "once" : maximumCastsPerTurn + " times") + " per turn)";
+            }
+            return description;
         }
         return null;
     }

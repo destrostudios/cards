@@ -30,6 +30,7 @@
                 </instantEffectTriggers>
             </entity>
             <entity>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <conditions>
                     <entity>
                         <sourceTarget/>

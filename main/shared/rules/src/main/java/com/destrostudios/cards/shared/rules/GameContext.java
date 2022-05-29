@@ -37,7 +37,8 @@ public class GameContext {
         addEventHandler(events.instant(), AddCardToSpellZoneEvent.class, new AddCardToSpellZoneHandler());
         addEventHandlers(events.instant(), AddCardToZoneEvent.class,
                 new RemoveFromOtherZonesOnAddHandler(),
-                new AddCardToZoneHandler());
+                new AddCardToZoneHandler()
+        );
         addEventHandler(events.instant(), AddManaEvent.class, new AddManaHandler());
         addEventHandler(events.instant(), SetAvailableManaEvent.class, new SetAvailableManaHandler());
         addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
@@ -49,14 +50,19 @@ public class GameContext {
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
-                new ResetHasAttackedOnEndTurnHandler());
+                new ResetHasAttackedOnEndTurnHandler(),
+                new ResetCurrentCastsPerTurnOnEndTurnHandler()
+        );
         addEventHandlers(events.instant(), GameStartEvent.class,
                 new ShuffleAllLibrariesOnGameStartHandler(),
                 new DrawCardsOnGameStartHandler(),
                 new SetStartingPlayerHandler());
         addEventHandler(events.instant(), PayCostEvent.class, new PayCostHandler());
         addEventHandler(events.instant(), PayManaEvent.class, new PayManaHandler());
-        addEventHandler(events.instant(), PlaySpellEvent.class, new PlaySpellHandler());
+        addEventHandlers(events.instant(), PlaySpellEvent.class,
+                new PlaySpellHandler(),
+                new IncreaseCurrentCastsPerTurnHandler()
+        );
         addEventHandler(events.instant(), RemoveCardFromBoardEvent.class, new RemoveCardFromBoardHandler());
         addEventHandler(events.instant(), RemoveCardFromBoardZoneEvent.class, new RemoveCardFromBoardZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
@@ -67,14 +73,16 @@ public class GameContext {
         addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
         addEventHandlers(events.instant(), SetDamagedEvent.class,
                 new SetDamagedHandler(),
-                new DestroyOnNoHealthHandler());
+                new DestroyOnNoHealthHandler()
+        );
         addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
         addEventHandlers(events.instant(), StartTurnEvent.class,
                 new StartTurnHandler(),
                 new IncreaseAvailableManaOnTurnStartHandler(),
                 new SetManaToAvailableManaOnTurnStartHandler(),
                 new DrawCardOnTurnStartHandler(),
-                new ExecuteBotActionsOnTurnStartHandler());
+                new ExecuteBotActionsOnTurnStartHandler()
+        );
         addEventHandler(events.instant(), CheckEffectTriggerEvent.class, new CheckEffectTriggerHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
         addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));

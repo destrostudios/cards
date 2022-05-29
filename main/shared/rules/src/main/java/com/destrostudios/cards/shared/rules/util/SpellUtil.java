@@ -18,6 +18,13 @@ public class SpellUtil {
     }
 
     public static boolean isCastable(EntityData data, int card, int spell, int[] targets) {
+        Integer maximumCastsPerTurn = data.getComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN);
+        if (maximumCastsPerTurn != null) {
+            int currentCastsPerTurn = data.getOptionalComponent(spell, Components.Spell.CURRENT_CASTS_PER_TURN).orElse(0);
+            if (currentCastsPerTurn >= maximumCastsPerTurn) {
+                return false;
+            }
+        }
         if (!ConditionUtil.areConditionsFulfilled(data, spell, card, targets)) {
             return false;
         }

@@ -75,8 +75,10 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.IN_HAND));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ON_BOARD));
 
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Spell.INSTANT_EFFECT_TRIGGERS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Spell.INSTANT_EFFECT_TRIGGERS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.CURRENT_CASTS_PER_TURN));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.MAXIMUM_CASTS_PER_TURN));
 
         EntityTemplate.addLoader(xmlTemplateManager::loadTemplate);
     }

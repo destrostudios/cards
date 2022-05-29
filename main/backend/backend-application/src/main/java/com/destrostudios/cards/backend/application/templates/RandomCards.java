@@ -62,7 +62,9 @@ public class RandomCards {
     private static int randomBoardSpell(EntityData data, int cardManaCost) {
         int spellManaCost = random(1, cardManaCost / 3);
         boolean targeted = random();
-        return randomSpell(data, spellManaCost, targeted, Components.Condition.ON_BOARD);
+        int spell = randomSpell(data, spellManaCost, targeted, Components.Condition.ON_BOARD);
+        data.setComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN, 1);
+        return spell;
     }
 
     private static int randomSpell(EntityData data, int manaCost, boolean targeted, ComponentDefinition<Void> sourceFromZoneComponent) {

@@ -10,11 +10,6 @@ public class StartTurnEvent extends Event {
 
     public int player;
 
-    // Used by serializer
-    private StartTurnEvent() {
-        this(0);
-    }
-
     public StartTurnEvent(int player) {
         this.player = player;
     }

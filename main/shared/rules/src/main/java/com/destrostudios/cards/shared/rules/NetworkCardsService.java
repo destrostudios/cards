@@ -3,7 +3,6 @@ package com.destrostudios.cards.shared.rules;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.battle.AttackEvent;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
@@ -70,7 +69,6 @@ public class NetworkCardsService implements GameService<GameContext, Event> {
             }
         });
         kryo.register(GameStartEvent.class, new FieldSerializer<>(kryo, GameStartEvent.class));
-        kryo.register(AttackEvent.class, new FieldSerializer<>(kryo, AttackEvent.class));
         kryo.register(PlaySpellEvent.class, new FieldSerializer<>(kryo, PlaySpellEvent.class));
         kryo.register(EndTurnEvent.class, new FieldSerializer<>(kryo, EndTurnEvent.class));
     }

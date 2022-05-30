@@ -46,7 +46,6 @@ public class GameContext {
         addEventHandler(events.instant(), AddManaEvent.class, new AddManaHandler());
         addEventHandler(events.instant(), SetAvailableManaEvent.class, new SetAvailableManaHandler());
         addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
-        addEventHandler(events.instant(), AttackEvent.class, new AttackHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
         addEventHandler(events.instant(), DamageEvent.class, new DamageHandler());
         addEventHandler(events.instant(), HealEvent.class, new HealHandler());
@@ -54,7 +53,6 @@ public class GameContext {
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
-                new ResetHasAttackedOnEndTurnHandler(),
                 new ResetCurrentCastsPerTurnOnEndTurnHandler()
         );
         addEventHandlers(events.instant(), GameStartEvent.class,

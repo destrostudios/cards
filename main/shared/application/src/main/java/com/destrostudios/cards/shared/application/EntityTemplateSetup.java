@@ -33,7 +33,6 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.AVAILABLE_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.COST));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.HAS_ATTACKED));
         xmlTemplateManager.registerComponent(new XMLComponentParser<>(Components.FOIL) {
 
             @Override
@@ -60,6 +59,7 @@ public class EntityTemplateSetup {
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.DAMAGE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.HEAL));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.BATTLE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.DRAW));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.GAIN_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
@@ -69,11 +69,14 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_TARGETS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.CONDITION_TARGETS));
 
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Condition.ONE_OF));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NOT));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ALLY));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.OPPONENT));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.PLAYER));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.IN_HAND));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ON_BOARD));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NO_CREATURES));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Spell.INSTANT_EFFECT_TRIGGERS));

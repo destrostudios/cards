@@ -15,10 +15,8 @@ public class ConditionUtil {
         simpleRequirableComponents.add(Components.ATTACK);
         simpleRequirableComponents.add(Components.CREATURE_CARD);
         simpleRequirableComponents.add(Components.NAME);
-        simpleRequirableComponents.add(Components.FLAVOUR_TEXT);
         simpleRequirableComponents.add(Components.HEALTH);
         simpleRequirableComponents.add(Components.DAMAGED);
-        simpleRequirableComponents.add(Components.OWNED_BY);
         simpleRequirableComponents.add(Components.SPELL_CARD);
         simpleRequirableComponents.add(Components.Ability.SLOW);
         simpleRequirableComponents.add(Components.Ability.DIVINE_SHIELD);
@@ -49,8 +47,22 @@ public class ConditionUtil {
         return true;
     }
 
+    private static boolean isOneConditionFulfilled(EntityData data, int[] conditions, int source, int[] targets) {
+        for (int condition : conditions) {
+            if (isFulfilled(data, condition, source, targets)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean isFulfilled(EntityData data, int condition, int source, int[] targets) {
-        return isFulfilled(data, condition, source, TargetUtil.getAffectedTargets(data, condition, source, targets));
+        int[] oneOfConditions = data.getComponent(condition, Components.Condition.ONE_OF);
+        if (oneOfConditions != null) {
+            return isOneConditionFulfilled(data, oneOfConditions, source, targets);
+        } else {
+            return isFulfilled(data, condition, source, TargetUtil.getAffectedTargets(data, condition, source, targets));
+        }
     }
 
     private static boolean isFulfilled(EntityData data, int condition, int source, List<Integer> targets) {
@@ -65,13 +77,18 @@ public class ConditionUtil {
 
 
     private static boolean isFulfilledIgnoringNegation(EntityData data, int condition, int source, int target) {
+        if (data.hasComponent(condition, Components.Condition.PLAYER)) {
+            if (!data.hasComponent(target, Components.NEXT_PLAYER)) {
+                return false;
+            }
+        }
         if (data.hasComponent(condition, Components.Condition.ALLY)) {
-            if (checkOwners(data, source, target, false)) {
+            if (checkAllyOrOpponent(data, source, target, false)) {
                 return false;
             }
         }
         if (data.hasComponent(condition, Components.Condition.OPPONENT)) {
-            if (checkOwners(data, source, target, true)) {
+            if (checkAllyOrOpponent(data, source, target, true)) {
                 return false;
             }
         }
@@ -80,6 +97,12 @@ public class ConditionUtil {
         }
         if (data.hasComponent(condition, Components.Condition.ON_BOARD) && !data.hasComponent(target, Components.BOARD)) {
             return false;
+        }
+        if (data.hasComponent(condition, Components.Condition.NO_CREATURES)) {
+            int creatures = data.query(Components.CREATURE_ZONE).list(card -> data.getComponent(card, Components.OWNED_BY) == target).size();
+            if (creatures > 0) {
+                return false;
+            }
         }
         for (ComponentDefinition<?> componentDefinition : simpleRequirableComponents) {
             // Check has instead of (get != null) because of Void type
@@ -99,9 +122,10 @@ public class ConditionUtil {
         return true;
     }
 
-    private static boolean checkOwners(EntityData entityData, int source, int target, boolean expectedEquality) {
-        Integer owner = entityData.getComponent(source, Components.OWNED_BY);
+    private static boolean checkAllyOrOpponent(EntityData entityData, int source, int target, boolean expectsAllied) {
+        Integer sourceOwner = entityData.getComponent(source, Components.OWNED_BY);
         Integer targetOwner = entityData.getComponent(target, Components.OWNED_BY);
-        return (Objects.equals(owner, targetOwner) == expectedEquality);
+        boolean isAllied = (Objects.equals(sourceOwner, targetOwner) || Objects.equals(sourceOwner, target));
+        return (isAllied == expectsAllied);
     }
 }

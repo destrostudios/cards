@@ -29,7 +29,6 @@ public class Components {
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = new ComponentDefinition<>("availableMana");
     public static final ComponentDefinition<Integer> MANA = new ComponentDefinition<>("mana");
     public static final ComponentDefinition<Integer> COST = new ComponentDefinition<>("cost");
-    public static final ComponentDefinition<Void> HAS_ATTACKED = new ComponentDefinition<>("hasAttacked");
     public static final ComponentDefinition<Foil> FOIL = new ComponentDefinition<>("foil");
 
     public static class Game {
@@ -59,6 +58,7 @@ public class Components {
     public static class Effect {
         public static final ComponentDefinition<Integer> DAMAGE = new ComponentDefinition<>("damage");
         public static final ComponentDefinition<Integer> HEAL = new ComponentDefinition<>("heal");
+        public static final ComponentDefinition<Void> BATTLE = new ComponentDefinition<>("battle");
         public static final ComponentDefinition<Integer> DRAW = new ComponentDefinition<>("draw");
         public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
 
@@ -75,11 +75,14 @@ public class Components {
     }
 
     public static class Condition {
+        public static final ComponentDefinition<int[]> ONE_OF = new ComponentDefinition<>("oneOf");
         public static final ComponentDefinition<Void> NOT = new ComponentDefinition<>("not");
         public static final ComponentDefinition<Void> ALLY = new ComponentDefinition<>("ally");
         public static final ComponentDefinition<Void> OPPONENT = new ComponentDefinition<>("opponent");
+        public static final ComponentDefinition<Void> PLAYER = new ComponentDefinition<>("player");
         public static final ComponentDefinition<Void> IN_HAND = new ComponentDefinition<>("inHand");
         public static final ComponentDefinition<Void> ON_BOARD = new ComponentDefinition<>("onBoard");
+        public static final ComponentDefinition<Void> NO_CREATURES = new ComponentDefinition<>("noCreatures");
     }
 
     public static class Spell {

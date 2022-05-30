@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.battle.AttackEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
@@ -24,7 +23,6 @@ public class PlayerActionsGenerator {
         List<Event> possibleEvents = new LinkedList<>();
         if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
             generatePlaySpells(player, possibleEvents::add);
-            generateAttacks(player, possibleEvents::add);
             possibleEvents.add(new EndTurnEvent(player));
         }
         return possibleEvents;
@@ -46,13 +44,9 @@ public class PlayerActionsGenerator {
         boolean targeted = SpellUtil.isTargeted(data, spell);
         boolean hasValidTarget = false;
         if (targeted) {
-            for (int target : data.query(Components.OWNED_BY).list()) {
-                int[] targets = new int[] { target };
-                if (SpellUtil.isCastable(data, card, spell, targets)) {
-                    out.accept(new PlaySpellEvent(spell, targets));
-                    hasValidTarget = true;
-                }
-            }
+            // TODO: Unify
+            hasValidTarget = generatePlaySpellEvents(card, spell, data.query(Components.OWNED_BY).list(), out);
+            hasValidTarget |= generatePlaySpellEvents(card, spell, data.query(Components.NEXT_PLAYER).list(), out);
         }
         if ((!targeted) || (data.hasComponent(spell, Components.Spell.TARGET_OPTIONAL) && !hasValidTarget)) {
             int[] targets = new int[0];
@@ -62,19 +56,16 @@ public class PlayerActionsGenerator {
         }
     }
 
-    private void generateAttacks(int player, Consumer<Event> out) {
-        for (int targetPlayer : data.query(Components.NEXT_PLAYER).list(x -> x != player)) {
-            for (int attacker : data.query(Components.CREATURE_ZONE).list(ownedBy(player).and(x -> !data.hasComponent(x, Components.HAS_ATTACKED)))) {
-                List<Integer> targetCreatures = data.query(Components.CREATURE_ZONE).list(ownedBy(targetPlayer));
-                if (targetCreatures.size() > 0) {
-                    for (int targetCreature : targetCreatures) {
-                        out.accept(new AttackEvent(attacker, targetCreature));
-                    }
-                } else {
-                    out.accept(new AttackEvent(attacker, targetPlayer));
-                }
+    private boolean generatePlaySpellEvents(int card, int spell, List<Integer> targetsToCheck, Consumer<Event> out) {
+        boolean hasValidTarget = false;
+        for (int target : targetsToCheck) {
+            int[] targets = new int[] { target };
+            if (SpellUtil.isCastable(data, card, spell, targets)) {
+                out.accept(new PlaySpellEvent(spell, targets));
+                hasValidTarget = true;
             }
         }
+        return hasValidTarget;
     }
 
     private IntPredicate ownedBy(int player) {

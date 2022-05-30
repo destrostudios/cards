@@ -20,12 +20,18 @@ public class TargetUtil {
         }
         int[] conditions = data.getComponent(targetRuleEntity, Components.Target.CONDITION_TARGETS);
         if (conditions != null) {
-            for (int target : data.query(Components.OWNED_BY).list()) {
-                if (ConditionUtil.areConditionsFulfilled(data, conditions, source, new int[] { target })) {
-                    affectedTargets.add(target);
-                }
-            }
+            // TODO: Unify
+            addAffectedTargets(data, conditions, source, data.query(Components.OWNED_BY).list(), affectedTargets);
+            addAffectedTargets(data, conditions, source, data.query(Components.NEXT_PLAYER).list(), affectedTargets);
         }
         return affectedTargets;
+    }
+
+    private static void addAffectedTargets(EntityData data, int[] conditions, int source, List<Integer> targetsToCheck, LinkedList<Integer> affectedTargets) {
+        for (int target : targetsToCheck) {
+            if (ConditionUtil.areConditionsFulfilled(data, conditions, source, new int[] { target })) {
+                affectedTargets.add(target);
+            }
+        }
     }
 }

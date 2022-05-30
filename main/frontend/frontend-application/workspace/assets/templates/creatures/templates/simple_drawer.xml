@@ -29,6 +29,7 @@
                     </entity>
                 </instantEffectTriggers>
             </entity>
+            <entity template="./simple_attack"/>
         </spells>
     </entity>
 </template>

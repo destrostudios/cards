@@ -6,6 +6,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.util.HealthUtil;
+import com.destrostudios.cards.shared.rules.util.SpellUtil;
 
 import java.util.*;
 
@@ -61,15 +62,14 @@ public class CardGuiMapper {
             for (int spellEntity : spellEntities) {
                 Integer spellCost = entityData.getComponent(spellEntity, Components.COST);
                 String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
-                if ((!checkedDefaultPlaySpell) && isDefaultCastFromHandSpell(entityData, spellEntity)) {
+                if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(entityData, spellEntity)) {
                     manaCostDetails = entityData.getComponent(spellCost, Components.MANA);
                     if (entityData.hasComponent(cardEntity, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
                     }
                     description = spellDescription;
                     checkedDefaultPlaySpell = true;
-                }
-                else {
+                } else if (!SpellUtil.isDefaultAttackSpell(entityData, spellEntity)) {
                     Spell spell = new Spell();
                     Cost cost = createCost(entityData, spellCost);
                     spell.setCost(cost);
@@ -115,17 +115,5 @@ public class CardGuiMapper {
             return cost;
         }
         return null;
-    }
-
-    public static boolean isDefaultCastFromHandSpell(EntityData entityData, int spell) {
-        int[] conditions = entityData.getComponent(spell, Components.CONDITIONS);
-        if (conditions != null) {
-            for (int condition : conditions) {
-                if (entityData.hasComponent(condition, Components.Target.SOURCE_TARGET) && entityData.hasComponent(condition, Components.Condition.ON_BOARD)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

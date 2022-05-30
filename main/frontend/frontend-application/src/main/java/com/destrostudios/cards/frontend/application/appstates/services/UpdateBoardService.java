@@ -10,7 +10,6 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
-import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.jme3.math.Vector3f;
 
@@ -29,7 +28,6 @@ public class UpdateBoardService {
     private Board board;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private CardGuiMap cardGuiMap;
-    private Map<Integer, List<AttackEvent>> possibleAttackEventsPerSource = new HashMap<>();
 
     public void update(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
@@ -87,111 +85,77 @@ public class UpdateBoardService {
 
     private void updateInteractivities(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
-        possibleAttackEventsPerSource.clear();
+        LinkedList<Integer> coveredSpells = new LinkedList<>();
         for (Event event : possibleEvents) {
-            if (event instanceof PlaySpellEvent) {
-                PlaySpellEvent playSpellEvent = (PlaySpellEvent) event;
-                // TODO: Improve?
-                int cardEntity = data.query(Components.SPELL_ENTITIES)
-                        .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
-                        .anyMatch(entity -> entity == playSpellEvent.spell)).getAsInt();
-                Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
+            if (event instanceof PlaySpellEvent playSpellEvent) {
+                if (!coveredSpells.contains(playSpellEvent.spell)) {
+                    // TODO: Improve?
+                    int cardEntity = data.query(Components.SPELL_ENTITIES)
+                            .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
+                                    .anyMatch(entity -> entity == playSpellEvent.spell)).getAsInt();
+                    Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
 
-                Interactivity interactivity;
-                if (SpellUtil.isTargeted(data, playSpellEvent.spell) && (playSpellEvent.targets.length > 0)) {
-                    interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
+                    Interactivity interactivity;
+                    if (SpellUtil.isTargeted(data, playSpellEvent.spell) && (playSpellEvent.targets.length > 0)) {
+                        interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
-                        @Override
-                        public boolean isValid(BoardObject boardObject) {
-                            if (boardObject instanceof Card) {
-                                int targetEntity = cardGuiMap.getEntity((Card) boardObject);
-                                return SpellUtil.isCastable(data, cardEntity, playSpellEvent.spell, new int[] { targetEntity });
-                            }
-                            return false;
-                        }
-
-                        @Override
-                        public void trigger(BoardObject boardObject, BoardObject target) {
-                            int targetEntity = cardGuiMap.getEntity((Card) target);
-                            gameService.sendAction(new PlaySpellEvent(playSpellEvent.spell, new int[]{ targetEntity }));
-                        }
-                    };
-                } else if (data.hasComponent(cardEntity, Components.HAND)) {
-                    interactivity = new DragToPlayInteractivity() {
-
-                        @Override
-                        public void trigger(BoardObject boardObject, BoardObject target) {
-                            gameService.sendAction(playSpellEvent);
-                        }
-                    };
-                } else {
-                    interactivity = new ClickInteractivity() {
-
-                        @Override
-                        public void trigger(BoardObject boardObject, BoardObject target) {
-                            gameService.sendAction(playSpellEvent);
-                        }
-                    };
-                }
-                InteractivitySource interactivitySource = (CardGuiMapper.isDefaultCastFromHandSpell(data, playSpellEvent.spell) ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
-                card.setInteractivity(interactivitySource, interactivity);
-                card.getModel().setPlayable(true);
-            }
-            else if (event instanceof AttackEvent) {
-                AttackEvent attackEvent = (AttackEvent) event;
-                List<AttackEvent> attackEventsOfSource = possibleAttackEventsPerSource.computeIfAbsent(attackEvent.source, (entity) -> new LinkedList<>());
-                attackEventsOfSource.add(attackEvent);
-            }
-        }
-        for (Map.Entry<Integer, List<AttackEvent>> attackEventsEntry : possibleAttackEventsPerSource.entrySet()) {
-            int attackingEntity = attackEventsEntry.getKey();
-            List<AttackEvent> attackEventsOfSource = attackEventsEntry.getValue();
-            Card<CardModel> attackingCard = cardGuiMap.getOrCreateCard(attackingEntity);
-            attackingCard.setInteractivity(InteractivitySource.MOUSE_LEFT, new AimToTargetInteractivity(TargetSnapMode.VALID) {
-
-                @Override
-                public boolean isValid(BoardObject boardObject) {
-                    return (getAttackEvent(boardObject) != null);
-                }
-
-                @Override
-                public void trigger(BoardObject source, BoardObject target) {
-                    gameService.sendAction(getAttackEvent(target));
-                }
-
-                private AttackEvent getAttackEvent(BoardObject targetBoardObject) {
-                    Integer targetEntity = null;
-                    if (targetBoardObject instanceof Card) {
-                        Card<CardModel> targetCard = (Card) targetBoardObject;
-                        targetEntity = cardGuiMap.getEntity(targetCard);
-                    }
-                    else if (targetBoardObject instanceof CardZone) {
-                        CardZone targetCardZone = (CardZone) targetBoardObject;
-                        for (Map.Entry<Integer, PlayerZones> playerZonesEntry : playerZonesMap.entrySet()) {
-                            int playerEntity = playerZonesEntry.getKey();
-                            PlayerZones playerZones = playerZonesEntry.getValue();
-                            for (CardZone cardZone : playerZones.getZones()) {
-                                if (cardZone == targetCardZone) {
-                                    targetEntity = playerEntity;
-                                    break;
+                            @Override
+                            public boolean isValid(BoardObject boardObject) {
+                                Integer targetEntity = getEntity(boardObject);
+                                if (targetEntity != null) {
+                                    return SpellUtil.isCastable(data, cardEntity, playSpellEvent.spell, new int[] { targetEntity });
                                 }
+                                return false;
                             }
-                            if (targetEntity != null) {
-                                break;
+
+                            @Override
+                            public void trigger(BoardObject boardObject, BoardObject target) {
+                                int targetEntity = getEntity(target);
+                                gameService.sendAction(new PlaySpellEvent(playSpellEvent.spell, new int[] { targetEntity }));
                             }
-                        }
+
+                            private Integer getEntity(BoardObject<?> boardObject) {
+                                if (boardObject instanceof Card card) {
+                                    return cardGuiMap.getEntity(card);
+                                } else if (boardObject instanceof CardZone targetCardZone) {
+                                    for (Map.Entry<Integer, PlayerZones> playerZonesEntry : playerZonesMap.entrySet()) {
+                                        int playerEntity = playerZonesEntry.getKey();
+                                        PlayerZones playerZones = playerZonesEntry.getValue();
+                                        for (CardZone cardZone : playerZones.getZones()) {
+                                            if (cardZone == targetCardZone) {
+                                                return playerEntity;
+                                            }
+                                        }
+                                    }
+                                }
+                                return null;
+                            }
+                        };
+                    } else if (data.hasComponent(cardEntity, Components.HAND)) {
+                        interactivity = new DragToPlayInteractivity() {
+
+                            @Override
+                            public void trigger(BoardObject boardObject, BoardObject target) {
+                                gameService.sendAction(playSpellEvent);
+                            }
+                        };
+                    } else {
+                        interactivity = new ClickInteractivity() {
+
+                            @Override
+                            public void trigger(BoardObject boardObject, BoardObject target) {
+                                gameService.sendAction(playSpellEvent);
+                            }
+                        };
                     }
-                    if (targetEntity != null) {
-                        for (AttackEvent attackEvent : attackEventsOfSource) {
-                            if (attackEvent.target == targetEntity) {
-                                return attackEvent;
-                            }
-                        }
-                    }
-                    return null;
+                    boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, playSpellEvent.spell) || SpellUtil.isDefaultAttackSpell(data, playSpellEvent.spell));
+                    InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
+                    card.setInteractivity(interactivitySource, interactivity);
+                    card.getModel().setPlayable(true);
+
+                    coveredSpells.add(playSpellEvent.spell);
                 }
-            });
-            attackingCard.getModel().setPlayable(true);
+            }
         }
     }
 }

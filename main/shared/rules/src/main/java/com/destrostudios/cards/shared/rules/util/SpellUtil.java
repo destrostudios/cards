@@ -37,4 +37,31 @@ public class SpellUtil {
         }
         return true;
     }
+
+    public static boolean isDefaultCastFromHandSpell(EntityData entityData, int spell) {
+        int[] conditions = entityData.getComponent(spell, Components.CONDITIONS);
+        if (conditions != null) {
+            for (int condition : conditions) {
+                if (entityData.hasComponent(condition, Components.Target.SOURCE_TARGET) && !entityData.hasComponent(condition, Components.Condition.IN_HAND)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean isDefaultAttackSpell(EntityData entityData, int spell) {
+        int[] instantEffectTriggers = entityData.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
+        if (instantEffectTriggers != null) {
+            for (int instantEffectTrigger : instantEffectTriggers) {
+                int[] effects = entityData.getComponent(instantEffectTrigger, Components.EffectTrigger.EFFECTS);
+                for (int effect : effects) {
+                    if (entityData.hasComponent(effect, Components.Target.TARGET_TARGETS) && entityData.hasComponent(effect, Components.Effect.BATTLE)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

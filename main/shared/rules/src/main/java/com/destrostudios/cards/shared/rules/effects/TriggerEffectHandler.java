@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
@@ -37,6 +38,10 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         Integer heal = data.getComponent(event.effect, Components.Effect.HEAL);
         if (heal != null) {
             events.fire(new HealEvent(event.target, heal), random);
+        }
+
+        if (data.hasComponent(event.effect, Components.Effect.BATTLE)) {
+            events.fire(new BattleEvent(event.source, event.target), random);
         }
 
         Integer draw = data.getComponent(event.effect, Components.Effect.DRAW);

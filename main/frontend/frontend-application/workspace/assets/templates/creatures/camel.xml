@@ -29,6 +29,7 @@
                     </entity>
                 </instantEffectTriggers>
             </entity>
+            <entity template="./templates/simple_attack"/>
             <entity>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <conditions>

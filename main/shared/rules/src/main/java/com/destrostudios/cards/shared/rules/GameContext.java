@@ -4,6 +4,7 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventHandlers;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.abilities.*;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
@@ -28,7 +29,10 @@ public class GameContext {
     }
 
     private void initListeners() {
-        addEventHandler(events.instant(), AddCardToBoardEvent.class, new AddCardToBoardHandler());
+        addEventHandlers(events.instant(), AddCardToBoardEvent.class,
+                new AddCardToBoardHandler(),
+                new ActivateDivineShieldOnAddToBoardHandler()
+        );
         addEventHandler(events.instant(), AddCardToBoardZoneEvent.class, new AddCardToBoardZoneHandler());
         addEventHandler(events.instant(), AddCardToCreatureZoneEvent.class, new AddCardToCreatureZoneHandler());
         addEventHandler(events.instant(), AddCardToGraveyardEvent.class, new AddCardToGraveyardHandler());
@@ -63,8 +67,10 @@ public class GameContext {
                 new PlaySpellHandler(),
                 new IncreaseCurrentCastsPerTurnHandler()
         );
-        addEventHandler(events.instant(), RemoveCardFromBoardEvent.class, new RemoveCardFromBoardHandler());
-        addEventHandler(events.instant(), RemoveCardFromBoardZoneEvent.class, new RemoveCardFromBoardZoneHandler());
+        addEventHandlers(events.instant(), RemoveCardFromBoardZoneEvent.class,
+                new RemoveCardFromBoardZoneHandler(),
+                new DeactivateDivineShieldOnRemoveFromBoardHandler()
+        );
         addEventHandler(events.instant(), RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
         addEventHandler(events.instant(), RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());

@@ -1,0 +1,34 @@
+<template>
+    <entity>
+        <name>[name]</name>
+        <creatureCard/>
+        <attack>[attack]</attack>
+        <health>[health]</health>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>[manaCost]</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToBoard/>
+                                <draw>[draw]</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

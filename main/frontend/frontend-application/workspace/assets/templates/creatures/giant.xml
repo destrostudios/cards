@@ -1,5 +1,5 @@
 <template>
-    <entity template="./vanilla(name=Giant,manaCost=4,attack=5,health=4)">
+    <entity template="./templates/vanilla(name=Giant,manaCost=4,attack=5,health=4)">
         <flavourText>"This hat is nice."</flavourText>
     </entity>
 </template>

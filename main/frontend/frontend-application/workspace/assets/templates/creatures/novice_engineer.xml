@@ -1,34 +1,3 @@
 <template>
-    <entity>
-        <name>Novice Engineer</name>
-        <creatureCard/>
-        <attack>1</attack>
-        <health>1</health>
-        <spells>
-            <entity>
-                <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
-                </conditions>
-                <cost>
-                    <entity>
-                        <mana>2</mana>
-                    </entity>
-                </cost>
-                <instantEffectTriggers>
-                    <entity>
-                        <effects>
-                            <entity>
-                                <sourceTarget/>
-                                <addToBoard/>
-                                <draw>1</draw>
-                            </entity>
-                        </effects>
-                    </entity>
-                </instantEffectTriggers>
-            </entity>
-        </spells>
-    </entity>
+    <entity template="./templates/simple_drawer(name=Novice Engineer,manaCost=2,attack=1,health=1,draw=1)"/>
 </template>

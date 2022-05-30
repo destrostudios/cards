@@ -34,7 +34,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.COST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.HAS_ATTACKED));
-        xmlTemplateManager.registerComponent(new XMLComponentParser<Foil>(Components.FOIL) {
+        xmlTemplateManager.registerComponent(new XMLComponentParser<>(Components.FOIL) {
 
             @Override
             public Foil parseValue() {
@@ -45,7 +45,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Game.ACTIVE_PLAYER));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.SLOW));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.DIVINE_SHIELD));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Boolean(Components.Ability.DIVINE_SHIELD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.HEXPROOF));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.IMMUNE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.TAUNT));

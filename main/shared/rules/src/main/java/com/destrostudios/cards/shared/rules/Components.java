@@ -38,7 +38,7 @@ public class Components {
 
     public static class Ability {
         public static final ComponentDefinition<Void> SLOW = new ComponentDefinition<>("slow");
-        public static final ComponentDefinition<Void> DIVINE_SHIELD = new ComponentDefinition<>("divineShield");
+        public static final ComponentDefinition<Boolean> DIVINE_SHIELD = new ComponentDefinition<>("divineShield");
         public static final ComponentDefinition<Void> HEXPROOF = new ComponentDefinition<>("hexproof");
         public static final ComponentDefinition<Void> IMMUNE = new ComponentDefinition<>("immune");
         public static final ComponentDefinition<Void> TAUNT = new ComponentDefinition<>("taunt");

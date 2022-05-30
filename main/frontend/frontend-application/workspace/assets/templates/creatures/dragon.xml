@@ -1,5 +1,5 @@
 <template>
-    <entity template="./vanilla(name=Dragon,manaCost=5,attack=6,health=5)">
+    <entity template="./templates/vanilla(name=Dragon,manaCost=5,attack=6,health=5)">
         <dragon/>
         <flavourText>"Fragile creatures."</flavourText>
     </entity>

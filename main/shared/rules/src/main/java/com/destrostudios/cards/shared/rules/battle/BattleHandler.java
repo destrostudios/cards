@@ -6,10 +6,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Philipp
- */
 public class BattleHandler extends GameEventHandler<BattleEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(BattleHandler.class);
@@ -17,7 +13,14 @@ public class BattleHandler extends GameEventHandler<BattleEvent> {
     @Override
     public void handle(BattleEvent event, NetworkRandom random) {
         LOG.info("{} is battling {}", event.source, event.target);
-        events.fire(new DamageEvent(event.target, data.getOptionalComponent(event.source, Components.ATTACK).orElse(0)), random);
-        events.fire(new DamageEvent(event.source, data.getOptionalComponent(event.target, Components.ATTACK).orElse(0)), random);
+        tryDealAttackDamage(event.source, event.target, random);
+        tryDealAttackDamage(event.target, event.source, random);
+    }
+
+    private void tryDealAttackDamage(int attacker, int defender, NetworkRandom random) {
+        int damage = data.getOptionalComponent(attacker, Components.ATTACK).orElse(0);
+        if (damage > 0) {
+            events.fire(new DamageEvent(defender, damage), random);
+        }
     }
 }

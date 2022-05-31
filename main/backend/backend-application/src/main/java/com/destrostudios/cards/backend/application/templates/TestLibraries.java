@@ -24,10 +24,10 @@ public class TestLibraries {
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "creatures/sunwalker"), 1); // TODO
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "creatures/senjin_shieldmasta"), 1); // TODO
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "creatures/sludge_belcher"), 1); // TODO
-        cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/lightning_bolt"), 3);
+        cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/lightning_bolt"), 2);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/arcane_intellect"), 2);
         cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/flamestrike"), 2);
-        cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/hellfire"), 1); // TODO
+        cards.put((data) -> EntityTemplate.createFromTemplate(data, "spells/hellfire"), 1);
         return cards;
     }
 

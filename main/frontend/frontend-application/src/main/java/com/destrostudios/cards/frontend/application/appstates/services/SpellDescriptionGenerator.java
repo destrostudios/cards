@@ -18,6 +18,7 @@ public class SpellDescriptionGenerator {
 
         addComponentTextProvider(conditionTextProviders, Components.Condition.ALLY, (entityData, myVoid) -> "ally");
         addComponentTextProvider(conditionTextProviders, Components.Condition.OPPONENT, (entityData, myVoid) -> "opponent");
+        addComponentTextProvider(conditionTextProviders, Components.Condition.PLAYER, (entityData, myVoid) -> "player");
         addComponentTextProvider(conditionTextProviders, Components.Ability.SLOW, (entityData, myVoid) -> "slow");
         addComponentTextProvider(conditionTextProviders, Components.Ability.DIVINE_SHIELD, (entityData, myVoid) -> "divine shield");
         addComponentTextProvider(conditionTextProviders, Components.Ability.HEXPROOF, (entityData, myVoid) -> "hexproof");
@@ -33,7 +34,7 @@ public class SpellDescriptionGenerator {
         String description = "";
 
         int[] spellConditions = data.getComponent(spell, Components.CONDITIONS);
-        String spellTargetText = getConditionsTargetText(data, spellConditions, "target");
+        String spellTargetText = getConditionsTargetText(data, spellConditions, "target", " ", "or");
 
         int[] instantEffectTriggers = data.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
         if (instantEffectTriggers != null) {
@@ -73,17 +74,30 @@ public class SpellDescriptionGenerator {
             if (text.length() > 0) {
                 text += " and ";
             }
-            text += " " + getConditionsTargetText(data, effectTargetConditions, "all");
+            text += " " + getConditionsTargetText(data, effectTargetConditions, "all", " ", "and");
         }
         return text;
     }
 
-    private static String getConditionsTargetText(EntityData data, int[] conditions, String defaultTargetText) {
+    private static String getConditionsTargetText(EntityData data, int[] conditions, String defaultTargetText, String joinTextCondition, String joinTextConditions) {
         String text = defaultTargetText;
+        boolean isFirstConditionText = true;
         if (conditions != null) {
             for (int condition : conditions) {
-                if (data.hasComponent(condition, Components.Target.TARGET_TARGETS)) {
-                    text += " " + generateText(data, condition, conditionTextProviders, " ");
+                String conditionText = null;
+                int[] oneOfConditions = data.getComponent(condition, Components.Condition.ONE_OF);
+                if (oneOfConditions != null) {
+                    conditionText = getConditionsTargetText(data, oneOfConditions, "", joinTextCondition, joinTextConditions);
+                } else if (data.hasComponent(condition, Components.Target.TARGET_TARGETS)) {
+                    conditionText = " " + generateText(data, condition, conditionTextProviders, joinTextCondition);
+                }
+                if (conditionText != null) {
+                    if (isFirstConditionText) {
+                        isFirstConditionText = false;
+                    } else {
+                        text += " " + joinTextConditions;
+                    }
+                    text += conditionText;
                 }
             }
         }

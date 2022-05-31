@@ -13,9 +13,17 @@
                         <inHand/>
                     </entity>
                     <entity>
-                        <targetTargets/>
-                        <creatureCard/>
-                        <onBoard/>
+                        <oneOf>
+                            <entity>
+                                <targetTargets/>
+                                <creatureCard/>
+                                <onBoard/>
+                            </entity>
+                            <entity>
+                                <targetTargets/>
+                                <player/>
+                            </entity>
+                        </oneOf>
                     </entity>
                 </conditions>
                 <cost>

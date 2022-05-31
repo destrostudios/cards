@@ -25,9 +25,17 @@
                             <entity>
                                 <conditionTargets>
                                     <entity>
-                                        <targetTargets/>
-                                        <creatureCard/>
-                                        <onBoard/>
+                                        <oneOf>
+                                            <entity>
+                                                <targetTargets/>
+                                                <creatureCard/>
+                                                <onBoard/>
+                                            </entity>
+                                            <entity>
+                                                <targetTargets/>
+                                                <player/>
+                                            </entity>
+                                        </oneOf>
                                     </entity>
                                 </conditionTargets>
                                 <damage>3</damage>

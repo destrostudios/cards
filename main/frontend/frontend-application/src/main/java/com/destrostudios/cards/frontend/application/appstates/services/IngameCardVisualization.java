@@ -1,7 +1,7 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cardgui.samples.visualization.CustomAttachmentVisualization;
-import com.destrostudios.cardgui.samples.visualization.GlowBox;
+import com.destrostudios.cardgui.samples.visualization.background.*;
 import com.destrostudios.cardgui.samples.visualization.PaintableImage;
 import com.destrostudios.cardgui.samples.visualization.cards.modelled.FoilModelledCard;
 import com.destrostudios.cardgui.samples.visualization.cards.modelled.SimpleModelledCard;
@@ -20,12 +20,18 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         node = new Node();
         foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/yugioh.png", ColorRGBA.Black);
         node.attachChild(foilModelledCard.getNode());
-        glowBox = new GlowBox(assetManager, 0.96f, 1.28f);
+        glowQuad = new GlowQuad(assetManager, 0.96f, 1.28f);
+        tauntBox = new TextureQuad(assetManager, 0.96f, 1.5f);
+        tauntBox.setTexture(assetManager.loadTexture("images/taunt.png"));
+        divineShieldBox = new ColorBox(assetManager, 0.96f / 2.1f, 0.1f, 1.28f / 2.1f);
+        divineShieldBox.setColor(new ColorRGBA(1, 0.9f, 0, 0.2f));
     }
     private boolean fullArt;
     private Node node;
     private FoilModelledCard foilModelledCard;
-    private GlowBox glowBox;
+    private GlowQuad glowQuad;
+    private TextureQuad tauntBox;
+    private ColorBox divineShieldBox;
 
     public void updateCardFront(CardModel cardModel) {
         int textureWidth = 400;
@@ -76,12 +82,36 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
     }
 
     public void setGlow(ColorRGBA colorRGBA) {
-        glowBox.setColor(colorRGBA);
-        node.attachChild(glowBox.getGeometry());
+        glowQuad.setColor(colorRGBA);
+        node.attachChild(glowQuad.getGeometry());
     }
 
     public void removeGlow() {
-        node.detachChild(glowBox.getGeometry());
+        node.detachChild(glowQuad.getGeometry());
+    }
+
+    public void setTauntVisible(boolean visible) {
+        setBackgroundVisible(tauntBox, visible);
+    }
+
+    public void setDivineShieldVisible(boolean visible) {
+        setBackgroundVisible(divineShieldBox, visible);
+    }
+
+    private void setBackgroundVisible(BackgroundQuad backgroundQuad, boolean visible) {
+        if (visible) {
+            node.attachChild(backgroundQuad.getGeometry());
+        } else {
+            node.detachChild(backgroundQuad.getGeometry());
+        }
+    }
+
+    private void setBackgroundVisible(BackgroundBox backgroundBox, boolean visible) {
+        if (visible) {
+            node.attachChild(backgroundBox.getGeometry());
+        } else {
+            node.detachChild(backgroundBox.getGeometry());
+        }
     }
 
     @Override

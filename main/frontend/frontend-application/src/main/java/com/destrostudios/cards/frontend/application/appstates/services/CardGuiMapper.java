@@ -82,19 +82,12 @@ public class CardGuiMapper {
         cardModel.setManaCostDetails(manaCostDetails);
         cardModel.setDescription(description);
         cardModel.setSpells(spells);
-
-        Integer attackDamage = entityData.getComponent(cardEntity, Components.ATTACK);
-        cardModel.setAttackDamage(attackDamage);
-
-        Integer lifepoints = HealthUtil.getEffectiveHealth(entityData, cardEntity);
-        cardModel.setLifepoints(lifepoints);
-
-        boolean isDamaged = entityData.hasComponent(cardEntity, Components.DAMAGED);
-        cardModel.setDamaged(isDamaged);
-
-        String flavourText = entityData.getComponent(cardEntity, Components.FLAVOUR_TEXT);
-        cardModel.setFlavourText(flavourText);
-
+        cardModel.setAttackDamage(entityData.getComponent(cardEntity, Components.ATTACK));
+        cardModel.setLifepoints(HealthUtil.getEffectiveHealth(entityData, cardEntity));
+        cardModel.setDamaged(entityData.hasComponent(cardEntity, Components.DAMAGED));
+        cardModel.setDivineShield(entityData.getOptionalComponent(cardEntity, Components.Ability.DIVINE_SHIELD).orElse(false));
+        cardModel.setTaunt(entityData.hasComponent(cardEntity, Components.Ability.TAUNT));
+        cardModel.setFlavourText(entityData.getComponent(cardEntity, Components.FLAVOUR_TEXT));
         cardModel.setFoil(entityData.getComponent(cardEntity, Components.FOIL));
     }
 

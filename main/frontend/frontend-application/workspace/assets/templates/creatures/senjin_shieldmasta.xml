@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Sen'jin Shieldmasta,manaCost=5,attack=4,health=5)">
+    <entity template="./templates/vanilla(name=Sen'jin Shieldmasta,manaCost=4,attack=3,health=5)">
         <taunt/>
     </entity>
 </template>

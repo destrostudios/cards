@@ -147,15 +147,22 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
         board.registerVisualizer_ZonePosition(zonePosition -> {
             for (PlayerZones playerZones : playerZonesMap.values()) {
-                if ((zonePosition.getZone() == playerZones.getHandZone())
-                 || (zonePosition.getZone() == playerZones.getSpellZone())
+                if ((zonePosition.getZone() == playerZones.getSpellZone())
                  || (zonePosition.getZone() == playerZones.getCreatureZone())) {
                     return true;
                 }
             }
             return false;
-        }, new IngameCardVisualizer(true));
-        board.registerVisualizer_Class(Card.class, new IngameCardVisualizer(false));
+        }, new IngameCardVisualizer(true, true));
+        board.registerVisualizer_ZonePosition(zonePosition -> {
+            for (PlayerZones playerZones : playerZonesMap.values()) {
+                if (zonePosition.getZone() == playerZones.getHandZone()) {
+                    return true;
+                }
+            }
+            return false;
+        }, new IngameCardVisualizer(true, false));
+        board.registerVisualizer_Class(Card.class, new IngameCardVisualizer(false, false));
         board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(SimpleTargetArrowSettings.builder()
                 .width(0.5f)
                 .build()));

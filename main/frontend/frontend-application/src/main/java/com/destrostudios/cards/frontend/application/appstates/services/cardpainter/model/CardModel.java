@@ -22,6 +22,8 @@ public class CardModel extends BoardObjectModel {
     private Integer attackDamage;
     private Integer lifepoints;
     private boolean isDamaged;
+    private boolean divineShield;
+    private boolean taunt;
     private String flavourText;
     private Foil foil;
 
@@ -71,6 +73,14 @@ public class CardModel extends BoardObjectModel {
 
     public boolean isDamaged() {
         return isDamaged;
+    }
+
+    public boolean isDivineShield() {
+        return divineShield;
+    }
+
+    public boolean isTaunt() {
+        return taunt;
     }
 
     public List<Spell> getSpells() {
@@ -154,6 +164,14 @@ public class CardModel extends BoardObjectModel {
 
     public void setDamaged(boolean isDamaged) {
         updateIfNotEquals(this.isDamaged, isDamaged, () -> this.isDamaged = isDamaged);
+    }
+
+    public void setDivineShield(boolean divineShield) {
+        updateIfNotEquals(this.divineShield, divineShield, () -> this.divineShield = divineShield);
+    }
+
+    public void setTaunt(boolean taunt) {
+        updateIfNotEquals(this.taunt, taunt, () -> this.taunt = taunt);
     }
 
     public void setSpells(List<Spell> spells) {

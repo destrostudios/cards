@@ -117,14 +117,12 @@ public class UpdateBoardService {
                             private Integer getEntity(BoardObject<?> boardObject) {
                                 if (boardObject instanceof Card card) {
                                     return cardGuiMap.getEntity(card);
-                                } else if (boardObject instanceof CardZone targetCardZone) {
+                                } else if (boardObject instanceof CardZone cardZone) {
                                     for (Map.Entry<Integer, PlayerZones> playerZonesEntry : playerZonesMap.entrySet()) {
                                         int playerEntity = playerZonesEntry.getKey();
                                         PlayerZones playerZones = playerZonesEntry.getValue();
-                                        for (CardZone cardZone : playerZones.getZones()) {
-                                            if (cardZone == targetCardZone) {
-                                                return playerEntity;
-                                            }
+                                        if (cardZone == playerZones.getHandZone()) {
+                                            return playerEntity;
                                         }
                                     }
                                 }

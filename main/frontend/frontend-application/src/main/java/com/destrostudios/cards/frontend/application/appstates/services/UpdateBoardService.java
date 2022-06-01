@@ -23,11 +23,13 @@ public class UpdateBoardService {
         this.board = board;
         this.playerZonesMap = playerZonesMap;
         this.cardGuiMap = cardGuiMap;
+        validSpellTargets = new HashMap<>();
     }
     private GameService gameService;
     private Board board;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private CardGuiMap cardGuiMap;
+    private HashMap<Integer, LinkedList<Integer>> validSpellTargets;
 
     public void update(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
@@ -85,10 +87,11 @@ public class UpdateBoardService {
 
     private void updateInteractivities(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
-        LinkedList<Integer> coveredSpells = new LinkedList<>();
+        validSpellTargets.clear();
         for (Event event : possibleEvents) {
             if (event instanceof PlaySpellEvent playSpellEvent) {
-                if (!coveredSpells.contains(playSpellEvent.spell)) {
+                LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(playSpellEvent.spell, s -> new LinkedList<>());
+                if (validTargets.isEmpty()) {
                     // TODO: Improve?
                     int cardEntity = data.query(Components.SPELL_ENTITIES)
                             .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
@@ -101,11 +104,8 @@ public class UpdateBoardService {
 
                             @Override
                             public boolean isValid(BoardObject boardObject) {
-                                Integer targetEntity = getEntity(boardObject);
-                                if (targetEntity != null) {
-                                    return SpellUtil.isCastable(data, cardEntity, playSpellEvent.spell, new int[] { targetEntity });
-                                }
-                                return false;
+                                Integer target = getEntity(boardObject);
+                                return ((target != null) && validTargets.contains(target));
                             }
 
                             @Override
@@ -151,7 +151,10 @@ public class UpdateBoardService {
                     card.setInteractivity(interactivitySource, interactivity);
                     card.getModel().setPlayable(true);
 
-                    coveredSpells.add(playSpellEvent.spell);
+                    validSpellTargets.put(playSpellEvent.spell, new LinkedList<>());
+                }
+                for (int target : playSpellEvent.targets) {
+                    validTargets.add(target);
                 }
             }
         }

@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
+import java.util.stream.Collectors;
 
 public class PlayerActionsGenerator {
 
@@ -42,13 +43,23 @@ public class PlayerActionsGenerator {
 
     private void generatePlaySpellEvents(int card, int spell, Consumer<Event> out) {
         boolean targeted = SpellUtil.isTargeted(data, spell);
-        boolean hasValidTarget = false;
+        List<Integer> validTargets = new LinkedList<>();
         if (targeted) {
             // TODO: Unify
-            hasValidTarget = generatePlaySpellEvents(card, spell, data.query(Components.OWNED_BY).list(), out);
-            hasValidTarget |= generatePlaySpellEvents(card, spell, data.query(Components.NEXT_PLAYER).list(), out);
+            generatePlaySpellEvents(card, spell, data.query(Components.OWNED_BY).list(), validTargets);
+            generatePlaySpellEvents(card, spell, data.query(Components.NEXT_PLAYER).list(), validTargets);
+            if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.stream().anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
+                validTargets = validTargets.stream()
+                        .filter(target -> data.hasComponent(target, Components.Ability.TAUNT))
+                        .collect(Collectors.toList());
+            }
         }
-        if ((!targeted) || (data.hasComponent(spell, Components.Spell.TARGET_OPTIONAL) && !hasValidTarget)) {
+        if (validTargets.size() > 0) {
+            for (int target : validTargets) {
+                int[] targets = new int[] { target };
+                out.accept(new PlaySpellEvent(spell, targets));
+            }
+        } else if ((!targeted) || data.hasComponent(spell, Components.Spell.TARGET_OPTIONAL)) {
             int[] targets = new int[0];
             if (SpellUtil.isCastable(data, card, spell, targets)) {
                 out.accept(new PlaySpellEvent(spell, targets));
@@ -56,16 +67,13 @@ public class PlayerActionsGenerator {
         }
     }
 
-    private boolean generatePlaySpellEvents(int card, int spell, List<Integer> targetsToCheck, Consumer<Event> out) {
-        boolean hasValidTarget = false;
+    private void generatePlaySpellEvents(int card, int spell, List<Integer> targetsToCheck, List<Integer> validTargets) {
         for (int target : targetsToCheck) {
             int[] targets = new int[] { target };
             if (SpellUtil.isCastable(data, card, spell, targets)) {
-                out.accept(new PlaySpellEvent(spell, targets));
-                hasValidTarget = true;
+                validTargets.add(target);
             }
         }
-        return hasValidTarget;
     }
 
     private IntPredicate ownedBy(int player) {

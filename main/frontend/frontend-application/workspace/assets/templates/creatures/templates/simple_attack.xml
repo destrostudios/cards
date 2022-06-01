@@ -1,6 +1,7 @@
 <template>
     <entity>
         <maximumCastsPerTurn>1</maximumCastsPerTurn>
+        <tauntable/>
         <conditions>
             <entity>
                 <sourceTarget/>

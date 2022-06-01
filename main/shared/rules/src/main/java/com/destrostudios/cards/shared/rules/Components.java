@@ -87,8 +87,9 @@ public class Components {
 
     public static class Spell {
         public static final ComponentDefinition<Void> TARGET_OPTIONAL = new ComponentDefinition<>("targetOptional");
-        public static final ComponentDefinition<int[]> INSTANT_EFFECT_TRIGGERS = new ComponentDefinition<>("instantEffectTriggers");
         public static final ComponentDefinition<Integer> CURRENT_CASTS_PER_TURN = new ComponentDefinition<>("currentCastsThisTurn");
         public static final ComponentDefinition<Integer> MAXIMUM_CASTS_PER_TURN = new ComponentDefinition<>("maximumCastsPerTurn");
+        public static final ComponentDefinition<Void> TAUNTABLE = new ComponentDefinition<>("tauntable");
+        public static final ComponentDefinition<int[]> INSTANT_EFFECT_TRIGGERS = new ComponentDefinition<>("instantEffectTriggers");
     }
 }

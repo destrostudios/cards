@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/vanilla(name=Blademaster,manaCost=2,attack=3,health=1)">
+        <flavourText>"Attack!"</flavourText>
+    </entity>
+</template>

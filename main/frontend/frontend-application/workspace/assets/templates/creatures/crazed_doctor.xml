@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/vanilla(name=Crazed Doctor,manaCost=5,attack=2,health=2)">
+        <flavourText>TODO: Deal 10 damage to yourself, then heal for 20.</flavourText>
+    </entity>
+</template>

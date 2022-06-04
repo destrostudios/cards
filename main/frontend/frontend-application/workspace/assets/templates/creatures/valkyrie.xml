@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/vanilla(name=Valkyrie,manaCost=3,attack=3,health=1)">
+        <divineShield/>
+    </entity>
+</template>

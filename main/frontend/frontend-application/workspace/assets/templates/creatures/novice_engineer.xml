@@ -1,3 +1,0 @@
-<template>
-    <entity template="./templates/simple_drawer(name=Novice Engineer,manaCost=2,attack=1,health=1,draw=1)"/>
-</template>

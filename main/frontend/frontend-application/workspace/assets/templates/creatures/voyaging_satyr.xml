@@ -1,5 +1,0 @@
-<template>
-    <entity template="./templates/vanilla(name=Voyaging Satyr,manaCost=2,attack=1,health=2)">
-        <flavourText>"None can own the land's bounty. The gods made this world for all to share its riches. And I'm not just saying that because you caught me stealing your fruit."</flavourText>
-    </entity>
-</template>

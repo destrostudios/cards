@@ -1,0 +1,32 @@
+<template>
+    <entity>
+        <name>Technology</name>
+        <spellCard/>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>3</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToGraveyard/>
+                                <draw>2</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

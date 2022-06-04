@@ -1,5 +1,0 @@
-<template>
-    <entity template="./templates/vanilla(name=Force Tank Max,manaCost=8,attack=7,health=7)">
-        <divineShield/>
-    </entity>
-</template>

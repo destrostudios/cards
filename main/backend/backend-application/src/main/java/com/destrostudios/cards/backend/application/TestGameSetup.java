@@ -1,14 +1,11 @@
 package com.destrostudios.cards.backend.application;
 
-import com.destrostudios.cards.backend.application.templates.CardPool;
-import com.destrostudios.cards.backend.application.templates.TestLibraries;
+import com.destrostudios.cards.backend.application.libraries.TestLibraries;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.cards.Foil;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 public class TestGameSetup {
 
@@ -23,17 +20,17 @@ public class TestGameSetup {
     public void apply() {
         int player1 = data.createEntity();
         int player2 = data.createEntity();
-        initPlayer(player1, player2, startGameInfo.getPlayer1(), 20);
-        initPlayer(player2, player1, startGameInfo.getPlayer2(), 20);
+        initPlayer(player1, player2, startGameInfo.getPlayer1());
+        initPlayer(player2, player1, startGameInfo.getPlayer2());
     }
 
-    private void initPlayer(int player, int opponent, PlayerInfo playerInfo, int librarySize) {
+    private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {
         data.setComponent(player, Components.NAME, playerInfo.getLogin());
         data.setComponent(player, Components.HEALTH, 30);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
-        CardPool cardPool = (playerInfo.getDeckName().equals("custom") ? TestLibraries.custom() : TestLibraries.random());
-        for (int i = 0; i < librarySize; i++) {
-            int card = cardPool.selectRandomCard(ThreadLocalRandom.current()::nextInt).create(data);
+        int[] deck = (playerInfo.getDeckName().equals("custom") ? TestLibraries.custom(data) : TestLibraries.random(data, 20));
+        for (int i = 0; i < deck.length; i++) {
+            int card = deck[i];
             setRandomFoil(card);
             data.setComponent(card, Components.OWNED_BY, player);
             data.setComponent(card, Components.LIBRARY, i);

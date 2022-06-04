@@ -1,0 +1,32 @@
+<template>
+    <entity>
+        <name>Bonfire</name>
+        <spellCard/>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>2</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToGraveyard/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+        <flavourText>TODO: Heal 6 health of your player.</flavourText>
+    </entity>
+</template>

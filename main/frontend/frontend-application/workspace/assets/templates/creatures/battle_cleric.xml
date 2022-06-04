@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/simple_target_healer(name=Battle Cleric,manaCost=3,attack=2,health=3,heal=2)"/>
+</template>

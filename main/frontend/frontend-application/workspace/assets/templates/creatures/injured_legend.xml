@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/vanilla(name=Injured Legend,manaCost=3,attack=3,health=6)"/>
+</template>

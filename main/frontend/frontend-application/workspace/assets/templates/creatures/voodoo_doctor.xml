@@ -1,3 +1,0 @@
-<template>
-    <entity template="./templates/simple_target_healer(name=Voodoo Doctor,manaCost=1,attack=2,health=1,heal=2)"/>
-</template>

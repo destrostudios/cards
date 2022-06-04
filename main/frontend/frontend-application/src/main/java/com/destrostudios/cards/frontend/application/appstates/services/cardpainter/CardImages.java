@@ -52,7 +52,7 @@ public class CardImages{
             filePath += titleImageSuffix + ".jpg";
         }
         else{
-            filePath += "cards/other.png";
+            filePath += "cards/unknown.png";
         }
         return filePath;
     }

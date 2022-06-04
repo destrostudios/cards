@@ -1,0 +1,42 @@
+<template>
+    <entity>
+        <name>Fiery Obliteration</name>
+        <spellCard/>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity>
+                        <sourceTarget/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>7</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <sourceTarget/>
+                                <addToGraveyard/>
+                            </entity>
+                            <entity>
+                                <conditionTargets>
+                                    <entity>
+                                        <targetTargets/>
+                                        <opponent/>
+                                        <creatureCard/>
+                                        <onBoard/>
+                                    </entity>
+                                </conditionTargets>
+                                <damage>4</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

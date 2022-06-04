@@ -1,0 +1,6 @@
+<template>
+    <entity template="./templates/vanilla(name=Legion Angel,manaCost=6,attack=4,health=5)">
+        <divineShield/>
+        <taunt/>
+    </entity>
+</template>

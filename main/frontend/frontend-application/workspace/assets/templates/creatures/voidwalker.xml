@@ -1,5 +1,0 @@
-<template>
-    <entity template="./templates/vanilla(name=Voidwalker,manaCost=1,attack=1,health=3)">
-        <taunt/>
-    </entity>
-</template>

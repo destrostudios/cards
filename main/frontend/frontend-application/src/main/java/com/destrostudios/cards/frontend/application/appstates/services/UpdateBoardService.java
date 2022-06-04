@@ -150,8 +150,6 @@ public class UpdateBoardService {
                     InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
                     card.setInteractivity(interactivitySource, interactivity);
                     card.getModel().setPlayable(true);
-
-                    validSpellTargets.put(playSpellEvent.spell, new LinkedList<>());
                 }
                 for (int target : playSpellEvent.targets) {
                     validTargets.add(target);

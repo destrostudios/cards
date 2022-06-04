@@ -18,6 +18,9 @@
         <jm3.version>3.2.1-stable</jm3.version>
         <card-gui.version>4a4c1558c0d7436aeef62c4d5a8b75fa84d4968a</card-gui.version>
         <version.game-tools>169148796235c281a561545c0a7465cea5f0cce5</version.game-tools>
+        <version.groovy>3.0.10</version.groovy>
+        <version.lemur>1.16.0</version.lemur>
+        <version.lemur-proto>1.13.0</version.lemur-proto>
         <version.lombok>1.18.10</version.lombok>
     </properties>
     <repositories>

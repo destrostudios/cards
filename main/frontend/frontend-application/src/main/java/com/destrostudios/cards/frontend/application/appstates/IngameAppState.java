@@ -223,6 +223,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
         }
         BoardSettings boardSettings = BoardSettings.builder()
+                .inputActionPrefix("ingame")
                 .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
                 .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
                 .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))

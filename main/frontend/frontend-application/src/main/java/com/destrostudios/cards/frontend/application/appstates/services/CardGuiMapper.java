@@ -1,6 +1,5 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destrostudios.cardgui.Card;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
@@ -28,25 +27,23 @@ public class CardGuiMapper {
         tribeComponents.put(Components.Tribe.HUMAN, "Human");
     }
 
-    public static void updateModel(Card<CardModel> card, EntityData entityData, int cardEntity) {
-        CardModel cardModel = card.getModel();
-
-        boolean isFront = !entityData.hasComponent(cardEntity, Components.LIBRARY);
+    public static void updateModel(EntityData entityData, int card, CardModel cardModel) {
+        boolean isFront = !entityData.hasComponent(card, Components.LIBRARY);
         cardModel.setFront(isFront);
 
         // Will be set when applying the possibleActions
         cardModel.setPlayable(false);
 
-        String type = (entityData.hasComponent(cardEntity, Components.CREATURE_CARD) ? "creature" : "spell");
+        String type = (entityData.hasComponent(card, Components.CREATURE_CARD) ? "creature" : "spell");
         cardModel.setType(type);
 
-        String title = entityData.getComponent(cardEntity, Components.NAME);
+        String title = entityData.getComponent(card, Components.NAME);
         cardModel.setTitle(title);
 
-        List<String> tribes = createListBasedOnComponents(entityData, cardEntity, tribeComponents);
+        List<String> tribes = createListBasedOnComponents(entityData, card, tribeComponents);
         cardModel.setTribes(tribes);
 
-        List<String> keywords = createListBasedOnComponents(entityData, cardEntity, keywordComponents);
+        List<String> keywords = createListBasedOnComponents(entityData, card, keywordComponents);
         cardModel.setKeywords(keywords);
 
         String castDescription = null;
@@ -57,14 +54,14 @@ public class CardGuiMapper {
         Integer manaCostDetails = null;
         String description = null;
         List<Spell> spells = new LinkedList<>();
-        int[] spellEntities = entityData.getComponent(cardEntity, Components.SPELL_ENTITIES);
+        int[] spellEntities = entityData.getComponent(card, Components.SPELL_ENTITIES);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
                 Integer spellCost = entityData.getComponent(spellEntity, Components.COST);
                 String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
                 if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(entityData, spellEntity)) {
                     manaCostDetails = entityData.getComponent(spellCost, Components.MANA);
-                    if (entityData.hasComponent(cardEntity, Components.HAND)) {
+                    if (entityData.hasComponent(card, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
                     }
                     description = spellDescription;
@@ -82,13 +79,13 @@ public class CardGuiMapper {
         cardModel.setManaCostDetails(manaCostDetails);
         cardModel.setDescription(description);
         cardModel.setSpells(spells);
-        cardModel.setAttackDamage(entityData.getComponent(cardEntity, Components.ATTACK));
-        cardModel.setLifepoints(HealthUtil.getEffectiveHealth(entityData, cardEntity));
-        cardModel.setDamaged(entityData.hasComponent(cardEntity, Components.DAMAGED));
-        cardModel.setDivineShield(entityData.getOptionalComponent(cardEntity, Components.Ability.DIVINE_SHIELD).orElse(false));
-        cardModel.setTaunt(entityData.hasComponent(cardEntity, Components.Ability.TAUNT));
-        cardModel.setFlavourText(entityData.getComponent(cardEntity, Components.FLAVOUR_TEXT));
-        cardModel.setFoil(entityData.getComponent(cardEntity, Components.FOIL));
+        cardModel.setAttackDamage(entityData.getComponent(card, Components.ATTACK));
+        cardModel.setLifepoints(HealthUtil.getEffectiveHealth(entityData, card));
+        cardModel.setDamaged(entityData.hasComponent(card, Components.DAMAGED));
+        cardModel.setDivineShield(entityData.getOptionalComponent(card, Components.Ability.DIVINE_SHIELD).orElse(false));
+        cardModel.setTaunt(entityData.hasComponent(card, Components.Ability.TAUNT));
+        cardModel.setFlavourText(entityData.getComponent(card, Components.FLAVOUR_TEXT));
+        cardModel.setFoil(entityData.getComponent(card, Components.FOIL));
     }
 
     private static <T> List<T> createListBasedOnComponents(EntityData entityData, int entity, Map<ComponentDefinition, T> componentValueMap) {

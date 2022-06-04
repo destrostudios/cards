@@ -75,7 +75,7 @@ public class UpdateBoardService {
             card.clearInteractivities();
 
             if (cardZoneIndex != null) {
-                CardGuiMapper.updateModel(card, data, cardEntity);
+                CardGuiMapper.updateModel(data, cardEntity, card.getModel());
                 board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
             }
         }

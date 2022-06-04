@@ -29,7 +29,7 @@ public class IngameHudAppState extends MyBaseAppState {
         textPlayerManaAmount.setText("-");
 
         float x = margin;
-        float y = mainApplication.getSettings().getHeight() - margin;
+        float y = mainApplication.getContext().getSettings().getHeight() - margin;
         textPlayerHealth[0].setLocalTranslation(x, y, 0);
         y -= textPlayerHealth[0].getLineHeight() + margin;
         textPlayerHealth[1].setLocalTranslation(x, y, 0);

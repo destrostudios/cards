@@ -10,15 +10,21 @@ import com.jme3.scene.Node;
 public class IngameCardVisualizer extends CustomAttachmentVisualizer<Card<CardModel>, Node, IngameCardVisualization> {
 
     public IngameCardVisualizer(boolean fullArt, boolean boardAttachments) {
+        this(fullArt, boardAttachments, 1);
+    }
+
+    public IngameCardVisualizer(boolean fullArt, boolean boardAttachments, float scale) {
         this.fullArt = fullArt;
         this.boardAttachments = boardAttachments;
+        this.scale = scale;
     }
     private boolean fullArt;
     private boolean boardAttachments;
+    private float scale;
 
     @Override
     protected IngameCardVisualization createVisualizationObject(AssetManager assetManager) {
-        return new IngameCardVisualization(assetManager, fullArt);
+        return new IngameCardVisualization(assetManager, fullArt, scale);
     }
 
     @Override

@@ -28,8 +28,8 @@ public class GameOverAppState extends MyBaseAppState implements ActionListener {
         super.initialize(stateManager, application);
         stateManager.detach(getAppState(IngameHudAppState.class));
 
-        int width = mainApplication.getSettings().getWidth();
-        int height = mainApplication.getSettings().getHeight();
+        int width = mainApplication.getContext().getSettings().getWidth();
+        int height = mainApplication.getContext().getSettings().getHeight();
 
         Geometry background = new Geometry("background", new Quad(width, height));
         Material materialBackground = new Material(mainApplication.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");

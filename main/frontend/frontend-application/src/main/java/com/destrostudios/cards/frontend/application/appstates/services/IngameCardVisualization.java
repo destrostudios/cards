@@ -15,9 +15,10 @@ import com.jme3.scene.Node;
 
 public class IngameCardVisualization extends CustomAttachmentVisualization<Node> {
 
-    public IngameCardVisualization(AssetManager assetManager, boolean fullArt) {
+    public IngameCardVisualization(AssetManager assetManager, boolean fullArt, float scale) {
         this.fullArt = fullArt;
         node = new Node();
+        node.setLocalScale(scale);
         foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/yugioh.png", ColorRGBA.Black);
         node.attachChild(foilModelledCard.getNode());
         glowQuad = new GlowQuad(assetManager, 0.96f, 1.28f);

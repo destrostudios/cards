@@ -11,10 +11,11 @@ import java.util.List;
 
 public class CardPainterAWT {
 
-    private static final Font fontTitle = new Font("Tahoma", Font.BOLD, 20);
-    private static final Font fontDescription = new Font("Tahoma", Font.PLAIN, 16);
-    private static final Font fontKeywords = new Font("Tahoma", Font.BOLD, 16);
-    private static final Font fontTribes = new Font("Tahoma", Font.PLAIN, 16);
+    private static final int fontSizeText = 20;
+    private static final Font fontTitle = new Font("Tahoma", Font.BOLD, fontSizeText);
+    private static final Font fontDescription = new Font("Tahoma", Font.PLAIN, fontSizeText);
+    private static final Font fontKeywords = new Font("Tahoma", Font.BOLD, fontSizeText);
+    private static final Font fontTribes = new Font("Tahoma", Font.PLAIN, fontSizeText);
     private static final Font fontsManaCostLarge = new Font("Tahoma", Font.BOLD, 100);
     private static final Font fontsManaCostSmall = new Font("Tahoma", Font.BOLD, 30);
     private static final Font fontStatsLarge = new Font("Tahoma", Font.BOLD, 100);
@@ -42,7 +43,7 @@ public class CardPainterAWT {
             if (title != null) {
                 graphics.drawString(title, textStartX, 60);
             }
-            tmpY = 348;
+            tmpY = 350;
             if(drawnKeywords.size() > 0){
                 String keywordsText = "";
                 for(int i=0;i<drawnKeywords.size();i++){

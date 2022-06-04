@@ -32,28 +32,31 @@ public class WaitingForGameAppState extends MyBaseAppState implements ActionList
     @Override
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
-        System.out.println("Waiting for gamse...");
+        initGui();
+        initInputListeners();
+        stateManager.attach(new DeckAppState());
+    }
 
+    private void initGui() {
         guiNode = new Node();
+
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         BitmapText textTitle = new BitmapText(guiFont);
         textTitle.setSize(20);
-        textTitle.setText("Waiting for games...\n\nClick to start a new game against a bot.");
+        textTitle.setText("Waiting for games... Right click to start a new game against a bot.");
         float margin = 30;
-        float x = margin;
-        float y = (mainApplication.getSettings().getHeight() - margin);
+        float x = margin + 200;
+        float y = (mainApplication.getContext().getSettings().getHeight() - margin);
         textTitle.setLocalTranslation(x, y, 0);
         guiNode.attachChild(textTitle);
 
         mainApplication.getGuiNode().attachChild(guiNode);
-
-        initInputListeners();
     }
 
     private void initInputListeners() {
         InputManager inputManager = mainApplication.getInputManager();
-        inputManager.addMapping("mouseLeft", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(this, "mouseLeft");
+        inputManager.addMapping("mouseRight", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+        inputManager.addListener(this, "mouseRight");
     }
 
     @Override
@@ -84,7 +87,7 @@ public class WaitingForGameAppState extends MyBaseAppState implements ActionList
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-        if (name.equals("mouseLeft") && isPressed) {
+        if (name.equals("mouseRight") && isPressed) {
             GameStartClientModule<StartGameInfo> gameStartModule = mainApplication.getToolsClient().getModule(GameStartClientModule.class);
             JwtClientModule jwtClientModule = mainApplication.getToolsClient().getModule(JwtClientModule.class);
             gameStartModule.startNewGame(new StartGameInfo(
@@ -99,8 +102,9 @@ public class WaitingForGameAppState extends MyBaseAppState implements ActionList
     @Override
     public void cleanup() {
         super.cleanup();
-        mainApplication.getGuiNode().detachChild(guiNode);
-        mainApplication.getInputManager().deleteMapping("mouseLeft");
+        mainApplication.getStateManager().detach(getAppState(DeckAppState.class));
+        mainApplication.getInputManager().deleteMapping("mouseRight");
         mainApplication.getInputManager().removeListener(this);
+        mainApplication.getGuiNode().detachChild(guiNode);
     }
 }

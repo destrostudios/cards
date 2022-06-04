@@ -7,6 +7,8 @@ import com.destrostudios.gametools.network.client.ToolsClient;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.system.AppSettings;
+import com.simsilica.lemur.GuiGlobals;
+import com.simsilica.lemur.style.BaseStyles;
 import lombok.Getter;
 
 public class FrontendJmeApplication extends SimpleApplication {
@@ -34,6 +36,10 @@ public class FrontendJmeApplication extends SimpleApplication {
         flyCam.setEnabled(false);
         stateManager.attach(new PostFilterAppState());
         stateManager.attach(new WaitingForGameAppState());
+        // Lemur
+        GuiGlobals.initialize(this);
+        BaseStyles.loadGlassStyle();
+        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
     }
 
     public void enqueue(final Runnable runnable){
@@ -41,9 +47,5 @@ public class FrontendJmeApplication extends SimpleApplication {
             runnable.run();
             return null;
         });
-    }
-
-    public AppSettings getSettings() {
-        return settings;
     }
 }

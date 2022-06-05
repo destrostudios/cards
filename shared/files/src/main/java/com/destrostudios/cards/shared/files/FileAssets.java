@@ -56,8 +56,7 @@ public class FileAssets{
         try{
             return ImageIO.read(new File(ROOT + filePath));
         }catch(Exception ex){
-            System.err.println("Error while reading image file '" + filePath + "'.");
-            ex.printStackTrace();
+            System.err.println("Error while reading image file '" + filePath + "': " + ex.getMessage());
         }
         return null;
     }
@@ -66,7 +65,7 @@ public class FileAssets{
         try{
             return new FileInputStream(ROOT + filePath);
         }catch(FileNotFoundException ex){
-            System.err.println("Error while reading file '" + filePath + "'.");
+            System.err.println("Error while reading file '" + filePath + "': " + ex.getMessage());
         }
         return null;
     }

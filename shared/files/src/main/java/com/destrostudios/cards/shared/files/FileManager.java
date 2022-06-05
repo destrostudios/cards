@@ -123,7 +123,7 @@ public class FileManager{
             inputStream.close();
             fileOutputStream.close();
         }catch(Exception ex){
-            System.out.println("Error while downloading file from '" + sourceURL.toExternalForm() + "' to '" + destinationFilePath + "'.");
+            System.out.println("Error while downloading file from '" + sourceURL.toExternalForm() + "' to '" + destinationFilePath + "': " + ex.getMessage());
         }
     }
     
@@ -146,7 +146,7 @@ public class FileManager{
             }
             return checksum;
         }catch(Exception ex){
-            System.out.println("Error while calculating the checksum of the file '" + file.getPath() + "'.");
+            System.out.println("Error while calculating the checksum of the file '" + file.getPath() + "': " + ex.getMessage());
         }
         return null;
     }

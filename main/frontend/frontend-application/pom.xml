@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.destrostudios.cards</groupId>
         <artifactId>frontend</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
     <artifactId>frontend-application</artifactId>
     <packaging>jar</packaging>
@@ -17,37 +17,37 @@
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>application</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>entities</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>entities-templates</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>events</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>network</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>rules</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>card-painter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>${jm3.group}</groupId>

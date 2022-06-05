@@ -38,7 +38,7 @@ public class TestGameSetup {
     }
 
     private void setRandomFoil(int card) {
-        switch ((int) (Math.random() * 5)) {
+        switch ((int) (Math.random() * 7)) {
             case 0: data.setComponent(card, Components.FOIL, Foil.ARTWORK); break;
             case 1: data.setComponent(card, Components.FOIL, Foil.FULL); break;
         }

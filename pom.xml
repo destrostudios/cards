@@ -21,7 +21,7 @@
         <version.groovy>3.0.10</version.groovy>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
-        <version.lombok>1.18.10</version.lombok>
+        <version.lombok>1.18.24</version.lombok>
     </properties>
     <repositories>
         <repository>

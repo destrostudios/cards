@@ -45,11 +45,6 @@
             <version>0.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>card-painter</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
             <groupId>${jm3.group}</groupId>
             <artifactId>jme3-core</artifactId>
             <version>${jm3.version}</version>

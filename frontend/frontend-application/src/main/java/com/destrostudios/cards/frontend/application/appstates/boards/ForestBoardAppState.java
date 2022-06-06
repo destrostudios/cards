@@ -20,11 +20,8 @@ import com.jme3.texture.Texture;
 import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
 
-public class ForestBoardAppState extends VisualBoardAppState {
+public class ForestBoardAppState extends MyBaseAppState {
 
-    public ForestBoardAppState(int playerIndex) {
-        super(playerIndex);
-    }
     private Vector3f lightDirection;
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
@@ -45,9 +42,6 @@ public class ForestBoardAppState extends VisualBoardAppState {
 
     private void initLightAndShadows() {
         lightDirection = new Vector3f(1, -5, -1).normalizeLocal();
-        if (playerIndex == 1) {
-            lightDirection.multLocal(-1, 1, -1);
-        }
 
         ambientLight = new AmbientLight(ColorRGBA.White.mult(0.4f));
         mainApplication.getRootNode().addLight(ambientLight);

@@ -80,8 +80,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             @Override
             public void initialize(AppStateManager stateManager, Application application) {
                 super.initialize(stateManager, application);
-                // TODO: Have a special transformation here (Will be used during shuffling animation and mulligan)
-                updateCamera();
+                Vector3f position = new Vector3f(0, 7.361193f, 1.3f);
+                Quaternion rotation = new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_X);
+                rotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(rotation);
+                moveTo(position, rotation, 0.3f);
             }
         });
     }
@@ -104,7 +106,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 if (sendableEndTurnEvent != null) {
                     gameService.sendAction(sendableEndTurnEvent);
                 }
-            } // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
+            } // TODO: Acts as a temporary way to end the other players turn until everything is cleanuped
             else if ("delete".equals(name) && isPressed) {
                 int activePlayerEntity = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
                 gameService.sendAction(new EndTurnEvent(activePlayerEntity));
@@ -172,12 +174,15 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         updateHudService = new UpdateHudService(gameService, getAppState(IngameHudAppState.class));
         entryAnimationService = new EntryAnimationService(mainApplication);
 
-        List<Integer> players = gameService.getGameContext().getData().query(Components.NEXT_PLAYER).list();
         Vector3f offset = new Vector3f(0, 0, ZONE_HEIGHT);
         float directionX = 1;
         float directionZ = 1;
         Quaternion zoneRotation = Quaternion.IDENTITY;
-        for (int i = 0; i < players.size(); i++) {
+        // TODO: Properly query these, ensure own player is first
+        int[] players = new int[2];
+        players[0] = gameService.getPlayerEntity();
+        players[1] = ((players[0] == 0) ? 1 : 0);
+        for (int i = 0; i < players.length; i++) {
             if (i == 1) {
                 directionX *= -1;
                 directionZ *= -1;
@@ -222,7 +227,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             board.addZone(spellZone);
             board.addZone(creatureZone);
             board.addZone(graveyardZone);
-            playerZonesMap.put(players.get(i), new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
+            playerZonesMap.put(players[i], new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
         }
         BoardSettings boardSettings = BoardSettings.builder()
                 .inputActionPrefix("ingame")
@@ -256,7 +261,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
         mainApplication.getStateManager().attach(boardAppState);
 
-        mainApplication.getStateManager().attach(new ForestBoardAppState(gameService.getPlayerEntity()));
+        mainApplication.getStateManager().attach(new ForestBoardAppState());
 
         gameService.getGameContext().getEvents().instant().add(StartTurnEvent.class, (event, random) -> onTurnStarted());
 
@@ -294,19 +299,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         int playerIndex = player;
         IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
         ingameHudAppState.setCurrentPlayer(playerIndex);
-        updateCamera();
-    }
-
-    private void updateCamera() {
-        CameraAppState cameraAppState = getAppState(CameraAppState.class);
-        Vector3f position = new Vector3f(0, 7.361193f, 1.3f);
-        Quaternion rotation = new Quaternion().fromAngleAxis(FastMath.HALF_PI, Vector3f.UNIT_X);
-        // TODO: Maybe check this other than the exact hardcoded entity
-        boolean isPlayer1 = (gameService.getPlayerEntity() == 0);
-        if (isPlayer1) {
-            rotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y).multLocal(rotation);
-        }
-        cameraAppState.moveTo(position, rotation, 0.3f);
     }
 
     private void tryPlayEntryAnimation(int cardEntity) {

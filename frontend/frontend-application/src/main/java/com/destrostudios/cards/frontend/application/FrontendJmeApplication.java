@@ -24,9 +24,10 @@ public class FrontendJmeApplication extends SimpleApplication {
 
     private void loadSettings(){
         settings = new AppSettings(true);
+        settings.setTitle("Cards");
         settings.setWidth(1600);
         settings.setHeight(900);
-        settings.setTitle("Cards");
+        settings.setVSync(true);
         setShowSettings(false);
     }
 

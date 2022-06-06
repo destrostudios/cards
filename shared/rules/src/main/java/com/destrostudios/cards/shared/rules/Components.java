@@ -62,6 +62,7 @@ public class Components {
         public static final ComponentDefinition<Void> BATTLE = new ComponentDefinition<>("battle");
         public static final ComponentDefinition<Integer> DRAW = new ComponentDefinition<>("draw");
         public static final ComponentDefinition<Integer> GAIN_MANA = new ComponentDefinition<>("gainMana");
+        public static final ComponentDefinition<Void> DESTROY = new ComponentDefinition<>("destroy");
 
         public static class Zones {
             public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoard");

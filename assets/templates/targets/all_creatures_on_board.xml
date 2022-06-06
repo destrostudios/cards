@@ -1,0 +1,17 @@
+<template>
+    <entity>
+        <targetChain>
+            <entity>
+                <targetAll>
+                    <entity>
+                        <targetChains>
+                            <entity template="../targets/targets"/>
+                        </targetChains>
+                        <creatureCard/>
+                        <onBoard/>
+                    </entity>
+                </targetAll>
+            </entity>
+        </targetChain>
+    </entity>
+</template>

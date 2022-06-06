@@ -63,6 +63,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.BATTLE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.DRAW));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.GAIN_MANA));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.DESTROY));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 

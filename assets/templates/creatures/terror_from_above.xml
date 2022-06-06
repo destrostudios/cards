@@ -1,35 +1,35 @@
 <template>
-    <values>
-        <damage>4</damage>
-    </values>
     <entity>
-        <name>Fiery Obliteration</name>
-        <spellCard/>
+        <name>Terror from Above</name>
+        <creatureCard/>
+        <attack>8</attack>
+        <health>8</health>
         <spells>
             <entity>
-                <description>Deal [damage] damage to all opponent creatures.</description>
+                <description>Destroy all creatures.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
-                        <mana>7</mana>
+                        <mana>10</mana>
                     </entity>
                 </cost>
                 <instantEffectTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
                                 <targetChains>
-                                    <entity template="../targets/all_opponent_creatures_on_board"/>
+                                    <entity template="../targets/all_creatures_on_board"/>
                                 </targetChains>
-                                <damage>[damage]</damage>
+                                <destroy/>
                             </entity>
+                            <entity template="../effects/add_source_to_board"/>
                         </effects>
                     </entity>
                 </instantEffectTriggers>
             </entity>
+            <entity template="./templates/simple_attack"/>
         </spells>
     </entity>
 </template>

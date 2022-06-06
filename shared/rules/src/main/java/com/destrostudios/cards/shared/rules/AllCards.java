@@ -19,6 +19,7 @@ public class AllCards {
         "creatures/guardian_dragon",
         "creatures/injured_legend",
         "creatures/legion_angel",
+        "creatures/leviathan",
         "creatures/mounted_dwarf_warrior",
         "creatures/novice_paladin",
         "creatures/old_archer",
@@ -26,11 +27,14 @@ public class AllCards {
         "creatures/plated_aradon",
         "creatures/shieldmaster",
         "creatures/sir_theodor_the_third",
+        "creatures/terror_from_above",
+        "creatures/tiny_dragon",
         "creatures/valkyrie",
         "creatures/young_inventor",
         "spells/bonfire",
         "spells/fiery_obliteration",
         "spells/sea_storm",
+        "spells/sunray",
         "spells/technology",
         "spells/thunder"
     };

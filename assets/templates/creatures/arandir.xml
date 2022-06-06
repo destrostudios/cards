@@ -27,7 +27,7 @@
             </entity>
             <entity template="./templates/simple_attack"/>
             <entity>
-                <description>Deal [damage] damage to target opponent creature on board.</description>
+                <description>Deal [damage] damage to target opponent creature.</description>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <conditions>
                     <entity template="../conditions/source_on_board"/>

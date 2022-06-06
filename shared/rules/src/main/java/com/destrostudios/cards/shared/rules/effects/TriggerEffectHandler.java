@@ -4,6 +4,7 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
+import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
@@ -54,6 +55,10 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         Integer gainedMana = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
         if (gainedMana != null) {
             events.fire(new AddManaEvent(event.target, gainedMana), random);
+        }
+
+        if (data.hasComponent(event.effect, Components.Effect.DESTROY)) {
+            events.fire(new DestructionEvent(event.target), random);
         }
     }
 }

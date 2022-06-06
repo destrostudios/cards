@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/vanilla(name=Goblin Hunter,manaCost=3,attack=4,health=1)"/>
+</template>

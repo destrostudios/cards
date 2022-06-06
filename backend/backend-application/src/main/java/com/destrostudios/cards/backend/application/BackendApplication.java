@@ -4,17 +4,14 @@ import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.cards.backend.application.modules.AutoRejoinModule;
 import com.destrostudios.cards.backend.application.modules.GameOverModule;
 import com.destrostudios.cards.backend.application.modules.CardsGameStartServerModule;
+import com.destrostudios.cards.backend.application.modules.QueueServerModule;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.NetworkUtil;
 import com.destrostudios.cards.shared.rules.NetworkCardsService;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.KryoStartGameInfo;
-import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.gametools.network.server.ToolsServer;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
-import com.destrostudios.gametools.network.server.modules.game.GameStartServerModule;
-import com.destrostudios.gametools.network.server.modules.game.LobbyServerModule;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
@@ -35,13 +32,13 @@ public class BackendApplication {
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new NetworkCardsService(true), kryoServer::getConnections);
-        LobbyServerModule<StartGameInfo> lobbyModule = new LobbyServerModule<>(KryoStartGameInfo::initialize, kryoServer::getConnections);
-        GameStartServerModule<StartGameInfo> cardsStartModule = new CardsGameStartServerModule(KryoStartGameInfo::initialize, kryoServer, jwtModule, gameModule, lobbyModule);
+        CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule);
+        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule);
 
-        GameOverModule gameOverModule = new GameOverModule(lobbyModule, gameModule);
-        AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, lobbyModule, gameModule);
+        GameOverModule gameOverModule = new GameOverModule(gameModule);
+        AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);
 
-        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, lobbyModule, cardsStartModule, gameOverModule, autoRejoinModule);
+        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, gameStartModule, queueModule, gameOverModule, autoRejoinModule);
         server.start(NetworkUtil.PORT);
 
         System.out.println("Server started.");

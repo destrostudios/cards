@@ -7,7 +7,7 @@
         <spellCard/>
         <spells>
             <entity>
-                <description>Deal [damage] damage.</description>
+                <description>Deal [damage] damage to target character.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                     <entity template="../conditions/target_is_character"/>

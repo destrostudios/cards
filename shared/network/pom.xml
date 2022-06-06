@@ -9,5 +9,14 @@
     <artifactId>network</artifactId>
     <packaging>jar</packaging>
     <dependencies>
+        <dependency>
+            <groupId>com.github.destrostudios.game-tools</groupId>
+            <artifactId>network-shared</artifactId>
+            <version>${version.game-tools}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
 </project>

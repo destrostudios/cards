@@ -5,6 +5,7 @@ import com.destrostudios.cardgui.CardZone;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
+import com.destrostudios.cards.frontend.application.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
@@ -28,22 +29,19 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.simsilica.lemur.Button;
-import com.simsilica.lemur.Command;
-import com.simsilica.lemur.HAlignment;
-import com.simsilica.lemur.VAlignment;
+import lombok.Getter;
 
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class DeckAppState extends MyBaseAppState implements ActionListener {
 
-    private static final float BUTTON_HEIGHT_DEFAULT = 50;
-
-    private List<CardModel> allCardModels;
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
+    private List<CardModel> allCardModels;
+    private HashMap<CardModel, String> cardModelsToTemplateMap;
+    @Getter
+    private LinkedList<String> libraryTemplates;
     private Node guiNode;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
@@ -56,7 +54,6 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         stateManager.attach(new BackgroundAppState("images/background.png"));
         initCamera();
         initLight();
-        initAllCardModels();
         initDeckBuilder();
         initGui();
         initListeners();
@@ -76,20 +73,25 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getRootNode().addLight(directionalLight);
     }
 
-    private void initAllCardModels() {
+    private void initDeckBuilder() {
+        // Cards
         allCardModels = new LinkedList<>();
+        cardModelsToTemplateMap = new HashMap<>();
         EntityData data = new SimpleEntityData();
-        for (String template : AllCards.TEMPLATES) {
+        for (int i = 0; i < AllCards.TEMPLATES.length; i++) {
+            String template = AllCards.TEMPLATES[i];
+
             int card = data.createEntity();
             EntityTemplate.loadTemplate(data, card, template);
             CardModel cardModel = new CardModel();
             CardGuiMapper.updateModel(data, card, cardModel);
             allCardModels.add(cardModel);
+            cardModelsToTemplateMap.put(cardModel, template);
         }
         allCardModels.sort(Comparator.comparing(CardModel::getManaCostDetails));
-    }
 
-    private void initDeckBuilder() {
+        // Deckbuilder
+        libraryTemplates = new LinkedList<>();
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CardZone deckZone = new SimpleIntervalZone(new Vector3f(8.25f, 0, -4.715f), new Vector3f(1, 1, 0.57f));
         IngameCardVisualizer collectionCardVisualizer = new IngameCardVisualizer(false, false, 4.25f);
@@ -135,9 +137,9 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         float buttonPreviousX = 55;
         float buttonNextX = (1255 - buttonPaginationWidth);
         float buttonPaginationY = (height / 2f) + (buttonPaginationHeight / 2f);
-        buttonPreviousPage = addButton("<", buttonPaginationWidth, buttonPaginationHeight, b -> goToPreviousPage());
+        buttonPreviousPage = GuiUtil.addButton(guiNode, "<", buttonPaginationWidth, buttonPaginationHeight, b -> goToPreviousPage());
         buttonPreviousPage.setLocalTranslation(buttonPreviousX, buttonPaginationY, 0);
-        buttonNextPage = addButton(">", buttonPaginationWidth, buttonPaginationHeight, b -> goToNextPage());
+        buttonNextPage = GuiUtil.addButton(guiNode, ">", buttonPaginationWidth, buttonPaginationHeight, b -> goToNextPage());
         buttonNextPage.setLocalTranslation(buttonNextX, buttonPaginationY, 0);
 
         // Filter
@@ -147,7 +149,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
             final int manaCost = i;
             Predicate<CardModel> filter = cardModel -> cardModel.getManaCostDetails() == manaCost;
-            Button button = addButton("" + i, buttonManaFilterWidth, BUTTON_HEIGHT_DEFAULT, b -> {
+            Button button = GuiUtil.addButton(guiNode, "" + i, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
                 if (deckBuilderAppState.getCollectionCardFilter() == filter) {
                     deckBuilderAppState.setCollectionCardFilter(null);
                     filteredManaCost = null;
@@ -165,26 +167,19 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
 
         // Save
         float buttonSaveWidth = 293;
-        Button buttonSave = addButton("Save", buttonSaveWidth, BUTTON_HEIGHT_DEFAULT, b -> {
-            System.out.println(deckBuilderAppState.getDeck().size());
+        Button buttonSave = GuiUtil.addButton(guiNode, "Save", buttonSaveWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
+            libraryTemplates.clear();
+            for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
+                String template = cardModelsToTemplateMap.get(entry.getKey());
+                for (int i = 0; i < entry.getValue(); i++) {
+                    libraryTemplates.add(template);
+                }
+            }
         });
-        buttonSave.setLocalTranslation(width - 56 - buttonSaveWidth, 86 + BUTTON_HEIGHT_DEFAULT, 0);
+        buttonSave.setLocalTranslation(width - 56 - buttonSaveWidth, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
 
         mainApplication.getGuiNode().attachChild(guiNode);
         updateGui();
-    }
-
-    private Button addButton(String text, float width, float height, Command<Button> command) {
-        Button button = new Button(text);
-        button.setPreferredSize(new Vector3f(width, height, 0));
-        button.setTextHAlignment(HAlignment.Center);
-        button.setTextVAlignment(VAlignment.Center);
-        button.setFontSize(16);
-        button.setColor(ColorRGBA.White);
-        button.setFocusColor(ColorRGBA.White);
-        button.addCommands(Button.ButtonAction.Up, command);
-        guiNode.attachChild(button);
-        return button;
     }
 
     private void initListeners() {

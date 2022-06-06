@@ -99,14 +99,16 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         if ("space".equals(name) && isPressed) {
             CameraAppState cameraAppState = getAppState(CameraAppState.class);
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
-        } else if ("end".equals(name) && isPressed) {
-            if (sendableEndTurnEvent != null) {
-                gameService.sendAction(sendableEndTurnEvent);
+        } else if (!gameService.getGameContext().isGameOver()) {
+            if ("end".equals(name) && isPressed) {
+                if (sendableEndTurnEvent != null) {
+                    gameService.sendAction(sendableEndTurnEvent);
+                }
+            } // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
+            else if ("delete".equals(name) && isPressed) {
+                int activePlayerEntity = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
+                gameService.sendAction(new EndTurnEvent(activePlayerEntity));
             }
-        } // TODO: Acts as a temporary way to end the other players turn until the game initialization and test setup has been cleanuped
-        else if ("delete".equals(name) && isPressed) {
-            int activePlayerEntity = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
-            gameService.sendAction(new EndTurnEvent(activePlayerEntity));
         }
     }
 

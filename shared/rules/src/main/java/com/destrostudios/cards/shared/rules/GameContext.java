@@ -16,13 +16,16 @@ import lombok.Getter;
 public class GameContext {
 
     @Getter
+    private StartGameInfo startGameInfo;
+    @Getter
     private SimpleEntityData data;
     @Getter
     private EventQueue events;
     @Getter
     private boolean gameOver;
 
-    public GameContext(SimpleEntityData data) {
+    public GameContext(StartGameInfo startGameInfo, SimpleEntityData data) {
+        this.startGameInfo = startGameInfo;
         this.data = data;
         events = new EventQueue();
         initListeners();

@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.game.turn;
 
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
@@ -13,7 +14,8 @@ public class ExecuteBotActionsOnTurnStartHandler extends GameEventHandler<StartT
 
     @Override
     public void handle(StartTurnEvent event, NetworkRandom random) {
-        if (event.player == 1) {
+        // Yeah... good enough for now
+        if ("Bot".equals(data.getComponent(event.player, Components.NAME))) {
             if (playerActionsGenerator == null) {
                 playerActionsGenerator = new PlayerActionsGenerator(data);
             }

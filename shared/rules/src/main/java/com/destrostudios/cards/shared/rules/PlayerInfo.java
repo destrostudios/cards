@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -12,5 +14,5 @@ import lombok.Setter;
 public class PlayerInfo {
     private long id;
     private String login;
-    private String deckName;
+    private List<String> libraryTemplates;
 }

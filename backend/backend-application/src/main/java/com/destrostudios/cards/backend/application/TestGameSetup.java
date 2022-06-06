@@ -1,6 +1,7 @@
 package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
@@ -27,7 +28,17 @@ public class TestGameSetup {
         data.setComponent(player, Components.NAME, playerInfo.getLogin());
         data.setComponent(player, Components.HEALTH, 30);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
-        int[] deck = TestLibraries.getLibrary(data);
+        int[] deck;
+        if (playerInfo.getLibraryTemplates().isEmpty()) {
+            deck = TestLibraries.getLibrary(data);
+        } else {
+            deck = new int[playerInfo.getLibraryTemplates().size()];
+            int i = 0;
+            for (String template : playerInfo.getLibraryTemplates()) {
+                deck[i] = EntityTemplate.createFromTemplate(data, template);
+                i++;
+            }
+        }
         for (int i = 0; i < deck.length; i++) {
             int card = deck[i];
             setRandomFoil(card);

@@ -9,7 +9,6 @@ import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.GameStartServerModule;
-import com.destrostudios.gametools.network.server.modules.game.LobbyServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
 import com.esotericsoftware.kryo.Kryo;
@@ -25,26 +24,27 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
     private final Server kryoServer;
     private final JwtServerModule jwtModule;
     private final GameServerModule<GameContext, Event> gameModule;
-    private final LobbyServerModule<StartGameInfo> lobbyModule;
 
-    public CardsGameStartServerModule(Consumer<Kryo> registerParams, Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule, LobbyServerModule<StartGameInfo> lobbyModule) {
+    public CardsGameStartServerModule(Consumer<Kryo> registerParams, Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule) {
         super(registerParams);
         this.kryoServer = kryoServer;
         this.jwtModule = jwtModule;
         this.gameModule = gameModule;
-        this.lobbyModule = lobbyModule;
     }
 
     @Override
     public void startGameRequest(Connection connection, StartGameInfo startGameInfo) {
+        startGame(startGameInfo);
+    }
+
+    public void startGame(StartGameInfo startGameInfo) {
         SimpleEntityData data = new SimpleEntityData();
         TestGameSetup testGameSetup = new TestGameSetup(data, startGameInfo);
         testGameSetup.apply();
-        GameContext gameContext = new GameContext(data);
+        GameContext gameContext = new GameContext(startGameInfo, data);
 
         UUID gameId = UUID.randomUUID();
-        lobbyModule.listGame(gameId, startGameInfo);
-        System.out.println("Game \"" + gameId + "\" listed.");
+        System.out.println("Start game \"" + gameId + "\".");
         gameModule.registerGame(new ServerGameData<>(gameId, gameContext, new SecureRandom()));
         gameModule.applyAction(gameId, new GameStartEvent());
 

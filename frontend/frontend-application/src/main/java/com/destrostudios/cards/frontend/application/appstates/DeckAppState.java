@@ -13,6 +13,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
+import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.rules.AllCards;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -36,13 +37,17 @@ import java.util.function.Predicate;
 
 public class DeckAppState extends MyBaseAppState implements ActionListener {
 
+    private static final String DECK_FILE_PATH = "./deck.txt";
+
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
-    private List<CardModel> allCardModels;
-    private HashMap<CardModel, String> cardModelsToTemplateMap;
+    private LinkedList<CardModel> allCardModels;
+    private HashMap<String, CardModel> templatesToCardModelsMap;
+    private HashMap<CardModel, String> cardModelsToTemplatesMap;
     @Getter
-    private LinkedList<String> libraryTemplates;
+    private List<String> libraryTemplates;
     private Node guiNode;
+    private BitmapText textTitle;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
     private Button[] buttonFilterManaCost;
@@ -54,6 +59,8 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         stateManager.attach(new BackgroundAppState("images/background.png"));
         initCamera();
         initLight();
+        initDeck();
+        initCards();
         initDeckBuilder();
         initGui();
         initListeners();
@@ -73,10 +80,14 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getRootNode().addLight(directionalLight);
     }
 
-    private void initDeckBuilder() {
-        // Cards
+    private void initDeck() {
+        libraryTemplates = FileManager.getFileLines(DECK_FILE_PATH);
+    }
+
+    private void initCards() {
         allCardModels = new LinkedList<>();
-        cardModelsToTemplateMap = new HashMap<>();
+        templatesToCardModelsMap = new HashMap<>();
+        cardModelsToTemplatesMap = new HashMap<>();
         EntityData data = new SimpleEntityData();
         for (int i = 0; i < AllCards.TEMPLATES.length; i++) {
             String template = AllCards.TEMPLATES[i];
@@ -86,12 +97,14 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
             CardModel cardModel = new CardModel();
             CardGuiMapper.updateModel(data, card, cardModel);
             allCardModels.add(cardModel);
-            cardModelsToTemplateMap.put(cardModel, template);
+
+            templatesToCardModelsMap.put(template, cardModel);
+            cardModelsToTemplatesMap.put(cardModel, template);
         }
         allCardModels.sort(Comparator.comparing(CardModel::getManaCostDetails));
+    }
 
-        // Deckbuilder
-        libraryTemplates = new LinkedList<>();
+    private void initDeckBuilder() {
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CardZone deckZone = new SimpleIntervalZone(new Vector3f(8.25f, 0, -4.715f), new Vector3f(1, 1, 0.57f));
         IngameCardVisualizer collectionCardVisualizer = new IngameCardVisualizer(false, false, 4.25f);
@@ -111,7 +124,21 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
                         .inputActionPrefix("deckbuilder")
                         .build())
                 .build();
-        mainApplication.getStateManager().attach(new DeckBuilderAppState<>(mainApplication.getRootNode(), settings));
+
+        HashMap<CardModel, Integer> deck = new HashMap<>();
+        for (String template : libraryTemplates) {
+            CardModel cardModel = templatesToCardModelsMap.get(template);
+            deck.put(cardModel, deck.computeIfAbsent(cardModel, cm -> 0) + 1);
+        }
+
+        mainApplication.getStateManager().attach(new DeckBuilderAppState<>(mainApplication.getRootNode(), settings) {
+
+            @Override
+            protected void initialize(Application app) {
+                super.initialize(app);
+                setDeck(deck);
+            }
+        });
     }
 
     private void initGui() {
@@ -122,9 +149,8 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         guiNode = new Node();
 
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
-        BitmapText textTitle = new BitmapText(guiFont);
+        textTitle = new BitmapText(guiFont);
         textTitle.setSize(20);
-        textTitle.setText("Deckbuilder");
         float margin = 30;
         float x = margin;
         float y = (mainApplication.getContext().getSettings().getHeight() - margin);
@@ -170,11 +196,13 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         Button buttonSave = GuiUtil.addButton(guiNode, "Save", buttonSaveWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
             libraryTemplates.clear();
             for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
-                String template = cardModelsToTemplateMap.get(entry.getKey());
+                String template = cardModelsToTemplatesMap.get(entry.getKey());
                 for (int i = 0; i < entry.getValue(); i++) {
                     libraryTemplates.add(template);
                 }
             }
+            FileManager.putFileContent(DECK_FILE_PATH, String.join("\n", libraryTemplates));
+            updateGui();
         });
         buttonSave.setLocalTranslation(width - 56 - buttonSaveWidth, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
 
@@ -216,6 +244,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
 
     private void updateGui() {
         DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
+        textTitle.setText("Deckbuilder (Your deck: " + libraryTemplates.size() + ")");
         buttonPreviousPage.setCullHint(deckBuilderAppState.getCollectionPage() > 0 ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         buttonNextPage.setCullHint(deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1) ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         for (int i = 0; i < buttonFilterManaCost.length; i++) {

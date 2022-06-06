@@ -11,13 +11,11 @@ import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.LinkedList;
+import java.util.List;
 
-/**
- *
- * @author Carl
- */
 public class FileManager{
 
     public static File getFile(String filePath){
@@ -62,36 +60,35 @@ public class FileManager{
 
     public static String getFileContent(String filePath){
         String text = "";
-        String[] lines = getFileLines(filePath);
-        for(int i=0;i<lines.length;i++){
-            if(i != 0){
+        List<String> lines = getFileLines(filePath);
+        int i = 0;
+        for (String line : lines) {
+            if (i != 0) {
                 text += "\n";
             }
-            text += lines[i];
+            text += line;
+            i++;
         }
         return text;
     }
 
-    public static String[] getFileLines(String filePath){
-        LinkedList<String> linesList = new LinkedList<String>();
-        try{
+    public static List<String> getFileLines(String filePath) {
+        LinkedList<String> lines = new LinkedList<>();
+        try {
             BufferedReader reader;
-            if(filePath.startsWith("http:")){
+            if (filePath.startsWith("http:")) {
                 reader = new BufferedReader(new InputStreamReader(new URL(filePath).openStream()));
-            }
-            else{
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF8"));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
             }
             String line;
-            while((line = reader.readLine()) != null){
-                linesList.add(line);
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
             }
             reader.close();
-        }catch(Exception ex){
-            System.out.println("Error while reading file: " + ex.toString());
+        } catch (Exception ex) {
+            System.out.println("Error while reading file: " + ex.getMessage());
         }
-        String[] lines = new String[linesList.size()];
-        linesList.toArray(lines);
         return lines;
     }
 

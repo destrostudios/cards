@@ -30,8 +30,8 @@ public class WaitingForGameAppState extends MyBaseAppState {
     private void initGui() {
         guiNode = new Node();
 
-        addQueueButton(true, 140);
-        addQueueButton(false, 370);
+        addQueueButton(true, 265);
+        addQueueButton(false, 495);
 
         mainApplication.getGuiNode().attachChild(guiNode);
     }

@@ -1,3 +1,38 @@
 <template>
-    <entity template="./templates/vanilla(name=Injured Legend,manaCost=3,attack=3,health=6)"/>
+    <values>
+        <damage>4</damage>
+    </values>
+    <entity>
+        <name>Injured Legend</name>
+        <creatureCard/>
+        <attack>3</attack>
+        <health>6</health>
+        <spells>
+            <entity>
+                <description>Deal [damage] damage to this creature.</description>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>3</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/source"/>
+                                </targetChains>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+            <entity template="./templates/simple_attack"/>
+        </spells>
+    </entity>
 </template>

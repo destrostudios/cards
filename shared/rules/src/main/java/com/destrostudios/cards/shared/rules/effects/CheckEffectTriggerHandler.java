@@ -21,7 +21,8 @@ public class CheckEffectTriggerHandler extends GameEventHandler<CheckEffectTrigg
         if (ConditionUtil.areConditionsFulfilled(data, event.effectTrigger, event.source, event.targets)) {
             int[] effects = data.getComponent(event.effectTrigger, Components.EffectTrigger.EFFECTS);
             for (int effect : effects) {
-                List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, effect, event.source, event.targets);
+                int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);
+                List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetChains, event.source, event.targets);
                 for (int target : affectedTargets) {
                     events.fire(new TriggerEffectEvent(event.source, target, effect), random);
                 }

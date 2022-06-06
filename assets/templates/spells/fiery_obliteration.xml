@@ -1,14 +1,15 @@
 <template>
+    <values>
+        <damage>4</damage>
+    </values>
     <entity>
         <name>Fiery Obliteration</name>
         <spellCard/>
         <spells>
             <entity>
+                <description>Deal [damage] damage to all opponent creatures on board.</description>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
+                    <entity template="../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -18,20 +19,12 @@
                 <instantEffectTriggers>
                     <entity>
                         <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <sourceTarget/>
-                                <addToGraveyard/>
-                            </entity>
-                            <entity>
-                                <conditionTargets>
-                                    <entity>
-                                        <targetTargets/>
-                                        <opponent/>
-                                        <creatureCard/>
-                                        <onBoard/>
-                                    </entity>
-                                </conditionTargets>
-                                <damage>4</damage>
+                                <targetChains>
+                                    <entity template="../targets/all_opponent_creatures_on_board"/>
+                                </targetChains>
+                                <damage>[damage]</damage>
                             </entity>
                         </effects>
                     </entity>

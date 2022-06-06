@@ -1,5 +1,45 @@
 <template>
-    <entity template="./templates/vanilla(name=Crazed Doctor,manaCost=5,attack=2,health=2)">
-        <flavourText>TODO: Deal 10 damage to yourself, then heal for 20.</flavourText>
+    <values>
+        <damage>10</damage>
+        <heal>20</heal>
+    </values>
+    <entity>
+        <name>Crazed Doctor</name>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>2</health>
+        <spells>
+            <entity>
+                <description>Receive [damage] damage, then heal [heal] health.</description>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>5</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/source_owner"/>
+                                </targetChains>
+                                <damage>[damage]</damage>
+                            </entity>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/source_owner"/>
+                                </targetChains>
+                                <heal>[heal]</heal>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+            <entity template="./templates/simple_attack"/>
+        </spells>
     </entity>
 </template>

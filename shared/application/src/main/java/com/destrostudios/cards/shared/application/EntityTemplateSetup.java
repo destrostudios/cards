@@ -33,6 +33,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.AVAILABLE_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.COST));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.DESCRIPTION));
         xmlTemplateManager.registerComponent(new XMLComponentParser<>(Components.FOIL) {
 
             @Override
@@ -65,9 +66,12 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.SOURCE_TARGET));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CHAINS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CHAIN));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_SOURCE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_TARGETS));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.CONDITION_TARGETS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_ALL));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_OWNER));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Condition.ONE_OF));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NOT));

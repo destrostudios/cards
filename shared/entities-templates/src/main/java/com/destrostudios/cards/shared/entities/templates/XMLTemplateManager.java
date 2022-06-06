@@ -142,7 +142,10 @@ public class XMLTemplateManager{
     }
 
     public EntityTemplate parseTemplate(EntityData entityData, String templateXMLText) {
-        String template = templateXMLText.replaceFirst("\\./", currentDirectories.lastElement());
+        String template = templateXMLText;
+        if (template.startsWith("./") || template.startsWith("../")) {
+            template = currentDirectories.lastElement() + template;
+        }
         return EntityTemplate.parseTemplate(template, text -> {
             if (text.startsWith("#")) {
                 return text.substring(1);

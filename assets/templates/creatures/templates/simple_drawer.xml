@@ -6,11 +6,9 @@
         <health>[health]</health>
         <spells>
             <entity>
+                <description>Draw [draw] card/s.</description>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
+                    <entity template="../../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -21,10 +19,12 @@
                     <entity>
                         <effects>
                             <entity>
-                                <sourceTarget/>
-                                <addToBoard/>
+                                <targetChains>
+                                    <entity template="../../targets/source_owner"/>
+                                </targetChains>
                                 <draw>[draw]</draw>
                             </entity>
+                            <entity template="../../effects/add_source_to_board"/>
                         </effects>
                     </entity>
                 </instantEffectTriggers>

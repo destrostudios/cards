@@ -1,6 +1,6 @@
 <template>
     <entity template="./templates/vanilla(name=Plated Aradon,manaCost=4,attack=3,health=5)">
         <taunt/>
-        <beast/>-
+        <beast/>
     </entity>
 </template>

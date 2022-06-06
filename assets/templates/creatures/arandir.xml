@@ -1,4 +1,7 @@
 <template>
+    <values>
+        <damage>1</damage>
+    </values>
     <entity>
         <name>Arandir</name>
         <creatureCard/>
@@ -7,10 +10,7 @@
         <spells>
             <entity>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
+                    <entity template="../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -20,24 +20,21 @@
                 <instantEffectTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <sourceTarget/>
-                                <addToBoard/>
-                            </entity>
+                            <entity template="../effects/add_source_to_board"/>
                         </effects>
                     </entity>
                 </instantEffectTriggers>
             </entity>
             <entity template="./templates/simple_attack"/>
             <entity>
+                <description>Deal [damage] damage to target opponent creature on board.</description>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <conditions>
+                    <entity template="../conditions/source_on_board"/>
                     <entity>
-                        <sourceTarget/>
-                        <onBoard/>
-                    </entity>
-                    <entity>
-                        <targetTargets/>
+                        <targetChains>
+                            <entity template="../targets/targets"/>
+                        </targetChains>
                         <opponent/>
                         <creatureCard/>
                         <onBoard/>
@@ -52,8 +49,10 @@
                     <entity>
                         <effects>
                             <entity>
-                                <targetTargets/>
-                                <damage>1</damage>
+                                <targetChains>
+                                    <entity template="../targets/targets"/>
+                                </targetChains>
+                                <damage>[damage]</damage>
                             </entity>
                         </effects>
                     </entity>

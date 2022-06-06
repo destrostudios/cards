@@ -3,23 +3,26 @@
         <maximumCastsPerTurn>1</maximumCastsPerTurn>
         <tauntable/>
         <conditions>
+            <entity template="../../conditions/source_on_board"/>
             <entity>
-                <sourceTarget/>
-                <onBoard/>
-            </entity>
-            <entity>
-                <targetTargets/>
+                <targetChains>
+                    <entity template="../../targets/targets"/>
+                </targetChains>
                 <opponent/>
             </entity>
             <entity>
                 <oneOf>
                     <entity>
-                        <targetTargets/>
+                        <targetChains>
+                            <entity template="../../targets/targets"/>
+                        </targetChains>
                         <creatureCard/>
                         <onBoard/>
                     </entity>
                     <entity>
-                        <targetTargets/>
+                        <targetChains>
+                            <entity template="../../targets/targets"/>
+                        </targetChains>
                         <player/>
                         <noCreatures/>
                     </entity>
@@ -30,7 +33,9 @@
             <entity>
                 <effects>
                     <entity>
-                        <targetTargets/>
+                        <targetChains>
+                            <entity template="../../targets/targets"/>
+                        </targetChains>
                         <battle/>
                     </entity>
                 </effects>

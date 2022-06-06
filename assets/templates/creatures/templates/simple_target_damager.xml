@@ -6,25 +6,11 @@
         <health>[health]</health>
         <spells>
             <entity>
+                <description>Deal [damage] damage to target character.</description>
                 <targetOptional/>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
-                    <entity>
-                        <oneOf>
-                            <entity>
-                                <targetTargets/>
-                                <creatureCard/>
-                                <onBoard/>
-                            </entity>
-                            <entity>
-                                <targetTargets/>
-                                <player/>
-                            </entity>
-                        </oneOf>
-                    </entity>
+                    <entity template="../../conditions/source_in_hand"/>
+                    <entity template="../../conditions/target_is_character"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -35,13 +21,12 @@
                     <entity>
                         <effects>
                             <entity>
-                                <sourceTarget/>
-                                <addToBoard/>
-                            </entity>
-                            <entity>
-                                <targetTargets/>
+                                <targetChains>
+                                    <entity template="../../targets/targets"/>
+                                </targetChains>
                                 <damage>[damage]</damage>
                             </entity>
+                            <entity template="../../effects/add_source_to_board"/>
                         </effects>
                     </entity>
                 </instantEffectTriggers>

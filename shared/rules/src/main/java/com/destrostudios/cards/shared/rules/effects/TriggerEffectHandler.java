@@ -46,16 +46,14 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
 
         Integer draw = data.getComponent(event.effect, Components.Effect.DRAW);
         if (draw != null) {
-            int player = data.getComponent(event.source, Components.OWNED_BY);
             for (int i = 0; i < draw; i++) {
-                events.fire(new DrawCardEvent(player), random);
+                events.fire(new DrawCardEvent(event.target), random);
             }
         }
 
         Integer gainedMana = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
         if (gainedMana != null) {
-            int player = data.getComponent(event.source, Components.OWNED_BY);
-            events.fire(new AddManaEvent(player, gainedMana), random);
+            events.fire(new AddManaEvent(event.target, gainedMana), random);
         }
     }
 }

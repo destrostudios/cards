@@ -61,7 +61,8 @@ public class ConditionUtil {
         if (oneOfConditions != null) {
             return isOneConditionFulfilled(data, oneOfConditions, source, targets);
         } else {
-            return isFulfilled(data, condition, source, TargetUtil.getAffectedTargets(data, condition, source, targets));
+            int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
+            return isFulfilled(data, condition, source, TargetUtil.getAffectedTargets(data, targetChains, source, targets));
         }
     }
 
@@ -136,8 +137,14 @@ public class ConditionUtil {
                 if (isTargetConditionIncluded(data, oneOfConditions)) {
                     return true;
                 }
-            } else if (data.hasComponent(condition, Components.Target.TARGET_TARGETS)) {
-                return true;
+            } else {
+                int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
+                for (int targetChain : targetChains) {
+                    int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
+                    if (data.hasComponent(targetChainSteps[0], Components.Target.TARGET_TARGETS)) {
+                        return true;
+                    }
+                }
             }
         }
         return false;

@@ -1,27 +1,16 @@
 <template>
+    <values>
+        <damage>3</damage>
+    </values>
     <entity>
         <name>Thunder</name>
         <spellCard/>
         <spells>
             <entity>
+                <description>Deal [damage] damage.</description>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
-                    <entity>
-                        <oneOf>
-                            <entity>
-                                <targetTargets/>
-                                <creatureCard/>
-                                <onBoard/>
-                            </entity>
-                            <entity>
-                                <targetTargets/>
-                                <player/>
-                            </entity>
-                        </oneOf>
-                    </entity>
+                    <entity template="../conditions/source_in_hand"/>
+                    <entity template="../conditions/target_is_character"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -31,13 +20,12 @@
                 <instantEffectTriggers>
                     <entity>
                         <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <sourceTarget/>
-                                <addToGraveyard/>
-                            </entity>
-                            <entity>
-                                <targetTargets/>
-                                <damage>3</damage>
+                                <targetChains>
+                                    <entity template="../targets/targets"/>
+                                </targetChains>
+                                <damage>[damage]</damage>
                             </entity>
                         </effects>
                     </entity>

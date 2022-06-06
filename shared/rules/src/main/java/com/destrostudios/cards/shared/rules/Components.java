@@ -29,6 +29,7 @@ public class Components {
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = new ComponentDefinition<>("availableMana");
     public static final ComponentDefinition<Integer> MANA = new ComponentDefinition<>("mana");
     public static final ComponentDefinition<Integer> COST = new ComponentDefinition<>("cost");
+    public static final ComponentDefinition<String> DESCRIPTION = new ComponentDefinition<>("description");
     public static final ComponentDefinition<Foil> FOIL = new ComponentDefinition<>("foil");
 
     public static class Game {
@@ -69,9 +70,12 @@ public class Components {
     }
 
     public static class Target {
-        public static final ComponentDefinition<Void> SOURCE_TARGET = new ComponentDefinition<>("sourceTarget");
+        public static final ComponentDefinition<int[]> TARGET_CHAINS = new ComponentDefinition<>("targetChains");
+        public static final ComponentDefinition<int[]> TARGET_CHAIN = new ComponentDefinition<>("targetChain");
+        public static final ComponentDefinition<Void> TARGET_SOURCE = new ComponentDefinition<>("targetSource");
         public static final ComponentDefinition<Void> TARGET_TARGETS = new ComponentDefinition<>("targetTargets");
-        public static final ComponentDefinition<int[]> CONDITION_TARGETS = new ComponentDefinition<>("conditionTargets");
+        public static final ComponentDefinition<int[]> TARGET_ALL = new ComponentDefinition<>("targetAll");
+        public static final ComponentDefinition<Void> TARGET_OWNER = new ComponentDefinition<>("targetOwner");
     }
 
     public static class Condition {

@@ -1,0 +1,27 @@
+<template>
+    <entity>
+        <targetChain>
+            <entity>
+                <targetAll>
+                    <entity>
+                        <oneOf>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/targets"/>
+                                </targetChains>
+                                <creatureCard/>
+                                <onBoard/>
+                            </entity>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/targets"/>
+                                </targetChains>
+                                <player/>
+                            </entity>
+                        </oneOf>
+                    </entity>
+                </targetAll>
+            </entity>
+        </targetChain>
+    </entity>
+</template>

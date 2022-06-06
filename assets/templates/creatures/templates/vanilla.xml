@@ -7,10 +7,7 @@
         <spells>
             <entity>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
+                    <entity template="../../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -20,10 +17,7 @@
                 <instantEffectTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <sourceTarget/>
-                                <addToBoard/>
-                            </entity>
+                            <entity template="../../effects/add_source_to_board"/>
                         </effects>
                     </entity>
                 </instantEffectTriggers>

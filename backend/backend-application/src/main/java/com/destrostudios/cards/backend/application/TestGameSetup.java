@@ -1,6 +1,5 @@
 package com.destrostudios.cards.backend.application;
 
-import com.destrostudios.cards.backend.application.libraries.TestLibraries;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
@@ -28,7 +27,7 @@ public class TestGameSetup {
         data.setComponent(player, Components.NAME, playerInfo.getLogin());
         data.setComponent(player, Components.HEALTH, 30);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
-        int[] deck = (playerInfo.getDeckName().equals("custom") ? TestLibraries.custom(data) : TestLibraries.random(data, 20));
+        int[] deck = TestLibraries.getLibrary(data);
         for (int i = 0; i < deck.length; i++) {
             int card = deck[i];
             setRandomFoil(card);

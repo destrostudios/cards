@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targetChains>
+            <entity template="../targets/source"/>
+        </targetChains>
+        <addToBoard/>
+    </entity>
+</template>

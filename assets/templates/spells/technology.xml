@@ -1,14 +1,15 @@
 <template>
+    <values>
+        <draw>2</draw>
+    </values>
     <entity>
         <name>Technology</name>
         <spellCard/>
         <spells>
             <entity>
+                <description>Draw [draw] cards.</description>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
+                    <entity template="../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -18,10 +19,12 @@
                 <instantEffectTriggers>
                     <entity>
                         <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <sourceTarget/>
-                                <addToGraveyard/>
-                                <draw>2</draw>
+                                <targetChains>
+                                    <entity template="../targets/source_owner"/>
+                                </targetChains>
+                                <draw>[draw]</draw>
                             </entity>
                         </effects>
                     </entity>

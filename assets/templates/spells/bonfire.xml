@@ -1,14 +1,15 @@
 <template>
+    <values>
+        <heal>6</heal>
+    </values>
     <entity>
         <name>Bonfire</name>
         <spellCard/>
         <spells>
             <entity>
+                <description>Heal [heal] health of your player.</description>
                 <conditions>
-                    <entity>
-                        <sourceTarget/>
-                        <inHand/>
-                    </entity>
+                    <entity template="../conditions/source_in_hand"/>
                 </conditions>
                 <cost>
                     <entity>
@@ -18,15 +19,17 @@
                 <instantEffectTriggers>
                     <entity>
                         <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <sourceTarget/>
-                                <addToGraveyard/>
+                                <targetChains>
+                                    <entity template="../targets/source_owner"/>
+                                </targetChains>
+                                <heal>[heal]</heal>
                             </entity>
                         </effects>
                     </entity>
                 </instantEffectTriggers>
             </entity>
         </spells>
-        <flavourText>TODO: Heal 6 health of your player.</flavourText>
     </entity>
 </template>

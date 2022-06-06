@@ -34,27 +34,42 @@ public class SpellUtil {
         return true;
     }
 
-    public static boolean isDefaultCastFromHandSpell(EntityData entityData, int spell) {
-        int[] conditions = entityData.getComponent(spell, Components.CONDITIONS);
+    public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
+        int[] conditions = data.getComponent(spell, Components.CONDITIONS);
         if (conditions != null) {
             for (int condition : conditions) {
-                if (entityData.hasComponent(condition, Components.Target.SOURCE_TARGET) && !entityData.hasComponent(condition, Components.Condition.IN_HAND)) {
-                    return false;
+                int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
+                if (targetChains != null) {
+                    for (int targetChain : targetChains) {
+                        int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
+                        for (int targetChainStep : targetChainSteps) {
+                            if (data.hasComponent(targetChainStep, Components.Target.TARGET_SOURCE) && !data.hasComponent(condition, Components.Condition.IN_HAND)) {
+                                return false;
+                            }
+                        }
+                    }
                 }
             }
         }
         return true;
     }
 
-    public static boolean isDefaultAttackSpell(EntityData entityData, int spell) {
-        int[] instantEffectTriggers = entityData.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
+    public static boolean isDefaultAttackSpell(EntityData data, int spell) {
+        int[] instantEffectTriggers = data.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
         if (instantEffectTriggers != null) {
             for (int instantEffectTrigger : instantEffectTriggers) {
-                int[] effects = entityData.getComponent(instantEffectTrigger, Components.EffectTrigger.EFFECTS);
+                int[] effects = data.getComponent(instantEffectTrigger, Components.EffectTrigger.EFFECTS);
                 for (int effect : effects) {
-                    if (entityData.hasComponent(effect, Components.Target.TARGET_TARGETS) && entityData.hasComponent(effect, Components.Effect.BATTLE)) {
-                        return true;
+                    int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);
+                    for (int targetChain : targetChains) {
+                        int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
+                        for (int targetChainStep : targetChainSteps) {
+                            if (data.hasComponent(targetChainStep, Components.Target.TARGET_TARGETS) && data.hasComponent(effect, Components.Effect.BATTLE)) {
+                                return true;
+                            }
+                        }
                     }
+
                 }
             }
         }

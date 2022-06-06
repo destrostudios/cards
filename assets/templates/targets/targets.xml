@@ -1,0 +1,9 @@
+<template>
+    <entity>
+        <targetChain>
+            <entity>
+                <targetTargets/>
+            </entity>
+        </targetChain>
+    </entity>
+</template>

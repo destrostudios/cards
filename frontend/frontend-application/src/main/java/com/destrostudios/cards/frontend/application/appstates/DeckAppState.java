@@ -95,7 +95,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
             int card = data.createEntity();
             EntityTemplate.loadTemplate(data, card, template);
             CardModel cardModel = new CardModel();
-            CardGuiMapper.updateModel(data, card, cardModel);
+            CardGuiMapper.updateModel(data, card, cardModel, true);
             allCardModels.add(cardModel);
 
             templatesToCardModelsMap.put(template, cardModel);

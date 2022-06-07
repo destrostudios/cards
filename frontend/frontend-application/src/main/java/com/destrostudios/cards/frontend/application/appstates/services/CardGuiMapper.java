@@ -27,8 +27,7 @@ public class CardGuiMapper {
         tribeComponents.put(Components.Tribe.HUMAN, "Human");
     }
 
-    public static void updateModel(EntityData entityData, int card, CardModel cardModel) {
-        boolean isFront = !entityData.hasComponent(card, Components.LIBRARY);
+    public static void updateModel(EntityData entityData, int card, CardModel cardModel, boolean isFront) {
         cardModel.setFront(isFront);
 
         // Will be set when applying the possibleActions

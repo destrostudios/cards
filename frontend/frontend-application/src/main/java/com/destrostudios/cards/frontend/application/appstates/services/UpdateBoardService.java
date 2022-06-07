@@ -37,31 +37,32 @@ public class UpdateBoardService {
         for (int cardEntity : cardEntities) {
             CardZone cardZone = null;
             Integer cardZoneIndex;
+            boolean isFront = true;
 
-            int playerEntity = data.getComponent(cardEntity, Components.OWNED_BY);
-            PlayerZones playerZones = playerZonesMap.get(playerEntity);
+            int owner = data.getComponent(cardEntity, Components.OWNED_BY);
+            PlayerZones playerZones = playerZonesMap.get(owner);
 
             // TODO: Yeah...
             cardZoneIndex = data.getComponent(cardEntity, Components.LIBRARY);
             if (cardZoneIndex != null) {
                 cardZone = playerZones.getDeckZone();
-            }
-            else {
+                isFront = false;
+            } else {
                 cardZoneIndex = data.getComponent(cardEntity, Components.HAND);
                 if (cardZoneIndex != null) {
                     cardZone = playerZones.getHandZone();
-                }
-                else {
+                    if (owner != gameService.getPlayerEntity()) {
+                        isFront = false;
+                    }
+                } else {
                     cardZoneIndex = data.getComponent(cardEntity, Components.SPELL_ZONE);
                     if (cardZoneIndex != null) {
                         cardZone = playerZones.getSpellZone();
-                    }
-                    else {
+                    } else {
                         cardZoneIndex = data.getComponent(cardEntity, Components.CREATURE_ZONE);
                         if (cardZoneIndex != null) {
                             cardZone = playerZones.getCreatureZone();
-                        }
-                        else {
+                        } else {
                             cardZoneIndex = data.getComponent(cardEntity, Components.GRAVEYARD);
                             if (cardZoneIndex != null) {
                                 cardZone = playerZones.getGraveyardZone();
@@ -73,13 +74,9 @@ public class UpdateBoardService {
 
             Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
             card.clearInteractivities();
-
-            if (cardZoneIndex != null) {
-                CardGuiMapper.updateModel(data, cardEntity, card.getModel());
-                board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
-            }
+            CardGuiMapper.updateModel(data, cardEntity, card.getModel(), isFront);
+            board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
         }
-
         if (possibleEvents != null) {
             updateInteractivities(possibleEvents);
         }

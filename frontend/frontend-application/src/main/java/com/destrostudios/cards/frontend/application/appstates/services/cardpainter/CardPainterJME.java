@@ -9,6 +9,10 @@ import java.util.function.Consumer;
 
 public class CardPainterJME {
 
+    public static void drawCardBack(PaintableImage paintableImage){
+        drawCard(paintableImage, graphics -> CardPainterAWT.drawCardBack(graphics, paintableImage.getWidth(), paintableImage.getHeight()));
+    }
+
     public static void drawCardFront_Full_Content(PaintableImage paintableImage, CardModel cardModel){
         drawCard(paintableImage, graphics -> CardPainterAWT.drawCardFront_Full_Content(graphics, cardModel, paintableImage.getWidth(), paintableImage.getHeight()));
     }

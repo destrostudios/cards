@@ -281,14 +281,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private boolean isInspectable(TransformedBoardObject<?> transformedBoardObject) {
         if (transformedBoardObject instanceof Card) {
-            Card<?> card = (Card<?>) transformedBoardObject;
-            CardZone cardZone = card.getZonePosition().getZone();
-            for (PlayerZones playerZones : playerZonesMap.values()) {
-                if (cardZone == playerZones.getDeckZone()) {
-                    return false;
-                }
-            }
-            return true;
+            Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
+            return card.getModel().isFront();
         }
         return false;
     }

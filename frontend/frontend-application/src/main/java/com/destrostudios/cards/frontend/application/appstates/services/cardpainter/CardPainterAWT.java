@@ -26,85 +26,85 @@ public class CardPainterAWT {
 
     private static int tmpX;
     private static int tmpY;
+
+    public static void drawCardBack(Graphics2D graphics, int width, int height) {
+        graphics = (Graphics2D) graphics.create();
+        graphics.drawImage(CardImages.getCachedImage("images/cardbacks/yugioh.png"), 0, 0, width, height, null);
+        graphics.dispose();
+    }
+
     public static void drawCardFront_Full_Content(Graphics2D graphics, CardModel cardModel, int width, int height) {
         graphics = (Graphics2D) graphics.create();
-        if (cardModel.isFront()) {
-            List<String> drawnKeywords = new LinkedList<>();
-            drawnKeywords.addAll(cardModel.getKeywords());
-            String castDescription = cardModel.getCastDescription();
-            if (castDescription != null) {
-                drawnKeywords.add("Cast");
-            }
-            graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, width, height, null);
-            graphics.setFont(fontTitle);
-            graphics.setColor(Color.BLACK);
-            String title = cardModel.getTitle();
-            int textStartX = 43;
-            if (title != null) {
-                graphics.drawString(title, textStartX, 60);
-            }
-            tmpY = 350;
-            if(drawnKeywords.size() > 0){
-                String keywordsText = "";
-                for(int i=0;i<drawnKeywords.size();i++){
-                    if(i != 0){
-                        keywordsText += " ";
-                    }
-                    String keyword = drawnKeywords.get(i);
-                    keywordsText += keyword + (keyword.equals("Cast")?":":".");
+        List<String> drawnKeywords = new LinkedList<>();
+        drawnKeywords.addAll(cardModel.getKeywords());
+        String castDescription = cardModel.getCastDescription();
+        if (castDescription != null) {
+            drawnKeywords.add("Cast");
+        }
+        graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, width, height, null);
+        graphics.setFont(fontTitle);
+        graphics.setColor(Color.BLACK);
+        String title = cardModel.getTitle();
+        int textStartX = 43;
+        if (title != null) {
+            graphics.drawString(title, textStartX, 60);
+        }
+        tmpY = 350;
+        if(drawnKeywords.size() > 0){
+            String keywordsText = "";
+            for(int i=0;i<drawnKeywords.size();i++){
+                if(i != 0){
+                    keywordsText += " ";
                 }
+                String keyword = drawnKeywords.get(i);
+                keywordsText += keyword + (keyword.equals("Cast")?":":".");
+            }
+            tmpX = textStartX;
+            graphics.setFont(fontKeywords);
+            drawStringMultiLine(graphics, keywordsText, lineWidth, tmpX, textStartX, tmpY, -2);
+            if(castDescription != null){
+                tmpX += 3;
+                drawSpellDescription(graphics, null, castDescription, lineWidth, tmpX, textStartX, tmpY);
+            }
+            tmpY += lineHeight;
+        }
+        graphics.setFont(fontDescription);
+        String description = cardModel.getDescription();
+        if(description != null){
+            tmpX = textStartX;
+            drawStringMultiLine(graphics, description, lineWidth, tmpX, textStartX, tmpY, -2);
+            tmpY += lineHeight;
+        }
+        List<Spell> spells = cardModel.getSpells();
+        if (spells != null) {
+            for (Spell spell : spells) {
                 tmpX = textStartX;
-                graphics.setFont(fontKeywords);
-                drawStringMultiLine(graphics, keywordsText, lineWidth, tmpX, textStartX, tmpY, -2);
-                if(castDescription != null){
-                    tmpX += 3;
-                    drawSpellDescription(graphics, null, castDescription, lineWidth, tmpX, textStartX, tmpY);
-                }
+                drawSpellDescription(graphics, spell.getCost(), spell.getDescription(), lineWidth, tmpX, textStartX, tmpY);
                 tmpY += lineHeight;
-            }
-            graphics.setFont(fontDescription);
-            String description = cardModel.getDescription();
-            if(description != null){
-                tmpX = textStartX;
-                drawStringMultiLine(graphics, description, lineWidth, tmpX, textStartX, tmpY, -2);
-                tmpY += lineHeight;
-            }
-            List<Spell> spells = cardModel.getSpells();
-            if (spells != null) {
-                for (Spell spell : spells) {
-                    tmpX = textStartX;
-                    drawSpellDescription(graphics, spell.getCost(), spell.getDescription(), lineWidth, tmpX, textStartX, tmpY);
-                    tmpY += lineHeight;
-                }
-            }
-            String flavourText = cardModel.getFlavourText();
-            if(flavourText != null){
-                tmpX = textStartX;
-                drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, textStartX, tmpY, -2);
-                tmpY += lineHeight;
-            }
-            if (cardModel.getTribes().size() > 0) {
-                graphics.setFont(fontTribes);
-                String tribesText = String.join(", ", cardModel.getTribes());
-                Rectangle2D tribesBounds = graphics.getFontMetrics().getStringBounds(tribesText, graphics);
-                tmpX = (int) ((width / 2) - (tribesBounds.getWidth() / 2));
-                graphics.drawString(tribesText, tmpX, 501);
             }
         }
-        else{
-            graphics.drawImage(CardImages.getCachedImage("images/cardbacks/yugioh.png"), 0, 0, width, height, null);
+        String flavourText = cardModel.getFlavourText();
+        if(flavourText != null){
+            tmpX = textStartX;
+            drawStringMultiLine(graphics, flavourText, lineWidth, tmpX, textStartX, tmpY, -2);
+            tmpY += lineHeight;
+        }
+        if (cardModel.getTribes().size() > 0) {
+            graphics.setFont(fontTribes);
+            String tribesText = String.join(", ", cardModel.getTribes());
+            Rectangle2D tribesBounds = graphics.getFontMetrics().getStringBounds(tribesText, graphics);
+            tmpX = (int) ((width / 2) - (tribesBounds.getWidth() / 2));
+            graphics.drawString(tribesText, tmpX, 501);
         }
         graphics.dispose();
     }
 
     public static void drawCardFront_Full_Artwork(Graphics2D graphics, CardModel cardModel) {
         graphics = (Graphics2D) graphics.create();
-        if (cardModel.isFront()) {
-            graphics.setColor(Color.WHITE);
-            graphics.fillRect(35, 68, 330, 241);
-            String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-            graphics.drawImage(CardImages.getCachedImage(imageFilePath, 330, 241), 35, 68, null);
-        }
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(35, 68, 330, 241);
+        String imageFilePath = CardImages.getCardImageFilePath(cardModel);
+        graphics.drawImage(CardImages.getCachedImage(imageFilePath, 330, 241), 35, 68, null);
         graphics.dispose();
     }
 

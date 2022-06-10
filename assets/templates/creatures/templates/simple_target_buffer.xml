@@ -1,0 +1,37 @@
+<template>
+    <entity>
+        <name>[name]</name>
+        <character/>
+        <creatureCard/>
+        <attack>[attack]</attack>
+        <health>[health]</health>
+        <spells>
+            <entity>
+                <targetOptional/>
+                <conditions>
+                    <entity template="../../conditions/source_in_hand"/>
+                    <entity template="../../conditions/target_is_creature_on_board"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>[manaCost]</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../../targets/targets"/>
+                                </targetChains>
+                                <addBuffs>[buff]</addBuffs>
+                            </entity>
+                            <entity template="../../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+            <entity template="./simple_attack"/>
+        </spells>
+    </entity>
+</template>

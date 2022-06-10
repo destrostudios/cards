@@ -13,6 +13,30 @@ public class HealHandler extends GameEventHandler<HealEvent> {
     @Override
     public void handle(HealEvent event, NetworkRandom random) {
         LOG.info("healing {} health to {}", event.heal, event.target);
-        events.fire(new SetDamagedEvent(event.target, data.getOptionalComponent(event.target, Components.DAMAGED).orElse(0) - event.heal), random);
+        int remainingHeal = event.heal;
+        Integer oldBonusDamaged = data.getComponent(event.target, Components.Stats.BONUS_DAMAGED);
+        if (oldBonusDamaged != null) {
+            int newBonusDamaged = oldBonusDamaged - remainingHeal;
+            LOG.info("changing bonus damaged of {} from {} to {}", event.target, oldBonusDamaged, newBonusDamaged);
+            if (newBonusDamaged > 0) {
+                data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
+                remainingHeal = 0;
+            } else {
+                data.removeComponent(event.target, Components.Stats.BONUS_DAMAGED);
+                remainingHeal -= oldBonusDamaged;
+            }
+        }
+        if (remainingHeal > 0) {
+            Integer oldDamaged = data.getComponent(event.target, Components.Stats.DAMAGED);
+            if (oldDamaged != null) {
+                int newDamaged = oldDamaged - remainingHeal;
+                LOG.info("changing damaged of {} from {} to {}", event.target, oldDamaged, newDamaged);
+                if (newDamaged > 0) {
+                    data.setComponent(event.target, Components.Stats.DAMAGED, newDamaged);
+                } else {
+                    data.removeComponent(event.target, Components.Stats.DAMAGED);
+                }
+            }
+        }
     }
 }

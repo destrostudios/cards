@@ -1,12 +1,13 @@
 <template>
     <entity>
         <name>Terror from Above</name>
+        <character/>
         <creatureCard/>
         <attack>8</attack>
         <health>8</health>
+        <description>Destroy all creatures.</description>
         <spells>
             <entity>
-                <description>Destroy all creatures.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

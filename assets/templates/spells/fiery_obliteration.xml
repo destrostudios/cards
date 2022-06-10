@@ -5,9 +5,9 @@
     <entity>
         <name>Fiery Obliteration</name>
         <spellCard/>
+        <description>Deal [damage] damage to all opponent creatures.</description>
         <spells>
             <entity>
-                <description>Deal [damage] damage to all opponent creatures.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

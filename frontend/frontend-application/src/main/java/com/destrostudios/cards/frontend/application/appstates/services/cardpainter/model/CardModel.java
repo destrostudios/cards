@@ -16,11 +16,12 @@ public class CardModel extends BoardObjectModel {
     private Integer manaCostFullArt;
     private List<String> tribes;
     private List<String> keywords;
-    private String castDescription;
     private String description;
     private List<Spell> spells;
     private Integer attackDamage;
     private Integer lifepoints;
+    private boolean isAttackBuffed;
+    private boolean isHealthBuffed;
     private boolean isDamaged;
     private boolean divineShield;
     private boolean taunt;
@@ -71,6 +72,14 @@ public class CardModel extends BoardObjectModel {
         return lifepoints;
     }
 
+    public boolean isAttackBuffed() {
+        return isAttackBuffed;
+    }
+
+    public boolean isHealthBuffed() {
+        return isHealthBuffed;
+    }
+
     public boolean isDamaged() {
         return isDamaged;
     }
@@ -85,10 +94,6 @@ public class CardModel extends BoardObjectModel {
 
     public List<Spell> getSpells() {
         return spells;
-    }
-
-    public String getCastDescription() {
-        return castDescription;
     }
 
     public String getFlavourText() {
@@ -111,9 +116,10 @@ public class CardModel extends BoardObjectModel {
         setTribes(cardModel.tribes);
         setAttackDamage(cardModel.attackDamage);
         setLifepoints(cardModel.lifepoints);
+        setAttackBuffed(cardModel.isAttackBuffed);
+        setHealthBuffed(cardModel.isHealthBuffed);
         setDamaged(cardModel.isDamaged);
         setSpells(cardModel.spells);
-        setCastDescription(cardModel.castDescription);
         setFlavourText(cardModel.flavourText);
         setFoil(cardModel.foil);
     }
@@ -162,6 +168,14 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.lifepoints, lifepoints, () -> this.lifepoints = lifepoints);
     }
 
+    public void setAttackBuffed(boolean isAttackBuffed) {
+        updateIfNotEquals(this.isAttackBuffed, isAttackBuffed, () -> this.isAttackBuffed = isAttackBuffed);
+    }
+
+    public void setHealthBuffed(boolean isHealthBuffed) {
+        updateIfNotEquals(this.isHealthBuffed, isHealthBuffed, () -> this.isHealthBuffed = isHealthBuffed);
+    }
+
     public void setDamaged(boolean isDamaged) {
         updateIfNotEquals(this.isDamaged, isDamaged, () -> this.isDamaged = isDamaged);
     }
@@ -176,10 +190,6 @@ public class CardModel extends BoardObjectModel {
 
     public void setSpells(List<Spell> spells) {
         updateIfNotEquals(this.spells, spells, () -> this.spells = spells);
-    }
-
-    public void setCastDescription(String castDescription) {
-        updateIfNotEquals(this.castDescription, castDescription, () -> this.castDescription = castDescription);
     }
 
     public void setFlavourText(String flavourText) {

@@ -5,7 +5,9 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventHandlers;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.abilities.*;
+import com.destrostudios.cards.shared.rules.auras.*;
 import com.destrostudios.cards.shared.rules.battle.*;
+import com.destrostudios.cards.shared.rules.buffs.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.effects.*;
@@ -50,9 +52,12 @@ public class GameContext {
         addEventHandler(events.instant(), SetAvailableManaEvent.class, new SetAvailableManaHandler());
         addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
-        addEventHandler(events.instant(), DamageEvent.class, new DamageHandler());
+        addEventHandlers(events.instant(), DamageEvent.class,
+                new DamageHandler(),
+                new DestroyCardsWithZeroHealthHandler()
+        );
         addEventHandler(events.instant(), HealEvent.class, new HealHandler());
-        addEventHandler(events.resolved(), DestructionEvent.class, new DestructionHandler());
+        addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
@@ -70,7 +75,9 @@ public class GameContext {
         );
         addEventHandlers(events.instant(), RemoveCardFromBoardZoneEvent.class,
                 new RemoveCardFromBoardZoneHandler(),
-                new DeactivateDivineShieldOnRemoveFromBoardHandler()
+                new RemoveDamageOnRemoveFromBoardHandler(),
+                new DeactivateDivineShieldOnRemoveFromBoardHandler(),
+                new RemoveBuffsOnRemoveFromBoardHandler()
         );
         addEventHandler(events.instant(), RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
@@ -78,10 +85,6 @@ public class GameContext {
         addEventHandler(events.instant(), RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addEventHandler(events.instant(), RemoveCardFromSpellZoneEvent.class, new RemoveCardFromSpellZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
-        addEventHandlers(events.instant(), SetDamagedEvent.class,
-                new SetDamagedHandler(),
-                new DestroyOnNoHealthHandler()
-        );
         addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
         addEventHandlers(events.instant(), StartTurnEvent.class,
                 new StartTurnHandler(),
@@ -92,6 +95,11 @@ public class GameContext {
         );
         addEventHandler(events.instant(), CheckEffectTriggerEvent.class, new CheckEffectTriggerHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
+        addEventHandler(events.instant(), AddAuraEvent.class, new AddAuraHandler());
+        addEventHandler(events.instant(), RemoveAuraEvent.class, new RemoveAuraHandler());
+        addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
+        addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
+        addEventHandler(events.instant(), ConditionsAffectedEvent.class, new CheckBonusHealthHandler());
         addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));
     }
 

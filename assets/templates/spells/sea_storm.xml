@@ -5,9 +5,9 @@
     <entity>
         <name>Sea Storm</name>
         <spellCard/>
+        <description>Deal [damage] damage to all characters.</description>
         <spells>
             <entity>
-                <description>Deal [damage] damage to all characters.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

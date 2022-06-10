@@ -37,10 +37,6 @@ public class CardPainterAWT {
         graphics = (Graphics2D) graphics.create();
         List<String> drawnKeywords = new LinkedList<>();
         drawnKeywords.addAll(cardModel.getKeywords());
-        String castDescription = cardModel.getCastDescription();
-        if (castDescription != null) {
-            drawnKeywords.add("Cast");
-        }
         graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, width, height, null);
         graphics.setFont(fontTitle);
         graphics.setColor(Color.BLACK);
@@ -62,10 +58,6 @@ public class CardPainterAWT {
             tmpX = textStartX;
             graphics.setFont(fontKeywords);
             drawStringMultiLine(graphics, keywordsText, lineWidth, tmpX, textStartX, tmpY, -2);
-            if(castDescription != null){
-                tmpX += 3;
-                drawSpellDescription(graphics, null, castDescription, lineWidth, tmpX, textStartX, tmpY);
-            }
             tmpY += lineHeight;
         }
         graphics.setFont(fontDescription);
@@ -155,7 +147,8 @@ public class CardPainterAWT {
             Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
             int centerX = (fullArt ? 65 : 60);
             tmpX = (int) (centerX - (attackDamageBounds.getWidth() / 2));
-            drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, Color.WHITE, outlineStrength);
+            Color color = (cardModel.isAttackBuffed() ? Color.GREEN : Color.WHITE);
+            drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
         Integer lifepoints = cardModel.getLifepoints();
         if (lifepoints != null) {
@@ -164,7 +157,8 @@ public class CardPainterAWT {
             Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);
             int centerX = (fullArt ? 335 : 340);
             tmpX = (int) (centerX - (lifepointsBounds.getWidth() / 2));
-            drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, (cardModel.isDamaged() ? Color.RED : Color.WHITE), outlineStrength);
+            Color color = (cardModel.isDamaged() ? Color.RED : (cardModel.isHealthBuffed() ? Color.GREEN : Color.WHITE));
+            drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
     }
 

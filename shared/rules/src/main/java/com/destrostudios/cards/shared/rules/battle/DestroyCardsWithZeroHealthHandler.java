@@ -1,14 +1,14 @@
 package com.destrostudios.cards.shared.rules.battle;
 
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.util.HealthUtil;
+import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
-public class DestroyOnNoHealthHandler extends GameEventHandler<SetDamagedEvent> {
+public class DestroyCardsWithZeroHealthHandler extends GameEventHandler<DamageEvent> {
 
     @Override
-    public void handle(SetDamagedEvent event, NetworkRandom random) {
-        if (HealthUtil.getEffectiveHealth(data, event.target) <= 0) {
+    public void handle(DamageEvent event, NetworkRandom random) {
+        if (StatsUtil.getEffectiveHealth(data, event.target) <= 0) {
             events.fire(new DestructionEvent(event.target), random);
         }
     }

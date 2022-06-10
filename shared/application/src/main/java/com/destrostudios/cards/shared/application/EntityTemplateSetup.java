@@ -13,20 +13,20 @@ public class EntityTemplateSetup {
     public static void setup() {
         XMLTemplateManager xmlTemplateManager =new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
 
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.ATTACK));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.NAME));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.CHARACTER));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.CREATURE_CARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.CREATURE_ZONE));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.DAMAGED));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.NAME));
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.FLAVOUR_TEXT));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.GRAVEYARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.HAND));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.HEALTH));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.SPELL_ZONE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.LIBRARY));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.NEXT_PLAYER));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.OWNED_BY));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.AURAS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.BUFFS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.CONDITIONS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.SPELL_CARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.SPELL_ENTITIES));
@@ -42,6 +42,13 @@ public class EntityTemplateSetup {
             }
         });
 
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.ATTACK));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.BONUS_ATTACK));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.HEALTH));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.BONUS_HEALTH));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.DAMAGED));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.BONUS_DAMAGED));
+
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Game.ACTIVE_PLAYER));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.SLOW));
@@ -49,6 +56,8 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.HEXPROOF));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.IMMUNE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Ability.TAUNT));
+
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.Aura.AURA_BUFF));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Tribe.BEAST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Tribe.DRAGON));
@@ -64,6 +73,10 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.DRAW));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Effect.GAIN_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.DESTROY));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.ADD_AURAS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.REMOVE_AURAS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.ADD_BUFFS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.REMOVE_BUFFS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
@@ -71,6 +84,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CHAIN));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_SOURCE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_TARGETS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CUSTOM));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_ALL));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_OWNER));
 

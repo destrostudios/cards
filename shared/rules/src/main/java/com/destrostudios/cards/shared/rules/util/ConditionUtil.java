@@ -12,12 +12,12 @@ public class ConditionUtil {
 
     private static final List<ComponentDefinition<?>> simpleRequirableComponents = new LinkedList<>();
     static {
-        simpleRequirableComponents.add(Components.ATTACK);
-        simpleRequirableComponents.add(Components.CREATURE_CARD);
         simpleRequirableComponents.add(Components.NAME);
-        simpleRequirableComponents.add(Components.HEALTH);
-        simpleRequirableComponents.add(Components.DAMAGED);
+        simpleRequirableComponents.add(Components.CHARACTER);
+        simpleRequirableComponents.add(Components.CREATURE_CARD);
         simpleRequirableComponents.add(Components.SPELL_CARD);
+        simpleRequirableComponents.add(Components.Stats.ATTACK);
+        simpleRequirableComponents.add(Components.Stats.HEALTH);
         simpleRequirableComponents.add(Components.Ability.SLOW);
         simpleRequirableComponents.add(Components.Ability.DIVINE_SHIELD);
         simpleRequirableComponents.add(Components.Ability.HEXPROOF);
@@ -75,7 +75,6 @@ public class ConditionUtil {
         }
         return true;
     }
-
 
     private static boolean isFulfilledIgnoringNegation(EntityData data, int condition, int source, int target) {
         if (data.hasComponent(condition, Components.Condition.PLAYER)) {

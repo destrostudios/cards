@@ -4,12 +4,13 @@
     </values>
     <entity>
         <name>Leviathan</name>
+        <character/>
         <creatureCard/>
         <attack>6</attack>
         <health>6</health>
+        <description>Deal [damage] damage to all creatures.</description>
         <spells>
             <entity>
-                <description>Deal [damage] damage to all creatures.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>
@@ -25,7 +26,7 @@
                                 <targetChains>
                                     <entity template="../targets/all_creatures_on_board"/>
                                 </targetChains>
-                                <damage>3</damage>
+                                <damage>[damage]</damage>
                             </entity>
                             <entity template="../effects/add_source_to_board"/>
                         </effects>

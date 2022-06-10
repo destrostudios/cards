@@ -22,9 +22,7 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
             int winner = nextPlayer.get();
             LOG.info("Game over: Winner = " + winner);
             events.fire(new GameOverEvent(winner), random);
-        }
-        else {
-            data.removeComponent(event.target, Components.DAMAGED);
+        } else {
             events.fire(new AddCardToGraveyardEvent(event.target), random);
         }
     }

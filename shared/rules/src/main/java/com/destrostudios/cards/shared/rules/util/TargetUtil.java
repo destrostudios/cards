@@ -39,21 +39,28 @@ public class TargetUtil {
                 initialTargets.add(target);
             }
         }
+        int[] customTargets = data.getComponent(targetChainStep, Components.Target.TARGET_CUSTOM);
+        if (customTargets != null) {
+            for (int customTarget : customTargets) {
+                initialTargets.add(customTarget);
+            }
+        }
         int[] conditions = data.getComponent(targetChainStep, Components.Target.TARGET_ALL);
         if (conditions != null) {
-            // TODO: Unify
-            addAllTargets(data, conditions, source, data.query(Components.OWNED_BY).list(), initialTargets);
-            addAllTargets(data, conditions, source, data.query(Components.NEXT_PLAYER).list(), initialTargets);
+            initialTargets.addAll(getAllConditionTargets(data, conditions, source));
         }
         return initialTargets;
     }
 
-    private static void addAllTargets(EntityData data, int[] conditions, int source, List<Integer> targetsToCheck, LinkedList<Integer> destinationTargets) {
-        for (int target : targetsToCheck) {
+    public static List<Integer> getAllConditionTargets(EntityData data, int[] conditions, int source) {
+        LinkedList<Integer> targets = new LinkedList<>();
+        List<Integer> characters = data.query(Components.CHARACTER).list();
+        for (int target : characters) {
             if (ConditionUtil.areConditionsFulfilled(data, conditions, source, new int[] { target })) {
-                destinationTargets.add(target);
+                targets.add(target);
             }
         }
+        return targets;
     }
 
     private static LinkedList<Integer> transformCurrentStepTargets(EntityData data, int targetChainStep, LinkedList<Integer> currentStepTargets) {

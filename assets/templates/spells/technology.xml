@@ -5,9 +5,9 @@
     <entity>
         <name>Technology</name>
         <spellCard/>
+        <description>Draw [draw] cards.</description>
         <spells>
             <entity>
-                <description>Draw [draw] cards.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

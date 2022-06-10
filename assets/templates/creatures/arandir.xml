@@ -4,9 +4,11 @@
     </values>
     <entity>
         <name>Arandir</name>
+        <character/>
         <creatureCard/>
         <attack>3</attack>
         <health>3</health>
+        <description>Deal [damage] damage to target opponent creature.</description>
         <spells>
             <entity>
                 <conditions>

@@ -5,9 +5,9 @@
     <entity>
         <name>Sunray</name>
         <spellCard/>
+        <description>Heal [heal] health of all creatures.</description>
         <spells>
             <entity>
-                <description>Heal [heal] health of all creatures.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

@@ -1,0 +1,31 @@
+<template>
+    <values>
+        <name>Artificial Guardian</name>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity template="./templates/vanilla(name=[name],manaCost=2,attack=1,health=0)">
+        <description>Your "[name]"s have +[bonusAttack]/+[bonusHealth].</description>
+        <auras>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_on_board"/>
+                    <entity>
+                        <targetChains>
+                            <entity template="../targets/targets"/>
+                        </targetChains>
+                        <ally/>
+                        <name>[name]</name>
+                        <onBoard/>
+                    </entity>
+                </conditions>
+                <auraBuff>
+                    <entity>
+                        <bonusAttack>[bonusAttack]</bonusAttack>
+                        <bonusHealth>[bonusHealth]</bonusHealth>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

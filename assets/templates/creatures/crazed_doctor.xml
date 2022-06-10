@@ -5,12 +5,13 @@
     </values>
     <entity>
         <name>Crazed Doctor</name>
+        <character/>
         <creatureCard/>
         <attack>2</attack>
         <health>2</health>
+        <description>Receive [damage] damage, then heal [heal] health.</description>
         <spells>
             <entity>
-                <description>Receive [damage] damage, then heal [heal] health.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

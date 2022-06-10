@@ -1,12 +1,13 @@
 <template>
     <entity>
         <name>[name]</name>
+        <character/>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
+        <description>Draw [draw] card/s.</description>
         <spells>
             <entity>
-                <description>Draw [draw] card/s.</description>
                 <conditions>
                     <entity template="../../conditions/source_in_hand"/>
                 </conditions>

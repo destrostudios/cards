@@ -1,0 +1,30 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity template="./templates/vanilla(name=Army Commander,manaCost=4,attack=1,health=1)">
+        <description>Your creatures have +[bonusAttack]/+[bonusHealth].</description>
+        <auras>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_on_board"/>
+                    <entity>
+                        <targetChains>
+                            <entity template="../targets/targets"/>
+                        </targetChains>
+                        <ally/>
+                        <creatureCard/>
+                        <onBoard/>
+                    </entity>
+                </conditions>
+                <auraBuff>
+                    <entity>
+                        <bonusAttack>[bonusAttack]</bonusAttack>
+                        <bonusHealth>[bonusHealth]</bonusHealth>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

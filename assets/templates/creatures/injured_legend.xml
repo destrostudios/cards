@@ -4,12 +4,13 @@
     </values>
     <entity>
         <name>Injured Legend</name>
+        <character/>
         <creatureCard/>
         <attack>3</attack>
         <health>6</health>
+        <description>Deal [damage] damage to this creature.</description>
         <spells>
             <entity>
-                <description>Deal [damage] damage to this creature.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

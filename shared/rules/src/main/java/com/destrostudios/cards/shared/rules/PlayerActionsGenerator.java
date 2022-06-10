@@ -45,9 +45,13 @@ public class PlayerActionsGenerator {
         boolean targeted = SpellUtil.isTargeted(data, spell);
         List<Integer> validTargets = new LinkedList<>();
         if (targeted) {
-            // TODO: Unify
-            generatePlaySpellEvents(card, spell, data.query(Components.OWNED_BY).list(), validTargets);
-            generatePlaySpellEvents(card, spell, data.query(Components.NEXT_PLAYER).list(), validTargets);
+            List<Integer> characters = data.query(Components.CHARACTER).list();
+            for (int target : characters) {
+                int[] targets = new int[] { target };
+                if (SpellUtil.isCastable(data, card, spell, targets)) {
+                    validTargets.add(target);
+                }
+            }
             if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.stream().anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
                 validTargets = validTargets.stream()
                         .filter(target -> data.hasComponent(target, Components.Ability.TAUNT))
@@ -63,15 +67,6 @@ public class PlayerActionsGenerator {
             int[] targets = new int[0];
             if (SpellUtil.isCastable(data, card, spell, targets)) {
                 out.accept(new PlaySpellEvent(spell, targets));
-            }
-        }
-    }
-
-    private void generatePlaySpellEvents(int card, int spell, List<Integer> targetsToCheck, List<Integer> validTargets) {
-        for (int target : targetsToCheck) {
-            int[] targets = new int[] { target };
-            if (SpellUtil.isCastable(data, card, spell, targets)) {
-                validTargets.add(target);
             }
         }
     }

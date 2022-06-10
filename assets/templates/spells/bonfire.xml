@@ -5,9 +5,9 @@
     <entity>
         <name>Bonfire</name>
         <spellCard/>
+        <description>Heal [heal] health of your player.</description>
         <spells>
             <entity>
-                <description>Heal [heal] health of your player.</description>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>

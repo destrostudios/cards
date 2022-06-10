@@ -4,7 +4,7 @@ import com.destrostudios.cards.frontend.application.appstates.IngameHudAppState;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.util.HealthUtil;
+import com.destrostudios.cards.shared.rules.util.StatsUtil;
 
 public class UpdateHudService {
 
@@ -25,8 +25,9 @@ public class UpdateHudService {
         for (int playerEntity : data.query(Components.NEXT_PLAYER).list()) {
             // TODO: Map (Currently, it's exactly entity 0 and 1)
             int playerIndex = playerEntity;
-            int playerHealth = HealthUtil.getEffectiveHealth(data, playerEntity);
-            ingameHudAppState.sePlayerHealth(playerIndex, playerHealth);
+            String name = data.getComponent(playerEntity, Components.NAME);
+            int health = StatsUtil.getEffectiveHealth(data, playerEntity);
+            ingameHudAppState.sePlayerInfo(playerIndex, name, health);
         }
     }
 

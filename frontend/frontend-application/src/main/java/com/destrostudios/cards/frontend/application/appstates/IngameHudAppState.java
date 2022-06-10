@@ -58,8 +58,8 @@ public class IngameHudAppState extends MyBaseAppState {
         textCurrentPlayer.setText("Player #" + (playerIndex + 1));
     }
 
-    public void sePlayerHealth(int playerIndex, int health) {
-        textPlayerHealth[playerIndex].setText("PlayerName#" + (playerIndex + 1) + " - " + health + " HP");
+    public void sePlayerInfo(int playerIndex, String name, int health) {
+        textPlayerHealth[playerIndex].setText(name + " - " + health + " HP");
     }
 
     public void setPlayerMana(int manaAmount) {

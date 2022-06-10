@@ -5,6 +5,8 @@ public class AllCards {
     public static final String[] TEMPLATES = new String[] {
         "creatures/ancient_tree",
         "creatures/arandir",
+        "creatures/army_commander",
+        "creatures/artificial_guardian",
         "creatures/battle_cleric",
         "creatures/blademaster",
         "creatures/blessed_barbarian",
@@ -13,6 +15,8 @@ public class AllCards {
         "creatures/crazed_doctor",
         "creatures/dam",
         "creatures/emperor_tamarin",
+        "creatures/fairy",
+        "creatures/goblin_dentist",
         "creatures/goblin_hunter",
         "creatures/goblin_warhead_launcher",
         "creatures/golden_emperor",
@@ -35,8 +39,11 @@ public class AllCards {
         "creatures/young_inventor",
         "spells/bonfire",
         "spells/fiery_obliteration",
+        "spells/medusa_shield",
+        "spells/power_of_the_eclipse",
         "spells/sea_storm",
         "spells/sunray",
+        "spells/sword_of_the_crusader",
         "spells/technology",
         "spells/thunder"
     };

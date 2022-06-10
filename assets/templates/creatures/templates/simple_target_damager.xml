@@ -1,16 +1,17 @@
 <template>
     <entity>
         <name>[name]</name>
+        <character/>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
+        <description>Deal [damage] damage to target character.</description>
         <spells>
             <entity>
-                <description>Deal [damage] damage to target character.</description>
                 <targetOptional/>
                 <conditions>
                     <entity template="../../conditions/source_in_hand"/>
-                    <entity template="../../conditions/target_is_character"/>
+                    <entity template="../../conditions/target_is_character_on_board"/>
                 </conditions>
                 <cost>
                     <entity>

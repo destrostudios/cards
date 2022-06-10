@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import com.destrostudios.cards.shared.rules.battle.ConditionsAffectedEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 public class RemoveCardFromZoneHandler extends GameEventHandler<RemoveCardFromZoneEvent> {
@@ -16,5 +17,6 @@ public class RemoveCardFromZoneHandler extends GameEventHandler<RemoveCardFromZo
             data.setComponent(libraryCard, event.zone, data.getComponent(libraryCard, event.zone) - 1);
         }
         data.removeComponent(event.card, event.zone);
+        events.fire(new ConditionsAffectedEvent(), random);
     }
 }

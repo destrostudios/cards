@@ -1,0 +1,33 @@
+<template>
+    <entity>
+        <name>[name]</name>
+        <spellCard/>
+        <description>[description]</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../../conditions/source_in_hand"/>
+                    <entity template="../../conditions/target_is_creature_on_board"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>[manaCost]</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../../targets/targets"/>
+                                </targetChains>
+                                <addBuffs>[buff]</addBuffs>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

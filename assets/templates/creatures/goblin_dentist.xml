@@ -1,0 +1,14 @@
+<template>
+    <values>
+        <bonusAttack>-1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity template="./templates/simple_target_buffer(name=Goblin Dentist,manaCost=3,attack=2,health=4,buff=#buff)">
+        <description>Target creature gains [bonusAttack]/+[bonusHealth].</description>
+        <flavourText>"Let's see those pearly whites!"</flavourText>
+    </entity>
+    <entity id="buff">
+        <bonusAttack>[bonusAttack]</bonusAttack>
+        <bonusHealth>[bonusHealth]</bonusHealth>
+    </entity>
+</template>

@@ -2,10 +2,14 @@ package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
+import com.destrostudios.cards.shared.rules.auras.AddAuraEvent;
+import com.destrostudios.cards.shared.rules.auras.RemoveAuraEvent;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
+import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
+import com.destrostudios.cards.shared.rules.buffs.RemoveBuffEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
@@ -59,6 +63,34 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
 
         if (data.hasComponent(event.effect, Components.Effect.DESTROY)) {
             events.fire(new DestructionEvent(event.target), random);
+        }
+
+        int[] aurasToAttach = data.getComponent(event.effect, Components.Effect.ADD_AURAS);
+        if (aurasToAttach != null) {
+            for (int aura : aurasToAttach) {
+                events.fire(new AddAuraEvent(event.target, aura), random);
+            }
+        }
+
+        int[] aurasToDetach = data.getComponent(event.effect, Components.Effect.REMOVE_AURAS);
+        if (aurasToDetach != null) {
+            for (int aura : aurasToDetach) {
+                events.fire(new RemoveAuraEvent(event.target, aura), random);
+            }
+        }
+
+        int[] buffsToAttach = data.getComponent(event.effect, Components.Effect.ADD_BUFFS);
+        if (buffsToAttach != null) {
+            for (int buff : buffsToAttach) {
+                events.fire(new AddBuffEvent(event.target, buff), random);
+            }
+        }
+
+        int[] buffsToRemove = data.getComponent(event.effect, Components.Effect.REMOVE_BUFFS);
+        if (buffsToRemove != null) {
+            for (int buff : buffsToRemove) {
+                events.fire(new RemoveBuffEvent(event.target, buff), random);
+            }
         }
     }
 }

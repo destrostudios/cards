@@ -1,0 +1,9 @@
+<template>
+    <entity>
+        <targetChains>
+            <entity template="../targets/targets"/>
+        </targetChains>
+        <creatureCard/>
+        <onBoard/>
+    </entity>
+</template>

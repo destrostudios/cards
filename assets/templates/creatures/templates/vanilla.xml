@@ -1,6 +1,7 @@
 <template>
     <entity>
         <name>[name]</name>
+        <character/>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>

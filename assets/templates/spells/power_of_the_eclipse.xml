@@ -1,0 +1,42 @@
+<template>
+    <values>
+        <bonusAttack>3</bonusAttack>
+        <bonusHealth>3</bonusHealth>
+    </values>
+    <entity>
+        <name>Power of the Eclipse</name>
+        <spellCard/>
+        <description>Target creature gains +[bonusAttack]/+[bonusHealth].</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                    <entity template="../conditions/target_is_creature_on_board"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>3</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/targets"/>
+                                </targetChains>
+                                <addBuffs>
+                                    <entity>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuffs>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -1,12 +1,15 @@
 <template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
     <entity>
-        <name>Terror from Above</name>
+        <name>Inspiring Angel</name>
         <character/>
         <creatureCard/>
-        <attack>8</attack>
-        <health>8</health>
-        <dragon/>
-        <description>Destroy all creatures.</description>
+        <attack>4</attack>
+        <health>4</health>
+        <description>Give all your creatures on board +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
                 <conditions>
@@ -14,7 +17,7 @@
                 </conditions>
                 <cost>
                     <entity>
-                        <mana>10</mana>
+                        <mana>6</mana>
                     </entity>
                 </cost>
                 <instantEffectTriggers>
@@ -22,9 +25,14 @@
                         <effects>
                             <entity>
                                 <targetChains>
-                                    <entity template="../targets/all_creatures_on_board"/>
+                                    <entity template="../targets/all_ally_creatures_on_board"/>
                                 </targetChains>
-                                <destroy/>
+                                <addBuffs>
+                                    <entity>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuffs>
                             </entity>
                             <entity template="../effects/add_source_to_board"/>
                         </effects>

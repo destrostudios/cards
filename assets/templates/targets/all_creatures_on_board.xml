@@ -5,7 +5,7 @@
                 <targetAll>
                     <entity>
                         <targetChains>
-                            <entity template="../targets/targets"/>
+                            <entity template="./targets"/>
                         </targetChains>
                         <creatureCard/>
                         <onBoard/>

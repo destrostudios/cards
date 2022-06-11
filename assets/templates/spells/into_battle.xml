@@ -1,0 +1,41 @@
+<template>
+    <values>
+        <bonusAttack>2</bonusAttack>
+        <bonusHealth>2</bonusHealth>
+    </values>
+    <entity>
+        <name>Into Battle</name>
+        <spellCard/>
+        <description>Give all your creatures in hand +[bonusAttack]/+[bonusHealth].</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>6</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/all_ally_creatures_in_hand"/>
+                                </targetChains>
+                                <addBuffs>
+                                    <entity>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuffs>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

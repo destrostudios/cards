@@ -7,14 +7,14 @@
                         <oneOf>
                             <entity>
                                 <targetChains>
-                                    <entity template="../targets/targets"/>
+                                    <entity template="./targets"/>
                                 </targetChains>
                                 <creatureCard/>
                                 <onBoard/>
                             </entity>
                             <entity>
                                 <targetChains>
-                                    <entity template="../targets/targets"/>
+                                    <entity template="./targets"/>
                                 </targetChains>
                                 <player/>
                             </entity>

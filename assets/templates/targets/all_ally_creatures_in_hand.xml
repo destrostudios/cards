@@ -7,9 +7,9 @@
                         <targetChains>
                             <entity template="./targets"/>
                         </targetChains>
-                        <opponent/>
+                        <ally/>
                         <creatureCard/>
-                        <onBoard/>
+                        <inHand/>
                     </entity>
                 </targetAll>
             </entity>

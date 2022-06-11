@@ -1,0 +1,42 @@
+<template>
+    <values>
+        <allyDamage>1</allyDamage>
+        <opponentDamage>2</opponentDamage>
+    </values>
+    <entity>
+        <name>Conjured Lightning</name>
+        <spellCard/>
+        <description>Deal [opponentDamage] damage to all opponent creatures and [allyDamage] damage to all allied creatures.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>5</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/all_opponent_creatures_on_board"/>
+                                </targetChains>
+                                <damage>[opponentDamage]</damage>
+                            </entity>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/all_ally_creatures_on_board"/>
+                                </targetChains>
+                                <damage>[allyDamage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

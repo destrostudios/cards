@@ -44,6 +44,7 @@ public class AllCards {
         "spells/fiery_obliteration",
         "spells/into_battle",
         "spells/medusa_shield",
+        "spells/murder",
         "spells/power_of_the_eclipse",
         "spells/sea_storm",
         "spells/sunray",

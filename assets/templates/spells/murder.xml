@@ -1,0 +1,33 @@
+<template>
+    <entity>
+        <name>Murder</name>
+        <spellCard/>
+        <description>Destroy target creature.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                    <entity template="../conditions/target_is_creature_on_board"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>5</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/targets"/>
+                                </targetChains>
+                                <destroy/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

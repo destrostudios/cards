@@ -9,7 +9,7 @@
         <creatureCard/>
         <attack>4</attack>
         <health>4</health>
-        <description>Give all your creatures on board +[bonusAttack]/+[bonusHealth].</description>
+        <description>Cast: Your creatures on board gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
                 <conditions>

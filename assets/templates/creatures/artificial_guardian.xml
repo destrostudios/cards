@@ -5,7 +5,7 @@
         <bonusHealth>1</bonusHealth>
     </values>
     <entity template="./templates/vanilla(name=[name],manaCost=2,attack=1,health=0)">
-        <description>Your "[name]"s have +[bonusAttack]/+[bonusHealth].</description>
+        <description>Your "[name]"s on board have +[bonusAttack]/+[bonusHealth].</description>
         <auras>
             <entity>
                 <conditions>

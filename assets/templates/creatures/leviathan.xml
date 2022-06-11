@@ -8,7 +8,7 @@
         <creatureCard/>
         <attack>6</attack>
         <health>6</health>
-        <description>Deal [damage] damage to all creatures.</description>
+        <description>Cast: Deal [damage] damage to all creatures.</description>
         <spells>
             <entity>
                 <conditions>

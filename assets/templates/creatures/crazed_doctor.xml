@@ -9,7 +9,7 @@
         <creatureCard/>
         <attack>2</attack>
         <health>2</health>
-        <description>Receive [damage] damage, then heal [heal] health.</description>
+        <description>Cast: Deal [damage] damage to yourself, then heal [heal] health.</description>
         <spells>
             <entity>
                 <conditions>

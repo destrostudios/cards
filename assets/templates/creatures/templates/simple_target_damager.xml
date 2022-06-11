@@ -5,7 +5,7 @@
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
-        <description>Deal [damage] damage to target character.</description>
+        <description>Cast: Deal [damage] damage to target character.</description>
         <spells>
             <entity>
                 <targetOptional/>

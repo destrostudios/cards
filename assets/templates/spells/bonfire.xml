@@ -5,7 +5,7 @@
     <entity>
         <name>Bonfire</name>
         <spellCard/>
-        <description>Heal [heal] health of your player.</description>
+        <description>Heal [heal] health of yourself.</description>
         <spells>
             <entity>
                 <conditions>

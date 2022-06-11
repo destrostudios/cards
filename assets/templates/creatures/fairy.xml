@@ -4,7 +4,7 @@
         <bonusHealth>1</bonusHealth>
     </values>
     <entity template="./templates/simple_target_buffer(name=Fairy,manaCost=2,attack=2,health=1,buff=#buff)">
-        <description>Target creature gains +[bonusAttack]/+[bonusHealth].</description>
+        <description>Cast: Target creature on board gains +[bonusAttack]/+[bonusHealth].</description>
     </entity>
     <entity id="buff">
         <bonusAttack>[bonusAttack]</bonusAttack>

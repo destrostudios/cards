@@ -6,7 +6,7 @@
     <entity>
         <name>Into Battle</name>
         <spellCard/>
-        <description>Give all your creatures in hand +[bonusAttack]/+[bonusHealth].</description>
+        <description>Your creatures in hand gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
                 <conditions>

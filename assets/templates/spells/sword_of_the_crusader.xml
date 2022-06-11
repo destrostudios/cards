@@ -3,7 +3,7 @@
         <bonusAttack>4</bonusAttack>
     </values>
     <entity template="./templates/simple_target_buff(name=Sword of the Crusader,manaCost=2,buff=#buff)">
-        <description>Target creature gains +[bonusAttack]/+0.</description>
+        <description>Target creature on board gains +[bonusAttack]/+0.</description>
     </entity>
     <entity id="buff">
         <bonusAttack>[bonusAttack]</bonusAttack>

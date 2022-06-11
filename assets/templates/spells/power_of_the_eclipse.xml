@@ -6,7 +6,7 @@
     <entity>
         <name>Power of the Eclipse</name>
         <spellCard/>
-        <description>Target creature gains +[bonusAttack]/+[bonusHealth].</description>
+        <description>Target creature on board gains +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
                 <conditions>

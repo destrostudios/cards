@@ -5,7 +5,7 @@
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
-        <description>Heal [heal] health of target character.</description>
+        <description>Cast: Heal [heal] health of target character.</description>
         <spells>
             <entity>
                 <targetOptional/>

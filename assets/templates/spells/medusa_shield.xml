@@ -3,7 +3,7 @@
         <bonusHealth>4</bonusHealth>
     </values>
     <entity template="./templates/simple_target_buff(name=Medusa Shield,manaCost=2,buff=#buff)">
-        <description>Target creature gains +0/+[bonusHealth].</description>
+        <description>Target creature on board gains +0/+[bonusHealth].</description>
     </entity>
     <entity id="buff">
         <bonusHealth>[bonusHealth]</bonusHealth>

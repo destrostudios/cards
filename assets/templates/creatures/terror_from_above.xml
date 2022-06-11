@@ -6,7 +6,7 @@
         <attack>8</attack>
         <health>8</health>
         <dragon/>
-        <description>Destroy all creatures.</description>
+        <description>Cast: Destroy all creatures on board.</description>
         <spells>
             <entity>
                 <conditions>

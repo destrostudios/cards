@@ -6,7 +6,7 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 public class Components {
 
     public static final ComponentDefinition<String> NAME = new ComponentDefinition<>("name");
-    public static final ComponentDefinition<Void> CHARACTER = new ComponentDefinition<>("character");
+    public static final ComponentDefinition<Void> TARGETABLE = new ComponentDefinition<>("targetable");
     public static final ComponentDefinition<Void> BOARD = new ComponentDefinition<>("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = new ComponentDefinition<>("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = new ComponentDefinition<>("creatureZone");
@@ -21,12 +21,13 @@ public class Components {
     public static final ComponentDefinition<int[]> BUFFS = new ComponentDefinition<>("buffs");
     public static final ComponentDefinition<int[]> CONDITIONS = new ComponentDefinition<>("conditions");
     public static final ComponentDefinition<Void> SPELL_CARD = new ComponentDefinition<>("spellCard");
-    public static final ComponentDefinition<int[]> SPELL_ENTITIES = new ComponentDefinition<>("spells");
+    public static final ComponentDefinition<int[]> SPELLS = new ComponentDefinition<>("spells");
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = new ComponentDefinition<>("availableMana");
     public static final ComponentDefinition<Integer> MANA = new ComponentDefinition<>("mana");
     public static final ComponentDefinition<Integer> COST = new ComponentDefinition<>("cost");
     public static final ComponentDefinition<String> DESCRIPTION = new ComponentDefinition<>("description");
     public static final ComponentDefinition<Foil> FOIL = new ComponentDefinition<>("foil");
+    public static final ComponentDefinition<int[]> DEATH_EFFECT_TRIGGERS = new ComponentDefinition<>("deathEffectTriggers");
 
     public static class Stats {
         public static final ComponentDefinition<Integer> ATTACK = new ComponentDefinition<>("attack");
@@ -76,8 +77,10 @@ public class Components {
         public static final ComponentDefinition<int[]> REMOVE_AURAS = new ComponentDefinition<>("removeAuras");
         public static final ComponentDefinition<int[]> ADD_BUFFS = new ComponentDefinition<>("addBuffs");
         public static final ComponentDefinition<int[]> REMOVE_BUFFS = new ComponentDefinition<>("removeBuffs");
+        public static final ComponentDefinition<String[]> SUMMON = new ComponentDefinition<>("summon");
 
         public static class Zones {
+            public static final ComponentDefinition<Void> ADD_TO_HAND = new ComponentDefinition<>("addToHand");
             public static final ComponentDefinition<Void> ADD_TO_BOARD = new ComponentDefinition<>("addToBoard");
             public static final ComponentDefinition<Void> ADD_TO_GRAVEYARD = new ComponentDefinition<>("addToGraveyard");
         }
@@ -91,6 +94,8 @@ public class Components {
         public static final ComponentDefinition<int[]> TARGET_CUSTOM = new ComponentDefinition<>("targetCustom");
         public static final ComponentDefinition<int[]> TARGET_ALL = new ComponentDefinition<>("targetAll");
         public static final ComponentDefinition<Void> TARGET_OWNER = new ComponentDefinition<>("targetOwner");
+        public static final ComponentDefinition<Void> TARGET_OPPONENT = new ComponentDefinition<>("targetOpponent");
+        public static final ComponentDefinition<Integer> TARGET_RANDOM = new ComponentDefinition<>("targetRandom");
     }
 
     public static class Condition {
@@ -99,8 +104,12 @@ public class Components {
         public static final ComponentDefinition<Void> ALLY = new ComponentDefinition<>("ally");
         public static final ComponentDefinition<Void> OPPONENT = new ComponentDefinition<>("opponent");
         public static final ComponentDefinition<Void> PLAYER = new ComponentDefinition<>("player");
+        public static final ComponentDefinition<Void> IN_LIBRARY = new ComponentDefinition<>("inLibrary");
         public static final ComponentDefinition<Void> IN_HAND = new ComponentDefinition<>("inHand");
         public static final ComponentDefinition<Void> ON_BOARD = new ComponentDefinition<>("onBoard");
+        public static final ComponentDefinition<Void> IN_GRAVEYARD = new ComponentDefinition<>("inGraveyard");
+        public static final ComponentDefinition<Integer> MINIMUM_MANA_COST = new ComponentDefinition<>("minimumManaCost");
+        public static final ComponentDefinition<Integer> MAXIMUM_MANA_COST = new ComponentDefinition<>("maximumManaCost");
         public static final ComponentDefinition<Void> NO_CREATURES = new ComponentDefinition<>("noCreatures");
     }
 

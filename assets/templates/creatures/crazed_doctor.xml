@@ -5,7 +5,7 @@
     </values>
     <entity>
         <name>Crazed Doctor</name>
-        <character/>
+        <targetable/>
         <creatureCard/>
         <attack>2</attack>
         <health>2</health>

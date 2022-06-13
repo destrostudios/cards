@@ -2,10 +2,6 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.events.Event;
 
-/**
- *
- * @author Philipp
- */
 public class AddCardToHandEvent extends Event {
     public final int card;
 

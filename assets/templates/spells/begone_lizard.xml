@@ -1,0 +1,35 @@
+<template>
+    <entity>
+        <name>Begone, Lizard!</name>
+        <targetable/>
+        <spellCard/>
+        <description>Destroy target dragon.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                    <entity>
+                        <targetChains>
+                            <entity template="../targets/targets"/>
+                        </targetChains>
+                        <dragon/>
+                        <onBoard/>
+                    </entity>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>4</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/destroy_target"/>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

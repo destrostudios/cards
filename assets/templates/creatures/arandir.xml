@@ -4,7 +4,7 @@
     </values>
     <entity>
         <name>Arandir</name>
-        <character/>
+        <targetable/>
         <creatureCard/>
         <attack>3</attack>
         <health>3</health>

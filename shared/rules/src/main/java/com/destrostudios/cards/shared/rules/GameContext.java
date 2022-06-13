@@ -58,6 +58,7 @@ public class GameContext {
         );
         addEventHandler(events.instant(), HealEvent.class, new HealHandler());
         addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
+        addEventHandler(events.resolved(), DestructionEvent.class, new TriggerOnDeathHandler());
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
@@ -93,12 +94,13 @@ public class GameContext {
                 new DrawCardOnTurnStartHandler(),
                 new ExecuteBotActionsOnTurnStartHandler()
         );
-        addEventHandler(events.instant(), CheckEffectTriggerEvent.class, new CheckEffectTriggerHandler());
+        addEventHandler(events.instant(), TriggerEffectTriggerIfPossibleEvent.class, new TriggerEffectTriggerIfPossibleHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
         addEventHandler(events.instant(), AddAuraEvent.class, new AddAuraHandler());
         addEventHandler(events.instant(), RemoveAuraEvent.class, new RemoveAuraHandler());
         addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
         addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
+        addEventHandler(events.instant(), SummonEvent.class, new SummonHandler());
         addEventHandler(events.instant(), ConditionsAffectedEvent.class, new CheckBonusHealthHandler());
         addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));
     }

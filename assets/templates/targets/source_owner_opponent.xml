@@ -1,0 +1,15 @@
+<template>
+    <entity>
+        <targetChain>
+            <entity>
+                <targetSource/>
+            </entity>
+            <entity>
+                <targetOwner/>
+            </entity>
+            <entity>
+                <targetOpponent/>
+            </entity>
+        </targetChain>
+    </entity>
+</template>

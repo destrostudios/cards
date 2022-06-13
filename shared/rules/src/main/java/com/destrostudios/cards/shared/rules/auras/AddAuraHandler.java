@@ -13,7 +13,7 @@ public class AddAuraHandler extends GameEventHandler<AddAuraEvent> {
 
     @Override
     public void handle(AddAuraEvent event, NetworkRandom random) {
-        LOG.info("add aura {} to {}", event.aura, event.target);
+        LOG.info("Add aura {} to {}", event.aura, event.target);
         ArrayUtil.add(data, event.target, Components.AURAS, event.aura);
     }
 }

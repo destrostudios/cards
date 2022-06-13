@@ -1,0 +1,34 @@
+<template>
+    <entity>
+        <name>Sandstorm</name>
+        <targetable/>
+        <spellCard/>
+        <description>Return all creatures on the board to their owners hand.</description>
+        <flavourText>"Doo doo doo doo doo."</flavourText>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>8</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity template="../targets/all_creatures_on_board"/>
+                                </targetChains>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

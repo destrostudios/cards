@@ -1,6 +1,7 @@
 <template>
     <entity>
         <name>Murder</name>
+        <targetable/>
         <spellCard/>
         <description>Destroy target creature.</description>
         <spells>
@@ -18,12 +19,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
-                            <entity>
-                                <targetChains>
-                                    <entity template="../targets/targets"/>
-                                </targetChains>
-                                <destroy/>
-                            </entity>
+                            <entity template="../effects/destroy_target"/>
                         </effects>
                     </entity>
                 </instantEffectTriggers>

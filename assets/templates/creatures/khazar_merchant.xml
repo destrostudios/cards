@@ -1,0 +1,58 @@
+<template>
+    <values>
+        <maximumManaCost>3</maximumManaCost>
+    </values>
+    <entity>
+        <name>Khazar Merchant</name>
+        <targetable/>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>2</health>
+        <description>Cast: Draw a spell from your deck that costs ([maximumManaCost]) or less.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>3</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targetChains>
+                                    <entity>
+                                        <targetChain>
+                                            <entity>
+                                                <targetAll>
+                                                    <entity>
+                                                        <targetChains>
+                                                            <entity template="../targets/targets"/>
+                                                        </targetChains>
+                                                        <ally/>
+                                                        <spellCard/>
+                                                        <inLibrary/>
+                                                        <maximumManaCost>[maximumManaCost]</maximumManaCost>
+                                                    </entity>
+                                                </targetAll>
+                                            </entity>
+                                            <entity>
+                                                <targetRandom>1</targetRandom>
+                                            </entity>
+                                        </targetChain>
+                                    </entity>
+                                </targetChains>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+            <entity template="./templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

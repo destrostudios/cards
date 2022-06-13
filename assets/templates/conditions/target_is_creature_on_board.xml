@@ -1,19 +1,9 @@
 <template>
     <entity>
-        <oneOf>
-            <entity>
-                <targetChains>
-                    <entity template="../targets/targets"/>
-                </targetChains>
-                <creatureCard/>
-                <onBoard/>
-            </entity>
-            <entity>
-                <targetChains>
-                    <entity template="../targets/targets"/>
-                </targetChains>
-                <player/>
-            </entity>
-        </oneOf>
+        <targetChains>
+            <entity template="../targets/targets"/>
+        </targetChains>
+        <creatureCard/>
+        <onBoard/>
     </entity>
 </template>

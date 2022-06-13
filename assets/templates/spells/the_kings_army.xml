@@ -1,0 +1,29 @@
+<template>
+    <entity>
+        <name>The Kings Army</name>
+        <targetable/>
+        <spellCard/>
+        <description>Summon 2 2/2 Kings Soldiers.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>4</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/kings_soldier)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/kings_soldier)"/>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

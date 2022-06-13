@@ -4,6 +4,7 @@
     </values>
     <entity>
         <name>Technology</name>
+        <targetable/>
         <spellCard/>
         <description>Draw [draw] cards.</description>
         <spells>

@@ -73,6 +73,26 @@ public class NetworkCardsService implements GameService<GameContext, Event> {
             }
         });
         kryo.register(ComponentDefinition.class, new FieldSerializer<>(kryo, ComponentDefinition.class));
+        kryo.register(String[].class, new Serializer<String[]>() {
+
+            @Override
+            public void write(Kryo kryo, Output output, String[] object) {
+                output.writeInt(object.length);
+                for (String string : object) {
+                    output.writeString(string);
+                }
+            }
+
+            @Override
+            public String[] read(Kryo kryo, Input input, Class<String[]> type) {
+                int length = input.readInt();
+                String[] object = new String[length];
+                for (int i = 0; i < length; i++) {
+                    object[i] = input.readString();
+                }
+                return object;
+            }
+        });
         kryo.register(Foil.class, new EnumSerializer<>(Foil.class));
         kryo.register(GameContext.class, new Serializer<GameContext>() {
 

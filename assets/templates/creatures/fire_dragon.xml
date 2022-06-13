@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/simple_target_damager(name=Fire Dragon,manaCost=7,attack=5,health=5,damage=5)">
+        <dragon/>
+    </entity>
+</template>

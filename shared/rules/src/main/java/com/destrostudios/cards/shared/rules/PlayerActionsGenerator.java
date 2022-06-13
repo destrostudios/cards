@@ -32,7 +32,7 @@ public class PlayerActionsGenerator {
     private void generatePlaySpells(int player, Consumer<Event> out) {
         List<Integer> ownedCardEntities = data.query(Components.OWNED_BY).list(ownedBy(player));
         for (int card : ownedCardEntities) {
-            int[] spells = data.getComponent(card, Components.SPELL_ENTITIES);
+            int[] spells = data.getComponent(card, Components.SPELLS);
             if (spells != null) {
                 for (int spell : spells) {
                     generatePlaySpellEvents(card, spell, out);
@@ -45,8 +45,8 @@ public class PlayerActionsGenerator {
         boolean targeted = SpellUtil.isTargeted(data, spell);
         List<Integer> validTargets = new LinkedList<>();
         if (targeted) {
-            List<Integer> characters = data.query(Components.CHARACTER).list();
-            for (int target : characters) {
+            List<Integer> allTargets = data.query(Components.TARGETABLE).list();
+            for (int target : allTargets) {
                 int[] targets = new int[] { target };
                 if (SpellUtil.isCastable(data, card, spell, targets)) {
                     validTargets.add(target);

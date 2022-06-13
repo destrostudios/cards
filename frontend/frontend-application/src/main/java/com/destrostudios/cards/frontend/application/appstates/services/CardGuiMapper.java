@@ -44,7 +44,7 @@ public class CardGuiMapper {
         Integer manaCostFullArt = null;
         Integer manaCostDetails = null;
         List<Spell> spells = new LinkedList<>();
-        int[] spellEntities = entityData.getComponent(card, Components.SPELL_ENTITIES);
+        int[] spellEntities = entityData.getComponent(card, Components.SPELLS);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
                 Integer spellCost = entityData.getComponent(spellEntity, Components.COST);

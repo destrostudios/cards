@@ -12,12 +12,12 @@ public class HealHandler extends GameEventHandler<HealEvent> {
 
     @Override
     public void handle(HealEvent event, NetworkRandom random) {
-        LOG.info("healing {} health to {}", event.heal, event.target);
+        LOG.info("Healing {} health to {}", event.heal, event.target);
         int remainingHeal = event.heal;
         Integer oldBonusDamaged = data.getComponent(event.target, Components.Stats.BONUS_DAMAGED);
         if (oldBonusDamaged != null) {
             int newBonusDamaged = oldBonusDamaged - remainingHeal;
-            LOG.info("changing bonus damaged of {} from {} to {}", event.target, oldBonusDamaged, newBonusDamaged);
+            LOG.info("Changing bonus damaged of {} from {} to {}", event.target, oldBonusDamaged, newBonusDamaged);
             if (newBonusDamaged > 0) {
                 data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
                 remainingHeal = 0;
@@ -30,7 +30,7 @@ public class HealHandler extends GameEventHandler<HealEvent> {
             Integer oldDamaged = data.getComponent(event.target, Components.Stats.DAMAGED);
             if (oldDamaged != null) {
                 int newDamaged = oldDamaged - remainingHeal;
-                LOG.info("changing damaged of {} from {} to {}", event.target, oldDamaged, newDamaged);
+                LOG.info("Changing damaged of {} from {} to {}", event.target, oldDamaged, newDamaged);
                 if (newDamaged > 0) {
                     data.setComponent(event.target, Components.Stats.DAMAGED, newDamaged);
                 } else {

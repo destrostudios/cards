@@ -13,7 +13,7 @@ public class RemoveBuffHandler extends GameEventHandler<RemoveBuffEvent> {
 
     @Override
     public void handle(RemoveBuffEvent event, NetworkRandom random) {
-        LOG.info("remove buff {} from {}", event.buff, event.target);
+        LOG.info("Remove buff {} from {}", event.buff, event.target);
         ArrayUtil.remove(data, event.target, Components.BUFFS, event.buff);
     }
 }

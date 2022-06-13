@@ -10,9 +10,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Philipp
- */
 public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(DrawCardHandler.class);
@@ -28,12 +25,12 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
                     card = candidate;
                 }
             }
-            LOG.info("player {} is drawing card {}", event.player, card);
+            LOG.info("Player {} is drawing card {}", event.player, card);
             events.fire(new RemoveCardFromLibraryEvent(card), random);
             events.fire(new AddCardToHandEvent(card), random);
         } else {
             // fatigue
-            LOG.info("player {} tried to draw a card but has none left", event.player);
+            LOG.info("Player {} tried to draw a card but has none left", event.player);
             event.cancel();
         }
     }

@@ -13,6 +13,7 @@ import com.destrostudios.cards.shared.rules.buffs.RemoveBuffEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,10 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
 
         if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_GRAVEYARD)) {
             events.fire(new AddCardToGraveyardEvent(event.target), random);
+        }
+
+        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_HAND)) {
+            events.fire(new AddCardToHandEvent(event.target), random);
         }
 
         Integer damage = data.getComponent(event.effect, Components.Effect.DAMAGE);
@@ -90,6 +95,13 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         if (buffsToRemove != null) {
             for (int buff : buffsToRemove) {
                 events.fire(new RemoveBuffEvent(event.target, buff), random);
+            }
+        }
+
+        String[] templates = data.getComponent(event.effect, Components.Effect.SUMMON);
+        if (templates != null) {
+            for (String template : templates) {
+                events.fire(new SummonEvent(event.target, template), random);
             }
         }
     }

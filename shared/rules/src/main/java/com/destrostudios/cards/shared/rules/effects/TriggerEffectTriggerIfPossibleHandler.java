@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class CheckEffectTriggerHandler extends GameEventHandler<CheckEffectTriggerEvent> {
+public class TriggerEffectTriggerIfPossibleHandler extends GameEventHandler<TriggerEffectTriggerIfPossibleEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CheckEffectTriggerHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TriggerEffectTriggerIfPossibleHandler.class);
 
     @Override
-    public void handle(CheckEffectTriggerEvent event, NetworkRandom random) {
-        LOG.info("Checking effect trigger (source={}, target={}, effectTrigger={})", event.source, event.targets, event.effectTrigger);
+    public void handle(TriggerEffectTriggerIfPossibleEvent event, NetworkRandom random) {
+        LOG.info("Trying to trigger effect trigger (source={}, target={}, effectTrigger={})", event.source, event.targets, event.effectTrigger);
 
         if (ConditionUtil.areConditionsFulfilled(data, event.effectTrigger, event.source, event.targets)) {
             int[] effects = data.getComponent(event.effectTrigger, Components.EffectTrigger.EFFECTS);

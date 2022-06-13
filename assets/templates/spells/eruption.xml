@@ -1,0 +1,37 @@
+<template>
+    <entity>
+        <name>Eruption</name>
+        <targetable/>
+        <spellCard/>
+        <description>Summon 10 1/1 Pebbles.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>10</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

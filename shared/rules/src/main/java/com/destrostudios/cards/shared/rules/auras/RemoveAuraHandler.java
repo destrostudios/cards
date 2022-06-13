@@ -13,7 +13,7 @@ public class RemoveAuraHandler extends GameEventHandler<RemoveAuraEvent> {
 
     @Override
     public void handle(RemoveAuraEvent event, NetworkRandom random) {
-        LOG.info("remove aura {} from {}", event.aura, event.target);
+        LOG.info("Remove aura {} from {}", event.aura, event.target);
         ArrayUtil.remove(data, event.target, Components.AURAS, event.aura);
     }
 }

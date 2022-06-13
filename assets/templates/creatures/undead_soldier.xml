@@ -1,0 +1,12 @@
+<template>
+    <entity template="./templates/vanilla(name=Undead Soldier,manaCost=1,attack=1,health=1)">
+        <description>Death: Summon a 1/1 Zombie.</description>
+        <deathEffectTriggers>
+            <entity>
+                <effects>
+                    <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
+                </effects>
+            </entity>
+        </deathEffectTriggers>
+    </entity>
+</template>

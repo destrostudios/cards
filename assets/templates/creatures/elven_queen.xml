@@ -1,0 +1,32 @@
+<template>
+    <entity>
+        <name>Elven Queen</name>
+        <targetable/>
+        <creatureCard/>
+        <attack>3</attack>
+        <health>3</health>
+        <description>Cast: Summon 2 1/1 Elven Guards with Taunt.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>5</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/spawn_for_owner(template=creatures/elven_guard)"/>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/elven_guard)"/>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+            <entity template="./templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

@@ -7,9 +7,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Philipp
- */
 public class DrawCardsOnGameStartHandler extends GameEventHandler<GameStartEvent> {
 
     private static final int HAND_SIZE = 5;
@@ -17,7 +14,7 @@ public class DrawCardsOnGameStartHandler extends GameEventHandler<GameStartEvent
 
     @Override
     public void handle(GameStartEvent event, NetworkRandom random) {
-        LOG.info("drawing initial hands");
+        LOG.info("Drawing initial hands");
         for (int player : data.query(Components.NEXT_PLAYER).list()) {
             for (int i = 0; i < HAND_SIZE; i++) {
                 events.fire(new DrawCardEvent(player), random);

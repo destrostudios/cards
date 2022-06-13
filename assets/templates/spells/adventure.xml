@@ -1,0 +1,55 @@
+<template>
+    <values>
+        <minimumManaCost>5</minimumManaCost>
+    </values>
+    <entity>
+        <name>Adventure</name>
+        <targetable/>
+        <spellCard/>
+        <description>Draw a random creature from your deck that costs ([minimumManaCost]) or more.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>3</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity>
+                                        <targetChain>
+                                            <entity>
+                                                <targetAll>
+                                                    <entity>
+                                                        <targetChains>
+                                                            <entity template="../targets/targets"/>
+                                                        </targetChains>
+                                                        <ally/>
+                                                        <creatureCard/>
+                                                        <inLibrary/>
+                                                        <minimumManaCost>[minimumManaCost]</minimumManaCost>
+                                                    </entity>
+                                                </targetAll>
+                                            </entity>
+                                            <entity>
+                                                <targetRandom>1</targetRandom>
+                                            </entity>
+                                        </targetChain>
+                                    </entity>
+                                </targetChains>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

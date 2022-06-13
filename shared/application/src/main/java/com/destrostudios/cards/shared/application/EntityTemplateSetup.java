@@ -14,7 +14,7 @@ public class EntityTemplateSetup {
         XMLTemplateManager xmlTemplateManager =new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.NAME));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.CHARACTER));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.TARGETABLE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.CREATURE_CARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.CREATURE_ZONE));
@@ -29,7 +29,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.BUFFS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.CONDITIONS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.SPELL_CARD));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.SPELL_ENTITIES));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.SPELLS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.AVAILABLE_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.COST));
@@ -41,6 +41,7 @@ public class EntityTemplateSetup {
                 return Foil.valueOf(element.getText());
             }
         });
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.DEATH_EFFECT_TRIGGERS));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.ATTACK));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.BONUS_ATTACK));
@@ -77,6 +78,9 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.REMOVE_AURAS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.ADD_BUFFS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Effect.REMOVE_BUFFS));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Templates(Components.Effect.SUMMON));
+
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_HAND));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
@@ -87,14 +91,20 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CUSTOM));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_ALL));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_OWNER));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_OPPONENT));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Target.TARGET_RANDOM));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Condition.ONE_OF));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NOT));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ALLY));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.OPPONENT));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.PLAYER));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.IN_LIBRARY));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.IN_HAND));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.ON_BOARD));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.IN_GRAVEYARD));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Condition.MINIMUM_MANA_COST));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Condition.MAXIMUM_MANA_COST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NO_CREATURES));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TARGET_OPTIONAL));

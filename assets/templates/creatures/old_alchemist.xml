@@ -1,0 +1,57 @@
+<template>
+    <values>
+        <maximumManaCost>6</maximumManaCost>
+    </values>
+    <entity>
+        <name>Old Alchemist</name>
+        <targetable/>
+        <creatureCard/>
+        <attack>5</attack>
+        <health>5</health>
+        <description>Cast: Add a random spell from your graveyard to your hand.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>6</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targetChains>
+                                    <entity>
+                                        <targetChain>
+                                            <entity>
+                                                <targetAll>
+                                                    <entity>
+                                                        <targetChains>
+                                                            <entity template="../targets/targets"/>
+                                                        </targetChains>
+                                                        <ally/>
+                                                        <spellCard/>
+                                                        <inGraveyard/>
+                                                    </entity>
+                                                </targetAll>
+                                            </entity>
+                                            <entity>
+                                                <targetRandom>1</targetRandom>
+                                            </entity>
+                                        </targetChain>
+                                    </entity>
+                                </targetChains>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+            <entity template="./templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

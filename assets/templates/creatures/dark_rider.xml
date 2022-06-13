@@ -1,0 +1,20 @@
+<template>
+    <values>
+        <damage>2</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Dark Rider,manaCost=2,attack=2,health=1)">
+        <description>Death: Deal [damage] damage to your opponent.</description>
+        <deathEffectTriggers>
+            <entity>
+                <effects>
+                    <entity>
+                        <targetChains>
+                            <entity template="../targets/source_owner_opponent"/>
+                        </targetChains>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </deathEffectTriggers>
+    </entity>
+</template>

@@ -89,11 +89,13 @@ public class EntityTemplate {
         int inputStart = name.indexOf(SEPARATOR_INPUT_START);
         if (inputStart != -1) {
             name = name.substring(0, inputStart);
+        } else {
+            int outputStart = name.indexOf(SEPARATOR_OUTPUT_START);
+            if (outputStart != -1) {
+                name = name.substring(0, outputStart);
+            }
         }
-        int outputStart = name.indexOf(SEPARATOR_OUTPUT_START);
-        if (outputStart != -1) {
-            name = name.substring(0, outputStart);
-        }
+        name = modifyValueValue.apply(name);
         Map<String, String> input = parseValues(template, SEPARATOR_INPUT_START, SEPARATOR_INPUT_END, getImplicitParameterName, modifyValueKey, modifyValueValue);
         Map<String, String> output = parseValues(template, SEPARATOR_OUTPUT_START, SEPARATOR_OUTPUT_END, getImplicitParameterName, modifyValueKey, Function.identity());
         return new EntityTemplate(name, input, output);

@@ -26,7 +26,7 @@ public class TestGameSetup {
 
     private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {
         data.setComponent(player, Components.NAME, playerInfo.getLogin());
-        data.setComponent(player, Components.CHARACTER);
+        data.setComponent(player, Components.TARGETABLE);
         data.setComponent(player, Components.Stats.HEALTH, 30);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
         int[] deck;

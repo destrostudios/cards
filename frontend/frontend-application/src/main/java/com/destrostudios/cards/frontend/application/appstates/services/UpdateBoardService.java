@@ -90,8 +90,8 @@ public class UpdateBoardService {
                 LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(playSpellEvent.spell, s -> new LinkedList<>());
                 if (validTargets.isEmpty()) {
                     // TODO: Improve?
-                    int cardEntity = data.query(Components.SPELL_ENTITIES)
-                            .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELL_ENTITIES))
+                    int cardEntity = data.query(Components.SPELLS)
+                            .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))
                                     .anyMatch(entity -> entity == playSpellEvent.spell)).getAsInt();
                     Card<CardModel> card = cardGuiMap.getOrCreateCard(cardEntity);
 

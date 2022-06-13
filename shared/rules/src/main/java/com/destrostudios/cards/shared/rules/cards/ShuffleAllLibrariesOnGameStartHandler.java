@@ -9,10 +9,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Philipp
- */
 public class ShuffleAllLibrariesOnGameStartHandler extends GameEventHandler<GameStartEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ShuffleLibraryHandler.class);
@@ -20,7 +16,7 @@ public class ShuffleAllLibrariesOnGameStartHandler extends GameEventHandler<Game
     @Override
     public void handle(GameStartEvent event, NetworkRandom random) {
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
-        LOG.info("shuffling libraries of players {}", players);
+        LOG.info("Shuffling libraries of players {}", players);
         players.forEach(player -> events.fire(new ShuffleLibraryEvent(player), random));
     }
 }

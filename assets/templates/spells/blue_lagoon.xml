@@ -1,0 +1,54 @@
+<template>
+    <values>
+        <draw>3</draw>
+    </values>
+    <entity>
+        <name>Blue Lagoon</name>
+        <targetable/>
+        <spellCard/>
+        <description>Draw [draw] random beasts from your deck.</description>
+        <spells>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_in_hand"/>
+                </conditions>
+                <cost>
+                    <entity>
+                        <mana>5</mana>
+                    </entity>
+                </cost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targetChains>
+                                    <entity>
+                                        <targetChain>
+                                            <entity>
+                                                <targetAll>
+                                                    <entity>
+                                                        <targetChains>
+                                                            <entity template="../targets/targets"/>
+                                                        </targetChains>
+                                                        <ally/>
+                                                        <beast/>
+                                                        <inLibrary/>
+                                                    </entity>
+                                                </targetAll>
+                                            </entity>
+                                            <entity>
+                                                <targetRandom>[draw]</targetRandom>
+                                            </entity>
+                                        </targetChain>
+                                    </entity>
+                                </targetChains>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

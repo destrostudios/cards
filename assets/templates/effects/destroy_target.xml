@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targetChains>
+            <entity template="../targets/targets"/>
+        </targetChains>
+        <destroy/>
+    </entity>
+</template>

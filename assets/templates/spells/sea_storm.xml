@@ -4,6 +4,7 @@
     </values>
     <entity>
         <name>Sea Storm</name>
+        <targetable/>
         <spellCard/>
         <description>Deal [damage] damage to all characters.</description>
         <spells>

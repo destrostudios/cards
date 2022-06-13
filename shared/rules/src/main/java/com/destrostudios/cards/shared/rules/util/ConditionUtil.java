@@ -13,7 +13,6 @@ public class ConditionUtil {
     private static final List<ComponentDefinition<?>> simpleRequirableComponents = new LinkedList<>();
     static {
         simpleRequirableComponents.add(Components.NAME);
-        simpleRequirableComponents.add(Components.CHARACTER);
         simpleRequirableComponents.add(Components.CREATURE_CARD);
         simpleRequirableComponents.add(Components.SPELL_CARD);
         simpleRequirableComponents.add(Components.Stats.ATTACK);
@@ -92,11 +91,39 @@ public class ConditionUtil {
                 return false;
             }
         }
+        if (data.hasComponent(condition, Components.Condition.IN_LIBRARY) && !data.hasComponent(target, Components.LIBRARY)) {
+            return false;
+        }
         if (data.hasComponent(condition, Components.Condition.IN_HAND) && !data.hasComponent(target, Components.HAND)) {
             return false;
         }
         if (data.hasComponent(condition, Components.Condition.ON_BOARD) && !data.hasComponent(target, Components.BOARD)) {
             return false;
+        }
+        if (data.hasComponent(condition, Components.Condition.IN_GRAVEYARD) && !data.hasComponent(target, Components.GRAVEYARD)) {
+            return false;
+        }
+        int[] spells = data.getComponent(target, Components.SPELLS);
+        if (spells != null) {
+            for (int spell : spells) {
+                if (SpellUtil.isDefaultCastFromHandSpell(data, spell)) {
+                    Integer cost = data.getComponent(spell, Components.COST);
+                    if (cost != null) {
+                        Integer manaCost = data.getComponent(cost, Components.MANA);
+                        if (manaCost != null) {
+                            Integer minimumManaCost = data.getComponent(condition, Components.Condition.MINIMUM_MANA_COST);
+                            if ((minimumManaCost != null) && (manaCost < minimumManaCost)) {
+                                return false;
+                            }
+                            Integer maximumManaCost = data.getComponent(condition, Components.Condition.MAXIMUM_MANA_COST);
+                            if ((maximumManaCost != null) && (manaCost > maximumManaCost)) {
+                                return false;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
         }
         if (data.hasComponent(condition, Components.Condition.NO_CREATURES)) {
             int creatures = data.query(Components.CREATURE_ZONE).list(card -> data.getComponent(card, Components.OWNED_BY) == target).size();

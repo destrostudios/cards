@@ -1,7 +1,7 @@
 <template>
     <entity>
         <name>Terror from Above</name>
-        <character/>
+        <targetable/>
         <creatureCard/>
         <attack>8</attack>
         <health>8</health>

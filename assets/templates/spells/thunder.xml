@@ -4,6 +4,7 @@
     </values>
     <entity>
         <name>Thunder</name>
+        <targetable/>
         <spellCard/>
         <description>Deal [damage] damage to target character.</description>
         <spells>

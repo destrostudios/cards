@@ -6,10 +6,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- *
- * @author Philipp
- */
 public class StartTurnHandler extends GameEventHandler<StartTurnEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(StartTurnHandler.class);
@@ -17,6 +13,6 @@ public class StartTurnHandler extends GameEventHandler<StartTurnEvent> {
     @Override
     public void handle(StartTurnEvent event, NetworkRandom random) {
         data.setComponent(event.player, Components.Game.ACTIVE_PLAYER);
-        LOG.info("turn of {} started.", event.player);
+        LOG.info("Turn of {} started.", event.player);
     }
 }

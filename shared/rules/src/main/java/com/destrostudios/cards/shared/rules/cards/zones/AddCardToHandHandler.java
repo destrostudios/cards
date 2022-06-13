@@ -13,6 +13,6 @@ public class AddCardToHandHandler extends GameEventHandler<AddCardToHandEvent> {
     @Override
     public void handle(AddCardToHandEvent event, NetworkRandom random) {
         events.fire(new AddCardToZoneEvent(event.card, Components.HAND), random);
-        LOG.info("added {} to hand", event.card);
+        LOG.info("Added {} to hand", event.card);
     }
 }

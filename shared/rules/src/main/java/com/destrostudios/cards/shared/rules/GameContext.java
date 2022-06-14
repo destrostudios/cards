@@ -91,8 +91,7 @@ public class GameContext {
                 new StartTurnHandler(),
                 new IncreaseAvailableManaOnTurnStartHandler(),
                 new SetManaToAvailableManaOnTurnStartHandler(),
-                new DrawCardOnTurnStartHandler(),
-                new ExecuteBotActionsOnTurnStartHandler()
+                new DrawCardOnTurnStartHandler()
         );
         addEventHandler(events.instant(), TriggerEffectTriggerIfPossibleEvent.class, new TriggerEffectTriggerIfPossibleHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());

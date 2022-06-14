@@ -1,10 +1,8 @@
 package com.destrostudios.cards.backend.application;
 
 import com.destrostudios.authtoken.NoValidateJwtService;
-import com.destrostudios.cards.backend.application.modules.AutoRejoinModule;
-import com.destrostudios.cards.backend.application.modules.GameOverModule;
-import com.destrostudios.cards.backend.application.modules.CardsGameStartServerModule;
-import com.destrostudios.cards.backend.application.modules.QueueServerModule;
+import com.destrostudios.cards.backend.application.modules.*;
+import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.NetworkUtil;
@@ -32,13 +30,14 @@ public class BackendApplication {
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new NetworkCardsService(true), kryoServer::getConnections);
+        CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule);
         QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule);
 
         GameOverModule gameOverModule = new GameOverModule(gameModule);
         AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);
 
-        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, gameStartModule, queueModule, gameOverModule, autoRejoinModule);
+        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameModule, cardsBotModule, gameStartModule, queueModule, gameOverModule, autoRejoinModule);
         server.start(NetworkUtil.PORT);
 
         System.out.println("Server started.");

@@ -50,6 +50,11 @@
             <version>${version.game-tools}</version>
         </dependency>
         <dependency>
+            <groupId>com.github.destrostudios.game-tools</groupId>
+            <artifactId>bot</artifactId>
+            <version>${version.game-tools}</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>

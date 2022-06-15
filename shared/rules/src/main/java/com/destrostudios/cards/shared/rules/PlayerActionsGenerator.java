@@ -23,29 +23,29 @@ public class PlayerActionsGenerator {
     public List<Event> generatePossibleActions(int player) {
         List<Event> possibleEvents = new LinkedList<>();
         if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
-            generatePlaySpells(player, possibleEvents::add);
+            List<Integer> allTargets = data.query(Components.TARGETABLE).list();
+            generatePlaySpells(player, allTargets, possibleEvents::add);
             possibleEvents.add(new EndTurnEvent(player));
         }
         return possibleEvents;
     }
 
-    private void generatePlaySpells(int player, Consumer<Event> out) {
+    private void generatePlaySpells(int player, List<Integer> allTargets, Consumer<Event> out) {
         List<Integer> ownedCardEntities = data.query(Components.OWNED_BY).list(ownedBy(player));
         for (int card : ownedCardEntities) {
             int[] spells = data.getComponent(card, Components.SPELLS);
             if (spells != null) {
                 for (int spell : spells) {
-                    generatePlaySpellEvents(card, spell, out);
+                    generatePlaySpellEvents(card, spell, allTargets, out);
                 }
             }
         }
     }
 
-    private void generatePlaySpellEvents(int card, int spell, Consumer<Event> out) {
+    private void generatePlaySpellEvents(int card, int spell, List<Integer> allTargets, Consumer<Event> out) {
         boolean targeted = SpellUtil.isTargeted(data, spell);
         List<Integer> validTargets = new LinkedList<>();
         if (targeted) {
-            List<Integer> allTargets = data.query(Components.TARGETABLE).list();
             for (int target : allTargets) {
                 int[] targets = new int[] { target };
                 if (SpellUtil.isCastable(data, card, spell, targets)) {

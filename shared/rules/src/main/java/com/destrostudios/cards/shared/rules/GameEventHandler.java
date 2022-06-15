@@ -18,8 +18,4 @@ public abstract class GameEventHandler<T extends Event> {
     protected <T> IntPredicate hasComponentValue(ComponentDefinition<T> component, T value) {
         return x -> data.hasComponentValue(x, component, value);
     }
-
-    protected IntPredicate hasComponent(ComponentDefinition<?> component) {
-        return x -> data.hasComponent(x, component);
-    }
 }

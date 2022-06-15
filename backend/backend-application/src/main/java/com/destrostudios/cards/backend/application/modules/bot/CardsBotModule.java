@@ -6,7 +6,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.gametools.bot.BotActionReplay;
-import com.destrostudios.gametools.bot.RolloutToEvaluation;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 import com.destrostudios.gametools.bot.mcts.TerminationType;
@@ -19,7 +18,6 @@ import com.esotericsoftware.kryonet.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.SecureRandom;
 import java.util.List;
 
 public class CardsBotModule extends NetworkModule {
@@ -36,7 +34,7 @@ public class CardsBotModule extends NetworkModule {
         botSettings.maxThreads = 1;
         botSettings.termination = TerminationType.MILLIS_ELAPSED;
         botSettings.strength = 2000;
-        botSettings.evaluation = new RolloutToEvaluation<>(new SecureRandom(), 5, this::eval)::evaluate;
+        botSettings.evaluation = CardsBotModule::eval;
         bot = new MctsBot<>(new CardsBotService(), botSettings);
     }
 
@@ -64,7 +62,7 @@ public class CardsBotModule extends NetworkModule {
         }
     }
 
-    private float[] eval(CardsBotState botState) {
+    public static float[] eval(CardsBotState botState) {
         SimpleEntityData data = botState.getGameContext().getData();
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
         float[] scores = new float[players.size()];

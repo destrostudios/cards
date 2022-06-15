@@ -10,23 +10,23 @@ import java.util.Objects;
 
 public class ConditionUtil {
 
-    private static final List<ComponentDefinition<?>> simpleRequirableComponents = new LinkedList<>();
+    private static final List<ComponentDefinition<?>> simpleRequireableComponents = new LinkedList<>();
     static {
-        simpleRequirableComponents.add(Components.NAME);
-        simpleRequirableComponents.add(Components.CREATURE_CARD);
-        simpleRequirableComponents.add(Components.SPELL_CARD);
-        simpleRequirableComponents.add(Components.Stats.ATTACK);
-        simpleRequirableComponents.add(Components.Stats.HEALTH);
-        simpleRequirableComponents.add(Components.Ability.SLOW);
-        simpleRequirableComponents.add(Components.Ability.DIVINE_SHIELD);
-        simpleRequirableComponents.add(Components.Ability.HEXPROOF);
-        simpleRequirableComponents.add(Components.Ability.IMMUNE);
-        simpleRequirableComponents.add(Components.Ability.TAUNT);
-        simpleRequirableComponents.add(Components.Tribe.BEAST);
-        simpleRequirableComponents.add(Components.Tribe.DRAGON);
-        simpleRequirableComponents.add(Components.Tribe.FISH);
-        simpleRequirableComponents.add(Components.Tribe.GOD);
-        simpleRequirableComponents.add(Components.Tribe.HUMAN);
+        simpleRequireableComponents.add(Components.NAME);
+        simpleRequireableComponents.add(Components.CREATURE_CARD);
+        simpleRequireableComponents.add(Components.SPELL_CARD);
+        simpleRequireableComponents.add(Components.Stats.ATTACK);
+        simpleRequireableComponents.add(Components.Stats.HEALTH);
+        simpleRequireableComponents.add(Components.Ability.SLOW);
+        simpleRequireableComponents.add(Components.Ability.DIVINE_SHIELD);
+        simpleRequireableComponents.add(Components.Ability.HEXPROOF);
+        simpleRequireableComponents.add(Components.Ability.IMMUNE);
+        simpleRequireableComponents.add(Components.Ability.TAUNT);
+        simpleRequireableComponents.add(Components.Tribe.BEAST);
+        simpleRequireableComponents.add(Components.Tribe.DRAGON);
+        simpleRequireableComponents.add(Components.Tribe.FISH);
+        simpleRequireableComponents.add(Components.Tribe.GOD);
+        simpleRequireableComponents.add(Components.Tribe.HUMAN);
     }
 
     public static boolean areConditionsFulfilled(EntityData data, int entity, int source, int[] targets) {
@@ -131,7 +131,7 @@ public class ConditionUtil {
                 return false;
             }
         }
-        for (ComponentDefinition<?> componentDefinition : simpleRequirableComponents) {
+        for (ComponentDefinition<?> componentDefinition : simpleRequireableComponents) {
             // Check has instead of (get != null) because of Void type
             if (data.hasComponent(condition, componentDefinition)) {
                 Object requiredComponent = data.getComponent(condition, componentDefinition);

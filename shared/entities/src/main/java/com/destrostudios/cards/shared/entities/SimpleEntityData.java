@@ -1,19 +1,18 @@
 package com.destrostudios.cards.shared.entities;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- *
- * @author Philipp
- */
 public class SimpleEntityData implements EntityData {
 
-    private final Map<ComponentDefinition<?>, Map<Integer, Object>> components = new HashMap<>();
-    private final AtomicInteger nextEntity = new AtomicInteger(0);
+    public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
+        components = new HashMap[componentDefinitions.size()];
+        for (int i = 0; i < components.length; i++) {
+            components[i] = new HashMap<>();
+        }
+    }
+    private HashMap<Integer, Object>[] components;
+    private AtomicInteger nextEntity = new AtomicInteger(0);
 
     @Override
     public boolean hasComponent(int entity, ComponentDefinition<?> component) {
@@ -40,24 +39,16 @@ public class SimpleEntityData implements EntityData {
         return nextEntity.getAndIncrement();
     }
 
-    Set<ComponentDefinition<?>> knownComponents() {
-        return components.keySet();
-    }
-
-    Set<Integer> getEntities() {
-        Set<Integer> result = new HashSet<>();
-        for (Map<Integer, Object> componentMap : components.values()) {
-            result.addAll(componentMap.keySet());
-        }
-        return result;
-    }
-
     @SuppressWarnings("unchecked")
     private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
-        return (Map<Integer, T>) components.computeIfAbsent(component, x -> new HashMap<>());
+        return (Map<Integer, T>) components[component.getId()];
     }
 
-    int getNextEntity() {
+    public Map<Integer, Object>[] getComponents() {
+        return components;
+    }
+
+    public int getNextEntity() {
         return nextEntity.get();
     }
 

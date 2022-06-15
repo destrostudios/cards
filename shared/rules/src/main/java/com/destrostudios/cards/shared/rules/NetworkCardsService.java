@@ -17,16 +17,14 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Map;
 
 public class NetworkCardsService implements GameService<GameContext, Event> {
 
     public NetworkCardsService(boolean resolveActions) {
         this.resolveActions = resolveActions;
-        gameStateSerializer = new GameStateSerializer();
     }
     private boolean resolveActions;
-    private GameStateSerializer gameStateSerializer;
 
     @Override
     public void initialize(Kryo kryo) {
@@ -72,7 +70,6 @@ public class NetworkCardsService implements GameService<GameContext, Event> {
                 return startGameInfo;
             }
         });
-        kryo.register(ComponentDefinition.class, new FieldSerializer<>(kryo, ComponentDefinition.class));
         kryo.register(String[].class, new Serializer<String[]>() {
 
             @Override
@@ -94,34 +91,26 @@ public class NetworkCardsService implements GameService<GameContext, Event> {
             }
         });
         kryo.register(Foil.class, new EnumSerializer<>(Foil.class));
-        kryo.register(GameContext.class, new Serializer<GameContext>() {
+        kryo.register(SimpleEntityData.class, new Serializer<SimpleEntityData>() {
 
             @Override
-            public void write(Kryo kryo, Output output, GameContext gameContext) {
-                kryo.writeObject(output, gameContext.getStartGameInfo());
-                FullGameState fullGameState = gameStateSerializer.exportState(gameContext.getData());
-                output.writeInt(fullGameState.getList().size());
-                for (Tuple<ComponentDefinition<?>, List<Tuple<Integer, Object>>> tuple : fullGameState.getList()) {
-                    ComponentDefinition component = tuple.getKey();
-                    kryo.writeObject(output, component);
-                    output.writeInt(tuple.getValue().size());
-                    for (Tuple<Integer, Object> tuple1 : tuple.getValue()) {
-                        int entity = tuple1.getKey();
-                        Object value = tuple1.getValue();
-                        output.writeInt(entity);
-                        kryo.writeClassAndObject(output, value);
+            public void write(Kryo kryo, Output output, SimpleEntityData simpleEntityData) {
+                for (int i = 0; i < Components.ALL.size(); i++) {
+                    Map<Integer, Object> componentMap = simpleEntityData.getComponents()[i];
+                    output.writeInt(componentMap.size());
+                    for (Map.Entry<Integer, Object> entry : componentMap.entrySet()) {
+                        output.writeInt(entry.getKey());
+                        kryo.writeClassAndObject(output, entry.getValue());
                     }
                 }
-                output.writeInt(fullGameState.getNextEntity());
+                output.writeInt(simpleEntityData.getNextEntity());
             }
 
             @Override
-            public GameContext read(Kryo kryo, Input input, Class<GameContext> type) {
-                StartGameInfo startGameInfo = kryo.readObject(input, StartGameInfo.class);
-                SimpleEntityData data = new SimpleEntityData();
-                int components = input.readInt();
-                for (int i = 0; i < components; i++) {
-                    ComponentDefinition component = kryo.readObject(input, ComponentDefinition.class);
+            public SimpleEntityData read(Kryo kryo, Input input, Class<SimpleEntityData> type) {
+                SimpleEntityData data = new SimpleEntityData(Components.ALL);
+                for (int i = 0; i < Components.ALL.size(); i++) {
+                    ComponentDefinition component = Components.ALL.get(i);
                     int entities = input.readInt();
                     for (int r = 0; r < entities; r++) {
                         int entity = input.readInt();
@@ -130,6 +119,21 @@ public class NetworkCardsService implements GameService<GameContext, Event> {
                     }
                 }
                 data.setNextEntity(input.readInt());
+                return data;
+            }
+        });
+        kryo.register(GameContext.class, new Serializer<GameContext>() {
+
+            @Override
+            public void write(Kryo kryo, Output output, GameContext gameContext) {
+                kryo.writeObject(output, gameContext.getStartGameInfo());
+                kryo.writeObject(output, gameContext.getData());
+            }
+
+            @Override
+            public GameContext read(Kryo kryo, Input input, Class<GameContext> type) {
+                StartGameInfo startGameInfo = kryo.readObject(input, StartGameInfo.class);
+                SimpleEntityData data = kryo.readObject(input, SimpleEntityData.class);
                 return new GameContext(startGameInfo, data);
             }
         });

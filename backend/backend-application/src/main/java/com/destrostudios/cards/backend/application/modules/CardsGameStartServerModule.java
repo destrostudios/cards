@@ -4,6 +4,7 @@ import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.TestGameSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
@@ -38,7 +39,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
     }
 
     public void startGame(StartGameInfo startGameInfo) {
-        SimpleEntityData data = new SimpleEntityData();
+        SimpleEntityData data = new SimpleEntityData(Components.ALL);
         TestGameSetup testGameSetup = new TestGameSetup(data, startGameInfo);
         testGameSetup.apply();
         GameContext gameContext = new GameContext(startGameInfo, data);

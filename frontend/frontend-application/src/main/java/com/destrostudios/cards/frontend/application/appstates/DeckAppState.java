@@ -15,6 +15,7 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.rules.AllCards;
+import com.destrostudios.cards.shared.rules.Components;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapFont;
@@ -88,7 +89,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         allCardModels = new LinkedList<>();
         templatesToCardModelsMap = new HashMap<>();
         cardModelsToTemplatesMap = new HashMap<>();
-        EntityData data = new SimpleEntityData();
+        EntityData data = new SimpleEntityData(Components.ALL);
         for (int i = 0; i < AllCards.TEMPLATES.length; i++) {
             String template = AllCards.TEMPLATES[i];
 

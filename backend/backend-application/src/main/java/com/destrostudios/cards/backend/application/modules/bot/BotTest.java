@@ -4,6 +4,7 @@ import com.destrostudios.cards.backend.application.TestGameSetup;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
@@ -28,7 +29,7 @@ public class BotTest {
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
 
         StartGameInfo startGameInfo = new StartGameInfo("forest", new PlayerInfo(2, "Bot1", new LinkedList<>()), new PlayerInfo(2, "Bot2", new LinkedList<>()));
-        SimpleEntityData data = new SimpleEntityData();
+        SimpleEntityData data = new SimpleEntityData(Components.ALL);
         TestGameSetup testGameSetup = new TestGameSetup(data, startGameInfo);
         testGameSetup.apply();
         GameContext gameContext = new GameContext(startGameInfo, data);

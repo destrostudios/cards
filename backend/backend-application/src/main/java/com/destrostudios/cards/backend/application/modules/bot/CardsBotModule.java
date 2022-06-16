@@ -65,6 +65,8 @@ public class CardsBotModule extends NetworkModule {
     public static float[] eval(CardsBotState botState) {
         SimpleEntityData data = botState.getGameContext().getData();
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
+        List<Integer> cardsOnBoard = data.query(Components.BOARD).list();
+        List<Integer> cardsInHand = data.query(Components.HAND).list();
         float[] scores = new float[players.size()];
         int i = 0;
         for (int player : players) {
@@ -72,23 +74,64 @@ public class CardsBotModule extends NetworkModule {
             if (botState.getGameContext().isGameOver()) {
                 score = ((botState.getGameContext().getWinner() == player) ? 1 : 0);
             } else {
-                int ownHealth = data.getComponent(player, Components.Stats.HEALTH);
                 int opponent = data.getComponent(player, Components.NEXT_PLAYER);
-                int opponentHealth = data.getComponent(opponent, Components.Stats.HEALTH);
-                for (int card : data.query(Components.Stats.HEALTH).list(card -> data.hasComponent(card, Components.BOARD))) {
-                    int health = data.getComponent(card, Components.Stats.HEALTH);
+                int ownPlayerHealth = data.getComponent(player, Components.Stats.HEALTH);
+                int opponentPlayerHealth = data.getComponent(opponent, Components.Stats.HEALTH);
+                int ownCreaturesAttack = 0;
+                int opponentCreaturesAttack = 0;
+                int ownCreaturesHealth = 0;
+                int opponentCreaturesHealth = 0;
+                int ownCardsInHand = 0;
+                int opponentCardsInHand = 0;
+                for (int card : cardsOnBoard) {
                     int owner = data.getComponent(card, Components.OWNED_BY);
+                    Integer attack = data.getComponent(card, Components.Stats.ATTACK);
+                    Integer health = data.getComponent(card, Components.Stats.HEALTH);
                     if (owner == player) {
-                        ownHealth += health;
+                        if (attack != null) {
+                            ownCreaturesAttack += attack;
+                        }
+                        if (health != null) {
+                            ownCreaturesHealth += health;
+                        }
                     } else {
-                        opponentHealth += health;
+                        if (attack != null) {
+                            opponentCreaturesAttack += attack;
+                        }
+                        if (health != null) {
+                            opponentCreaturesAttack += health;
+                        }
                     }
                 }
-                score = (((float) ownHealth) / (ownHealth + opponentHealth));
+                for (int card : cardsInHand) {
+                    int owner = data.getComponent(card, Components.OWNED_BY);
+                    if (owner == player) {
+                        ownCardsInHand++;
+                    } else {
+                        opponentCardsInHand++;
+                    }
+                }
+                float playerHealthWeight = 2;
+                float creaturesAttackWeight = 1;
+                float creaturesHealthWeight = 3;
+                float cardsInHandWeight = 0.25f;
+                float sumWeights = (playerHealthWeight + creaturesAttackWeight + creaturesHealthWeight + cardsInHandWeight);
+
+                float playerHealthScore = getWeightedScore(playerHealthWeight, ownPlayerHealth, ownPlayerHealth + opponentPlayerHealth);
+                float creaturesAttackScore = getWeightedScore(creaturesAttackWeight, ownCreaturesAttack, ownCreaturesAttack + opponentCreaturesAttack);
+                float creaturesHealthScore = getWeightedScore(creaturesHealthWeight, ownCreaturesHealth, ownCreaturesHealth + opponentCreaturesHealth);
+                float cardsInHandScore = getWeightedScore(cardsInHandWeight, ownCardsInHand, ownCardsInHand + opponentCardsInHand);
+                float sumScores = (playerHealthScore + creaturesAttackScore + creaturesHealthScore + cardsInHandScore);
+
+                score = (sumScores / sumWeights);
             }
             scores[i] = score;
             i++;
         }
         return scores;
+    }
+
+    private static float getWeightedScore(float weight, float value, float sum) {
+        return ((sum != 0) ? weight * (value / sum) : 0.5f);
     }
 }

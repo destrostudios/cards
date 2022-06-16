@@ -47,16 +47,20 @@ public class BotTest {
         CardsBotState botState = new CardsBotState(gameContext);
         botState.setRandom(random);
 
+        long gameStartNanos = System.nanoTime();
+        int actionIndex = 0;
         while (!gameContext.isGameOver()) {
-            long startNanos = System.nanoTime();
+            long actionStartNanos = System.nanoTime();
             List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
-            long durationNanos = (System.nanoTime() - startNanos);
+            long actionDurationNanos = (System.nanoTime() - actionStartNanos);
             Event action = actions.get(0);
-            System.out.println("Node Count " + botSettings.strength + " in " + (durationNanos / 1_000_000) + "ms => " + action + " (from " + actions.size() + " possible actions)");
+            System.out.println("Action #" + (actionIndex + 1) + " => " + action + "\t(from " + actions.size() + " possible actions, node count " + botSettings.strength + ", in " + (actionDurationNanos / 1_000_000) + "ms)");
             applyAction(gameContext, action, random);
             bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
+            actionIndex++;
         }
-        System.out.println("Game over.");
+        long gameDurationNanos = (System.nanoTime() - gameStartNanos);
+        System.out.println("Game over, total duration = " + (gameDurationNanos / 1_000_000) + "ms.");
     }
 
     private static void applyAction(GameContext gameContext, Event action, NetworkRandom random) {

@@ -34,7 +34,7 @@ public class GameContext {
     @Getter
     private EventQueue events;
     @Getter
-    private boolean gameOver;
+    private Integer winner;
 
     private void initListeners() {
         addEventHandlers(events.instant(), AddCardToBoardEvent.class,
@@ -119,7 +119,11 @@ public class GameContext {
         eventHandlers.add(eventClass, handler::handle);
     }
 
-    public void onGameOver() {
-        gameOver = true;
+    public void onGameOver(int winner) {
+        this.winner = winner;
+    }
+
+    public boolean isGameOver() {
+        return (winner != null);
     }
 }

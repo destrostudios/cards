@@ -68,19 +68,25 @@ public class CardsBotModule extends NetworkModule {
         float[] scores = new float[players.size()];
         int i = 0;
         for (int player : players) {
-            int ownHealth = data.getComponent(player, Components.Stats.HEALTH);
-            int opponent = data.getComponent(player, Components.NEXT_PLAYER);
-            int opponentHealth = data.getComponent(opponent, Components.Stats.HEALTH);
-            for (int card : data.query(Components.Stats.HEALTH).list(card -> data.hasComponent(card, Components.BOARD))) {
-                int health = data.getComponent(card, Components.Stats.HEALTH);
-                int owner = data.getComponent(card, Components.OWNED_BY);
-                if (owner == player) {
-                    ownHealth += health;
-                } else {
-                    opponentHealth += health;
+            float score;
+            if (botState.getGameContext().isGameOver()) {
+                score = ((botState.getGameContext().getWinner() == player) ? 1 : 0);
+            } else {
+                int ownHealth = data.getComponent(player, Components.Stats.HEALTH);
+                int opponent = data.getComponent(player, Components.NEXT_PLAYER);
+                int opponentHealth = data.getComponent(opponent, Components.Stats.HEALTH);
+                for (int card : data.query(Components.Stats.HEALTH).list(card -> data.hasComponent(card, Components.BOARD))) {
+                    int health = data.getComponent(card, Components.Stats.HEALTH);
+                    int owner = data.getComponent(card, Components.OWNED_BY);
+                    if (owner == player) {
+                        ownHealth += health;
+                    } else {
+                        opponentHealth += health;
+                    }
                 }
+                score = (((float) ownHealth) / (ownHealth + opponentHealth));
             }
-            scores[i] = (((float) ownHealth) / (ownHealth + opponentHealth));
+            scores[i] = score;
             i++;
         }
         return scores;

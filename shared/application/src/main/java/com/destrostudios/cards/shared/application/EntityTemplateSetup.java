@@ -11,7 +11,7 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 public class EntityTemplateSetup {
 
     public static void setup() {
-        XMLTemplateManager xmlTemplateManager =new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
+        XMLTemplateManager xmlTemplateManager = new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.NAME));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.TARGETABLE));

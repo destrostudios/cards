@@ -18,6 +18,6 @@ public class GameOverHandler extends GameEventHandler<GameOverEvent> {
     @Override
     public void handle(GameOverEvent event, NetworkRandom random) {
         LOG.info("Game over, winning player is {}.", event.winner);
-        gameContext.onGameOver();
+        gameContext.onGameOver(event.winner);
     }
 }

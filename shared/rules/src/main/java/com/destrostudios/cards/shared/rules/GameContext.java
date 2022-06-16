@@ -17,6 +17,16 @@ import lombok.Getter;
 
 public class GameContext {
 
+    public GameContext(GameContext gameContext) {
+        this(gameContext.startGameInfo, new SimpleEntityData(gameContext.data));
+    }
+
+    public GameContext(StartGameInfo startGameInfo, SimpleEntityData data) {
+        this.startGameInfo = startGameInfo;
+        this.data = data;
+        events = new EventQueue();
+        initListeners();
+    }
     @Getter
     private StartGameInfo startGameInfo;
     @Getter
@@ -25,13 +35,6 @@ public class GameContext {
     private EventQueue events;
     @Getter
     private boolean gameOver;
-
-    public GameContext(StartGameInfo startGameInfo, SimpleEntityData data) {
-        this.startGameInfo = startGameInfo;
-        this.data = data;
-        events = new EventQueue();
-        initListeners();
-    }
 
     private void initListeners() {
         addEventHandlers(events.instant(), AddCardToBoardEvent.class,
@@ -113,7 +116,7 @@ public class GameContext {
     private <T extends Event> void addEventHandler(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T> handler) {
         handler.data = data;
         handler.events = events;
-        eventHandlers.add(eventClass, (event, random) -> handler.handle(event, random));
+        eventHandlers.add(eventClass, handler::handle);
     }
 
     public void onGameOver() {

@@ -14,64 +14,59 @@ import java.util.stream.Collectors;
 
 public class PlayerActionsGenerator {
 
-    private final EntityData data;
-
-    public PlayerActionsGenerator(EntityData data) {
-        this.data = data;
-    }
-
-    public List<Event> generatePossibleActions(int player) {
+    public List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new LinkedList<>();
         if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
             List<Integer> allTargets = data.query(Components.TARGETABLE).list();
-            generatePlaySpells(player, allTargets, possibleEvents::add);
+            generatePlaySpells(data, player, allTargets, possibleEvents::add);
             possibleEvents.add(new EndTurnEvent(player));
         }
         return possibleEvents;
     }
 
-    private void generatePlaySpells(int player, List<Integer> allTargets, Consumer<Event> out) {
-        List<Integer> ownedCardEntities = data.query(Components.OWNED_BY).list(ownedBy(player));
+    private void generatePlaySpells(EntityData data, int player, List<Integer> allTargets, Consumer<Event> out) {
+        List<Integer> ownedCardEntities = data.query(Components.OWNED_BY).list(ownedBy(data, player));
         for (int card : ownedCardEntities) {
             int[] spells = data.getComponent(card, Components.SPELLS);
             if (spells != null) {
                 for (int spell : spells) {
-                    generatePlaySpellEvents(card, spell, allTargets, out);
+                    generatePlaySpellEvents(data, card, spell, allTargets, out);
                 }
             }
         }
     }
 
-    private void generatePlaySpellEvents(int card, int spell, List<Integer> allTargets, Consumer<Event> out) {
-        boolean targeted = SpellUtil.isTargeted(data, spell);
-        List<Integer> validTargets = new LinkedList<>();
-        if (targeted) {
-            for (int target : allTargets) {
-                int[] targets = new int[] { target };
-                if (SpellUtil.isCastable(data, card, spell, targets)) {
-                    validTargets.add(target);
+    private void generatePlaySpellEvents(EntityData data, int card, int spell, List<Integer> allTargets, Consumer<Event> out) {
+        int[] noTargets = new int[0];
+        boolean isCastableIgnoringTargets = SpellUtil.isCastable(data, card, spell, noTargets);
+        if (isCastableIgnoringTargets) {
+            boolean targeted = SpellUtil.isTargeted(data, spell);
+            List<Integer> validTargets = new LinkedList<>();
+            if (targeted) {
+                for (int target : allTargets) {
+                    int[] targets = new int[] { target };
+                    if (SpellUtil.isCastable(data, card, spell, targets)) {
+                        validTargets.add(target);
+                    }
+                }
+                if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.stream().anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
+                    validTargets = validTargets.stream()
+                            .filter(target -> data.hasComponent(target, Components.Ability.TAUNT))
+                            .collect(Collectors.toList());
                 }
             }
-            if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.stream().anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
-                validTargets = validTargets.stream()
-                        .filter(target -> data.hasComponent(target, Components.Ability.TAUNT))
-                        .collect(Collectors.toList());
-            }
-        }
-        if (validTargets.size() > 0) {
-            for (int target : validTargets) {
-                int[] targets = new int[] { target };
-                out.accept(new PlaySpellEvent(spell, targets));
-            }
-        } else if ((!targeted) || data.hasComponent(spell, Components.Spell.TARGET_OPTIONAL)) {
-            int[] targets = new int[0];
-            if (SpellUtil.isCastable(data, card, spell, targets)) {
-                out.accept(new PlaySpellEvent(spell, targets));
+            if (validTargets.size() > 0) {
+                for (int target : validTargets) {
+                    int[] targets = new int[] { target };
+                    out.accept(new PlaySpellEvent(spell, targets));
+                }
+            } else if ((!targeted) || data.hasComponent(spell, Components.Spell.TARGET_OPTIONAL)) {
+                out.accept(new PlaySpellEvent(spell, noTargets));
             }
         }
     }
 
-    private IntPredicate ownedBy(int player) {
+    private IntPredicate ownedBy(EntityData data, int player) {
         return x -> data.hasComponentValue(x, Components.OWNED_BY, player);
     }
 }

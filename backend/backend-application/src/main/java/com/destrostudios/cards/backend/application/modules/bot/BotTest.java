@@ -45,13 +45,14 @@ public class BotTest {
         botSettings.evaluation = CardsBotModule::eval;
         MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
         CardsBotState botState = new CardsBotState(gameContext);
+        botState.setRandom(random);
 
         while (!gameContext.isGameOver()) {
             long startNanos = System.nanoTime();
             List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
             long durationNanos = (System.nanoTime() - startNanos);
             Event action = actions.get(0);
-            System.out.println("Node Count " + botSettings.strength + " in " + (durationNanos / 1_000_000) + "ms => " + action);
+            System.out.println("Node Count " + botSettings.strength + " in " + (durationNanos / 1_000_000) + "ms => " + action + " (from " + actions.size() + " possible actions)");
             applyAction(gameContext, action, random);
             bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
         }

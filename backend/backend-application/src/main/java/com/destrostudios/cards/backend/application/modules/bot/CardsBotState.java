@@ -14,10 +14,17 @@ import java.util.*;
 
 public class CardsBotState implements BotGameState<Event, Integer> {
 
+    public CardsBotState(CardsBotState cardsBotState) {
+        this.gameContext = new GameContext(cardsBotState.gameContext);
+        players = cardsBotState.players;
+        playerActionsGenerator = cardsBotState.playerActionsGenerator;
+        random = cardsBotState.random;
+    }
+
     public CardsBotState(GameContext gameContext) {
         this.gameContext = gameContext;
         players = gameContext.getData().query(Components.NEXT_PLAYER).list();
-        playerActionsGenerator = new PlayerActionsGenerator(gameContext.getData());
+        playerActionsGenerator = new PlayerActionsGenerator();
     }
     @Getter
     private GameContext gameContext;
@@ -42,7 +49,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     @Override
     public List<Event> generateActions(Integer team) {
-        return playerActionsGenerator.generatePossibleActions(team);
+        return playerActionsGenerator.generatePossibleActions(gameContext.getData(), team);
     }
 
     @Override

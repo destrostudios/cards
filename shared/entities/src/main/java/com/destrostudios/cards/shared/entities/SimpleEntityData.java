@@ -5,14 +5,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleEntityData implements EntityData {
 
+    public SimpleEntityData(SimpleEntityData data) {
+        components = new HashMap[data.components.length];
+        for (int i = 0; i < components.length; i++) {
+            components[i] = new HashMap<>(data.components[i]);
+        }
+        nextEntity = new AtomicInteger(data.getNextEntity());
+    }
+
     public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
         components = new HashMap[componentDefinitions.size()];
         for (int i = 0; i < components.length; i++) {
             components[i] = new HashMap<>();
         }
+        nextEntity = new AtomicInteger(0);
     }
     private HashMap<Integer, Object>[] components;
-    private AtomicInteger nextEntity = new AtomicInteger(0);
+    private AtomicInteger nextEntity;
+
+    @Override
+    public int createEntity() {
+        return nextEntity.getAndIncrement();
+    }
 
     @Override
     public boolean hasComponent(int entity, ComponentDefinition<?> component) {
@@ -35,8 +49,8 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
-    public int createEntity() {
-        return nextEntity.getAndIncrement();
+    public <T> Aggregator<T> query(ComponentDefinition<T> component) {
+        return new SimpleAggregator<>(getComponentMap(component));
     }
 
     @SuppressWarnings("unchecked")
@@ -48,16 +62,11 @@ public class SimpleEntityData implements EntityData {
         return components;
     }
 
-    public int getNextEntity() {
-        return nextEntity.get();
-    }
-
     public void setNextEntity(int value) {
         nextEntity.set(value);
     }
 
-    @Override
-    public <T> Aggregator<T> query(ComponentDefinition<T> component) {
-        return new SimpleAggregator<>(getComponentMap(component));
+    public int getNextEntity() {
+        return nextEntity.get();
     }
 }

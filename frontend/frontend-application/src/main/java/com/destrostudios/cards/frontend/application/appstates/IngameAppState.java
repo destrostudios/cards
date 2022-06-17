@@ -91,25 +91,20 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void initInputListeners() {
         InputManager inputManager = mainApplication.getInputManager();
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addMapping("end", new KeyTrigger(KeyInput.KEY_END));
-        inputManager.addMapping("delete", new KeyTrigger(KeyInput.KEY_DELETE));
-        inputManager.addListener(this, "space", "end", "delete");
+        inputManager.addMapping("1", new KeyTrigger(KeyInput.KEY_1));
+        inputManager.addListener(this, "space", "1");
     }
 
     @Override
     public void onAction(String name, boolean isPressed, float lastTimePerFrame) {
-        if ("space".equals(name) && isPressed) {
+        if ("1".equals(name) && isPressed) {
             CameraAppState cameraAppState = getAppState(CameraAppState.class);
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if (!gameService.getGameContext().isGameOver()) {
-            if ("end".equals(name) && isPressed) {
+            if ("space".equals(name) && isPressed) {
                 if (sendableEndTurnEvent != null) {
                     gameService.sendAction(sendableEndTurnEvent);
                 }
-            } // TODO: Acts as a temporary way to end the other players turn until everything is cleanuped
-            else if ("delete".equals(name) && isPressed) {
-                int activePlayerEntity = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
-                gameService.sendAction(new EndTurnEvent(activePlayerEntity));
             }
         }
     }
@@ -138,8 +133,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                         return new Vector2f(1, ZONE_HEIGHT);
                     } else if (zone == playerZones.getHandZone()) {
                         return new Vector2f(5, ZONE_HEIGHT - 0.1f);
-                    } else if (zone == playerZones.getSpellZone()) {
-                        return new Vector2f(6.5f, ZONE_HEIGHT);
                     } else if (zone == playerZones.getCreatureZone()) {
                         return new Vector2f(6.5f, ZONE_HEIGHT);
                     } else if (zone == playerZones.getGraveyardZone()) {
@@ -151,8 +144,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
         board.registerVisualizer_ZonePosition(zonePosition -> {
             for (PlayerZones playerZones : playerZonesMap.values()) {
-                if ((zonePosition.getZone() == playerZones.getSpellZone())
-                 || (zonePosition.getZone() == playerZones.getCreatureZone())) {
+                if (zonePosition.getZone() == playerZones.getCreatureZone()) {
                     return true;
                 }
             }
@@ -177,7 +169,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         Vector3f offset = new Vector3f(0, 0, ZONE_HEIGHT);
         float directionX = 1;
         float directionZ = 1;
-        Quaternion zoneRotation = Quaternion.IDENTITY;
         // TODO: Properly query these, ensure own player is first
         int[] players = new int[2];
         players[0] = gameService.getPlayerEntity();
@@ -186,14 +177,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             if (i == 1) {
                 directionX *= -1;
                 directionZ *= -1;
-                zoneRotation = new Quaternion().fromAngleAxis(FastMath.PI, Vector3f.UNIT_Y);
             }
 
-            float x = -0.5f;
-            float z = (ZONE_HEIGHT / 2);
-            CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-            x += 5;
-            SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 1, 1)) {
+            float z = 0.2f + (ZONE_HEIGHT / 2);
+            CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(0, 0, directionZ * z), Quaternion.IDENTITY, new Vector3f(1, 1, 1));
+            float x = 4.5f;
+            SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), Quaternion.IDENTITY, new Vector3f(0.02f, 1, 1)) {
 
                 // TODO: Cleanup
                 @Override
@@ -203,11 +192,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             };
 
-            x = -0.5f;
             z += ZONE_HEIGHT;
-            CenteredIntervalZone spellZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(1, 1, 1));
-            x += 5;
-            SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), zoneRotation, new Vector3f(0.02f, 0, 0)) {
+            SimpleIntervalZone deckZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), Quaternion.IDENTITY, new Vector3f(0.015f, 0, 0)) {
 
                 // TODO: Cleanup
                 @Override
@@ -217,17 +203,15 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             };
 
-            x = 0;
-            z += (ZONE_HEIGHT - 0.25f);
-            Quaternion handRotation = zoneRotation.mult(new Quaternion().fromAngleAxis(0.1f * FastMath.PI, Vector3f.UNIT_X));
-            CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(directionX * x, 0, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
+            z += 0.5f;
+            Quaternion handRotation = new Quaternion().fromAngleAxis(0.1f * FastMath.PI, Vector3f.UNIT_X);
+            CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(0, 0.25f, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
 
             board.addZone(deckZone);
             board.addZone(handZone);
-            board.addZone(spellZone);
             board.addZone(creatureZone);
             board.addZone(graveyardZone);
-            playerZonesMap.put(players[i], new PlayerZones(deckZone, handZone, spellZone, creatureZone, graveyardZone));
+            playerZonesMap.put(players[i], new PlayerZones(deckZone, handZone, creatureZone, graveyardZone));
         }
         BoardSettings boardSettings = BoardSettings.builder()
                 .inputActionPrefix("ingame")
@@ -266,7 +250,15 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         gameService.getGameContext().getEvents().instant().add(StartTurnEvent.class, (event, random) -> onTurnStarted());
 
         gameService.getGameContext().getEvents().resolved().add(AddCardToCreatureZoneEvent.class, (event, random) -> tryPlayEntryAnimation(event.card));
-        gameService.getGameContext().getEvents().pre().add(BattleEvent.class, (event, random) -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
+        gameService.getGameContext().getEvents().pre().add(BattleEvent.class, (event, random) -> {
+            // TODO: Add player visualizations
+            if (!gameService.getGameContext().getData().hasComponent(event.target, Components.NEXT_PLAYER)) {
+                Card<CardModel> attacker = cardGuiMap.getOrCreateCard(event.source);
+                Card<CardModel> defender = cardGuiMap.getOrCreateCard(event.target);
+                board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
+            }
+        });
+        gameService.getGameContext().getEvents().resolved().add(BattleEvent.class, (event, random) -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
         gameService.getGameContext().getEvents().pre().add(ShuffleLibraryEvent.class, (event, random) -> {
             LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             // board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
@@ -362,8 +354,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(BoardAppState.class));
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(IngameHudAppState.class));
         mainApplication.getInputManager().deleteMapping("space");
-        mainApplication.getInputManager().deleteMapping("end");
-        mainApplication.getInputManager().deleteMapping("delete");
+        mainApplication.getInputManager().deleteMapping("1");
         mainApplication.getInputManager().removeListener(this);
     }
 }

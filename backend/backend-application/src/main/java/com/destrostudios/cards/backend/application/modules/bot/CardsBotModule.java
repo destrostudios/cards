@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
@@ -13,12 +13,12 @@ import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.destrostudios.gametools.network.shared.modules.game.messages.GameActionRequest;
-import com.destrostudios.gametools.network.shared.modules.game.messages.GameStartRequest;
 import com.esotericsoftware.kryonet.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CardsBotModule extends NetworkModule {
 
@@ -41,24 +41,26 @@ public class CardsBotModule extends NetworkModule {
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof GameActionRequest request) {
-            if ((request.action() instanceof GameStartRequest) || (request.action() instanceof EndTurnEvent)) {
-                ServerGameData<GameContext> game = gameModule.getGame(request.game());
-                SimpleEntityData data = game.state.getData();
-                while (true) {
-                    Integer activePlayer = data.query(Components.Game.ACTIVE_PLAYER).list().get(0);
-                    // Yeah... good enough for now
-                    if (!"Bot".equals(data.getComponent(activePlayer, Components.NAME)) || game.state.isGameOver()) {
-                        break;
-                    }
-                    CardsBotState botState = new CardsBotState(game.state);
-                    LOG.info("Bot started calculating...");
-                    long startNanos = System.nanoTime();
-                    List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
-                    LOG.info("Bot finished calculating after {}", (System.nanoTime() - startNanos));
-                    gameModule.applyAction(game.id, actions.get(0));
-                    bot.stepRoot(new BotActionReplay<>(actions.get(0), new int[0])); // TODO: Randomness?
-                }
+            checkBotTurn(request.game());
+        }
+    }
+
+    public void checkBotTurn(UUID gameId) {
+        ServerGameData<GameContext> game = gameModule.getGame(gameId);
+        SimpleEntityData data = game.state.getData();
+        while (true) {
+            Integer activePlayer = data.query(Components.Game.ACTIVE_PLAYER).list().get(0);
+            // Yeah... good enough for now
+            if (!"Bot".equals(data.getComponent(activePlayer, Components.NAME)) || game.state.isGameOver()) {
+                break;
             }
+            CardsBotState botState = new CardsBotState(game.state);
+            LOG.info("Bot started calculating...");
+            long startNanos = System.nanoTime();
+            List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
+            LOG.info("Bot finished calculating after {}", (System.nanoTime() - startNanos));
+            gameModule.applyAction(game.id, actions.get(0));
+            bot.stepRoot(new BotActionReplay<>(actions.get(0), new int[0])); // TODO: Randomness?
         }
     }
 
@@ -75,8 +77,8 @@ public class CardsBotModule extends NetworkModule {
                 score = ((botState.getGameContext().getWinner() == player) ? 1 : 0);
             } else {
                 int opponent = data.getComponent(player, Components.NEXT_PLAYER);
-                int ownPlayerHealth = data.getComponent(player, Components.Stats.HEALTH);
-                int opponentPlayerHealth = data.getComponent(opponent, Components.Stats.HEALTH);
+                int ownPlayerHealth = StatsUtil.getEffectiveHealth(data, player);
+                int opponentPlayerHealth = StatsUtil.getEffectiveHealth(data, opponent);
                 int ownCreaturesAttack = 0;
                 int opponentCreaturesAttack = 0;
                 int ownCreaturesHealth = 0;
@@ -85,8 +87,8 @@ public class CardsBotModule extends NetworkModule {
                 int opponentCardsInHand = 0;
                 for (int card : cardsOnBoard) {
                     int owner = data.getComponent(card, Components.OWNED_BY);
-                    Integer attack = data.getComponent(card, Components.Stats.ATTACK);
-                    Integer health = data.getComponent(card, Components.Stats.HEALTH);
+                    Integer attack = StatsUtil.getEffectiveAttack(data, card);
+                    Integer health = StatsUtil.getEffectiveHealth(data, card);
                     if (owner == player) {
                         if (attack != null) {
                             ownCreaturesAttack += attack;
@@ -99,7 +101,7 @@ public class CardsBotModule extends NetworkModule {
                             opponentCreaturesAttack += attack;
                         }
                         if (health != null) {
-                            opponentCreaturesAttack += health;
+                            opponentCreaturesHealth += health;
                         }
                     }
                 }

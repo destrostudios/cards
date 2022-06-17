@@ -38,7 +38,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
         startGame(startGameInfo);
     }
 
-    public void startGame(StartGameInfo startGameInfo) {
+    public UUID startGame(StartGameInfo startGameInfo) {
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
         TestGameSetup testGameSetup = new TestGameSetup(data, startGameInfo);
         testGameSetup.apply();
@@ -55,5 +55,6 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
                 gameModule.join(other, gameId);
             }
         }
+        return gameId;
     }
 }

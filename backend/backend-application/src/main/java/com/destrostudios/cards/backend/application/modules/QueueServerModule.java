@@ -1,6 +1,7 @@
 package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
 import com.destrostudios.cards.shared.network.modules.QueueMessage;
 import com.destrostudios.cards.shared.network.modules.QueueModule;
 import com.destrostudios.cards.shared.network.modules.UnqueueMessage;
@@ -14,18 +15,21 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class QueueServerModule extends QueueModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
-    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule) {
+    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule) {
         this.jwtModule = jwtModule;
         this.cardsGameStartServerModule = cardsGameStartServerModule;
+        this.cardsBotModule = cardsBotModule;
         playersInQueue = new HashMap<>();
     }
     private JwtServerModule jwtModule;
     private CardsGameStartServerModule cardsGameStartServerModule;
+    private CardsBotModule cardsBotModule;
     private HashMap<Long, PlayerInfo> playersInQueue;
 
     @Override
@@ -40,7 +44,8 @@ public class QueueServerModule extends QueueModule {
                     playersInQueue.put(user.id, playerInfo);
                     startGameIfPossible();
                 } else {
-                    cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(2, "Bot", new LinkedList<>())));
+                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(2, "Bot", new LinkedList<>())));
+                    cardsBotModule.checkBotTurn(gameId);
                 }
             }
         } else if ((object instanceof UnqueueMessage) || (object instanceof Logout)) {

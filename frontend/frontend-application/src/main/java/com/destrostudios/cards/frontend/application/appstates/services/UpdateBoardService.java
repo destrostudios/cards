@@ -55,18 +55,13 @@ public class UpdateBoardService {
                         isFront = false;
                     }
                 } else {
-                    cardZoneIndex = data.getComponent(cardEntity, Components.SPELL_ZONE);
+                    cardZoneIndex = data.getComponent(cardEntity, Components.CREATURE_ZONE);
                     if (cardZoneIndex != null) {
-                        cardZone = playerZones.getSpellZone();
+                        cardZone = playerZones.getCreatureZone();
                     } else {
-                        cardZoneIndex = data.getComponent(cardEntity, Components.CREATURE_ZONE);
+                        cardZoneIndex = data.getComponent(cardEntity, Components.GRAVEYARD);
                         if (cardZoneIndex != null) {
-                            cardZone = playerZones.getCreatureZone();
-                        } else {
-                            cardZoneIndex = data.getComponent(cardEntity, Components.GRAVEYARD);
-                            if (cardZoneIndex != null) {
-                                cardZone = playerZones.getGraveyardZone();
-                            }
+                            cardZone = playerZones.getGraveyardZone();
                         }
                     }
                 }

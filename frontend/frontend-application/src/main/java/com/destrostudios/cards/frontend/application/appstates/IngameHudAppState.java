@@ -11,8 +11,7 @@ public class IngameHudAppState extends MyBaseAppState {
     private float margin = 10;
 
     private Node guiNode = new Node();
-    private BitmapText[] textPlayerHealth = new BitmapText[2];
-    private BitmapText textCurrentPlayer;
+    private BitmapText textActivePlayer;
     private BitmapText textPlayerManaLabel;
     private BitmapText textPlayerManaAmount;
 
@@ -20,9 +19,7 @@ public class IngameHudAppState extends MyBaseAppState {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
-        textPlayerHealth[0] = new BitmapText(guiFont);
-        textPlayerHealth[1] = new BitmapText(guiFont);
-        textCurrentPlayer = new BitmapText(guiFont);
+        textActivePlayer = new BitmapText(guiFont);
         textPlayerManaLabel = new BitmapText(guiFont);
         textPlayerManaLabel.setText("Your Mana: ");
         textPlayerManaAmount = new BitmapText(guiFont);
@@ -30,19 +27,13 @@ public class IngameHudAppState extends MyBaseAppState {
 
         float x = margin;
         float y = mainApplication.getContext().getSettings().getHeight() - margin;
-        textPlayerHealth[0].setLocalTranslation(x, y, 0);
-        y -= textPlayerHealth[0].getLineHeight() + margin;
-        textPlayerHealth[1].setLocalTranslation(x, y, 0);
-        y -= textPlayerHealth[1].getLineHeight() + margin;
-        textCurrentPlayer.setLocalTranslation(x, y, 0);
-        y -= textCurrentPlayer.getLineHeight() + margin;
+        textActivePlayer.setLocalTranslation(x, y, 0);
+        y -= textActivePlayer.getLineHeight() + margin;
         textPlayerManaLabel.setLocalTranslation(x, y, 0);
         x += textPlayerManaLabel.getLineWidth();
         textPlayerManaAmount.setLocalTranslation(x, y, 0);
 
-        guiNode.attachChild(textPlayerHealth[0]);
-        guiNode.attachChild(textPlayerHealth[1]);
-        guiNode.attachChild(textCurrentPlayer);
+        guiNode.attachChild(textActivePlayer);
         guiNode.attachChild(textPlayerManaLabel);
         guiNode.attachChild(textPlayerManaAmount);
         mainApplication.getGuiNode().attachChild(guiNode);
@@ -54,12 +45,8 @@ public class IngameHudAppState extends MyBaseAppState {
         mainApplication.getGuiNode().detachChild(guiNode);
     }
 
-    public void setCurrentPlayer(int playerIndex) {
-        textCurrentPlayer.setText("Player #" + (playerIndex + 1));
-    }
-
-    public void sePlayerInfo(int playerIndex, String name, int health) {
-        textPlayerHealth[playerIndex].setText(name + " - " + health + " HP");
+    public void setActivePlayer(String playerName) {
+        textActivePlayer.setText(playerName + "'s turn");
     }
 
     public void setPlayerMana(int manaAmount) {

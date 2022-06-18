@@ -273,11 +273,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void onTurnStarted() {
-        int player = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
-        // TODO: Map (Currently, it's exactly entity 0 and 1)
-        int playerIndex = player;
+        int activePlayer = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
+        String activePlayerName = gameService.getGameContext().getData().getComponent(activePlayer, Components.NAME);
         IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
-        ingameHudAppState.setCurrentPlayer(playerIndex);
+        ingameHudAppState.setActivePlayer(activePlayerName);
     }
 
     private void tryPlayEntryAnimation(int cardEntity) {

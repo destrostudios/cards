@@ -26,8 +26,6 @@ public class GameOverAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        stateManager.detach(getAppState(IngameHudAppState.class));
-
         int width = mainApplication.getContext().getSettings().getWidth();
         int height = mainApplication.getContext().getSettings().getHeight();
 

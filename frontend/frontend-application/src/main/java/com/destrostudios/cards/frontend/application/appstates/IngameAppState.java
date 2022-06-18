@@ -18,14 +18,12 @@ import com.destrostudios.cards.frontend.application.appstates.services.players.P
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
-import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
-import com.destrostudios.cards.shared.rules.game.turn.StartTurnEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -58,7 +56,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private EntityBoardMap entityBoardMap;
     private PlayerActionsGenerator playerActionsGenerator;
     private UpdateBoardService updateBoardService;
-    private UpdateHudService updateHudService;
     private EntryAnimationService entryAnimationService;
     private Event sendableEndTurnEvent;
 
@@ -67,7 +64,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         super.initialize(stateManager, application);
         initCamera();
         mainApplication.getStateManager().attach(new ForestBoardAppState());
-        mainApplication.getStateManager().attach(new IngameHudAppState());
         initBoard();
         initInputListeners();
     }
@@ -238,12 +234,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         // Services
 
         updateBoardService = new UpdateBoardService(gameService, board, playerZonesMap, entityBoardMap);
-        updateHudService = new UpdateHudService(gameService, getAppState(IngameHudAppState.class));
         entryAnimationService = new EntryAnimationService(mainApplication);
 
         // Events
-
-        gameService.getGameContext().getEvents().instant().add(StartTurnEvent.class, (event, random) -> onTurnStarted());
 
         gameService.getGameContext().getEvents().resolved().add(AddCardToCreatureZoneEvent.class, (event, random) -> tryPlayEntryAnimation(event.card));
         gameService.getGameContext().getEvents().pre().add(BattleEvent.class, (event, random) -> {
@@ -272,13 +265,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         return false;
     }
 
-    private void onTurnStarted() {
-        int activePlayer = gameService.getGameContext().getData().query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
-        String activePlayerName = gameService.getGameContext().getData().getComponent(activePlayer, Components.NAME);
-        IngameHudAppState ingameHudAppState = getAppState(IngameHudAppState.class);
-        ingameHudAppState.setActivePlayer(activePlayerName);
-    }
-
     private void tryPlayEntryAnimation(int cardEntity) {
         mainApplication.enqueue(() -> {
             Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
@@ -300,13 +286,11 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     public void update(float lastTimePerFrame) {
         super.update(lastTimePerFrame);
         if (initState == 0) {
-            // Wait for next frame to initialize so that the other app states are initialized
-            initState++;
-        } else if (initState == 1) {
+            // Board is initialized now
             updateVisuals();
             board.finishAllTransformations();
             initState++;
-        } else if ((initState == 2) && (!gameService.getGameContext().isGameOver())) {
+        } else if ((initState == 1) && (!gameService.getGameContext().isGameOver())) {
             processNextEvents();
         }
     }
@@ -344,7 +328,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
         }
         updateBoardService.update(possibleEvents);
-        updateHudService.update();
     }
 
     @Override
@@ -367,7 +350,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(CameraAppState.class));
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(ForestBoardAppState.class));
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(BoardAppState.class));
-        mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(IngameHudAppState.class));
         mainApplication.getInputManager().deleteMapping("space");
         mainApplication.getInputManager().deleteMapping("1");
         mainApplication.getInputManager().removeListener(this);

@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Old Alchemist</name>
-        <targetable/>
         <creatureCard/>
         <attack>5</attack>
         <health>5</health>
@@ -28,6 +27,7 @@
                                     <entity>
                                         <targetChain>
                                             <entity>
+                                                <targetPrefilter>GRAVEYARD</targetPrefilter>
                                                 <targetAll>
                                                     <entity>
                                                         <targetChains>
@@ -35,7 +35,6 @@
                                                         </targetChains>
                                                         <ally/>
                                                         <spellCard/>
-                                                        <inGraveyard/>
                                                     </entity>
                                                 </targetAll>
                                             </entity>

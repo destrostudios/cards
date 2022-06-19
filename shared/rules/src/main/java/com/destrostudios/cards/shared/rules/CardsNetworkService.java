@@ -19,9 +19,9 @@ import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class NetworkCardsService implements GameService<GameContext, Event> {
+public class CardsNetworkService implements GameService<GameContext, Event> {
 
-    public NetworkCardsService(boolean resolveActions) {
+    public CardsNetworkService(boolean resolveActions) {
         this.resolveActions = resolveActions;
     }
     private boolean resolveActions;
@@ -91,6 +91,7 @@ public class NetworkCardsService implements GameService<GameContext, Event> {
             }
         });
         kryo.register(Foil.class, new EnumSerializer<>(Foil.class));
+        kryo.register(TargetPrefilter.class, new EnumSerializer<>(TargetPrefilter.class));
         kryo.register(SimpleEntityData.class, new Serializer<SimpleEntityData>() {
 
             @Override

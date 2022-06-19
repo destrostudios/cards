@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Arandir</name>
-        <targetable/>
         <creatureCard/>
         <attack>3</attack>
         <health>3</health>
@@ -30,6 +29,7 @@
             <entity>
                 <description>Deal [damage] damage to target opponent creature.</description>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <conditions>
                     <entity template="../conditions/source_on_board"/>
                     <entity>
@@ -38,7 +38,6 @@
                         </targetChains>
                         <opponent/>
                         <creatureCard/>
-                        <onBoard/>
                     </entity>
                 </conditions>
                 <cost>

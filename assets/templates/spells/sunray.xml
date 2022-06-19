@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Sunray</name>
-        <targetable/>
         <spellCard/>
         <description>Heal [heal] health of all creatures.</description>
         <spells>

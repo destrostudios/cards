@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Injured Legend</name>
-        <targetable/>
         <creatureCard/>
         <attack>3</attack>
         <health>6</health>

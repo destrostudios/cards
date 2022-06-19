@@ -1,7 +1,6 @@
 <template>
     <entity>
         <name>[name]</name>
-        <targetable/>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
@@ -9,9 +8,9 @@
         <spells>
             <entity>
                 <targetOptional/>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <conditions>
                     <entity template="../../conditions/source_in_hand"/>
-                    <entity template="../../conditions/target_is_character_on_board"/>
                 </conditions>
                 <cost>
                     <entity>

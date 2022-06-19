@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Leviathan</name>
-        <targetable/>
         <creatureCard/>
         <attack>6</attack>
         <health>6</health>

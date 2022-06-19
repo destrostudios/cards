@@ -16,7 +16,6 @@ public class Components {
     }
 
     public static final ComponentDefinition<String> NAME = createComponent("name");
-    public static final ComponentDefinition<Void> TARGETABLE = createComponent("targetable");
     public static final ComponentDefinition<Void> BOARD = createComponent("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = createComponent("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = createComponent("creatureZone");
@@ -97,6 +96,7 @@ public class Components {
     }
 
     public static class Target {
+        public static final ComponentDefinition<TargetPrefilter> TARGET_PREFILTER = createComponent("targetPrefilter");
         public static final ComponentDefinition<int[]> TARGET_CHAINS = createComponent("targetChains");
         public static final ComponentDefinition<int[]> TARGET_CHAIN = createComponent("targetChain");
         public static final ComponentDefinition<Void> TARGET_SOURCE = createComponent("targetSource");

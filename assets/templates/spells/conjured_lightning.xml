@@ -5,7 +5,6 @@
     </values>
     <entity>
         <name>Conjured Lightning</name>
-        <targetable/>
         <spellCard/>
         <description>Deal [opponentDamage] damage to all opponent creatures and [allyDamage] damage to all allied creatures.</description>
         <spells>

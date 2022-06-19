@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Sea Storm</name>
-        <targetable/>
         <spellCard/>
         <description>Deal [damage] damage to all characters.</description>
         <spells>
@@ -23,7 +22,7 @@
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
                                 <targetChains>
-                                    <entity template="../targets/all_characters"/>
+                                    <entity template="../targets/all_characters_on_board"/>
                                 </targetChains>
                                 <damage>[damage]</damage>
                             </entity>

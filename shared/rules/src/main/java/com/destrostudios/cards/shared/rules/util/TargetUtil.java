@@ -1,7 +1,9 @@
 package com.destrostudios.cards.shared.rules.util;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.TargetPrefilter;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -48,20 +50,33 @@ public class TargetUtil {
         }
         int[] conditions = data.getComponent(targetChainStep, Components.Target.TARGET_ALL);
         if (conditions != null) {
-            initialTargets.addAll(getAllConditionTargets(data, conditions, source));
+            List<Integer> prefilteredTargets = getPrefilteredTargets(data, targetChainStep);
+            initialTargets.addAll(getAllConditionTargets(data, prefilteredTargets, conditions, source));
         }
         return initialTargets;
     }
 
-    public static List<Integer> getAllConditionTargets(EntityData data, int[] conditions, int source) {
+    private static LinkedList<Integer> getAllConditionTargets(EntityData data, List<Integer> prefilteredTarget, int[] conditions, int source) {
         LinkedList<Integer> targets = new LinkedList<>();
-        List<Integer> allTargets = data.query(Components.TARGETABLE).list();
-        for (int target : allTargets) {
+        for (int target : prefilteredTarget) {
             if (ConditionUtil.areConditionsFulfilled(data, conditions, source, new int[] { target })) {
                 targets.add(target);
             }
         }
         return targets;
+    }
+
+    public static List<Integer> getPrefilteredTargets(EntityData data, int entity) {
+        TargetPrefilter targetPrefilter = data.getComponent(entity, Components.Target.TARGET_PREFILTER);
+        ComponentDefinition<?> prefilterComponent = null;
+        switch (targetPrefilter) {
+            case PLAYER -> prefilterComponent = Components.NEXT_PLAYER;
+            case LIBRARY -> prefilterComponent = Components.LIBRARY;
+            case BOARD -> prefilterComponent = Components.BOARD;
+            case HAND -> prefilterComponent = Components.HAND;
+            case GRAVEYARD -> prefilterComponent = Components.GRAVEYARD;
+        }
+        return data.query(prefilterComponent).list();
     }
 
     private static LinkedList<Integer> transformCurrentStepTargets(EntityData data, int targetChainStep, LinkedList<Integer> currentStepTargets) {

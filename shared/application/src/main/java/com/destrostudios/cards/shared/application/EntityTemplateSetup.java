@@ -1,11 +1,11 @@
 package com.destrostudios.cards.shared.application;
 
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
-import com.destrostudios.cards.shared.entities.templates.XMLComponentParser;
 import com.destrostudios.cards.shared.entities.templates.XMLTemplateManager;
 import com.destrostudios.cards.shared.entities.templates.xmlparser.*;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.TargetPrefilter;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
 public class EntityTemplateSetup {
@@ -14,7 +14,6 @@ public class EntityTemplateSetup {
         XMLTemplateManager xmlTemplateManager = new XMLTemplateManager(templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.NAME));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.TARGETABLE));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.CREATURE_CARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.CREATURE_ZONE));
@@ -34,13 +33,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.COST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.DESCRIPTION));
-        xmlTemplateManager.registerComponent(new XMLComponentParser<>(Components.FOIL) {
-
-            @Override
-            public Foil parseValue() {
-                return Foil.valueOf(element.getText());
-            }
-        });
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.DEATH_EFFECT_TRIGGERS));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.ATTACK));
@@ -84,6 +77,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Enum<>(Components.Target.TARGET_PREFILTER, TargetPrefilter::valueOf));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CHAINS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_CHAIN));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_SOURCE));

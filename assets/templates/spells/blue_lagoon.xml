@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Blue Lagoon</name>
-        <targetable/>
         <spellCard/>
         <description>Draw [draw] random beasts from your deck.</description>
         <spells>
@@ -26,6 +25,7 @@
                                     <entity>
                                         <targetChain>
                                             <entity>
+                                                <targetPrefilter>LIBRARY</targetPrefilter>
                                                 <targetAll>
                                                     <entity>
                                                         <targetChains>
@@ -33,7 +33,6 @@
                                                         </targetChains>
                                                         <ally/>
                                                         <beast/>
-                                                        <inLibrary/>
                                                     </entity>
                                                 </targetAll>
                                             </entity>

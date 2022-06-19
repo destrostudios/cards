@@ -4,14 +4,13 @@
     </values>
     <entity>
         <name>Thunder</name>
-        <targetable/>
         <spellCard/>
         <description>Deal [damage] damage to target character.</description>
         <spells>
             <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
-                    <entity template="../conditions/target_is_character_on_board"/>
                 </conditions>
                 <cost>
                     <entity>

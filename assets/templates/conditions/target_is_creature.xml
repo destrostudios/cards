@@ -4,6 +4,5 @@
             <entity template="../targets/targets"/>
         </targetChains>
         <creatureCard/>
-        <onBoard/>
     </entity>
 </template>

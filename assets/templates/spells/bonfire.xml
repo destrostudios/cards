@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Bonfire</name>
-        <targetable/>
         <spellCard/>
         <description>Heal [heal] health of yourself.</description>
         <spells>

@@ -1,14 +1,14 @@
 <template>
     <entity>
         <name>[name]</name>
-        <targetable/>
         <spellCard/>
         <description>[description]</description>
         <spells>
             <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <conditions>
                     <entity template="../../conditions/source_in_hand"/>
-                    <entity template="../../conditions/target_is_creature_on_board"/>
+                    <entity template="../../conditions/target_is_creature"/>
                 </conditions>
                 <cost>
                     <entity>

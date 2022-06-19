@@ -2,6 +2,7 @@
     <entity>
         <maximumCastsPerTurn>1</maximumCastsPerTurn>
         <tauntable/>
+        <targetPrefilter>BOARD</targetPrefilter>
         <conditions>
             <entity template="../../conditions/source_on_board"/>
             <entity>
@@ -17,7 +18,6 @@
                             <entity template="../../targets/targets"/>
                         </targetChains>
                         <creatureCard/>
-                        <onBoard/>
                     </entity>
                     <entity>
                         <targetChains>

@@ -1,11 +1,11 @@
 <template>
     <entity>
         <name>Begone, Lizard!</name>
-        <targetable/>
         <spellCard/>
         <description>Destroy target dragon.</description>
         <spells>
             <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                     <entity>
@@ -13,7 +13,6 @@
                             <entity template="../targets/targets"/>
                         </targetChains>
                         <dragon/>
-                        <onBoard/>
                     </entity>
                 </conditions>
                 <cost>

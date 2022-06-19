@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Fiery Obliteration</name>
-        <targetable/>
         <spellCard/>
         <description>Deal [damage] damage to all opponent creatures.</description>
         <spells>

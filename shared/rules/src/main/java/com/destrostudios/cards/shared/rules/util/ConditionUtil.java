@@ -155,24 +155,4 @@ public class ConditionUtil {
         boolean isAllied = (Objects.equals(sourceOwner, targetOwner) || Objects.equals(sourceOwner, target));
         return (isAllied == expectsAllied);
     }
-
-    public static boolean isTargetConditionIncluded(EntityData data, int[] conditions) {
-        for (int condition : conditions) {
-            int[] oneOfConditions = data.getComponent(condition, Components.Condition.ONE_OF);
-            if (oneOfConditions != null) {
-                if (isTargetConditionIncluded(data, oneOfConditions)) {
-                    return true;
-                }
-            } else {
-                int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
-                for (int targetChain : targetChains) {
-                    int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
-                    if (data.hasComponent(targetChainSteps[0], Components.Target.TARGET_TARGETS)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
 }

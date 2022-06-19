@@ -5,7 +5,6 @@
     </values>
     <entity>
         <name>Into Battle</name>
-        <targetable/>
         <spellCard/>
         <description>Your creatures in hand gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>

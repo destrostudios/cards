@@ -4,7 +4,6 @@
     </values>
     <entity>
         <name>Khazar Merchant</name>
-        <targetable/>
         <creatureCard/>
         <attack>2</attack>
         <health>2</health>
@@ -28,6 +27,7 @@
                                     <entity>
                                         <targetChain>
                                             <entity>
+                                                <targetPrefilter>LIBRARY</targetPrefilter>
                                                 <targetAll>
                                                     <entity>
                                                         <targetChains>
@@ -35,7 +35,6 @@
                                                         </targetChains>
                                                         <ally/>
                                                         <spellCard/>
-                                                        <inLibrary/>
                                                         <maximumManaCost>[maximumManaCost]</maximumManaCost>
                                                     </entity>
                                                 </targetAll>

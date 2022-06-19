@@ -2,6 +2,7 @@
     <entity>
         <targetChain>
             <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <targetAll>
                     <entity>
                         <targetChains>
@@ -9,7 +10,6 @@
                         </targetChains>
                         <opponent/>
                         <creatureCard/>
-                        <onBoard/>
                     </entity>
                 </targetAll>
             </entity>

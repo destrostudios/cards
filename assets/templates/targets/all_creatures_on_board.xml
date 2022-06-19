@@ -2,13 +2,13 @@
     <entity>
         <targetChain>
             <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
                 <targetAll>
                     <entity>
                         <targetChains>
                             <entity template="./targets"/>
                         </targetChains>
                         <creatureCard/>
-                        <onBoard/>
                     </entity>
                 </targetAll>
             </entity>

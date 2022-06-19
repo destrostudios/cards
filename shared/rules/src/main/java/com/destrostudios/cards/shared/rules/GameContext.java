@@ -103,7 +103,7 @@ public class GameContext {
         addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
         addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
         addEventHandler(events.instant(), SummonEvent.class, new SummonHandler());
-        addEventHandler(events.instant(), ConditionsAffectedEvent.class, new CheckBonusHealthHandler());
+        addEventHandler(events.instant(), ConditionsAffectedEvent.class, new CheckBonusDamageHandler());
         addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));
     }
 

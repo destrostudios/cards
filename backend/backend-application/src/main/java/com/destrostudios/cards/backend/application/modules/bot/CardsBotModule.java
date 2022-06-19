@@ -67,7 +67,7 @@ public class CardsBotModule extends NetworkModule {
     public static float[] eval(CardsBotState botState) {
         SimpleEntityData data = botState.getGameContext().getData();
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
-        List<Integer> cardsOnBoard = data.query(Components.BOARD).list();
+        List<Integer> cardsOnBoard = data.query(Components.BOARD).list(entity -> data.hasComponent(entity, Components.CREATURE_CARD));
         List<Integer> cardsInHand = data.query(Components.HAND).list();
         float[] scores = new float[players.size()];
         int i = 0;

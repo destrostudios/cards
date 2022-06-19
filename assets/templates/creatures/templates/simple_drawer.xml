@@ -1,7 +1,6 @@
 <template>
     <entity>
         <name>[name]</name>
-        <targetable/>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>

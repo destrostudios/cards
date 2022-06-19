@@ -1,0 +1,10 @@
+<template>
+    <entity>
+        <targetChain>
+            <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
+                <targetAll/>
+            </entity>
+        </targetChain>
+    </entity>
+</template>

@@ -6,11 +6,7 @@ import com.destrostudios.cards.shared.rules.Components;
 public class SpellUtil {
 
     public static boolean isTargeted(EntityData data, int entity) {
-        int[] conditions = data.getComponent(entity, Components.CONDITIONS);
-        if (conditions != null) {
-            return ConditionUtil.isTargetConditionIncluded(data, conditions);
-        }
-        return false;
+        return data.hasComponent(entity, Components.Target.TARGET_PREFILTER);
     }
 
     public static boolean isCastable(EntityData data, int card, int spell, int[] targets) {
@@ -38,12 +34,13 @@ public class SpellUtil {
         int[] conditions = data.getComponent(spell, Components.CONDITIONS);
         if (conditions != null) {
             for (int condition : conditions) {
-                int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
-                if (targetChains != null) {
-                    for (int targetChain : targetChains) {
-                        int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
-                        for (int targetChainStep : targetChainSteps) {
-                            if (data.hasComponent(targetChainStep, Components.Target.TARGET_SOURCE) && !data.hasComponent(condition, Components.Condition.IN_HAND)) {
+                if (!data.hasComponent(condition, Components.Condition.IN_HAND)) {
+                    int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
+                    if (targetChains != null) {
+                        for (int targetChain : targetChains) {
+                            int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
+                            int initialTargetChainStep = targetChainSteps[0];
+                            if (data.hasComponent(initialTargetChainStep, Components.Target.TARGET_SOURCE)) {
                                 return false;
                             }
                         }
@@ -60,16 +57,16 @@ public class SpellUtil {
             for (int instantEffectTrigger : instantEffectTriggers) {
                 int[] effects = data.getComponent(instantEffectTrigger, Components.EffectTrigger.EFFECTS);
                 for (int effect : effects) {
-                    int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);
-                    for (int targetChain : targetChains) {
-                        int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
-                        for (int targetChainStep : targetChainSteps) {
-                            if (data.hasComponent(targetChainStep, Components.Target.TARGET_TARGETS) && data.hasComponent(effect, Components.Effect.BATTLE)) {
+                    if (data.hasComponent(effect, Components.Effect.BATTLE)) {
+                        int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);
+                        for (int targetChain : targetChains) {
+                            int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
+                            int initialTargetChainStep = targetChainSteps[0];
+                            if (data.hasComponent(initialTargetChainStep, Components.Target.TARGET_TARGETS)) {
                                 return true;
                             }
                         }
                     }
-
                 }
             }
         }

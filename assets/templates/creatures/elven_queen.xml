@@ -1,7 +1,6 @@
 <template>
     <entity>
         <name>Elven Queen</name>
-        <targetable/>
         <creatureCard/>
         <attack>3</attack>
         <health>3</health>

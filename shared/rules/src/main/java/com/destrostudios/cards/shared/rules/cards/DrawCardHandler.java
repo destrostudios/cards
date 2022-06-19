@@ -16,20 +16,24 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
 
     @Override
     public void handle(DrawCardEvent event, NetworkRandom random) {
-        List<Integer> library = data.query(Components.LIBRARY).list(hasComponentValue(Components.OWNED_BY, event.player));
-        if (!library.isEmpty()) {
-            int card = library.get(0);
-            for (int i = 1; i < library.size(); i++) {
-                int candidate = library.get(i);
-                if (data.getComponent(candidate, Components.LIBRARY) > data.getComponent(card, Components.LIBRARY)) {
-                    card = candidate;
+        List<Integer> cardsInLibary = data.query(Components.LIBRARY).list();
+        Integer drawnCard = null;
+        int drawnCardLibraryIndex = -1;
+        for (int card : cardsInLibary) {
+            if (data.getComponent(card, Components.OWNED_BY) == event.player) {
+                int cardLibraryIndex = data.getComponent(card, Components.LIBRARY);
+                if (cardLibraryIndex > drawnCardLibraryIndex) {
+                    drawnCard = card;
+                    drawnCardLibraryIndex = cardLibraryIndex;
                 }
             }
-            LOG.info("Player {} is drawing card {}", event.player, card);
-            events.fire(new RemoveCardFromLibraryEvent(card), random);
-            events.fire(new AddCardToHandEvent(card), random);
+        }
+        if (drawnCard != null) {
+            LOG.info("Player {} is drawing card {}", event.player, drawnCard);
+            events.fire(new RemoveCardFromLibraryEvent(drawnCard), random);
+            events.fire(new AddCardToHandEvent(drawnCard), random);
         } else {
-            // fatigue
+            // TODO: Fatigue?
             LOG.info("Player {} tried to draw a card but has none left", event.player);
             event.cancel();
         }

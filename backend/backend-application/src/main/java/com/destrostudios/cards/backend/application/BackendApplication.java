@@ -6,7 +6,7 @@ import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.NetworkUtil;
-import com.destrostudios.cards.shared.rules.NetworkCardsService;
+import com.destrostudios.cards.shared.rules.CardsNetworkService;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.gametools.network.server.ToolsServer;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
@@ -29,7 +29,7 @@ public class BackendApplication {
         Server kryoServer = new Server(10_000_000, 10_000_000);
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
-        GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new NetworkCardsService(true), kryoServer::getConnections);
+        GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule);
         QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule);

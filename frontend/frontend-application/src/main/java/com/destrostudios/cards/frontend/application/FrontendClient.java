@@ -5,7 +5,7 @@ import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.network.NetworkUtil;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.NetworkCardsService;
+import com.destrostudios.cards.shared.rules.CardsNetworkService;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.gametools.network.client.ToolsClient;
 import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
@@ -48,7 +48,7 @@ public class FrontendClient {
         Client kryoClient = new Client(10_000_000, 10_000_000);
 
         JwtClientModule jwtModule = new JwtClientModule(kryoClient);
-        GameClientModule<GameContext, Event> gameModule = new GameClientModule<>(new NetworkCardsService(false), kryoClient);
+        GameClientModule<GameContext, Event> gameModule = new GameClientModule<>(new CardsNetworkService(false), kryoClient);
         GameStartClientModule<StartGameInfo> gameStartModule = new GameStartClientModule<>(kryo -> {}, kryoClient);
         QueueClientModule queueModule = new QueueClientModule(kryoClient);
 

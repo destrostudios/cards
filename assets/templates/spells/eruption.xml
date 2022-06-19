@@ -1,7 +1,6 @@
 <template>
     <entity>
         <name>Eruption</name>
-        <targetable/>
         <spellCard/>
         <description>Summon 10 1/1 Pebbles.</description>
         <spells>

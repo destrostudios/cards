@@ -1,7 +1,6 @@
 <template>
     <entity>
         <name>Sandstorm</name>
-        <targetable/>
         <spellCard/>
         <description>Return all creatures on the board to their owners hand.</description>
         <flavourText>"Doo doo doo doo doo."</flavourText>

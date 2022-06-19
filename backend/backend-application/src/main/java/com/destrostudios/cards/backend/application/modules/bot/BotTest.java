@@ -39,9 +39,9 @@ public class BotTest {
 
         MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
         botSettings.verbose = true;
-        botSettings.maxThreads = 1;
+        botSettings.maxThreads = 3;
         botSettings.termination = TerminationType.NODE_COUNT;
-        botSettings.strength = 100;
+        botSettings.strength = 1000;
         botSettings.evaluation = CardsBotModule::eval;
         MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
         CardsBotState botState = new CardsBotState(gameContext);

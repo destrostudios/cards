@@ -17,6 +17,7 @@ import com.esotericsoftware.kryonet.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,23 +25,17 @@ public class CardsBotModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(CardsBotModule.class);
 
-    private GameServerModule<GameContext, Event> gameModule;
-    private MctsBot bot;
-
     public CardsBotModule(GameServerModule<GameContext, Event> gameModule) {
         this.gameModule = gameModule;
-        MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
-        botSettings.verbose = true;
-        botSettings.maxThreads = 1;
-        botSettings.termination = TerminationType.MILLIS_ELAPSED;
-        botSettings.strength = 2000;
-        botSettings.evaluation = CardsBotModule::eval;
-        bot = new MctsBot<>(new CardsBotService(), botSettings);
+        bots = new HashMap<>();
     }
+    private GameServerModule<GameContext, Event> gameModule;
+    private HashMap<UUID, MctsBot> bots;
 
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof GameActionRequest request) {
+            onAction(request.game(), request.action());
             checkBotTurn(request.game());
         }
     }
@@ -54,13 +49,33 @@ public class CardsBotModule extends NetworkModule {
             if (!"Bot".equals(data.getComponent(activePlayer, Components.NAME)) || game.state.isGameOver()) {
                 break;
             }
+            MctsBot bot = bots.computeIfAbsent(gameId, gid -> {
+                MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
+                botSettings.verbose = true;
+                botSettings.maxThreads = 1;
+                botSettings.termination = TerminationType.MILLIS_ELAPSED;
+                botSettings.strength = 2000;
+                botSettings.evaluation = CardsBotModule::eval;
+                return new MctsBot<>(new CardsBotService(), botSettings);
+            });
             CardsBotState botState = new CardsBotState(game.state);
             LOG.info("Bot started calculating...");
             long startNanos = System.nanoTime();
             List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
             LOG.info("Bot finished calculating after {}", (System.nanoTime() - startNanos));
-            gameModule.applyAction(game.id, actions.get(0));
-            bot.stepRoot(new BotActionReplay<>(actions.get(0), new int[0])); // TODO: Randomness?
+            Event action = actions.get(0);
+            gameModule.applyAction(game.id, action);
+            onAction(gameId, action);
+        }
+    }
+
+    private void onAction(UUID gameId, Object action) {
+        MctsBot bot = bots.get(gameId);
+        if (bot != null) {
+            bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
+            if (gameModule.getGame(gameId).state.isGameOver()) {
+                bots.remove(gameId);
+            }
         }
     }
 

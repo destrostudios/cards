@@ -128,8 +128,8 @@ public class CardsBotModule extends NetworkModule {
                         opponentCardsInHand++;
                     }
                 }
-                float playerHealthWeight = 2;
-                float creaturesAttackWeight = 1;
+                float playerHealthWeight = 1;
+                float creaturesAttackWeight = 2;
                 float creaturesHealthWeight = 3;
                 float cardsInHandWeight = 0.25f;
                 float sumWeights = (playerHealthWeight + creaturesAttackWeight + creaturesHealthWeight + cardsInHandWeight);

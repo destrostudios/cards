@@ -71,7 +71,6 @@ public class GameContext {
                 new ShuffleAllLibrariesOnGameStartHandler(),
                 new DrawCardsOnGameStartHandler(),
                 new SetStartingPlayerHandler());
-        addEventHandler(events.instant(), PayCostEvent.class, new PayCostHandler());
         addEventHandler(events.instant(), PayManaEvent.class, new PayManaHandler());
         addEventHandlers(events.instant(), PlaySpellEvent.class,
                 new PlaySpellHandler(),

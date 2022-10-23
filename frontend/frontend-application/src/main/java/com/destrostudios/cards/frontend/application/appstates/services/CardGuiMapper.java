@@ -4,6 +4,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 
@@ -47,18 +48,17 @@ public class CardGuiMapper {
         int[] spellEntities = entityData.getComponent(card, Components.SPELLS);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
-                Integer spellCost = entityData.getComponent(spellEntity, Components.COST);
+                Integer manaCost = CostUtil.getEffectiveManaCost(entityData, spellEntity);
                 if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(entityData, spellEntity)) {
-                    manaCostDetails = entityData.getComponent(spellCost, Components.MANA);
+                    manaCostDetails = manaCost;
                     if (entityData.hasComponent(card, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
                     }
                     checkedDefaultPlaySpell = true;
                 } else if (!SpellUtil.isDefaultAttackSpell(entityData, spellEntity)) {
-                    Cost cost = createCost(entityData, spellCost);
                     String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
                     Spell spell = new Spell();
-                    spell.setCost(cost);
+                    spell.setCost(createCost(manaCost));
                     spell.setDescription(spellDescription);
                     spells.add(spell);
                 }
@@ -95,10 +95,10 @@ public class CardGuiMapper {
         return list;
     }
 
-    private static Cost createCost(EntityData entityData, Integer costEntity) {
-        if (costEntity != null) {
+    private static Cost createCost(Integer manaCost) {
+        if (manaCost != null) {
             Cost cost = new Cost();
-            cost.setManaCost(entityData.getComponent(costEntity, Components.MANA));
+            cost.setManaCost(manaCost);
             return cost;
         }
         return null;

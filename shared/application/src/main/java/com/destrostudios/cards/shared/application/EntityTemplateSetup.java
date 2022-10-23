@@ -31,10 +31,12 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.SPELLS));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.AVAILABLE_MANA));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.MANA));
-        xmlTemplateManager.registerComponent(new XMLComponentParser_Entity(Components.COST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_String(Components.DESCRIPTION));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.DEATH_EFFECT_TRIGGERS));
+
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Cost.MANA_COST));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Cost.BONUS_MANA_COST));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.ATTACK));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Stats.BONUS_ATTACK));

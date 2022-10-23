@@ -33,10 +33,14 @@ public class Components {
     public static final ComponentDefinition<int[]> SPELLS = createComponent("spells");
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = createComponent("availableMana");
     public static final ComponentDefinition<Integer> MANA = createComponent("mana");
-    public static final ComponentDefinition<Integer> COST = createComponent("cost");
     public static final ComponentDefinition<String> DESCRIPTION = createComponent("description");
     public static final ComponentDefinition<Foil> FOIL = createComponent("foil");
     public static final ComponentDefinition<int[]> DEATH_EFFECT_TRIGGERS = createComponent("deathEffectTriggers");
+
+    public static class Cost {
+        public static final ComponentDefinition<Integer> MANA_COST = createComponent("manaCost");
+        public static final ComponentDefinition<Integer> BONUS_MANA_COST = createComponent("bonusManaCost");
+    }
 
     public static class Stats {
         public static final ComponentDefinition<Integer> ATTACK = createComponent("attack");

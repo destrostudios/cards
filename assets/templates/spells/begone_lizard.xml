@@ -15,11 +15,7 @@
                         <dragon/>
                     </entity>
                 </conditions>
-                <cost>
-                    <entity>
-                        <mana>4</mana>
-                    </entity>
-                </cost>
+                <manaCost>4</manaCost>
                 <instantEffectTriggers>
                     <entity>
                         <effects>

@@ -20,14 +20,8 @@ public class SpellUtil {
         if (!ConditionUtil.areConditionsFulfilled(data, spell, card, targets)) {
             return false;
         }
-        Integer cost = data.getComponent(spell, Components.COST);
-        if (cost != null) {
-            int player = data.getComponent(card, Components.OWNED_BY);
-            if (!CostUtil.isPayable(data, player, cost)) {
-                return false;
-            }
-        }
-        return true;
+        int player = data.getComponent(card, Components.OWNED_BY);
+        return CostUtil.isPayable(data, player, spell);
     }
 
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {

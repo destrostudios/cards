@@ -14,11 +14,7 @@
                 <conditions>
                     <entity template="../conditions/source_in_hand"/>
                 </conditions>
-                <cost>
-                    <entity>
-                        <mana>6</mana>
-                    </entity>
-                </cost>
+                <manaCost>6</manaCost>
                 <instantEffectTriggers>
                     <entity>
                         <effects>

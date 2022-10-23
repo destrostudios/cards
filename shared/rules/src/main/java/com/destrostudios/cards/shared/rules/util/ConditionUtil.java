@@ -15,8 +15,6 @@ public class ConditionUtil {
         simpleRequireableComponents.add(Components.NAME);
         simpleRequireableComponents.add(Components.CREATURE_CARD);
         simpleRequireableComponents.add(Components.SPELL_CARD);
-        simpleRequireableComponents.add(Components.Stats.ATTACK);
-        simpleRequireableComponents.add(Components.Stats.HEALTH);
         simpleRequireableComponents.add(Components.Ability.SLOW);
         simpleRequireableComponents.add(Components.Ability.DIVINE_SHIELD);
         simpleRequireableComponents.add(Components.Ability.HEXPROOF);
@@ -103,25 +101,22 @@ public class ConditionUtil {
         if (data.hasComponent(condition, Components.Condition.IN_GRAVEYARD) && !data.hasComponent(target, Components.GRAVEYARD)) {
             return false;
         }
-        int[] spells = data.getComponent(target, Components.SPELLS);
-        if (spells != null) {
-            for (int spell : spells) {
-                if (SpellUtil.isDefaultCastFromHandSpell(data, spell)) {
-                    Integer cost = data.getComponent(spell, Components.COST);
-                    if (cost != null) {
-                        Integer manaCost = data.getComponent(cost, Components.MANA);
-                        if (manaCost != null) {
-                            Integer minimumManaCost = data.getComponent(condition, Components.Condition.MINIMUM_MANA_COST);
-                            if ((minimumManaCost != null) && (manaCost < minimumManaCost)) {
-                                return false;
-                            }
-                            Integer maximumManaCost = data.getComponent(condition, Components.Condition.MAXIMUM_MANA_COST);
-                            if ((maximumManaCost != null) && (manaCost > maximumManaCost)) {
-                                return false;
-                            }
+        Integer minimumManaCost = data.getComponent(condition, Components.Condition.MINIMUM_MANA_COST);
+        Integer maximumManaCost = data.getComponent(condition, Components.Condition.MAXIMUM_MANA_COST);
+        if ((minimumManaCost != null) || (maximumManaCost != null)) {
+            int[] spells = data.getComponent(target, Components.SPELLS);
+            if (spells != null) {
+                for (int spell : spells) {
+                    if (SpellUtil.isDefaultCastFromHandSpell(data, spell)) {
+                        Integer manaCost = CostUtil.getEffectiveManaCost(data, spell);
+                        if ((minimumManaCost != null) && (manaCost < minimumManaCost)) {
+                            return false;
                         }
+                        if ((maximumManaCost != null) && (manaCost > maximumManaCost)) {
+                            return false;
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }

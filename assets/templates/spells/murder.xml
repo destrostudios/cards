@@ -10,11 +10,7 @@
                     <entity template="../conditions/source_in_hand"/>
                     <entity template="../conditions/target_is_creature"/>
                 </conditions>
-                <cost>
-                    <entity>
-                        <mana>5</mana>
-                    </entity>
-                </cost>
+                <manaCost>1</manaCost>
                 <instantEffectTriggers>
                     <entity>
                         <effects>

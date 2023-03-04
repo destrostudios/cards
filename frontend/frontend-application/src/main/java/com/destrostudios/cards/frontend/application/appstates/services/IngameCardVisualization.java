@@ -11,16 +11,19 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 
 public class IngameCardVisualization extends CustomAttachmentVisualization<Node> {
 
-    public IngameCardVisualization(AssetManager assetManager, boolean fullArt, float scale) {
+    public IngameCardVisualization(AssetManager assetManager, boolean fullArt, float scale, boolean shadows) {
         this.fullArt = fullArt;
         node = new Node();
         node.setLocalScale(scale);
         foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/yugioh.png", ColorRGBA.Black);
-        node.attachChild(foilModelledCard.getNode());
+        Node foilModelledCardNode = foilModelledCard.getNode();
+        foilModelledCardNode.setShadowMode(shadows ? RenderQueue.ShadowMode.CastAndReceive : RenderQueue.ShadowMode.Off);
+        this.node.attachChild(foilModelledCardNode);
         glowQuad = new GlowQuad(assetManager, 0.96f, 1.28f);
         tauntBox = new TextureQuad(assetManager, 0.96f, 1.5f);
         tauntBox.setTexture(assetManager.loadTexture("images/taunt.png"));

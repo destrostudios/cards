@@ -192,6 +192,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             }
             return false;
         }, new IngameCardVisualizer(true, false));
+        board.registerVisualizer_ZonePosition(
+            zonePosition -> zonePosition.getZone() == inspectionZone,
+            new IngameCardVisualizer(false, false, 1, false)
+        );
         board.registerVisualizer_Class(Card.class, new IngameCardVisualizer(false, false));
         board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(SimpleTargetArrowSettings.builder()
                 .width(0.5f)

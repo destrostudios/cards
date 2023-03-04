@@ -14,17 +14,23 @@ public class IngameCardVisualizer extends CustomAttachmentVisualizer<Card<CardMo
     }
 
     public IngameCardVisualizer(boolean fullArt, boolean boardAttachments, float scale) {
+        this(fullArt, boardAttachments, scale, true);
+    }
+
+    public IngameCardVisualizer(boolean fullArt, boolean boardAttachments, float scale, boolean shadows) {
         this.fullArt = fullArt;
         this.boardAttachments = boardAttachments;
         this.scale = scale;
+        this.shadows = shadows;
     }
     private boolean fullArt;
     private boolean boardAttachments;
     private float scale;
+    private boolean shadows;
 
     @Override
     protected IngameCardVisualization createVisualizationObject(AssetManager assetManager) {
-        return new IngameCardVisualization(assetManager, fullArt, scale);
+        return new IngameCardVisualization(assetManager, fullArt, scale, shadows);
     }
 
     @Override

@@ -1,0 +1,7 @@
+<template>
+    <entity>
+        <targetChains>
+            <entity template="../../targets/targets_casters"/>
+        </targetChains>
+    </entity>
+</template>

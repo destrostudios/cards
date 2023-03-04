@@ -31,4 +31,18 @@ public class ArrayUtil {
             }
         }
     }
+
+    public static boolean contains(EntityData data, int entity, ComponentDefinition<int[]> component, int value) {
+        int[] array = data.getComponent(entity, component);
+        return ((array != null) && contains(array, value));
+    }
+
+    public static boolean contains(int[] array, int value) {
+        for (int arrayValue : array) {
+            if (arrayValue == value) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

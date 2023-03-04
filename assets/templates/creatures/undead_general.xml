@@ -1,0 +1,26 @@
+<template>
+    <values>
+        <bonusManaCost>3</bonusManaCost>
+    </values>
+    <entity template="./templates/vanilla(name=Undead General,manaCost=3,attack=2,health=8)">
+        <description>Your creatures cost ([bonusManaCost]) more.</description>
+        <auras>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_on_board"/>
+                    <entity template="../conditions/target_is_default_cast_from_hand_spell"/>
+                    <entity template="../conditions/templates/target_caster">
+                        <ally/>
+                        <creatureCard/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <auraBuff>
+                    <entity>
+                        <bonusManaCost>[bonusManaCost]</bonusManaCost>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

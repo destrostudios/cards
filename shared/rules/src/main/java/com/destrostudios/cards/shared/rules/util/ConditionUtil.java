@@ -59,7 +59,8 @@ public class ConditionUtil {
             return isOneConditionFulfilled(data, oneOfConditions, source, targets);
         } else {
             int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
-            return isFulfilled(data, condition, source, TargetUtil.getAffectedTargets(data, targetChains, source, targets));
+            List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetChains, source, targets);
+            return isFulfilled(data, condition, source, affectedTargets);
         }
     }
 
@@ -125,6 +126,9 @@ public class ConditionUtil {
             if (creatures > 0) {
                 return false;
             }
+        }
+        if (data.hasComponent(condition, Components.Condition.DEFAULT_CAST_FROM_HAND_SPELL) && !SpellUtil.isDefaultCastFromHandSpell(data, target)) {
+            return false;
         }
         for (ComponentDefinition<?> componentDefinition : simpleRequireableComponents) {
             // Check has instead of (get != null) because of Void type

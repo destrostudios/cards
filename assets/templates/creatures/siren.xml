@@ -1,0 +1,26 @@
+<template>
+    <values>
+        <bonusManaCost>-1</bonusManaCost>
+    </values>
+    <entity template="./templates/vanilla(name=Siren,manaCost=3,attack=2,health=2)">
+        <description>Your spells cost (1) less.</description>
+        <auras>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_on_board"/>
+                    <entity template="../conditions/target_is_default_cast_from_hand_spell"/>
+                    <entity template="../conditions/templates/target_caster">
+                        <ally/>
+                        <spellCard/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <auraBuff>
+                    <entity>
+                        <bonusManaCost>[bonusManaCost]</bonusManaCost>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

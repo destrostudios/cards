@@ -20,6 +20,9 @@ public class CostUtil {
         Integer manaCost = data.getComponent(entity, Components.Cost.MANA_COST);
         if (manaCost != null) {
             manaCost += getBonusManaCost(data, entity);
+            if (manaCost < 0) {
+                manaCost = 0;
+            }
         }
         return manaCost;
     }

@@ -1,0 +1,26 @@
+<template>
+    <values>
+        <bonusManaCost>-2</bonusManaCost>
+    </values>
+    <entity template="./templates/vanilla(name=Dragon's Knight,manaCost=2,attack=2,health=2)">
+        <description>Your Dragons cost (2) less.</description>
+        <auras>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_on_board"/>
+                    <entity template="../conditions/target_is_default_cast_from_hand_spell"/>
+                    <entity template="../conditions/templates/target_caster">
+                        <ally/>
+                        <dragon/>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <auraBuff>
+                    <entity>
+                        <bonusManaCost>[bonusManaCost]</bonusManaCost>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

@@ -24,6 +24,8 @@ public class SpellUtil {
         return CostUtil.isPayable(data, player, spell);
     }
 
+    // TODO: Maybe just mark the default spells (cast from hand + attack) as such, saves this whole logic and also performance, especially on conditions
+
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
         int[] conditions = data.getComponent(spell, Components.CONDITIONS);
         if (conditions != null) {
@@ -41,8 +43,9 @@ public class SpellUtil {
                     }
                 }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {
@@ -65,5 +68,15 @@ public class SpellUtil {
             }
         }
         return false;
+    }
+
+    public static Integer getCaster(EntityData data, int spell) {
+        // TODO: Performance would of course be better with a direct link
+        for (int caster : data.query(Components.SPELLS).list()) {
+            if (ArrayUtil.contains(data, caster, Components.SPELLS, spell)) {
+                return caster;
+            }
+        }
+        return null;
     }
 }

@@ -1,0 +1,12 @@
+<template>
+    <entity>
+        <targetChain>
+            <entity>
+                <targetTargets/>
+            </entity>
+            <entity>
+                <targetCaster/>
+            </entity>
+        </targetChain>
+    </entity>
+</template>

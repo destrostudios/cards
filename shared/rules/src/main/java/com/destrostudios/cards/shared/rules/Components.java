@@ -109,6 +109,7 @@ public class Components {
         public static final ComponentDefinition<int[]> TARGET_ALL = createComponent("targetAll");
         public static final ComponentDefinition<Void> TARGET_OWNER = createComponent("targetOwner");
         public static final ComponentDefinition<Void> TARGET_OPPONENT = createComponent("targetOpponent");
+        public static final ComponentDefinition<Void> TARGET_CASTER = createComponent("targetCaster");
         public static final ComponentDefinition<Integer> TARGET_RANDOM = createComponent("targetRandom");
     }
 
@@ -125,6 +126,7 @@ public class Components {
         public static final ComponentDefinition<Integer> MINIMUM_MANA_COST = createComponent("minimumManaCost");
         public static final ComponentDefinition<Integer> MAXIMUM_MANA_COST = createComponent("maximumManaCost");
         public static final ComponentDefinition<Void> NO_CREATURES = createComponent("noCreatures");
+        public static final ComponentDefinition<Void> DEFAULT_CAST_FROM_HAND_SPELL = createComponent("defaultCastFromHandSpell");
     }
 
     public static class Spell {

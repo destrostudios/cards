@@ -12,6 +12,7 @@ import java.util.List;
 public class TargetUtil {
 
     public static List<Integer> getAffectedTargets(EntityData data, int[] targetChains, int source, int[] targets) {
+        // TODO: Use Set so entities are not affected multiple times? Dependent on effect/context?
         LinkedList<Integer> affectedTargets = new LinkedList<>();
         for (int targetChain : targetChains) {
             affectedTargets.addAll(getAffectedTargets(data, targetChain, source, targets));
@@ -101,6 +102,8 @@ public class TargetUtil {
             transformedTargets.add(data.getComponent(currentStepTarget, Components.OWNED_BY));
         } else if (data.hasComponent(targetChainStep, Components.Target.TARGET_OPPONENT)) {
             transformedTargets.add(data.getComponent(currentStepTarget, Components.NEXT_PLAYER));
+        } else if (data.hasComponent(targetChainStep, Components.Target.TARGET_CASTER)) {
+            transformedTargets.add(SpellUtil.getCaster(data, currentStepTarget));
         } else {
             transformedTargets.add(currentStepTarget);
         }

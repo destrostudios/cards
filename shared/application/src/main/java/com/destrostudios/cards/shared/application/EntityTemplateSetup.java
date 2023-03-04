@@ -88,6 +88,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Target.TARGET_ALL));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_OWNER));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_OPPONENT));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Target.TARGET_CASTER));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Target.TARGET_RANDOM));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Entities(Components.Condition.ONE_OF));
@@ -102,6 +103,7 @@ public class EntityTemplateSetup {
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Condition.MINIMUM_MANA_COST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Condition.MAXIMUM_MANA_COST));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.NO_CREATURES));
+        xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Condition.DEFAULT_CAST_FROM_HAND_SPELL));
 
         xmlTemplateManager.registerComponent(new XMLComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
         xmlTemplateManager.registerComponent(new XMLComponentParser_Integer(Components.Spell.CURRENT_CASTS_PER_TURN));

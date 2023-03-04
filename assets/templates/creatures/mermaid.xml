@@ -1,0 +1,27 @@
+<template>
+    <values>
+        <name>Mermaid</name>
+        <bonusManaCost>-1</bonusManaCost>
+    </values>
+    <entity template="./templates/vanilla(name=[name],manaCost=2,attack=2,health=2)">
+        <description>Your "[name]"s cost (1) less.</description>
+        <auras>
+            <entity>
+                <conditions>
+                    <entity template="../conditions/source_on_board"/>
+                    <entity template="../conditions/target_is_default_cast_from_hand_spell"/>
+                    <entity template="../conditions/templates/target_caster">
+                        <ally/>
+                        <name>Mermaid</name>
+                        <inHand/>
+                    </entity>
+                </conditions>
+                <auraBuff>
+                    <entity>
+                        <bonusManaCost>[bonusManaCost]</bonusManaCost>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

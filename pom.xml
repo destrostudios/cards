@@ -25,7 +25,7 @@
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
         <version.lombok>1.18.24</version.lombok>
-        <version.mysql>8.0.20</version.mysql>
+        <version.mysql>8.0.28</version.mysql>
     </properties>
     <repositories>
         <repository>

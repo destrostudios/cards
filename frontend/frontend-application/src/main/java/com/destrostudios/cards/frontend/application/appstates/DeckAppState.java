@@ -43,7 +43,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
 
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
-    private LinkedList<CardModel> allCardModels;
+    private HashMap<CardModel, Integer> collectionCards;
     private HashMap<String, CardModel> templatesToCardModelsMap;
     private HashMap<CardModel, String> cardModelsToTemplatesMap;
     @Getter
@@ -87,7 +87,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void initCards() {
-        allCardModels = new LinkedList<>();
+        collectionCards = new HashMap<>();
         templatesToCardModelsMap = new HashMap<>();
         cardModelsToTemplatesMap = new HashMap<>();
         EntityData data = new SimpleEntityData(Components.ALL);
@@ -97,12 +97,11 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
             EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
             CardModel cardModel = new CardModel();
             CardGuiMapper.updateModel(data, cardEntity, cardModel, true);
-            allCardModels.add(cardModel);
+            collectionCards.put(cardModel, Integer.MAX_VALUE);
 
             templatesToCardModelsMap.put(card.getPath(), cardModel);
             cardModelsToTemplatesMap.put(cardModel, card.getPath());
         }
-        allCardModels.sort(Comparator.comparing(CardModel::getManaCostDetails));
     }
 
     private void initDeckBuilder() {
@@ -112,7 +111,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         DeckBuilderCardVisualizer deckCardVisualizer = new DeckBuilderCardVisualizer();
         Comparator<CardModel> deckCardOrder = Comparator.comparing(CardModel::getManaCostDetails);
         DeckBuilderSettings<CardModel> settings = DeckBuilderSettings.<CardModel>builder()
-                .allCardModels(allCardModels)
+                .collectionCards(collectionCards)
                 .collectionZone(collectionZone)
                 .deckZone(deckZone)
                 .collectionCardVisualizer(collectionCardVisualizer)
@@ -137,6 +136,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
             @Override
             protected void initialize(Application app) {
                 super.initialize(app);
+                setCollectionCardOrder(Comparator.comparing(CardModel::getManaCostDetails));
                 setDeck(deck);
             }
         });
@@ -238,7 +238,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
     private void goToNextPage() {
         DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
         if (deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1)) {
-            deckBuilderAppState.goToNextColletionPage();
+            deckBuilderAppState.goToNextCollectionPage();
             updateGui();
         }
     }

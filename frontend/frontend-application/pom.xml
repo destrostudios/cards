@@ -90,12 +90,12 @@
         <dependency>
             <groupId>com.github.destrostudios.card-gui</groupId>
             <artifactId>card-gui</artifactId>
-            <version>${card-gui.version}</version>
+            <version>${version.card-gui}</version>
         </dependency>
         <dependency>
             <groupId>com.github.destrostudios.card-gui</groupId>
             <artifactId>card-gui-samples</artifactId>
-            <version>${card-gui.version}</version>
+            <version>${version.card-gui}</version>
         </dependency>
         <dependency>
             <groupId>com.github.destrostudios.game-tools</groupId>

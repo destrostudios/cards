@@ -36,12 +36,22 @@
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
+            <artifactId>model</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
             <artifactId>network</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>rules</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>database</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>

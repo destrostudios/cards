@@ -19,9 +19,13 @@
         <card-gui.version>ca552937fcf85de2ffcee7d39bc730c30eef842d</card-gui.version>
         <version.game-tools>7e3347ac946e2165141cb58dd2b2b595ce28f0aa</version.game-tools>
         <version.groovy>3.0.10</version.groovy>
+        <version.jackson>2.14.2</version.jackson>
+        <version.javax.activation>1.1.1</version.javax.activation>
+        <version.jaxb>2.3.0</version.jaxb>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
         <version.lombok>1.18.24</version.lombok>
+        <version.mysql>8.0.20</version.mysql>
     </properties>
     <repositories>
         <repository>
@@ -35,12 +39,45 @@
     </repositories>
     <dependencyManagement>
         <dependencies>
+            <!--Jackson-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
             <!--Lombok-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${version.lombok}</version>
                 <scope>provided</scope>
+            </dependency>
+            <!--JAXB-->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${version.jaxb}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${version.jaxb}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${version.jaxb}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${version.javax.activation}</version>
+            </dependency>
+            <!--MySQL-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${version.mysql}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

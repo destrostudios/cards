@@ -2,12 +2,12 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
-import com.destrostudios.cards.shared.network.modules.QueueMessage;
-import com.destrostudios.cards.shared.network.modules.QueueModule;
-import com.destrostudios.cards.shared.network.modules.UnqueueMessage;
+import com.destrostudios.cards.shared.network.messages.QueueMessage;
+import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
+import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.destrostudios.gametools.network.shared.modules.jwt.messages.Logout;
 import com.esotericsoftware.kryonet.Connection;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
-public class QueueServerModule extends QueueModule {
+public class QueueServerModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 

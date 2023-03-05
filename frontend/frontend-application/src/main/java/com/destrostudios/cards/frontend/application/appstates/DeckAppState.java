@@ -10,11 +10,12 @@ import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMa
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.files.FileManager;
-import com.destrostudios.cards.shared.rules.AllCards;
+import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.rules.Components;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -90,17 +91,16 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         templatesToCardModelsMap = new HashMap<>();
         cardModelsToTemplatesMap = new HashMap<>();
         EntityData data = new SimpleEntityData(Components.ALL);
-        for (int i = 0; i < AllCards.TEMPLATES.length; i++) {
-            String template = AllCards.TEMPLATES[i];
-
-            int card = data.createEntity();
-            EntityTemplate.loadTemplate(data, card, template);
+        GameDataClientModule gameDataModule = mainApplication.getToolsClient().getModule(GameDataClientModule.class);
+        for (Card card : gameDataModule.getCards()) {
+            int cardEntity = data.createEntity();
+            EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
             CardModel cardModel = new CardModel();
-            CardGuiMapper.updateModel(data, card, cardModel, true);
+            CardGuiMapper.updateModel(data, cardEntity, cardModel, true);
             allCardModels.add(cardModel);
 
-            templatesToCardModelsMap.put(template, cardModel);
-            cardModelsToTemplatesMap.put(cardModel, template);
+            templatesToCardModelsMap.put(card.getPath(), cardModel);
+            cardModelsToTemplatesMap.put(cardModel, card.getPath());
         }
         allCardModels.sort(Comparator.comparing(CardModel::getManaCostDetails));
     }

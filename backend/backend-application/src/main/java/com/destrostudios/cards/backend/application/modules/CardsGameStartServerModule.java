@@ -2,6 +2,7 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.TestGameSetup;
+import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
@@ -22,16 +23,17 @@ import java.util.function.Consumer;
 
 public class CardsGameStartServerModule extends GameStartServerModule<StartGameInfo> {
 
-    private final Server kryoServer;
-    private final JwtServerModule jwtModule;
-    private final GameServerModule<GameContext, Event> gameModule;
-
-    public CardsGameStartServerModule(Consumer<Kryo> registerParams, Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule) {
+    public CardsGameStartServerModule(Consumer<Kryo> registerParams, Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule, CardService cardService) {
         super(registerParams);
         this.kryoServer = kryoServer;
         this.jwtModule = jwtModule;
         this.gameModule = gameModule;
+        this.cardService = cardService;
     }
+    private Server kryoServer;
+    private JwtServerModule jwtModule;
+    private GameServerModule<GameContext, Event> gameModule;
+    private CardService cardService;
 
     @Override
     public void startGameRequest(Connection connection, StartGameInfo startGameInfo) {
@@ -40,7 +42,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
 
     public UUID startGame(StartGameInfo startGameInfo) {
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
-        TestGameSetup testGameSetup = new TestGameSetup(data, startGameInfo);
+        TestGameSetup testGameSetup = new TestGameSetup(cardService.getCards(), data, startGameInfo);
         testGameSetup.apply();
         GameContext gameContext = new GameContext(startGameInfo, data);
 

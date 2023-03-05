@@ -3,17 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.destrostudios.cards</groupId>
-        <artifactId>main</artifactId>
+        <artifactId>shared</artifactId>
         <version>0.0.1</version>
     </parent>
-    <artifactId>backend</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>backend-application</module>
-        <module>database</module>
-    </modules>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+    <artifactId>model</artifactId>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 </project>

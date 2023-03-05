@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application;
 
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
@@ -46,13 +47,15 @@ public class FrontendClient {
 
     private static ToolsClient getToolsClient(String hostUrl, String jwt) throws IOException {
         Client kryoClient = new Client(10_000_000, 10_000_000);
+        NetworkUtil.setupSerializer(kryoClient.getKryo());
 
         JwtClientModule jwtModule = new JwtClientModule(kryoClient);
+        GameDataClientModule gameDataClientModule = new GameDataClientModule();
         GameClientModule<GameContext, Event> gameModule = new GameClientModule<>(new CardsNetworkService(false), kryoClient);
         GameStartClientModule<StartGameInfo> gameStartModule = new GameStartClientModule<>(kryo -> {}, kryoClient);
         QueueClientModule queueModule = new QueueClientModule(kryoClient);
 
-        ToolsClient client = new ToolsClient(kryoClient, jwtModule, gameModule, gameStartModule, queueModule);
+        ToolsClient client = new ToolsClient(kryoClient, jwtModule, gameDataClientModule, gameModule, gameStartModule, queueModule);
         client.start(10_000, hostUrl, NetworkUtil.PORT);
 
         jwtModule.login(jwt);

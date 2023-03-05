@@ -1,13 +1,13 @@
 package com.destrostudios.cards.frontend.application.modules;
 
-import com.destrostudios.cards.shared.network.modules.QueueMessage;
-import com.destrostudios.cards.shared.network.modules.QueueModule;
-import com.destrostudios.cards.shared.network.modules.UnqueueMessage;
+import com.destrostudios.cards.shared.network.messages.QueueMessage;
+import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
+import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.esotericsoftware.kryonet.Connection;
 
 import java.util.List;
 
-public class QueueClientModule extends QueueModule {
+public class QueueClientModule extends NetworkModule {
 
     public QueueClientModule(Connection connection) {
         this.connection = connection;

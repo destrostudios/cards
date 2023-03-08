@@ -1,7 +1,9 @@
-package com.destrostudios.cards.frontend.application.appstates;
+package com.destrostudios.cards.frontend.application.appstates.menu;
 
-import com.destrostudios.cards.frontend.application.GuiUtil;
+import com.destrostudios.cards.frontend.application.appstates.IngameAppState;
+import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.GameService;
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.GameContext;
@@ -10,34 +12,42 @@ import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 
 import java.util.List;
 import java.util.UUID;
 
-public class WaitingForGameAppState extends MyBaseAppState {
-
-    private Node guiNode;
+public class PlayAppState extends MenuAppState {
 
     @Override
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
         initGui();
-        stateManager.attach(new DeckAppState());
+        GameDataClientModule gameDataModule = mainApplication.getToolsClient().getModule(GameDataClientModule.class);
+        gameDataModule.requestOwnUserCardLists();
+        stateManager.attach(new LoadingAppState() {
+
+            @Override
+            protected boolean shouldClose() {
+                GameDataClientModule gameDataModule = mainApplication.getToolsClient().getModule(GameDataClientModule.class);
+                return (gameDataModule.getUserCardLists() != null);
+            }
+
+            @Override
+            protected void close() {
+                super.close();
+                stateManager.attach(new DeckAppState());
+            }
+        });
     }
 
     private void initGui() {
-        guiNode = new Node();
-
         addQueueButton(true, 265);
         addQueueButton(false, 495);
-
-        mainApplication.getGuiNode().attachChild(guiNode);
     }
 
     private void addQueueButton(boolean againstHumanOrBot, float additionalX) {
-        Button buttonQueue = GuiUtil.addButton(guiNode, againstHumanOrBot ? "Queue vs Human" : "Start vs Bot", 200, GuiUtil.BUTTON_HEIGHT_DEFAULT, button -> {
+        Button buttonQueue = addButton(againstHumanOrBot ? "Queue vs Human" : "Start vs Bot", 200, BUTTON_HEIGHT_DEFAULT, button -> {
             QueueClientModule queueModule = mainApplication.getToolsClient().getModule(QueueClientModule.class);
             // Whatever, good enough for now
             if ("Unqueue vs Human".equals(button.getText())) {
@@ -80,6 +90,5 @@ public class WaitingForGameAppState extends MyBaseAppState {
     public void cleanup() {
         super.cleanup();
         mainApplication.getStateManager().detach(getAppState(DeckAppState.class));
-        mainApplication.getGuiNode().detachChild(guiNode);
     }
 }

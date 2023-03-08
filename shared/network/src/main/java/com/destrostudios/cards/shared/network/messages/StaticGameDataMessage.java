@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
-public class GameDataMessage {
+public class StaticGameDataMessage {
     private List<Mode> modes;
     private List<Card> cards;
     private User ownUser;

@@ -50,7 +50,7 @@ public class FrontendClient {
         NetworkUtil.setupSerializer(kryoClient.getKryo());
 
         JwtClientModule jwtModule = new JwtClientModule(kryoClient);
-        GameDataClientModule gameDataClientModule = new GameDataClientModule();
+        GameDataClientModule gameDataClientModule = new GameDataClientModule(kryoClient);
         GameClientModule<GameContext, Event> gameModule = new GameClientModule<>(new CardsNetworkService(false), kryoClient);
         GameStartClientModule<StartGameInfo> gameStartModule = new GameStartClientModule<>(kryo -> {}, kryoClient);
         QueueClientModule queueModule = new QueueClientModule(kryoClient);

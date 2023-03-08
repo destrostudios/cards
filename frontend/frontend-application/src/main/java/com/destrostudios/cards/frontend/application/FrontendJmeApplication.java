@@ -1,7 +1,7 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.frontend.application.appstates.PostFilterAppState;
-import com.destrostudios.cards.frontend.application.appstates.WaitingForGameAppState;
+import com.destrostudios.cards.frontend.application.appstates.menu.PlayAppState;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.gametools.network.client.ToolsClient;
 import com.jme3.app.SimpleApplication;
@@ -36,7 +36,7 @@ public class FrontendJmeApplication extends SimpleApplication {
         assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
         flyCam.setEnabled(false);
         stateManager.attach(new PostFilterAppState());
-        stateManager.attach(new WaitingForGameAppState());
+        stateManager.attach(new PlayAppState());
         // Lemur
         GuiGlobals.initialize(this);
         BaseStyles.loadGlassStyle();

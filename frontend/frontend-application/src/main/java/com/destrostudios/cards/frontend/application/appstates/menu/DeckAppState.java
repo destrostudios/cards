@@ -1,11 +1,11 @@
-package com.destrostudios.cards.frontend.application.appstates;
+package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cardgui.BoardSettings;
 import com.destrostudios.cardgui.CardZone;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
-import com.destrostudios.cards.frontend.application.GuiUtil;
+import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
@@ -29,7 +29,6 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.simsilica.lemur.Button;
 import lombok.Getter;
@@ -37,7 +36,7 @@ import lombok.Getter;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class DeckAppState extends MyBaseAppState implements ActionListener {
+public class DeckAppState extends MenuAppState implements ActionListener {
 
     private static final String DECK_FILE_PATH = "./deck.txt";
 
@@ -48,7 +47,6 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
     private HashMap<CardModel, String> cardModelsToTemplatesMap;
     @Getter
     private List<String> libraryTemplates;
-    private Node guiNode;
     private BitmapText textTitle;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
@@ -144,10 +142,6 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
 
     private void initGui() {
         DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
-        int width = mainApplication.getContext().getSettings().getWidth();
-        int height = mainApplication.getContext().getSettings().getHeight();
-
-        guiNode = new Node();
 
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         textTitle = new BitmapText(guiFont);
@@ -164,9 +158,9 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         float buttonPreviousX = 55;
         float buttonNextX = (1255 - buttonPaginationWidth);
         float buttonPaginationY = (height / 2f) + (buttonPaginationHeight / 2f);
-        buttonPreviousPage = GuiUtil.addButton(guiNode, "<", buttonPaginationWidth, buttonPaginationHeight, b -> goToPreviousPage());
+        buttonPreviousPage = addButton("<", buttonPaginationWidth, buttonPaginationHeight, b -> goToPreviousPage());
         buttonPreviousPage.setLocalTranslation(buttonPreviousX, buttonPaginationY, 0);
-        buttonNextPage = GuiUtil.addButton(guiNode, ">", buttonPaginationWidth, buttonPaginationHeight, b -> goToNextPage());
+        buttonNextPage = addButton(">", buttonPaginationWidth, buttonPaginationHeight, b -> goToNextPage());
         buttonNextPage.setLocalTranslation(buttonNextX, buttonPaginationY, 0);
 
         // Filter
@@ -176,7 +170,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
             final int manaCost = i;
             Predicate<CardModel> filter = cardModel -> cardModel.getManaCostDetails() == manaCost;
-            Button button = GuiUtil.addButton(guiNode, "" + i, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
+            Button button = addButton("" + i, buttonManaFilterWidth, BUTTON_HEIGHT_DEFAULT, b -> {
                 if (deckBuilderAppState.getCollectionCardFilter() == filter) {
                     deckBuilderAppState.setCollectionCardFilter(null);
                     filteredManaCost = null;
@@ -194,7 +188,7 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
 
         // Save
         float buttonSaveWidth = 293;
-        Button buttonSave = GuiUtil.addButton(guiNode, "Save", buttonSaveWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
+        Button buttonSave = addButton("Save", buttonSaveWidth, BUTTON_HEIGHT_DEFAULT, b -> {
             libraryTemplates.clear();
             for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
                 String template = cardModelsToTemplatesMap.get(entry.getKey());
@@ -205,9 +199,8 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
             FileManager.putFileContent(DECK_FILE_PATH, String.join("\n", libraryTemplates));
             updateGui();
         });
-        buttonSave.setLocalTranslation(width - 56 - buttonSaveWidth, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
+        buttonSave.setLocalTranslation(width - 56 - buttonSaveWidth, 86 + BUTTON_HEIGHT_DEFAULT, 0);
 
-        mainApplication.getGuiNode().attachChild(guiNode);
         updateGui();
     }
 
@@ -260,7 +253,6 @@ public class DeckAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getInputManager().deleteMapping("left");
         mainApplication.getInputManager().deleteMapping("right");
         mainApplication.getInputManager().removeListener(this);
-        mainApplication.getGuiNode().detachChild(guiNode);
         mainApplication.getStateManager().detach(getAppState(DeckBuilderAppState.class));
         mainApplication.getRootNode().removeLight(ambientLight);
         mainApplication.getRootNode().removeLight(directionalLight);

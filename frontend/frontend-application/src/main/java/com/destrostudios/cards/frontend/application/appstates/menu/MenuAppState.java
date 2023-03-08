@@ -2,6 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cards.frontend.application.appstates.MyBaseAppState;
 import com.jme3.app.Application;
+import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -40,6 +41,11 @@ public class MenuAppState extends MyBaseAppState {
         button.addCommands(Button.ButtonAction.Up, command);
         guiNode.attachChild(button);
         return button;
+    }
+
+    protected void switchTo(AppState appState) {
+        mainApplication.getStateManager().detach(this);
+        mainApplication.getStateManager().attach(appState);
     }
 
     @Override

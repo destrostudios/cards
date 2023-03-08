@@ -1,7 +1,9 @@
 package com.destrostudios.cards.frontend.application;
 
+import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.PostFilterAppState;
-import com.destrostudios.cards.frontend.application.appstates.menu.PlayAppState;
+import com.destrostudios.cards.frontend.application.appstates.menu.MainMenuAppState;
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.gametools.network.client.ToolsClient;
 import com.jme3.app.SimpleApplication;
@@ -10,6 +12,8 @@ import com.jme3.system.AppSettings;
 import com.simsilica.lemur.GuiGlobals;
 import com.simsilica.lemur.style.BaseStyles;
 import lombok.Getter;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FrontendJmeApplication extends SimpleApplication {
 
@@ -36,11 +40,31 @@ public class FrontendJmeApplication extends SimpleApplication {
         assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
         flyCam.setEnabled(false);
         stateManager.attach(new PostFilterAppState());
-        stateManager.attach(new PlayAppState());
-        // Lemur
         GuiGlobals.initialize(this);
-        BaseStyles.loadGlassStyle();
-        GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+
+        AtomicBoolean asyncInitDone = new AtomicBoolean(false);
+        initAsync(asyncInitDone);
+        stateManager.attach(new LoadingAppState() {
+
+            @Override
+            protected boolean shouldClose() {
+                return (getModule(GameDataClientModule.class).getUser() != null) && asyncInitDone.get();
+            }
+
+            @Override
+            protected void close() {
+                super.close();
+                stateManager.attach(new MainMenuAppState());
+            }
+        });
+    }
+
+    private void initAsync(AtomicBoolean asyncInitDone) {
+        new Thread(() -> {
+            BaseStyles.loadGlassStyle();
+            GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+            asyncInitDone.set(true);
+        }).start();
     }
 
     public void enqueue(final Runnable runnable){

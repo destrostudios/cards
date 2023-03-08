@@ -1,12 +1,9 @@
 package com.destrostudios.cards.frontend.application.modules;
 
-import com.destrostudios.cards.shared.model.Card;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.User;
-import com.destrostudios.cards.shared.model.UserCardList;
-import com.destrostudios.cards.shared.network.messages.GetOwnUserCardListsMessage;
-import com.destrostudios.cards.shared.network.messages.OwnUserCardListsMessage;
-import com.destrostudios.cards.shared.network.messages.StaticGameDataMessage;
+import com.destrostudios.cards.shared.model.*;
+import com.destrostudios.cards.shared.network.messages.CardPackResultMessage;
+import com.destrostudios.cards.shared.network.messages.InitialGameDataMessage;
+import com.destrostudios.cards.shared.network.messages.OpenCardPackMessage;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.esotericsoftware.kryonet.Connection;
 import lombok.Getter;
@@ -22,22 +19,26 @@ public class GameDataClientModule extends NetworkModule {
     private Connection connection;
     private List<Mode> modes;
     private List<Card> cards;
-    private User ownUser;
+    private User user;
     private List<UserCardList> userCardLists;
+    private List<CardListCard> cardPackCards;
 
     @Override
     public void received(Connection connection, Object object) {
-        if (object instanceof StaticGameDataMessage staticGameDataMessage) {
-            modes = staticGameDataMessage.getModes();
-            cards = staticGameDataMessage.getCards();
-            ownUser = staticGameDataMessage.getOwnUser();
-        } else if (object instanceof OwnUserCardListsMessage ownUserCardListsMessage) {
-            userCardLists = ownUserCardListsMessage.getUserCardLists();
+        if (object instanceof InitialGameDataMessage initialGameDataMessage) {
+            modes = initialGameDataMessage.getModes();
+            cards = initialGameDataMessage.getCards();
+            user = initialGameDataMessage.getUser();
+            userCardLists = initialGameDataMessage.getUserCardLists();
+        } else if (object instanceof CardPackResultMessage cardPackResultMessage) {
+            userCardLists = cardPackResultMessage.getUserCardLists();
+            cardPackCards = cardPackResultMessage.getCardPackCards();
         }
     }
 
-    public void requestOwnUserCardLists() {
+    public void openCardPack() {
         userCardLists = null;
-        connection.sendTCP(new GetOwnUserCardListsMessage());
+        cardPackCards = null;
+        connection.sendTCP(new OpenCardPackMessage());
     }
 }

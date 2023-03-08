@@ -89,7 +89,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         templatesToCardModelsMap = new HashMap<>();
         cardModelsToTemplatesMap = new HashMap<>();
         EntityData data = new SimpleEntityData(Components.ALL);
-        GameDataClientModule gameDataModule = mainApplication.getToolsClient().getModule(GameDataClientModule.class);
+        GameDataClientModule gameDataModule = getModule(GameDataClientModule.class);
         for (Card card : gameDataModule.getCards()) {
             int cardEntity = data.createEntity();
             EntityTemplate.loadTemplate(data, cardEntity, card.getPath());

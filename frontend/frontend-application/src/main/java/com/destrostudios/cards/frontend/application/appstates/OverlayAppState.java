@@ -44,7 +44,7 @@ public class OverlayAppState extends MyBaseAppState implements ActionListener {
 
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         BitmapText bitmapText = new BitmapText(guiFont);
-        bitmapText.setSize(100);
+        bitmapText.setSize(50);
         bitmapText.setColor(color);
         bitmapText.setText(text);
         float x = ((width / 2f) - (bitmapText.getLineWidth() / 2));

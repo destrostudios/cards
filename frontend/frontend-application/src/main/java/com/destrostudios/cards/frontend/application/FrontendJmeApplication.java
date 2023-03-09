@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application;
 
+import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.PostFilterAppState;
 import com.destrostudios.cards.frontend.application.appstates.menu.MainMenuAppState;
@@ -39,6 +40,7 @@ public class FrontendJmeApplication extends SimpleApplication {
     public void simpleInitApp() {
         assetManager.registerLocator(FileAssets.ROOT, FileLocator.class);
         flyCam.setEnabled(false);
+        stateManager.attach(new BackgroundAppState());
         stateManager.attach(new PostFilterAppState());
         GuiGlobals.initialize(this);
 

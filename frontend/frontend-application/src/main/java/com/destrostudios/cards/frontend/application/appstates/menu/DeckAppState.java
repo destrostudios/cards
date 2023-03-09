@@ -56,7 +56,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     @Override
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
-        stateManager.attach(new BackgroundAppState("images/background.png"));
+        getAppState(BackgroundAppState.class).setBackground("deck");
         initCamera();
         initLight();
         initDeck();
@@ -256,6 +256,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         mainApplication.getStateManager().detach(getAppState(DeckBuilderAppState.class));
         mainApplication.getRootNode().removeLight(ambientLight);
         mainApplication.getRootNode().removeLight(directionalLight);
-        mainApplication.getStateManager().detach(getAppState(BackgroundAppState.class));
+        getAppState(BackgroundAppState.class).resetBackground();
     }
 }

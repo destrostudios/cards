@@ -11,10 +11,7 @@ import com.jme3.scene.shape.Quad;
 
 public class BackgroundAppState extends MyBaseAppState {
 
-    public BackgroundAppState(String texturePath) {
-        this.texturePath = texturePath;
-    }
-    private String texturePath;
+    private Material material;
     private ViewPort preViewPort;
 
     @Override
@@ -24,8 +21,7 @@ public class BackgroundAppState extends MyBaseAppState {
         int height = mainApplication.getContext().getSettings().getHeight();
 
         Geometry geometry = new Geometry("background", new Quad(width, height));
-        Material material = new Material(mainApplication.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-        material.setTexture("ColorMap", mainApplication.getAssetManager().loadTexture(texturePath));
+        material = new Material(mainApplication.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         geometry.setMaterial(material);
         geometry.setQueueBucket(RenderQueue.Bucket.Gui);
 
@@ -35,6 +31,16 @@ public class BackgroundAppState extends MyBaseAppState {
         geometry.updateGeometricState();
         preViewPort.setBackgroundColor(ColorRGBA.Red);
         mainApplication.getViewPort().setClearColor(false);
+
+        resetBackground();
+    }
+
+    public void resetBackground() {
+        setBackground("default");
+    }
+
+    public void setBackground(String backgroundName) {
+        material.setTexture("ColorMap", mainApplication.getAssetManager().loadTexture("images/backgrounds/" + backgroundName + ".png"));
     }
 
     @Override

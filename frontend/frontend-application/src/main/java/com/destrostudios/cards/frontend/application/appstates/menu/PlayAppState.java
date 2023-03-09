@@ -2,8 +2,10 @@ package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cards.frontend.application.appstates.IngameAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.GameService;
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.model.UserCardList;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.gametools.network.client.modules.game.ClientGameData;
 import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
@@ -34,8 +36,9 @@ public class PlayAppState extends MenuAppState {
                     button.setText("Queue vs Human");
                 }
             } else {
-                int cardListId = 1; // TODO
-                queueModule.queue(againstHumanOrBot, cardListId);
+                // TODO
+                UserCardList deck = getModule(GameDataClientModule.class).getUserCardLists().stream().filter(ucl -> !ucl.isLibrary()).findFirst().orElseThrow();
+                queueModule.queue(againstHumanOrBot, deck.getId());
                 if (againstHumanOrBot) {
                     button.setText("Unqueue vs Human");
                 }

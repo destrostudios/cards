@@ -2,8 +2,8 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
-import com.destrostudios.cards.backend.application.services.CardListService;
-import com.destrostudios.cards.shared.model.CardList;
+import com.destrostudios.cards.backend.application.services.UserService;
+import com.destrostudios.cards.shared.model.UserCardList;
 import com.destrostudios.cards.shared.network.messages.QueueMessage;
 import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
@@ -25,17 +25,17 @@ public class QueueServerModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
-    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, CardListService cardListService) {
+    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, UserService userService) {
         this.jwtModule = jwtModule;
         this.cardsGameStartServerModule = cardsGameStartServerModule;
         this.cardsBotModule = cardsBotModule;
-        this.cardListService = cardListService;
+        this.userService = userService;
         playersInQueue = new HashMap<>();
     }
     private JwtServerModule jwtModule;
     private CardsGameStartServerModule cardsGameStartServerModule;
     private CardsBotModule cardsBotModule;
-    private CardListService cardListService;
+    private UserService userService;
     private HashMap<Long, PlayerInfo> playersInQueue;
 
     @Override
@@ -44,10 +44,10 @@ public class QueueServerModule extends NetworkModule {
             JwtAuthenticationUser user = jwtModule.getUser(connection.getID());
             // Successful login
             if (user != null) {
-                LOG.info(user.login + " queued up (againstHumanOrBot = " + queueMessage.isAgainstHumanOrBot() + ", cardListId = " + queueMessage.getCardListId() + ").");
-                CardList cardList = cardListService.getCardList(queueMessage.getCardListId());
-                // TODO: Map amounts etc.
-                List<String> libraryTemplates = cardList.getCards().stream().map(c -> c.getCard().getPath()).collect(Collectors.toList());
+                LOG.info(user.login + " queued up (againstHumanOrBot = " + queueMessage.isAgainstHumanOrBot() + ", cardListId = " + queueMessage.getUserCardListId() + ").");
+                UserCardList userCardList = userService.getUserCardList(queueMessage.getUserCardListId());
+                // TODO: Map amount, foil etc.
+                List<String> libraryTemplates = userCardList.getCardList().getCards().stream().map(c -> c.getCard().getPath()).collect(Collectors.toList());
                 PlayerInfo playerInfo = new PlayerInfo(user.id, user.login, libraryTemplates);
                 if (queueMessage.isAgainstHumanOrBot()) {
                     playersInQueue.put(user.id, playerInfo);

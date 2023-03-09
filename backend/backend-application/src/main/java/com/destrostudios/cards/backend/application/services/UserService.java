@@ -15,6 +15,8 @@ public class UserService {
 
     private Database database;
     private ModeService modeService;
+    private CardService cardService;
+    private FoilService foilService;
     private CardListService cardListService;
 
     public User getUser(JwtAuthenticationUser jwtUser) {
@@ -53,8 +55,8 @@ public class UserService {
     public void deleteUserCardList(int userCardListId) {
         UserCardList userCardList = getUserCardList(userCardListId);
         database.transaction(() -> {
+            database.execute("DELETE FROM user_card_list WHERE id = " + userCardListId);
             cardListService.deleteCardList(userCardList.getCardList().getId());
-            database.execute("DELETE FROM user_card_list WHERE id = " + userCardList);
             return null;
         });
     }
@@ -80,7 +82,26 @@ public class UserService {
         int id = result.getInteger("id");
         Mode mode = modeService.getMode(result.getInteger("mode_id"));
         boolean library = result.getBoolean("library");
-        CardList cardList = cardListService.getCardList(result.getInteger("card_list_id"));
+
+        CardList cardList;
+        // Developer has all cards
+        int userId = result.getInteger("user_id");
+        if (library && (userId == 1)) {
+            cardList = createCompleteCardList();
+        } else {
+            cardList = cardListService.getCardList(result.getInteger("card_list_id"));
+        }
+
         return new UserCardList(id, mode, library, cardList);
+    }
+
+    private CardList createCompleteCardList() {
+        LinkedList<CardListCard> cards = new LinkedList<>();
+        for (Card card : cardService.getCards()) {
+            for (Foil foil : foilService.getFoils()) {
+                cards.add(new CardListCard(0, card, foil, 999));
+            }
+        }
+        return new CardList(0, "Complete", cards);
     }
 }

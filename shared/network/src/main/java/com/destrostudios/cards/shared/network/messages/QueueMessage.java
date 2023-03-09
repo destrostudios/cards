@@ -8,5 +8,5 @@ import lombok.*;
 @ToString
 public class QueueMessage {
     private boolean againstHumanOrBot;
-    private int cardListId;
+    private int userCardListId;
 }

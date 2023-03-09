@@ -5,7 +5,9 @@ import com.destrostudios.cardgui.CardZone;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
+import com.destrostudios.cards.frontend.application.CompositeComparator;
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
+import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
@@ -14,9 +16,11 @@ import com.destrostudios.cards.frontend.application.modules.GameDataClientModule
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
-import com.destrostudios.cards.shared.files.FileManager;
-import com.destrostudios.cards.shared.model.Card;
+import com.destrostudios.cards.shared.model.CardListCard;
+import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.changes.NewCardListCard;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapFont;
@@ -31,22 +35,21 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.simsilica.lemur.Button;
-import lombok.Getter;
 
 import java.util.*;
 import java.util.function.Predicate;
 
 public class DeckAppState extends MenuAppState implements ActionListener {
 
-    private static final String DECK_FILE_PATH = "./deck.txt";
-
+    public DeckAppState(UserCardList deck) {
+        this.deck = deck;
+    }
+    private UserCardList deck;
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
     private HashMap<CardModel, Integer> collectionCards;
-    private HashMap<String, CardModel> templatesToCardModelsMap;
-    private HashMap<CardModel, String> cardModelsToTemplatesMap;
-    @Getter
-    private List<String> libraryTemplates;
+    private HashMap<String, CardModel> cardsToCardModelsMap;
+    private HashMap<CardModel, CardListCard> cardModelsToCardsMap;
     private BitmapText textTitle;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
@@ -59,7 +62,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         getAppState(BackgroundAppState.class).setBackground("deck");
         initCamera();
         initLight();
-        initDeck();
         initCards();
         initDeckBuilder();
         initGui();
@@ -80,25 +82,29 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         mainApplication.getRootNode().addLight(directionalLight);
     }
 
-    private void initDeck() {
-        libraryTemplates = FileManager.getFileLines(DECK_FILE_PATH);
-    }
-
     private void initCards() {
         collectionCards = new HashMap<>();
-        templatesToCardModelsMap = new HashMap<>();
-        cardModelsToTemplatesMap = new HashMap<>();
+        cardsToCardModelsMap = new HashMap<>();
+        cardModelsToCardsMap = new HashMap<>();
         EntityData data = new SimpleEntityData(Components.ALL);
-        GameDataClientModule gameDataModule = getModule(GameDataClientModule.class);
-        for (Card card : gameDataModule.getCards()) {
+        UserCardList library = getModule(GameDataClientModule.class).getLibrary(deck.getMode().getId());
+        for (CardListCard cardListCard : library.getCardList().getCards()) {
             int cardEntity = data.createEntity();
-            EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
+            EntityTemplate.loadTemplate(data, cardEntity, cardListCard.getCard().getPath());
+            // TODO: Make reusable
+            if ("artwork".equals(cardListCard.getFoil().getName())) {
+                data.setComponent(cardEntity, Components.FOIL, Foil.ARTWORK);
+            } else if ("full".equals(cardListCard.getFoil().getName())) {
+                data.setComponent(cardEntity, Components.FOIL, Foil.FULL);
+            }
+
             CardModel cardModel = new CardModel();
             CardGuiMapper.updateModel(data, cardEntity, cardModel, true);
-            collectionCards.put(cardModel, Integer.MAX_VALUE);
+            collectionCards.put(cardModel, cardListCard.getAmount());
 
-            templatesToCardModelsMap.put(card.getPath(), cardModel);
-            cardModelsToTemplatesMap.put(cardModel, card.getPath());
+            String cardKey = getCardListCardKey(cardListCard);
+            cardsToCardModelsMap.put(cardKey, cardModel);
+            cardModelsToCardsMap.put(cardModel, cardListCard);
         }
     }
 
@@ -107,26 +113,30 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         CardZone deckZone = new SimpleIntervalZone(new Vector3f(8.25f, 0, -4.715f), new Vector3f(1, 1, 0.57f));
         IngameCardVisualizer collectionCardVisualizer = new IngameCardVisualizer(false, false, 4.25f);
         DeckBuilderCardVisualizer deckCardVisualizer = new DeckBuilderCardVisualizer();
-        Comparator<CardModel> deckCardOrder = Comparator.comparing(CardModel::getManaCostDetails);
+        Comparator<CardModel> cardOrder = new CompositeComparator<>(
+            Comparator.comparing(CardModel::getManaCostDetails),
+            Comparator.comparing(CardModel::getTitle),
+            Comparator.comparing(cardModel -> ((cardModel.getFoil() != null) ? cardModel.getFoil().ordinal() : -1))
+        );
         DeckBuilderSettings<CardModel> settings = DeckBuilderSettings.<CardModel>builder()
-                .collectionCards(collectionCards)
-                .collectionZone(collectionZone)
-                .deckZone(deckZone)
-                .collectionCardVisualizer(collectionCardVisualizer)
-                .deckCardVisualizer(deckCardVisualizer)
-                .deckCardOrder(deckCardOrder)
-                .deckCardsMaximumTotal(30)
-                .collectionCardsPerRow(4)
-                .collectionRowsPerPage(2)
-                .boardSettings(BoardSettings.builder()
-                        .inputActionPrefix("deckbuilder")
-                        .build())
-                .build();
+            .collectionCards(collectionCards)
+            .collectionZone(collectionZone)
+            .deckZone(deckZone)
+            .collectionCardVisualizer(collectionCardVisualizer)
+            .deckCardVisualizer(deckCardVisualizer)
+            .deckCardOrder(cardOrder)
+            .deckCardsMaximumTotal(30)
+            .collectionCardsPerRow(4)
+            .collectionRowsPerPage(2)
+            .boardSettings(BoardSettings.builder()
+                .inputActionPrefix("deckbuilder")
+                .build())
+            .build();
 
         HashMap<CardModel, Integer> deck = new HashMap<>();
-        for (String template : libraryTemplates) {
-            CardModel cardModel = templatesToCardModelsMap.get(template);
-            deck.put(cardModel, deck.computeIfAbsent(cardModel, cm -> 0) + 1);
+        for (CardListCard cardListCard : this.deck.getCardList().getCards()) {
+            CardModel cardModel = cardsToCardModelsMap.get(getCardListCardKey(cardListCard));
+            deck.put(cardModel, cardListCard.getAmount());
         }
 
         mainApplication.getStateManager().attach(new DeckBuilderAppState<>(mainApplication.getRootNode(), settings) {
@@ -134,10 +144,14 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             @Override
             protected void initialize(Application app) {
                 super.initialize(app);
-                setCollectionCardOrder(Comparator.comparing(CardModel::getManaCostDetails));
+                setCollectionCardOrder(cardOrder);
                 setDeck(deck);
             }
         });
+    }
+
+    private String getCardListCardKey(CardListCard cardListCard) {
+        return cardListCard.getCard().getId() + "_" + cardListCard.getFoil().getId();
     }
 
     private void initGui() {
@@ -189,24 +203,31 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         // Save
         float rightButtonsWidth = 293;
         float rightButtonsX = width - 56 - rightButtonsWidth;
-        Button buttonSave = addButton("Save", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> {
-            libraryTemplates.clear();
-            for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
-                String template = cardModelsToTemplatesMap.get(entry.getKey());
-                for (int i = 0; i < entry.getValue(); i++) {
-                    libraryTemplates.add(template);
-                }
-            }
-            FileManager.putFileContent(DECK_FILE_PATH, String.join("\n", libraryTemplates));
-            updateGui();
-        });
+        Button buttonSave = addButton("Save", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> saveDeck());
         buttonSave.setLocalTranslation(rightButtonsX, 86 + BUTTON_HEIGHT_DEFAULT, 0);
 
         // Back
-        Button buttonBack = addButton("Back", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> switchTo(new MainMenuAppState()));
+        Button buttonBack = addButton("Back", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> switchTo(new DecksAppState()));
         buttonBack.setLocalTranslation(rightButtonsX, 18 + BUTTON_HEIGHT_DEFAULT, 0);
 
         updateGui();
+    }
+
+    private void saveDeck() {
+        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
+        LinkedList<NewCardListCard> cards = new LinkedList<>();
+        for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
+            CardListCard cardListCard = cardModelsToCardsMap.get(entry.getKey());
+            cards.add(new NewCardListCard(cardListCard.getCard().getId(), cardListCard.getFoil().getId(), entry.getValue()));
+        }
+        getModule(GameDataClientModule.class).updateUserCardList(deck.getId(), null, cards);
+        mainApplication.getStateManager().attach(new LoadingAppState() {
+
+            @Override
+            protected boolean shouldClose() {
+                return (getModule(GameDataClientModule.class).getUserCardLists() != null);
+            }
+        });
     }
 
     private void initListeners() {
@@ -243,7 +264,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
 
     private void updateGui() {
         DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
-        textTitle.setText("Deckbuilder (Your deck: " + libraryTemplates.size() + ")");
+        textTitle.setText("Deckbuilder");
         buttonPreviousPage.setCullHint(deckBuilderAppState.getCollectionPage() > 0 ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         buttonNextPage.setCullHint(deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1) ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         for (int i = 0; i < buttonFilterManaCost.length; i++) {

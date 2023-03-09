@@ -97,6 +97,10 @@ public abstract class Database {
         }
     }
 
+    public String escapeNullable(String text) {
+        return ((text != null) ? "'" + escape(text) + "'" : "NULL");
+    }
+
     public String escape(String text) {
         return text
             // Replace single backslash with double backslash;

@@ -26,11 +26,11 @@ public class BackendApplication {
         ApplicationSetup.setup();
 
         Database database = getDatabase();
+        ModeService modeService = new ModeService(database);
         CardService cardService = new CardService(database);
         FoilService foilService = new FoilService(database);
-        ModeService modeService = new ModeService(database);
         CardListService cardListService = new CardListService(database, cardService, foilService);
-        UserService userService = new UserService(database, modeService, cardListService);
+        UserService userService = new UserService(database, modeService, cardService, foilService, cardListService);
 
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
         // Log.DEBUG();
@@ -42,16 +42,15 @@ public class BackendApplication {
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
         GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, modeService, cardService, userService);
-        CardListsModule cardListsModule = new CardListsModule(jwtModule, userService);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule, cardService);
-        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, cardListService);
+        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, userService);
 
         GameOverModule gameOverModule = new GameOverModule(gameModule);
         AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);
 
-        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameDataServerModule, cardListsModule, gameModule, cardsBotModule, gameStartModule, queueModule, gameOverModule, autoRejoinModule);
+        ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameDataServerModule, gameModule, cardsBotModule, gameStartModule, queueModule, gameOverModule, autoRejoinModule);
         server.start(NetworkUtil.PORT);
 
         System.out.println("Server started.");

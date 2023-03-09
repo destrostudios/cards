@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
-public class UpdateCardListMessage {
+public class UpdateUserCardListMessage {
     private int userCardListId;
     private String name;
     private List<NewCardListCard> cards;

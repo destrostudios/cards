@@ -5,8 +5,6 @@ import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.esotericsoftware.kryonet.Connection;
 
-import java.util.List;
-
 public class QueueClientModule extends NetworkModule {
 
     public QueueClientModule(Connection connection) {
@@ -14,8 +12,8 @@ public class QueueClientModule extends NetworkModule {
     }
     private Connection connection;
 
-    public void queue(boolean againstHumanOrBot, List<String> libraryTemplates) {
-        connection.sendTCP(new QueueMessage(againstHumanOrBot, libraryTemplates));
+    public void queue(boolean againstHumanOrBot, int cardListId) {
+        connection.sendTCP(new QueueMessage(againstHumanOrBot, cardListId));
     }
 
     public void unqueue() {

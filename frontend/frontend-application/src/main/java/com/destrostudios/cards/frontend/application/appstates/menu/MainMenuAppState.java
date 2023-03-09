@@ -13,10 +13,10 @@ public class MainMenuAppState extends MenuAppState {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         addTitle();
-        addButton(0, "Play", button -> switchTo(new PlayAppState()));
-        // addButton(1, "Collection", button -> switchTo(new PlayAppState()));
-        // addButton(2, "Packs", button -> switchTo(new PlayAppState()));
-        addButton(3, "Exit", button -> System.exit(0));
+        addButton(0, "Play", b -> switchTo(new PlayAppState()));
+        addButton(1, "Collection", b -> switchTo(new DeckAppState()));
+        // addButton(2, "Packs", b -> switchTo(new PlayAppState()));
+        addButton(3, "Exit", b -> System.exit(0));
     }
 
     private void addTitle() {

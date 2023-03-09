@@ -187,8 +187,9 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         }
 
         // Save
-        float buttonSaveWidth = 293;
-        Button buttonSave = addButton("Save", buttonSaveWidth, BUTTON_HEIGHT_DEFAULT, b -> {
+        float rightButtonsWidth = 293;
+        float rightButtonsX = width - 56 - rightButtonsWidth;
+        Button buttonSave = addButton("Save", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> {
             libraryTemplates.clear();
             for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
                 String template = cardModelsToTemplatesMap.get(entry.getKey());
@@ -199,7 +200,11 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             FileManager.putFileContent(DECK_FILE_PATH, String.join("\n", libraryTemplates));
             updateGui();
         });
-        buttonSave.setLocalTranslation(width - 56 - buttonSaveWidth, 86 + BUTTON_HEIGHT_DEFAULT, 0);
+        buttonSave.setLocalTranslation(rightButtonsX, 86 + BUTTON_HEIGHT_DEFAULT, 0);
+
+        // Back
+        Button buttonBack = addButton("Back", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> switchTo(new MainMenuAppState()));
+        buttonBack.setLocalTranslation(rightButtonsX, 18 + BUTTON_HEIGHT_DEFAULT, 0);
 
         updateGui();
     }

@@ -6,7 +6,6 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class QueueMessage {
-    private boolean againstHumanOrBot;
-    private int cardListId;
+public class CreateCardListMessage {
+    private int modeId;
 }

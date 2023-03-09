@@ -22,7 +22,6 @@ public class PlayAppState extends MenuAppState {
         super.initialize(stateManager, application);
         addQueueButton(true, 265);
         addQueueButton(false, 495);
-        stateManager.attach(new DeckAppState());
     }
 
     private void addQueueButton(boolean againstHumanOrBot, float additionalX) {
@@ -35,8 +34,8 @@ public class PlayAppState extends MenuAppState {
                     button.setText("Queue vs Human");
                 }
             } else {
-                DeckAppState deckAppState = getAppState(DeckAppState.class);
-                queueModule.queue(againstHumanOrBot, deckAppState.getLibraryTemplates());
+                int cardListId = 1; // TODO
+                queueModule.queue(againstHumanOrBot, cardListId);
                 if (againstHumanOrBot) {
                     button.setText("Unqueue vs Human");
                 }
@@ -62,11 +61,5 @@ public class PlayAppState extends MenuAppState {
 
             switchTo(new IngameAppState(gameService));
         }
-    }
-
-    @Override
-    public void cleanup() {
-        super.cleanup();
-        mainApplication.getStateManager().detach(getAppState(DeckAppState.class));
     }
 }

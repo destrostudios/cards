@@ -3,10 +3,8 @@ package com.destrostudios.cards.backend.application.services;
 import amara.libraries.database.Database;
 import amara.libraries.database.QueryResult;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
-import com.destrostudios.cards.shared.model.CardList;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.User;
-import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.*;
+import com.destrostudios.cards.shared.model.changes.NewCardListCard;
 import lombok.AllArgsConstructor;
 
 import java.util.LinkedList;
@@ -35,33 +33,54 @@ public class UserService {
         return database.transaction(() -> {
             User user = new User((int) jwtUser.id, jwtUser.login);
             database.execute("INSERT INTO user (id, login) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "')");
-            createUserLibraries(user);
+            for (Mode mode : modeService.getModes()) {
+                createUserCardList(user.getId(), mode.getId(), true);
+            }
             return user;
         });
     }
 
-    private void createUserLibraries(User user) {
-        for (Mode mode : modeService.getModes()) {
-            try (QueryResult result = database.insert("INSERT INTO card_list () VALUES ()")) {
-                result.next();
-                int cardListId = result.getInteger(1);
-                database.execute("INSERT INTO user_card_list (user_id, mode_id, library, card_list_id) VALUES (" + user.getId() + ", " + mode.getId() + ", TRUE, " + cardListId + ")");
-            }
-        }
+    public void createUserCardList(int userId, int modeId, boolean isLibrary) {
+        int cardListId = cardListService.createCardList();
+        database.execute("INSERT INTO user_card_list (user_id, mode_id, library, card_list_id) VALUES (" + userId + ", " + modeId + ", " + isLibrary + ", " + cardListId + ")");
+    }
+
+    public void updateUserCardList(int userCardListId, String name, List<NewCardListCard> cards) {
+        UserCardList userCardList = getUserCardList(userCardListId);
+        cardListService.updateCardList(userCardList.getCardList().getId(), name, cards);
+    }
+
+    public void deleteUserCardList(int userCardListId) {
+        UserCardList userCardList = getUserCardList(userCardListId);
+        database.transaction(() -> {
+            cardListService.deleteCardList(userCardList.getCardList().getId());
+            database.execute("DELETE FROM user_card_list WHERE id = " + userCardList);
+            return null;
+        });
     }
 
     public List<UserCardList> getUserCardLists(int userId) {
         LinkedList<UserCardList> userCardLists = new LinkedList<>();
         try (QueryResult result = database.select("SELECT * FROM user_card_list WHERE user_id = " + userId)) {
             while (result.next()) {
-                int id = result.getInteger("id");
-                Mode mode = modeService.getMode(result.getInteger("mode_id"));
-                boolean library = result.getBoolean("library");
-                CardList cardList = cardListService.getCardList(result.getInteger("card_list_id"));
-                UserCardList userCardList = new UserCardList(id, mode, library, cardList);
-                userCardLists.add(userCardList);
+                userCardLists.add(mapUserList(result));
             }
         }
         return userCardLists;
+    }
+
+    public UserCardList getUserCardList(int userCardListId) {
+        try (QueryResult result = database.select("SELECT * FROM user_card_list WHERE id = " + userCardListId)) {
+            result.next();
+            return mapUserList(result);
+        }
+    }
+
+    private UserCardList mapUserList(QueryResult result) {
+        int id = result.getInteger("id");
+        Mode mode = modeService.getMode(result.getInteger("mode_id"));
+        boolean library = result.getBoolean("library");
+        CardList cardList = cardListService.getCardList(result.getInteger("card_list_id"));
+        return new UserCardList(id, mode, library, cardList);
     }
 }

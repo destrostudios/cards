@@ -6,6 +6,7 @@ import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.CompositeComparator;
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
@@ -184,7 +185,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
             final int manaCost = i;
             Predicate<CardModel> filter = cardModel -> cardModel.getManaCostDetails() == manaCost;
-            Button button = addButton("" + i, buttonManaFilterWidth, BUTTON_HEIGHT_DEFAULT, b -> {
+            Button button = addButton("" + i, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
                 if (deckBuilderAppState.getCollectionCardFilter() == filter) {
                     deckBuilderAppState.setCollectionCardFilter(null);
                     filteredManaCost = null;
@@ -203,12 +204,12 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         // Save
         float rightButtonsWidth = 293;
         float rightButtonsX = width - 56 - rightButtonsWidth;
-        Button buttonSave = addButton("Save", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> saveDeck());
-        buttonSave.setLocalTranslation(rightButtonsX, 86 + BUTTON_HEIGHT_DEFAULT, 0);
+        Button buttonSave = addButton("Save", rightButtonsWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> saveDeck());
+        buttonSave.setLocalTranslation(rightButtonsX, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
 
         // Back
-        Button buttonBack = addButton("Back", rightButtonsWidth, BUTTON_HEIGHT_DEFAULT, b -> switchTo(new DecksAppState()));
-        buttonBack.setLocalTranslation(rightButtonsX, 18 + BUTTON_HEIGHT_DEFAULT, 0);
+        Button buttonBack = addButton("Back", rightButtonsWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> switchTo(new DecksAppState()));
+        buttonBack.setLocalTranslation(rightButtonsX, 18 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
 
         updateGui();
     }

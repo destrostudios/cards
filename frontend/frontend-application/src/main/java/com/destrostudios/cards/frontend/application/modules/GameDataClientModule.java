@@ -8,6 +8,7 @@ import com.esotericsoftware.kryonet.Connection;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class GameDataClientModule extends NetworkModule {
@@ -39,6 +40,10 @@ public class GameDataClientModule extends NetworkModule {
 
     public UserCardList getLibrary(int modeId) {
         return userCardLists.stream().filter(ucl -> ucl.getMode().getId() == modeId && ucl.isLibrary()).findFirst().orElseThrow();
+    }
+
+    public List<UserCardList> getDecks(int modeId) {
+        return userCardLists.stream().filter(ucl -> ucl.getMode().getId() == modeId && !ucl.isLibrary()).collect(Collectors.toList());
     }
 
     public void createUserCardList(int modeId) {

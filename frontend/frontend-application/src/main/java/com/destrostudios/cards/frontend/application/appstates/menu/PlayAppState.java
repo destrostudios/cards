@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.IngameAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.GameService;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
@@ -22,12 +23,13 @@ public class PlayAppState extends MenuAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
+        addTitle("Play");
         addQueueButton(true, 265);
         addQueueButton(false, 495);
     }
 
     private void addQueueButton(boolean againstHumanOrBot, float additionalX) {
-        Button buttonQueue = addButton(againstHumanOrBot ? "Queue vs Human" : "Start vs Bot", 200, BUTTON_HEIGHT_DEFAULT, button -> {
+        Button buttonQueue = addButton(againstHumanOrBot ? "Queue vs Human" : "Start vs Bot", 200, GuiUtil.BUTTON_HEIGHT_DEFAULT, button -> {
             QueueClientModule queueModule = getModule(QueueClientModule.class);
             // Whatever, good enough for now
             if ("Unqueue vs Human".equals(button.getText())) {

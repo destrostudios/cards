@@ -1,23 +1,22 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
+import com.destrostudios.cards.frontend.application.gui.GuiComponent;
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.MyBaseAppState;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Command;
-import com.simsilica.lemur.HAlignment;
-import com.simsilica.lemur.VAlignment;
+import com.simsilica.lemur.Label;
 
 public class MenuAppState extends MyBaseAppState {
 
     public MenuAppState() {
         this.guiNode = new Node();
     }
-    protected static final float BUTTON_HEIGHT_DEFAULT = 50;
     protected int width;
     protected int height;
     protected Node guiNode;
@@ -30,17 +29,26 @@ public class MenuAppState extends MyBaseAppState {
         height = mainApplication.getContext().getSettings().getHeight();
     }
 
+    protected void addTitle(String title) {
+        Label label = new Label(title);
+        label.setFontSize(48);
+        float x = ((width / 2f) - (label.getPreferredSize().getX() / 2));
+        float y = (height - 50);
+        label.setLocalTranslation(x, y, 0);
+        label.setColor(ColorRGBA.White);
+        guiNode.attachChild(label);
+    }
+
     protected Button addButton(String text, float width, float height, Command<Button> command) {
-        Button button = new Button(text);
-        button.setPreferredSize(new Vector3f(width, height, 0));
-        button.setTextHAlignment(HAlignment.Center);
-        button.setTextVAlignment(VAlignment.Center);
-        button.setFontSize(16);
-        button.setColor(ColorRGBA.White);
-        button.setFocusColor(ColorRGBA.White);
-        button.addCommands(Button.ButtonAction.Up, command);
+        Button button = GuiUtil.createButton(text, width, height, command);
         guiNode.attachChild(button);
         return button;
+    }
+
+    protected void addComponent(GuiComponent guiComponent, float x, float y) {
+        guiComponent.init(mainApplication);
+        guiComponent.getGuiNode().setLocalTranslation(x, y, 0);
+        guiNode.attachChild(guiComponent.getGuiNode());
     }
 
     protected void switchTo(AppState appState) {

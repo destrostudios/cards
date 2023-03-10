@@ -1,71 +1,84 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
-import com.destrostudios.cards.shared.model.UserCardList;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Command;
-import com.simsilica.lemur.Label;
 
 public class DecksAppState extends MenuAppState {
+
+    private ModeAndDeckSelector modeAndDeckSelector;
+    private Button buttonEdit;
+    private Button buttonDelete;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        addTitle();
-        addButton(0, "Create", b -> createDeck());
-        addButton(1, "Edit", b -> editDeck());
-        addButton(2, "Delete", b -> deleteDeck());
-        addButton(3, "Back", b -> switchTo(new MainMenuAppState()));
+        addTitle("Collection");
+        modeAndDeckSelector = new ModeAndDeckSelector();
+        addComponent(modeAndDeckSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
+        addDeckButtons();
     }
 
-    private void addTitle() {
-        Label label = new Label("Decks");
-        label.setFontSize(64);
-        float x = ((width / 2f) - (label.getPreferredSize().getX() / 2));
-        float y = (height - 100);
-        label.setLocalTranslation(x, y, 0);
-        label.setColor(ColorRGBA.White);
-        guiNode.attachChild(label);
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        boolean isDeckSelected = (modeAndDeckSelector.getDeck() != null);
+        GuiUtil.setButtonEnabled(buttonEdit, isDeckSelected);
+        GuiUtil.setButtonEnabled(buttonDelete, isDeckSelected);
     }
 
-    private void addButton(int index, String text, Command<Button> command) {
+    private void addDeckButtons() {
         float margin = 50;
-        float buttonWidth = ((width - (5 * margin)) / 4);
+        float buttonWidth = 200;
+        float x = margin;
+        addDeckButton("Create", x, buttonWidth, b -> createDeck());
+        x += buttonWidth;
+        buttonEdit = addDeckButton("Edit", x, buttonWidth, b -> editDeck());
+        x += buttonWidth;
+        buttonDelete = addDeckButton("Delete", x, buttonWidth, b -> deleteDeck());
+        x = (width - margin - buttonWidth);
+        addDeckButton("Back", x, buttonWidth, b -> switchTo(new MainMenuAppState()));
+    }
+
+    private Button addDeckButton(String text, float x, float buttonWidth, Command<Button> command) {
+        float margin = 50;
         float buttonHeight = 100;
-        float x = (margin + (index * (margin + buttonWidth)));
         float y = (margin + buttonHeight);
         Button button = addButton(text, buttonWidth, buttonHeight, command);
         button.setLocalTranslation(x, y, 0);
+        return button;
     }
 
     private void createDeck() {
-        getModule(GameDataClientModule.class).createUserCardList(1);
+        getModule(GameDataClientModule.class).createUserCardList(modeAndDeckSelector.getMode().getId());
+        waitForUpdatedDecks();
+    }
+
+    private void editDeck() {
+        switchTo(new DeckAppState(modeAndDeckSelector.getDeck()));
+    }
+
+    private void deleteDeck() {
+        getModule(GameDataClientModule.class).deleteUserCardList(modeAndDeckSelector.getDeck().getId());
+        waitForUpdatedDecks();
+    }
+
+    private void waitForUpdatedDecks() {
         mainApplication.getStateManager().attach(new LoadingAppState() {
 
             @Override
             protected boolean shouldClose() {
                 return (getModule(GameDataClientModule.class).getUserCardLists() != null);
             }
-        });
-    }
-
-    private void editDeck() {
-        UserCardList deck = getModule(GameDataClientModule.class).getUserCardLists().stream().filter(ucl -> !ucl.isLibrary()).findFirst().orElseThrow();
-        switchTo(new DeckAppState(deck));
-    }
-
-    private void deleteDeck() {
-        UserCardList deck = getModule(GameDataClientModule.class).getUserCardLists().stream().filter(ucl -> !ucl.isLibrary()).findFirst().orElseThrow();
-        getModule(GameDataClientModule.class).deleteUserCardList(deck.getId());
-        mainApplication.getStateManager().attach(new LoadingAppState() {
 
             @Override
-            protected boolean shouldClose() {
-                return (getModule(GameDataClientModule.class).getUserCardLists() != null);
+            protected void close() {
+                super.close();
+                modeAndDeckSelector.updateDecks();
             }
         });
     }

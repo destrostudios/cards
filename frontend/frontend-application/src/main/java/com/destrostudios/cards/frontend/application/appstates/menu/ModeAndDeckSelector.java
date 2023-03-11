@@ -6,6 +6,7 @@ import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Label;
@@ -113,8 +114,8 @@ public class ModeAndDeckSelector extends GuiComponent {
         GuiUtil.setButtonBackground(button, (selected ? ColorRGBA.Orange : null));
     }
 
-    public static String getDeckName(UserCardList deck) {
+    private String getDeckName(UserCardList deck) {
         String name = deck.getCardList().getName();
-        return ((name != null) ? name : "Unnamed deck");
+        return ((name != null) ? name : "Unnamed deck") + "\n(" + deck.getCardList().getSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")";
     }
 }

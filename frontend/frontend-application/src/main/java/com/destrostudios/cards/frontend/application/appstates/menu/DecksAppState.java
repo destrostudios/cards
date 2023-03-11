@@ -34,20 +34,19 @@ public class DecksAppState extends MenuAppState {
     private void addDeckButtons() {
         float margin = 50;
         float buttonWidth = 200;
-        float x = margin;
-        addDeckButton("Create", x, buttonWidth, b -> createDeck());
-        x += buttonWidth;
-        buttonEdit = addDeckButton("Edit", x, buttonWidth, b -> editDeck());
-        x += buttonWidth;
-        buttonDelete = addDeckButton("Delete", x, buttonWidth, b -> deleteDeck());
-        x = (width - margin - buttonWidth);
-        addDeckButton("Back", x, buttonWidth, b -> switchTo(new MainMenuAppState()));
+        float buttonHeight = 100;
+        float x = (width - margin - buttonWidth);
+        float y = (margin + buttonHeight);
+        buttonDelete = addDeckButton("Delete", x, y, buttonWidth, buttonHeight, b -> deleteDeck());
+        x -= buttonWidth;
+        buttonEdit = addDeckButton("Edit", x, y, buttonWidth, buttonHeight, b -> editDeck());
+        x -= buttonWidth;
+        addDeckButton("Create", x, y, buttonWidth, buttonHeight, b -> createDeck());
+        x = margin;
+        addDeckButton("Back", x, y, buttonWidth, buttonHeight, b -> switchTo(new MainMenuAppState()));
     }
 
-    private Button addDeckButton(String text, float x, float buttonWidth, Command<Button> command) {
-        float margin = 50;
-        float buttonHeight = 100;
-        float y = (margin + buttonHeight);
+    private Button addDeckButton(String text, float x, float y, float buttonWidth, float buttonHeight, Command<Button> command) {
         Button button = addButton(text, buttonWidth, buttonHeight, command);
         button.setLocalTranslation(x, y, 0);
         return button;

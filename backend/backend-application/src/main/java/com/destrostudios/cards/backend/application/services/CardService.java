@@ -21,7 +21,7 @@ public class CardService {
     public void loadCards() {
         try (QueryResult result = database.select("SELECT * FROM card")) {
             while (result.next()) {
-                Card card = new Card(result.getInteger("id"), result.getString("path"));
+                Card card = new Card(result.getInteger("id"), result.getString("path"), result.getBoolean("core"));
                 cards.put(card.getId(), card);
             }
         }

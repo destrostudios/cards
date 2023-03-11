@@ -21,6 +21,7 @@ import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.model.UserCardList;
 import com.destrostudios.cards.shared.model.changes.NewCardListCard;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -36,6 +37,8 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.simsilica.lemur.Button;
+import com.simsilica.lemur.Label;
+import com.simsilica.lemur.TextField;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -52,6 +55,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     private HashMap<String, CardModel> cardsToCardModelsMap;
     private HashMap<CardModel, CardListCard> cardModelsToCardsMap;
     private BitmapText textTitle;
+    private TextField textFieldName;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
     private Button[] buttonFilterManaCost;
@@ -126,7 +130,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             .collectionCardVisualizer(collectionCardVisualizer)
             .deckCardVisualizer(deckCardVisualizer)
             .deckCardOrder(cardOrder)
-            .deckCardsMaximumTotal(30)
+            .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
             .collectionCardsPerRow(4)
             .collectionRowsPerPage(2)
             .boardSettings(BoardSettings.builder()
@@ -158,14 +162,30 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     private void initGui() {
         DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
 
+        float rightColumnWidth = 293;
+        float rightColumnX = width - 56 - rightColumnWidth;
+
+        // Title
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         textTitle = new BitmapText(guiFont);
         textTitle.setSize(20);
-        float margin = 30;
-        float x = margin;
-        float y = (mainApplication.getContext().getSettings().getHeight() - margin);
+        float x = 56;
+        float y = (mainApplication.getContext().getSettings().getHeight() - 30);
         textTitle.setLocalTranslation(x, y, 0);
         guiNode.attachChild(textTitle);
+
+        // Deck name
+        y += 5;
+        Label labelName = new Label("Deck name:");
+        labelName.setLocalTranslation(rightColumnX, y, 0);
+        labelName.setColor(ColorRGBA.White);
+        guiNode.attachChild(labelName);
+        y -= 20;
+        textFieldName = new TextField(deck.getCardList().getName());
+        textFieldName.setLocalTranslation(rightColumnX, y, 0);
+        textFieldName.setPreferredWidth(rightColumnWidth);
+        textFieldName.setFontSize(16);
+        guiNode.attachChild(textFieldName);
 
         // Pagination
         int buttonPaginationWidth = 50;
@@ -202,33 +222,14 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         }
 
         // Save
-        float rightButtonsWidth = 293;
-        float rightButtonsX = width - 56 - rightButtonsWidth;
-        Button buttonSave = addButton("Save", rightButtonsWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> saveDeck());
-        buttonSave.setLocalTranslation(rightButtonsX, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
+        Button buttonSave = addButton("Save", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> saveDeck());
+        buttonSave.setLocalTranslation(rightColumnX, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
 
         // Back
-        Button buttonBack = addButton("Back", rightButtonsWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> switchTo(new DecksAppState()));
-        buttonBack.setLocalTranslation(rightButtonsX, 18 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
+        Button buttonBack = addButton("Back", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> switchTo(new DecksAppState()));
+        buttonBack.setLocalTranslation(rightColumnX, 18 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
 
         updateGui();
-    }
-
-    private void saveDeck() {
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
-        LinkedList<NewCardListCard> cards = new LinkedList<>();
-        for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
-            CardListCard cardListCard = cardModelsToCardsMap.get(entry.getKey());
-            cards.add(new NewCardListCard(cardListCard.getCard().getId(), cardListCard.getFoil().getId(), entry.getValue()));
-        }
-        getModule(GameDataClientModule.class).updateUserCardList(deck.getId(), null, cards);
-        mainApplication.getStateManager().attach(new LoadingAppState() {
-
-            @Override
-            protected boolean shouldClose() {
-                return (getModule(GameDataClientModule.class).getUserCardLists() != null);
-            }
-        });
     }
 
     private void initListeners() {
@@ -236,6 +237,13 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_LEFT));
         inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_RIGHT));
         inputManager.addListener(this, "left", "right");
+    }
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
+        textTitle.setText("Deckbuilder (" + deckBuilderAppState.getDeckSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")");
     }
 
     @Override
@@ -265,13 +273,33 @@ public class DeckAppState extends MenuAppState implements ActionListener {
 
     private void updateGui() {
         DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
-        textTitle.setText("Deckbuilder");
         buttonPreviousPage.setCullHint(deckBuilderAppState.getCollectionPage() > 0 ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         buttonNextPage.setCullHint(deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1) ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
             boolean isSelected = ((filteredManaCost != null) && (filteredManaCost == i));
             buttonFilterManaCost[i].setColor(isSelected ? ColorRGBA.Green : ColorRGBA.White);
         }
+    }
+
+    private void saveDeck() {
+        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
+        LinkedList<NewCardListCard> cards = new LinkedList<>();
+        for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
+            CardListCard cardListCard = cardModelsToCardsMap.get(entry.getKey());
+            cards.add(new NewCardListCard(cardListCard.getCard().getId(), cardListCard.getFoil().getId(), entry.getValue()));
+        }
+        String name = textFieldName.getText();
+        if (name.isEmpty()) {
+            name = null;
+        }
+        getModule(GameDataClientModule.class).updateUserCardList(deck.getId(), name, cards);
+        mainApplication.getStateManager().attach(new LoadingAppState() {
+
+            @Override
+            protected boolean shouldClose() {
+                return (getModule(GameDataClientModule.class).getUserCardLists() != null);
+            }
+        });
     }
 
     @Override

@@ -9,4 +9,5 @@ import lombok.*;
 public class Card {
     private int id;
     private String path;
+    private boolean core;
 }

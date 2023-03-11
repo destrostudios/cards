@@ -1,6 +1,7 @@
 package com.destrostudios.cards.frontend.application;
 
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
+import com.destrostudios.cards.frontend.application.appstates.LightAndShadowAppState;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.PostFilterAppState;
 import com.destrostudios.cards.frontend.application.appstates.menu.MainMenuAppState;
@@ -42,6 +43,7 @@ public class FrontendJmeApplication extends SimpleApplication {
         flyCam.setEnabled(false);
         stateManager.attach(new BackgroundAppState());
         stateManager.attach(new PostFilterAppState());
+        stateManager.attach(new LightAndShadowAppState());
         GuiGlobals.initialize(this);
 
         AtomicBoolean asyncInitDone = new AtomicBoolean(false);

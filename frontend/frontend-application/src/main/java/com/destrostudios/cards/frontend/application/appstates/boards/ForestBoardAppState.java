@@ -4,15 +4,12 @@ import com.destrostudios.cards.frontend.application.appstates.*;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.filters.TranslucentBucketFilter;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Spatial;
-import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.terrain.geomipmap.TerrainQuad;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
 import com.jme3.terrain.heightmap.ImageBasedHeightMap;
@@ -22,10 +19,6 @@ import com.jme3.water.WaterFilter;
 
 public class ForestBoardAppState extends MyBaseAppState {
 
-    private Vector3f lightDirection;
-    private AmbientLight ambientLight;
-    private DirectionalLight directionalLight;
-    private DirectionalLightShadowFilter shadowFilter;
     private Spatial sky;
     private TerrainQuad terrain;
     private WaterFilter waterFilter;
@@ -34,27 +27,13 @@ public class ForestBoardAppState extends MyBaseAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        initLightAndShadows();
         initSky("miramar");
         initTerrain();
         initWater();
+        getAppState(LightAndShadowAppState.class).setShadowsEnabled(true);
     }
 
-    private void initLightAndShadows() {
-        lightDirection = new Vector3f(1, -5, -1).normalizeLocal();
-
-        ambientLight = new AmbientLight(ColorRGBA.White.mult(0.4f));
-        mainApplication.getRootNode().addLight(ambientLight);
-        directionalLight = new DirectionalLight(lightDirection, ColorRGBA.White.mult(1.1f));
-        mainApplication.getRootNode().addLight(directionalLight);
-
-        shadowFilter = new DirectionalLightShadowFilter(mainApplication.getAssetManager(), 2048, 2);
-        shadowFilter.setLight(directionalLight);
-        shadowFilter.setShadowIntensity(0.4f);
-        getAppState(PostFilterAppState.class).addFilter(shadowFilter);
-    }
-
-    private void initSky(String skyName){
+    private void initSky(String skyName) {
         Texture textureWest = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/left.png");
         Texture textureEast = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/right.png");
         Texture textureNorth = mainApplication.getAssetManager().loadTexture("textures/skies/" + skyName + "/front.png");
@@ -104,7 +83,7 @@ public class ForestBoardAppState extends MyBaseAppState {
     }
 
     private void initWater() {
-        waterFilter = new WaterFilter(mainApplication.getRootNode(), lightDirection);
+        waterFilter = new WaterFilter(mainApplication.getRootNode(), getAppState(LightAndShadowAppState.class).getLightDirection());
         waterFilter.setCenter(new Vector3f(0, 0, 1.4f));
         waterFilter.setWaterHeight(-0.45f);
         waterFilter.setShapeType(WaterFilter.AreaShape.Square);
@@ -129,12 +108,10 @@ public class ForestBoardAppState extends MyBaseAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-        mainApplication.getRootNode().removeLight(ambientLight);
-        mainApplication.getRootNode().removeLight(directionalLight);
-        mainApplication.getRootNode().detachChild(sky);
-        mainApplication.getRootNode().detachChild(terrain);
-        getAppState(PostFilterAppState.class).removeFilter(shadowFilter);
-        getAppState(PostFilterAppState.class).removeFilter(waterFilter);
+        getAppState(LightAndShadowAppState.class).setShadowsEnabled(false);
         getAppState(PostFilterAppState.class).removeFilter(translucentBucketFilter);
+        getAppState(PostFilterAppState.class).removeFilter(waterFilter);
+        mainApplication.getRootNode().detachChild(terrain);
+        mainApplication.getRootNode().detachChild(sky);
     }
 }

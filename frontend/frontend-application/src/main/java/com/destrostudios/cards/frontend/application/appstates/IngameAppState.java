@@ -84,7 +84,36 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void initBoard() {
-        board = new Board();
+        // Board
+        board = new Board(BoardSettings.builder()
+                .inputActionPrefix("ingame")
+                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
+                .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
+                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
+                .dragProjectionZ(0.996f)
+                .hoverInspectionDelay(0f)
+                .isInspectable(this::isInspectable)
+                .inspector(new Inspector() {
+
+                    @Override
+                    public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
+                        Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
+                        board.triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
+                        inspectionCard.finishTransformations();
+                        inspectionCard.getModel().set(card.getModel());
+                    }
+
+                    @Override
+                    public boolean isReadyToUninspect() {
+                        return true;
+                    }
+
+                    @Override
+                    public void uninspect() {
+                        board.unregister(inspectionCard);
+                    }
+                })
+                .build());
 
         // Zones & BoardObjects
 
@@ -202,38 +231,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 .build()));
 
         // BoardAppState
-
-        BoardSettings boardSettings = BoardSettings.builder()
-                .inputActionPrefix("ingame")
-                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
-                .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
-                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
-                .dragProjectionZ(0.996f)
-                .hoverInspectionDelay(0f)
-                .isInspectable(this::isInspectable)
-                .inspector(new Inspector() {
-
-                    @Override
-                    public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
-                        Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
-                        board.triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
-                        inspectionCard.finishTransformations();
-                        inspectionCard.getModel().set(card.getModel());
-                    }
-
-                    @Override
-                    public boolean isReadyToUninspect(TransformedBoardObject<?> transformedBoardObject) {
-                        return true;
-                    }
-
-                    @Override
-                    public void uninspect(TransformedBoardObject<?> transformedBoardObject) {
-                        board.unregister(inspectionCard);
-                    }
-                })
-                .build();
-        BoardAppState boardAppState = new BoardAppState(board, mainApplication.getRootNode(), boardSettings);
-        mainApplication.getStateManager().attach(boardAppState);
+        mainApplication.getStateManager().attach(new BoardAppState(board, mainApplication.getRootNode()));
 
         // Services
 

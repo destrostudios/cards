@@ -16,13 +16,11 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.model.UserCardList;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
-import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapFont;
@@ -65,18 +63,12 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
         getAppState(BackgroundAppState.class).setBackground("deck");
-        initCamera();
+        setTopDownCamera();
         initLight();
         initCards();
         initDeckBuilder();
         initGui();
         initListeners();
-    }
-
-    private void initCamera() {
-        mainApplication.getCamera().setLocation(new Vector3f(0, 15, 0));
-        // Look straight down
-        mainApplication.getCamera().lookAtDirection(new Vector3f(0, -1, 0).normalizeLocal(), Vector3f.UNIT_Z.mult(-1));
     }
 
     private void initLight() {
@@ -91,20 +83,10 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         collectionCards = new HashMap<>();
         cardsToCardModelsMap = new HashMap<>();
         cardModelsToCardsMap = new HashMap<>();
-        EntityData data = new SimpleEntityData(Components.ALL);
         UserCardList library = getModule(GameDataClientModule.class).getLibrary(deck.getMode().getId());
+        EntityData data = new SimpleEntityData(Components.ALL);
         for (CardListCard cardListCard : library.getCardList().getCards()) {
-            int cardEntity = data.createEntity();
-            EntityTemplate.loadTemplate(data, cardEntity, cardListCard.getCard().getPath());
-            // TODO: Make reusable
-            if ("artwork".equals(cardListCard.getFoil().getName())) {
-                data.setComponent(cardEntity, Components.FOIL, Foil.ARTWORK);
-            } else if ("full".equals(cardListCard.getFoil().getName())) {
-                data.setComponent(cardEntity, Components.FOIL, Foil.FULL);
-            }
-
-            CardModel cardModel = new CardModel();
-            CardGuiMapper.updateModel(data, cardEntity, cardModel, true);
+            CardModel cardModel = CardGuiMapper.createModel(data, cardListCard);
             collectionCards.put(cardModel, cardListCard.getAmount());
 
             String cardKey = getCardListCardKey(cardListCard);

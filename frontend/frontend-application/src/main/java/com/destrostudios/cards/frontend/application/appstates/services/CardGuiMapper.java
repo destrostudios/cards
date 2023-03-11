@@ -3,7 +3,10 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
+import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -28,35 +31,49 @@ public class CardGuiMapper {
         tribeComponents.put(Components.Tribe.HUMAN, "Human");
     }
 
-    public static void updateModel(EntityData entityData, int card, CardModel cardModel, boolean isFront) {
+    public static CardModel createModel(EntityData data, CardListCard cardListCard) {
+        int cardEntity = data.createEntity();
+        EntityTemplate.loadTemplate(data, cardEntity, cardListCard.getCard().getPath());
+        // TODO: Cleanup
+        if ("artwork".equals(cardListCard.getFoil().getName())) {
+            data.setComponent(cardEntity, Components.FOIL, Foil.ARTWORK);
+        } else if ("full".equals(cardListCard.getFoil().getName())) {
+            data.setComponent(cardEntity, Components.FOIL, Foil.FULL);
+        }
+        CardModel cardModel = new CardModel();
+        updateModel(data, cardEntity, cardModel, true);
+        return cardModel;
+    }
+
+    public static void updateModel(EntityData data, int card, CardModel cardModel, boolean isFront) {
         cardModel.setFront(isFront);
 
         // Will be set when applying the possibleActions
         cardModel.setPlayable(false);
 
-        String type = (entityData.hasComponent(card, Components.CREATURE_CARD) ? "creature" : "spell");
+        String type = (data.hasComponent(card, Components.CREATURE_CARD) ? "creature" : "spell");
         cardModel.setType(type);
 
-        cardModel.setTitle(entityData.getComponent(card, Components.NAME));
-        cardModel.setKeywords(createListBasedOnComponents(entityData, card, keywordComponents));
-        cardModel.setDescription(entityData.getComponent(card, Components.DESCRIPTION));
+        cardModel.setTitle(data.getComponent(card, Components.NAME));
+        cardModel.setKeywords(createListBasedOnComponents(data, card, keywordComponents));
+        cardModel.setDescription(data.getComponent(card, Components.DESCRIPTION));
 
         boolean checkedDefaultPlaySpell = false;
         Integer manaCostFullArt = null;
         Integer manaCostDetails = null;
         List<Spell> spells = new LinkedList<>();
-        int[] spellEntities = entityData.getComponent(card, Components.SPELLS);
+        int[] spellEntities = data.getComponent(card, Components.SPELLS);
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
-                Integer manaCost = CostUtil.getEffectiveManaCost(entityData, spellEntity);
-                if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(entityData, spellEntity)) {
+                Integer manaCost = CostUtil.getEffectiveManaCost(data, spellEntity);
+                if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
                     manaCostDetails = manaCost;
-                    if (entityData.hasComponent(card, Components.HAND)) {
+                    if (data.hasComponent(card, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
                     }
                     checkedDefaultPlaySpell = true;
-                } else if (!SpellUtil.isDefaultAttackSpell(entityData, spellEntity)) {
-                    String spellDescription = SpellDescriptionGenerator.generateDescription(entityData, spellEntity);
+                } else if (!SpellUtil.isDefaultAttackSpell(data, spellEntity)) {
+                    String spellDescription = SpellDescriptionGenerator.generateDescription(data, spellEntity);
                     Spell spell = new Spell();
                     spell.setCost(createCost(manaCost));
                     spell.setDescription(spellDescription);
@@ -68,21 +85,21 @@ public class CardGuiMapper {
         cardModel.setManaCostDetails(manaCostDetails);
         cardModel.setSpells(spells);
 
-        Integer baseAttack = entityData.getComponent(card, Components.Stats.ATTACK);
-        Integer attack = StatsUtil.getEffectiveAttack(entityData, card);
-        Integer baseHealth = entityData.getComponent(card, Components.Stats.HEALTH);
-        Integer health = StatsUtil.getEffectiveHealth(entityData, card);
+        Integer baseAttack = data.getComponent(card, Components.Stats.ATTACK);
+        Integer attack = StatsUtil.getEffectiveAttack(data, card);
+        Integer baseHealth = data.getComponent(card, Components.Stats.HEALTH);
+        Integer health = StatsUtil.getEffectiveHealth(data, card);
         cardModel.setAttackDamage(attack);
         cardModel.setLifepoints(health);
         cardModel.setAttackBuffed((attack != null) && (attack > baseAttack));
         cardModel.setHealthBuffed((health != null) && (health > baseHealth));
-        cardModel.setDamaged(entityData.hasComponent(card, Components.Stats.DAMAGED) || entityData.hasComponent(card, Components.Stats.BONUS_DAMAGED));
+        cardModel.setDamaged(data.hasComponent(card, Components.Stats.DAMAGED) || data.hasComponent(card, Components.Stats.BONUS_DAMAGED));
 
-        cardModel.setDivineShield(entityData.getOptionalComponent(card, Components.Ability.DIVINE_SHIELD).orElse(false));
-        cardModel.setTaunt(entityData.hasComponent(card, Components.Ability.TAUNT));
-        cardModel.setFlavourText(entityData.getComponent(card, Components.FLAVOUR_TEXT));
-        cardModel.setTribes(createListBasedOnComponents(entityData, card, tribeComponents));
-        cardModel.setFoil(entityData.getComponent(card, Components.FOIL));
+        cardModel.setDivineShield(data.getOptionalComponent(card, Components.Ability.DIVINE_SHIELD).orElse(false));
+        cardModel.setTaunt(data.hasComponent(card, Components.Ability.TAUNT));
+        cardModel.setFlavourText(data.getComponent(card, Components.FLAVOUR_TEXT));
+        cardModel.setTribes(createListBasedOnComponents(data, card, tribeComponents));
+        cardModel.setFoil(data.getComponent(card, Components.FOIL));
     }
 
     private static <T> List<T> createListBasedOnComponents(EntityData entityData, int entity, Map<ComponentDefinition, T> componentValueMap) {

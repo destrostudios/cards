@@ -36,7 +36,7 @@ public class FoilService {
         return foils.get(foilId);
     }
 
-    public Foil getFoilNone() {
-        return foils.values().stream().filter(foil -> foil.getName().equals(GameConstants.FOIL_NAME_NONE)).findFirst().orElseThrow();
+    public Foil getFoil(String name) {
+        return foils.values().stream().filter(foil -> foil.getName().equals(name)).findFirst().orElseThrow();
     }
 }

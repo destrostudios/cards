@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.model.changes;
+package com.destrostudios.cards.shared.model.internal;
 
 import lombok.*;
 

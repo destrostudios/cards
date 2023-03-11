@@ -19,7 +19,7 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.model.UserCardList;
-import com.destrostudios.cards.shared.model.changes.NewCardListCard;
+import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.cards.Foil;

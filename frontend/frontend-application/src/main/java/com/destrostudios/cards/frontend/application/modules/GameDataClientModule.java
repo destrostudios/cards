@@ -1,7 +1,8 @@
 package com.destrostudios.cards.frontend.application.modules;
 
 import com.destrostudios.cards.shared.model.*;
-import com.destrostudios.cards.shared.model.changes.NewCardListCard;
+import com.destrostudios.cards.shared.model.internal.NewCardListCard;
+import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.esotericsoftware.kryonet.Connection;
@@ -21,7 +22,7 @@ public class GameDataClientModule extends NetworkModule {
     private List<Card> cards;
     private User user;
     private List<UserCardList> userCardLists;
-    private List<CardListCard> cardPackCards;
+    private PackResult packResult;
 
     @Override
     public void received(Connection connection, Object object) {
@@ -32,9 +33,9 @@ public class GameDataClientModule extends NetworkModule {
             userCardLists = initialGameDataMessage.getUserCardLists();
         } else if (object instanceof UserCardListsMessage userCardListsMessage) {
             userCardLists = userCardListsMessage.getUserCardLists();
-        } else if (object instanceof CardPackResultMessage cardPackResultMessage) {
-            userCardLists = cardPackResultMessage.getUserCardLists();
-            cardPackCards = cardPackResultMessage.getCardPackCards();
+        } else if (object instanceof PackResultMessage packResultMessage) {
+            userCardLists = packResultMessage.getUserCardLists();
+            packResult = packResultMessage.getPackResult();
         }
     }
 
@@ -61,9 +62,9 @@ public class GameDataClientModule extends NetworkModule {
         connection.sendTCP(new DeleteUserCardListMessage(userCardListId));
     }
 
-    public void openCardPack() {
+    public void openPack() {
         userCardLists = null;
-        cardPackCards = null;
-        connection.sendTCP(new OpenCardPackMessage());
+        packResult = null;
+        connection.sendTCP(new OpenPackMessage());
     }
 }

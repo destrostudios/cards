@@ -1,6 +1,6 @@
 package com.destrostudios.cards.shared.network.messages;
 
-import com.destrostudios.cards.shared.model.changes.NewCardListCard;
+import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import lombok.*;
 
 import java.util.List;

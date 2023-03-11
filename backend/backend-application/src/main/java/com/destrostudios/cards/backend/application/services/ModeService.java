@@ -36,7 +36,7 @@ public class ModeService {
         return modes.get(modeId);
     }
 
-    public Mode getModeClassic() {
-        return modes.values().stream().filter(mode -> mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)).findFirst().orElseThrow();
+    public Mode getMode(String name) {
+        return modes.values().stream().filter(mode -> mode.getName().equals(name)).findFirst().orElseThrow();
     }
 }

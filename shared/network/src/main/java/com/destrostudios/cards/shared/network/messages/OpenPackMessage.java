@@ -1,4 +1,4 @@
 package com.destrostudios.cards.shared.network.messages;
 
-public class OpenCardPackMessage {
+public class OpenPackMessage {
 }

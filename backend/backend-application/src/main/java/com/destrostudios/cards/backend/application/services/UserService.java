@@ -4,7 +4,7 @@ import amara.libraries.database.Database;
 import amara.libraries.database.QueryResult;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.shared.model.*;
-import com.destrostudios.cards.shared.model.changes.NewCardListCard;
+import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import lombok.AllArgsConstructor;
 
@@ -22,19 +22,27 @@ public class UserService {
     private CardListService cardListService;
 
     public User getOrCreateUser(JwtAuthenticationUser jwtUser) {
-        try (QueryResult result = database.select("SELECT * FROM user WHERE id = " + jwtUser.id)) {
+        User user = getUser((int) jwtUser.id);
+        if (user == null) {
+            user = createUser(jwtUser);
+        }
+        return user;
+    }
+
+    public User getUser(int userId) {
+        try (QueryResult result = database.select("SELECT * FROM user WHERE id = " + userId)) {
             User user;
             if (result.next()) {
-                user = new User(result.getInteger("id"), result.getString("login"));
+                user = new User(result.getInteger("id"), result.getString("login"), result.getInteger("packs"));
             } else {
-                user = createUser(jwtUser);
+                return null;
             }
             return user;
         }
     }
 
     private User createUser(JwtAuthenticationUser jwtUser) {
-        User user = new User((int) jwtUser.id, jwtUser.login);
+        User user = new User((int) jwtUser.id, jwtUser.login, GameConstants.PACKS_FOR_NEW_PLAYERS);
         database.execute("INSERT INTO user (id, login) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "')");
         for (Mode mode : modeService.getModes()) {
             createUserCardList(user.getId(), mode.getId(), true);
@@ -44,10 +52,10 @@ public class UserService {
     }
 
     private void createIntroDeck(int userId) {
-        Mode modeClassic = modeService.getModeClassic();
+        Mode modeClassic = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
         int introDeckId = createUserCardList(userId, modeClassic.getId(), false);
-        Foil foilNone = foilService.getFoilNone();
-        List<NewCardListCard> cards = cardService.getCardsCore().stream()
+        Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
+        List<NewCardListCard> cards = cardService.getCards_Core().stream()
             .map(card -> new NewCardListCard(card.getId(), foilNone.getId(), 2))
             .collect(Collectors.toList());
         updateUserCardList(introDeckId, "Introduction Deck", cards);
@@ -89,6 +97,13 @@ public class UserService {
         }
     }
 
+    public UserCardList getLibrary(int userId, int modeId) {
+        try (QueryResult result = database.select("SELECT * FROM user_card_list WHERE user_id = " + userId + " AND mode_id = " + modeId + " AND library = TRUE")) {
+            result.next();
+            return mapUserList(result);
+        }
+    }
+
     private UserCardList mapUserList(QueryResult result) {
         int id = result.getInteger("id");
         Mode mode = modeService.getMode(result.getInteger("mode_id"));
@@ -117,9 +132,13 @@ public class UserService {
     }
 
     private void addCoreCardsToList(CardList cardList) {
-        Foil foilNone = foilService.getFoilNone();
-        for (Card card : cardService.getCardsCore()) {
+        Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
+        for (Card card : cardService.getCards_Core()) {
             cardList.getCards().add(new CardListCard(0, card, foilNone, 2));
         }
+    }
+
+    public void setPacks(int userId, int packs) {
+        database.execute("UPDATE user SET packs = " + packs + " WHERE id = " + userId);
     }
 }

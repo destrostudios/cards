@@ -7,6 +7,7 @@ import com.destrostudios.cards.shared.model.Card;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class CardService {
 
@@ -35,7 +36,15 @@ public class CardService {
         return cards.get(cardId);
     }
 
-    public List<Card> getCardsCore() {
-        return cards.values().stream().filter(Card::isCore).toList();
+    public List<Card> getCards_Core() {
+        return getCards(Card::isCore);
+    }
+
+    public List<Card> getCards_Pack() {
+        return getCards(card -> !card.isCore());
+    }
+
+    private List<Card> getCards(Predicate<Card> filter) {
+        return cards.values().stream().filter(filter).toList();
     }
 }

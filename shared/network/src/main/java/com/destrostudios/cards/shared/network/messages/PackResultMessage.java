@@ -1,7 +1,7 @@
 package com.destrostudios.cards.shared.network.messages;
 
-import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.internal.PackResult;
 import lombok.*;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
-public class CardPackResultMessage {
-    private List<CardListCard> cardPackCards;
+public class PackResultMessage {
+    private PackResult packResult;
     private List<UserCardList> userCardLists;
 }

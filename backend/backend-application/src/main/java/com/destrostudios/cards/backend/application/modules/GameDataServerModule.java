@@ -4,11 +4,13 @@ import amara.libraries.database.Database;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.backend.application.services.ModeService;
+import com.destrostudios.cards.backend.application.services.PackService;
 import com.destrostudios.cards.backend.application.services.UserService;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.User;
 import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
@@ -26,6 +28,7 @@ public class GameDataServerModule extends NetworkModule {
     private ModeService modeService;
     private CardService cardService;
     private UserService userService;
+    private PackService packService;
 
     @Override
     public void received(Connection connection, Object object) {
@@ -39,8 +42,7 @@ public class GameDataServerModule extends NetworkModule {
                 connection.sendTCP(new InitialGameDataMessage(modes, cards, user, userCardLists));
             });
         } else if (object instanceof CreateUserCardListMessage createUserCardListMessage) {
-            int userId = getUserId(connection);
-            database.transaction(() -> userService.createUserCardList(userId, createUserCardListMessage.getModeId(), false));
+            database.transaction(() -> userService.createUserCardList(getUserId(connection), createUserCardListMessage.getModeId(), false));
             sendUserCardLists(connection);
         } else if (object instanceof UpdateUserCardListMessage updateUserCardListMessage) {
             database.transaction(() -> userService.updateUserCardList(updateUserCardListMessage.getUserCardListId(), updateUserCardListMessage.getName(), updateUserCardListMessage.getCards()));
@@ -48,6 +50,13 @@ public class GameDataServerModule extends NetworkModule {
         } else if (object instanceof DeleteUserCardListMessage deleteUserCardListMessage) {
             database.transaction(() -> userService.deleteUserCardList(deleteUserCardListMessage.getUserCardListId()));
             sendUserCardLists(connection);
+        } else if (object instanceof OpenPackMessage) {
+            int userId = getUserId(connection);
+            database.transaction(() -> {
+                PackResult packResult = packService.openPack(userId);
+                List<UserCardList> userCardLists = userService.getUserCardLists(userId);
+                connection.sendTCP(new PackResultMessage(packResult, userCardLists));
+            });
         }
     }
 

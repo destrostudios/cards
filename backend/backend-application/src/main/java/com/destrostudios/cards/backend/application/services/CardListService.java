@@ -3,7 +3,7 @@ package com.destrostudios.cards.backend.application.services;
 import amara.libraries.database.Database;
 import amara.libraries.database.QueryResult;
 import com.destrostudios.cards.shared.model.*;
-import com.destrostudios.cards.shared.model.changes.NewCardListCard;
+import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import lombok.AllArgsConstructor;
 
 import java.util.LinkedList;

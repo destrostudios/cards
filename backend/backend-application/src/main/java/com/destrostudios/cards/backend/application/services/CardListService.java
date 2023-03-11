@@ -49,19 +49,16 @@ public class CardListService {
     }
 
     public void updateCardList(int cardListId, String name, List<NewCardListCard> cards) {
-        database.transaction(() -> {
-            database.execute("UPDATE card_list SET name = " + database.escapeNullable(name) + " WHERE id = " + cardListId);
-            clearCardListCards(cardListId);
-            if (cards.size() > 0) {
-                database.execute(
-                    "INSERT INTO card_list_card (card_list_id, card_id, foil_id, amount) VALUES " +
-                    cards.stream()
-                        .map(card -> "(" + cardListId + ", " + card.getCardId() + ", " + card.getFoilId() + ", " + card.getAmount() + ")")
-                        .collect(Collectors.joining(","))
-                );
-            }
-            return null;
-        });
+        database.execute("UPDATE card_list SET name = " + database.escapeNullable(name) + " WHERE id = " + cardListId);
+        clearCardListCards(cardListId);
+        if (cards.size() > 0) {
+            database.execute(
+                "INSERT INTO card_list_card (card_list_id, card_id, foil_id, amount) VALUES " +
+                cards.stream()
+                    .map(card -> "(" + cardListId + ", " + card.getCardId() + ", " + card.getFoilId() + ", " + card.getAmount() + ")")
+                    .collect(Collectors.joining(","))
+            );
+        }
     }
 
     public void addCard(int cardListId, int cardId, int foilId, int amount) {

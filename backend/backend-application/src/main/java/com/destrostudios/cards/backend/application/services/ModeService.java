@@ -3,6 +3,7 @@ package com.destrostudios.cards.backend.application.services;
 import amara.libraries.database.Database;
 import amara.libraries.database.QueryResult;
 import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.rules.GameConstants;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,5 +34,9 @@ public class ModeService {
 
     public Mode getMode(int modeId) {
         return modes.get(modeId);
+    }
+
+    public Mode getModeClassic() {
+        return modes.values().stream().filter(mode -> mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)).findFirst().orElseThrow();
     }
 }

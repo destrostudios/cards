@@ -1,5 +1,6 @@
 package com.destrostudios.cards.backend.application.modules;
 
+import amara.libraries.database.Database;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.backend.application.services.ModeService;
@@ -21,6 +22,7 @@ import java.util.List;
 public class GameDataServerModule extends NetworkModule {
 
     private JwtServerModule jwtModule;
+    private Database database;
     private ModeService modeService;
     private CardService cardService;
     private UserService userService;
@@ -29,20 +31,22 @@ public class GameDataServerModule extends NetworkModule {
     public void received(Connection connection, Object object) {
         if (object instanceof Login) {
             JwtAuthenticationUser jwtUser = jwtModule.getUser(connection.getID());
-            List<Mode> modes = modeService.getModes();
-            List<Card> cards = cardService.getCards();
-            User user = userService.getUser(jwtUser);
-            List<UserCardList> userCardLists = userService.getUserCardLists(user.getId());
-            connection.sendTCP(new InitialGameDataMessage(modes, cards, user, userCardLists));
+            database.transaction(() -> {
+                List<Mode> modes = modeService.getModes();
+                List<Card> cards = cardService.getCards();
+                User user = userService.getOrCreateUser(jwtUser);
+                List<UserCardList> userCardLists = userService.getUserCardLists(user.getId());
+                connection.sendTCP(new InitialGameDataMessage(modes, cards, user, userCardLists));
+            });
         } else if (object instanceof CreateUserCardListMessage createUserCardListMessage) {
             int userId = getUserId(connection);
-            userService.createUserCardList(userId, createUserCardListMessage.getModeId(), false);
+            database.transaction(() -> userService.createUserCardList(userId, createUserCardListMessage.getModeId(), false));
             sendUserCardLists(connection);
         } else if (object instanceof UpdateUserCardListMessage updateUserCardListMessage) {
-            userService.updateUserCardList(updateUserCardListMessage.getUserCardListId(), updateUserCardListMessage.getName(), updateUserCardListMessage.getCards());
+            database.transaction(() -> userService.updateUserCardList(updateUserCardListMessage.getUserCardListId(), updateUserCardListMessage.getName(), updateUserCardListMessage.getCards()));
             sendUserCardLists(connection);
         } else if (object instanceof DeleteUserCardListMessage deleteUserCardListMessage) {
-            userService.deleteUserCardList(deleteUserCardListMessage.getUserCardListId());
+            database.transaction(() -> userService.deleteUserCardList(deleteUserCardListMessage.getUserCardListId()));
             sendUserCardLists(connection);
         }
     }

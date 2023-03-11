@@ -34,4 +34,8 @@ public class CardService {
     public Card getCard(int cardId) {
         return cards.get(cardId);
     }
+
+    public List<Card> getCardsCore() {
+        return cards.values().stream().filter(Card::isCore).toList();
+    }
 }

@@ -41,7 +41,7 @@ public class BackendApplication {
 
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
-        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, modeService, cardService, userService);
+        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, modeService, cardService, userService);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule, cardService);

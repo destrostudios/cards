@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.function.Supplier;
 
 public abstract class Database {
 
@@ -19,12 +18,11 @@ public abstract class Database {
     private String password;
     private Connection connection;
 
-    public <T> T transaction(Supplier<T> supplier) {
+    public void transaction(Runnable runnable) {
         try {
             connection.setAutoCommit(false);
-            T result = supplier.get();
+            runnable.run();
             connection.commit();
-            return result;
         } catch (Exception ex) { // Make sure to catch ALL exceptions, not only SQLException
             try {
                 connection.rollback();

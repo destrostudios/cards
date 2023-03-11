@@ -3,6 +3,7 @@ package com.destrostudios.cards.backend.application.services;
 import amara.libraries.database.Database;
 import amara.libraries.database.QueryResult;
 import com.destrostudios.cards.shared.model.Foil;
+import com.destrostudios.cards.shared.rules.GameConstants;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,5 +34,9 @@ public class FoilService {
 
     public Foil getFoil(int foilId) {
         return foils.get(foilId);
+    }
+
+    public Foil getFoilNone() {
+        return foils.values().stream().filter(foil -> foil.getName().equals(GameConstants.FOIL_NAME_NONE)).findFirst().orElseThrow();
     }
 }

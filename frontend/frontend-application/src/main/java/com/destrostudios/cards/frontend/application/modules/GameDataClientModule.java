@@ -34,6 +34,7 @@ public class GameDataClientModule extends NetworkModule {
         } else if (object instanceof UserCardListsMessage userCardListsMessage) {
             userCardLists = userCardListsMessage.getUserCardLists();
         } else if (object instanceof PackResultMessage packResultMessage) {
+            user = packResultMessage.getUser();
             userCardLists = packResultMessage.getUserCardLists();
             packResult = packResultMessage.getPackResult();
         }
@@ -63,6 +64,7 @@ public class GameDataClientModule extends NetworkModule {
     }
 
     public void openPack() {
+        user = null;
         userCardLists = null;
         packResult = null;
         connection.sendTCP(new OpenPackMessage());

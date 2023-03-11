@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
@@ -13,7 +14,8 @@ public class MainMenuAppState extends MenuAppState {
         addTitle("Cards");
         addButton(0, "Play", b -> switchTo(new PlayAppState()));
         addButton(1, "Collection", b -> switchTo(new DecksAppState()));
-        addButton(2, "Packs", b -> switchTo(new PacksAppState()));
+        int packsCount = getModule(GameDataClientModule.class).getUser().getPacks();
+        addButton(2, "Packs" + ((packsCount > 0) ? " (" + packsCount + ")" : ""), b -> switchTo(new PacksAppState()));
         addButton(3, "Exit", b -> System.exit(0));
     }
 

@@ -1,6 +1,7 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -20,6 +21,12 @@ public class PacksAppState extends MenuAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
+        GameDataClientModule gameDataClientModule = getModule(GameDataClientModule.class);
+        Integer packsCount = ((gameDataClientModule.getUser() != null) ? gameDataClientModule.getUser().getPacks() : null);
+        if (packsCount != null) {
+            buttonOpen.setText((packsCount > 0) ? "Open pack (" + packsCount + ")" : "No packs left");
+        }
+        GuiUtil.setButtonEnabled(buttonOpen, ((packsCount != null) && (packsCount > 0)));
     }
 
     private void addButtons() {
@@ -28,7 +35,7 @@ public class PacksAppState extends MenuAppState {
         float buttonHeight = 100;
         float x = ((width / 2f) - (buttonWidth / 2));
         float y = (margin + buttonHeight);
-        buttonOpen = addButton("Open pack", x, y, buttonWidth, buttonHeight, b -> openPack());
+        buttonOpen = addButton(null, x, y, buttonWidth, buttonHeight, b -> openPack());
         x = margin;
         addButton("Back", x, y, buttonWidth, buttonHeight, b -> switchTo(new MainMenuAppState()));
     }

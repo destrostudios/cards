@@ -54,8 +54,9 @@ public class GameDataServerModule extends NetworkModule {
             int userId = getUserId(connection);
             database.transaction(() -> {
                 PackResult packResult = packService.openPack(userId);
+                User user = userService.getUser(userId);
                 List<UserCardList> userCardLists = userService.getUserCardLists(userId);
-                connection.sendTCP(new PackResultMessage(packResult, userCardLists));
+                connection.sendTCP(new PackResultMessage(packResult, user, userCardLists));
             });
         }
     }

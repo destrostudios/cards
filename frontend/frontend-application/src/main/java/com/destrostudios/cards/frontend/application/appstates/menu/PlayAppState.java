@@ -28,10 +28,10 @@ public class PlayAppState extends MenuAppState {
         addTitle("Play");
         modeAndDeckSelector = new ModeAndDeckSelector();
         addComponent(modeAndDeckSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
-        addQueueButtons();
+        addButtons();
     }
 
-    private void addQueueButtons() {
+    private void addButtons() {
         float margin = 50;
         float buttonWidth = 200;
         float buttonHeight = 100;

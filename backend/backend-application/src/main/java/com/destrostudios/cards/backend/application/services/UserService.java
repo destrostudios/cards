@@ -34,7 +34,7 @@ public class UserService {
         try (QueryResult result = database.select("SELECT * FROM user WHERE id = " + userId)) {
             User user;
             if (result.next()) {
-                user = new User(result.getInteger("id"), result.getString("login"), result.getInteger("packs"));
+                user = new User(result.getInteger("id"), result.getString("login"), result.getBoolean("admin"), result.getInteger("packs"));
             } else {
                 return null;
             }
@@ -43,8 +43,8 @@ public class UserService {
     }
 
     private User createUser(int userId, String login) {
-        User user = new User(userId, login, GameConstants.PACKS_FOR_NEW_PLAYERS);
-        database.execute("INSERT INTO user (id, login, packs) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "', " + user.getPacks() + ")");
+        User user = new User(userId, login, false, GameConstants.PACKS_FOR_NEW_PLAYERS);
+        database.execute("INSERT INTO user (id, login, admin, packs) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "', FALSE, " + user.getPacks() + ")");
         for (Mode mode : modeService.getModes()) {
             createUserCardList(user.getId(), mode.getId(), true);
         }
@@ -112,9 +112,9 @@ public class UserService {
 
         CardList cardList = cardListService.getCardList(result.getInteger("card_list_id"));
         if (library) {
-            // Developer has all cards
             int userId = result.getInteger("user_id");
-            if (userId == 1) {
+            User user = getUser(userId);
+            if (user.isAdmin()) {
                 addAllCardsToList(cardList);
             } else if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
                 addCoreCardsToList(cardList);

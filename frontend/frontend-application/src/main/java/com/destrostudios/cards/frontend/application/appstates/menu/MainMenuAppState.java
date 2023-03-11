@@ -13,7 +13,7 @@ public class MainMenuAppState extends MenuAppState {
         addTitle("Cards");
         addButton(0, "Play", b -> switchTo(new PlayAppState()));
         addButton(1, "Collection", b -> switchTo(new DecksAppState()));
-        // addButton(2, "Packs", b -> switchTo(new PlayAppState()));
+        addButton(2, "Packs", b -> switchTo(new PacksAppState()));
         addButton(3, "Exit", b -> System.exit(0));
     }
 

@@ -22,9 +22,10 @@ public class UserService {
     private CardListService cardListService;
 
     public User getOrCreateUser(JwtAuthenticationUser jwtUser) {
-        User user = getUser((int) jwtUser.id);
+        int userId = (int) jwtUser.id;
+        User user = getUser(userId);
         if (user == null) {
-            user = createUser(jwtUser);
+            user = createUser(userId, jwtUser.login);
         }
         return user;
     }
@@ -41,9 +42,9 @@ public class UserService {
         }
     }
 
-    private User createUser(JwtAuthenticationUser jwtUser) {
-        User user = new User((int) jwtUser.id, jwtUser.login, GameConstants.PACKS_FOR_NEW_PLAYERS);
-        database.execute("INSERT INTO user (id, login) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "')");
+    private User createUser(int userId, String login) {
+        User user = new User(userId, login, GameConstants.PACKS_FOR_NEW_PLAYERS);
+        database.execute("INSERT INTO user (id, login, packs) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "', " + user.getPacks() + ")");
         for (Mode mode : modeService.getModes()) {
             createUserCardList(user.getId(), mode.getId(), true);
         }

@@ -8,6 +8,7 @@ import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
 import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.network.NetworkUtil;
 import com.destrostudios.cards.shared.rules.CardsNetworkService;
 import com.destrostudios.cards.shared.rules.GameContext;
@@ -19,6 +20,7 @@ import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 public class BackendApplication {
 
@@ -35,7 +37,7 @@ public class BackendApplication {
 
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
         // Log.DEBUG();
-        Log.info(new Date().toString()); // time reference for kryo logs
+        Log.info(new Date().toString()); // Time reference for kryo logs
 
         Server kryoServer = new Server(10_000_000, 10_000_000);
         NetworkUtil.setupSerializer(kryoServer.getKryo());
@@ -57,6 +59,7 @@ public class BackendApplication {
     }
 
     public static Database getDatabase() {
-        return new MySQLDatabase("//localhost:3306/cards", "root", "");
+        List<String> databaseSecrets = FileManager.getFileLines("./database.ini");
+        return new MySQLDatabase(databaseSecrets.get(0), databaseSecrets.get(1), databaseSecrets.get(2));
     }
 }

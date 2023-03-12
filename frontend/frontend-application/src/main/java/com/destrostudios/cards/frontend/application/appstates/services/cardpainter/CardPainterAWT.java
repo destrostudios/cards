@@ -27,17 +27,17 @@ public class CardPainterAWT {
     private static int tmpX;
     private static int tmpY;
 
-    public static void drawCardBack(Graphics2D graphics, int width, int height) {
+    public static void drawCardBack(Graphics2D graphics) {
         graphics = (Graphics2D) graphics.create();
-        graphics.drawImage(CardImages.getCachedImage("images/cardbacks/yugioh.png"), 0, 0, width, height, null);
+        graphics.drawImage(CardImages.getCachedImage("images/cardbacks/yugioh.png"), 0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT, null);
         graphics.dispose();
     }
 
-    public static void drawCardFront_Full_Content(Graphics2D graphics, CardModel cardModel, int width, int height) {
+    public static void drawCardFront_Full_Content(Graphics2D graphics, CardModel cardModel) {
         graphics = (Graphics2D) graphics.create();
         List<String> drawnKeywords = new LinkedList<>();
         drawnKeywords.addAll(cardModel.getKeywords());
-        graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, width, height, null);
+        graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT, null);
         graphics.setFont(fontTitle);
         graphics.setColor(Color.BLACK);
         String title = cardModel.getTitle();
@@ -85,7 +85,7 @@ public class CardPainterAWT {
             graphics.setFont(fontTribes);
             String tribesText = String.join(", ", cardModel.getTribes());
             Rectangle2D tribesBounds = graphics.getFontMetrics().getStringBounds(tribesText, graphics);
-            tmpX = (int) ((width / 2) - (tribesBounds.getWidth() / 2));
+            tmpX = (int) ((CardPainter.TEXTURE_WIDTH / 2) - (tribesBounds.getWidth() / 2));
             graphics.drawString(tribesText, tmpX, 501);
         }
         graphics.dispose();
@@ -94,18 +94,19 @@ public class CardPainterAWT {
     public static void drawCardFront_Full_Artwork(Graphics2D graphics, CardModel cardModel) {
         graphics = (Graphics2D) graphics.create();
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(35, 68, 330, 241);
+        graphics.fillRect(35, 68, CardPainter.ARTWORK_WIDTH, CardPainter.ARTWORK_HEIGHT);
         String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-        graphics.drawImage(CardImages.getCachedImage(imageFilePath, 330, 241), 35, 68, null);
+        Image cachedImage = CardImages.getCachedImage(imageFilePath, CardPainter.ARTWORK_WIDTH, CardPainter.ARTWORK_HEIGHT);
+        graphics.drawImage(cachedImage, 35, 68, null);
         graphics.dispose();
     }
 
     public static void drawCardFront_Minified_Artwork(Graphics2D graphics, CardModel cardModel) {
         graphics = (Graphics2D) graphics.create();
         graphics.setColor(Color.WHITE);
-        graphics.fillRect(0, 0, 400, 560);
+        graphics.fillRect(0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT);
         String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-        graphics.drawImage(CardImages.getCachedImage(imageFilePath, 761, 560), -181, 0, null);
+        graphics.drawImage(CardImages.getCachedImage(imageFilePath, CardPainter.ARTWORK_WIDTH_FULL, CardPainter.TEXTURE_HEIGHT), -181, 0, null);
         graphics.dispose();
     }
 

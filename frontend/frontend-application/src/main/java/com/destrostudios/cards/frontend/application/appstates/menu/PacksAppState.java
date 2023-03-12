@@ -7,6 +7,7 @@ import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.CardPainter;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
@@ -78,32 +79,56 @@ public class PacksAppState extends MenuAppState {
     private void waitForPackResult() {
         mainApplication.getStateManager().attach(new LoadingAppState() {
 
+            private PackResult packResult;
+            private List<CardModel> cards;
+            private boolean readyToShow;
+
+            @Override
+            public void update(float tpf) {
+                super.update(tpf);
+                if (packResult == null) {
+                    packResult = getModule(GameDataClientModule.class).getPackResult();
+                    if (packResult != null) {
+                        new Thread(() -> {
+                            cards = createCardModels(packResult);
+                            for (CardModel cardModel : cards) {
+                                CardPainter.getAll(cardModel, false);
+                            }
+                            readyToShow = true;
+                        }).start();
+                    }
+                }
+            }
+
             @Override
             protected boolean shouldClose() {
-                return (getModule(GameDataClientModule.class).getPackResult() != null);
+                return readyToShow;
             }
 
             @Override
             protected void close() {
                 super.close();
-                showPackResult();
+                showPackResult(cards);
             }
         });
     }
 
-    private void showPackResult() {
-        PackResult packResult = getModule(GameDataClientModule.class).getPackResult();
+    private List<CardModel> createCardModels(PackResult packResult) {
         EntityData data = new SimpleEntityData(Components.ALL);
-        List<CardModel> cards = packResult.getCards().stream()
+        return packResult.getCards().stream()
                 .map(cardListCard -> CardGuiMapper.createModel(data, cardListCard))
                 .collect(Collectors.toList());
+    }
+
+    private void showPackResult(List<CardModel> cards) {
         CardZone cardZone = new SimpleIntervalZone(new Vector3f(0, 0, 0.38f), new Vector3f(3.9f, 3.9f, 4));
         IngameCardVisualizer cardVisualizer = new IngameCardVisualizer(false, false, 3.8f);
         CardPackSettings<CardModel> settings = CardPackSettings.<CardModel>builder()
                 .cards(cards)
                 .cardZone(cardZone)
                 .cardVisualizer(cardVisualizer)
-                .packOpenDuration(0.4f)
+                .packOpenDuration(0.5f)
+                .packOpenDurationFactorScale(0.8f)
                 .build();
         cardPackAppState = new CardPackAppState<>(mainApplication.getRootNode(), settings) {
 

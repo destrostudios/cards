@@ -67,14 +67,8 @@ public class FrontendJmeApplication extends SimpleApplication {
         new Thread(() -> {
             BaseStyles.loadGlassStyle();
             GuiGlobals.getInstance().getStyles().setDefaultStyle("glass");
+            AssetPreloader.preload(assetManager);
             asyncInitDone.set(true);
         }).start();
-    }
-
-    public void enqueue(final Runnable runnable){
-        enqueue(() -> {
-            runnable.run();
-            return null;
-        });
     }
 }

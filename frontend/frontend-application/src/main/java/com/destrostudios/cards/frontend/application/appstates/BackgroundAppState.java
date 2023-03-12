@@ -40,7 +40,7 @@ public class BackgroundAppState extends MyBaseAppState {
     }
 
     public void setBackground(String backgroundName) {
-        material.setTexture("ColorMap", mainApplication.getAssetManager().loadTexture("images/backgrounds/" + backgroundName + ".png"));
+        material.setTexture("ColorMap", mainApplication.getAssetManager().loadTexture("textures/backgrounds/" + backgroundName + ".png"));
     }
 
     @Override

@@ -18,7 +18,7 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         this.fullArt = fullArt;
         node = new Node();
         node.setLocalScale(scale);
-        foilModelledCard = new FoilModelledCard(assetManager, "models/card/card.j3o", "images/cardbacks/yugioh.png", ColorRGBA.Black);
+        foilModelledCard = new FoilModelledCard(assetManager, "images/cardbacks/yugioh.png", ColorRGBA.Black);
         Node foilModelledCardNode = foilModelledCard.getNode();
         foilModelledCardNode.setShadowMode(shadows ? RenderQueue.ShadowMode.CastAndReceive : RenderQueue.ShadowMode.Off);
         this.node.attachChild(foilModelledCardNode);

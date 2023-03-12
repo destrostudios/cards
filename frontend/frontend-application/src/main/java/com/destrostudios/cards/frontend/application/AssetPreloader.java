@@ -44,10 +44,6 @@ public class AssetPreloader {
             } else {
                 assetManager.loadTexture(assetPath);
             }
-        } else if (assetPath.endsWith(".j3o")) {
-            assetManager.loadModel(assetPath);
-        } else if (assetPath.endsWith(".j3md")) {
-            assetManager.loadMaterial(assetPath);
         }
     }
 }

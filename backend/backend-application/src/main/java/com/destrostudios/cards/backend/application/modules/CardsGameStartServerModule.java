@@ -13,18 +13,16 @@ import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.GameStartServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
-import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 import java.security.SecureRandom;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class CardsGameStartServerModule extends GameStartServerModule<StartGameInfo> {
 
-    public CardsGameStartServerModule(Consumer<Kryo> registerParams, Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule, CardService cardService) {
-        super(registerParams);
+    public CardsGameStartServerModule(Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule, CardService cardService) {
+        super(kryo -> {});
         this.kryoServer = kryoServer;
         this.jwtModule = jwtModule;
         this.gameModule = gameModule;

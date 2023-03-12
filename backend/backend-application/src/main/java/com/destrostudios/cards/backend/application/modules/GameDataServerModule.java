@@ -50,6 +50,9 @@ public class GameDataServerModule extends NetworkModule {
         } else if (object instanceof DeleteUserCardListMessage deleteUserCardListMessage) {
             database.transaction(() -> userService.deleteUserCardList(deleteUserCardListMessage.getUserCardListId()));
             sendUserCardLists(connection);
+        } else if (object instanceof GetUserMessage) {
+            User user = userService.getUser(getUserId(connection));
+            connection.sendTCP(new UserMessage(user));
         } else if (object instanceof OpenPackMessage) {
             int userId = getUserId(connection);
             database.transaction(() -> {

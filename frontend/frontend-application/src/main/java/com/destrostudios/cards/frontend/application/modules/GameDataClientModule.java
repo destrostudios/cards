@@ -33,6 +33,8 @@ public class GameDataClientModule extends NetworkModule {
             userCardLists = initialGameDataMessage.getUserCardLists();
         } else if (object instanceof UserCardListsMessage userCardListsMessage) {
             userCardLists = userCardListsMessage.getUserCardLists();
+        } else if (object instanceof UserMessage userMessage) {
+            user = userMessage.getUser();
         } else if (object instanceof PackResultMessage packResultMessage) {
             user = packResultMessage.getUser();
             userCardLists = packResultMessage.getUserCardLists();
@@ -61,6 +63,11 @@ public class GameDataClientModule extends NetworkModule {
     public void deleteUserCardList(int userCardListId) {
         userCardLists = null;
         connection.sendTCP(new DeleteUserCardListMessage(userCardListId));
+    }
+
+    public void refreshUser() {
+        user = null;
+        connection.sendTCP(new GetUserMessage());
     }
 
     public void openPack() {

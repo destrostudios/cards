@@ -45,7 +45,7 @@ public class BackendApplication {
         GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, modeService, cardService, userService, packService);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
-        CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule, cardService);
+        CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryoServer, jwtModule, gameModule, cardService);
         QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, userService);
         GameOverModule gameOverModule = new GameOverModule(gameModule, userService);
         AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);

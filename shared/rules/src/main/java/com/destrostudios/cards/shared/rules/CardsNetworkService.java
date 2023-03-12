@@ -32,7 +32,7 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
 
             @Override
             public void write(Kryo kryo, Output output, PlayerInfo object) {
-                output.writeLong(object.getId());
+                output.writeInt(object.getId());
                 output.writeString(object.getLogin());
                 output.writeInt(object.getLibraryTemplates().size());
                 for (String template : object.getLibraryTemplates()) {
@@ -42,7 +42,7 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
 
             @Override
             public PlayerInfo read(Kryo kryo, Input input, Class<PlayerInfo> type) {
-                long id = input.readLong();
+                int id = input.readInt();
                 String login = input.readString();
                 LinkedList<String> libraryTemplates = new LinkedList<>();
                 int librarySize = input.readInt();

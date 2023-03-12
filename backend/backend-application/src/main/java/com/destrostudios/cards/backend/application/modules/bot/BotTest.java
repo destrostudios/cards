@@ -2,7 +2,7 @@ package com.destrostudios.cards.backend.application.modules.bot;
 
 import amara.libraries.database.Database;
 import com.destrostudios.cards.backend.application.BackendApplication;
-import com.destrostudios.cards.backend.application.TestGameSetup;
+import com.destrostudios.cards.backend.application.GameSetup;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
@@ -36,8 +36,8 @@ public class BotTest {
 
         StartGameInfo startGameInfo = new StartGameInfo("forest", new PlayerInfo(2, "Bot1", new LinkedList<>()), new PlayerInfo(2, "Bot2", new LinkedList<>()));
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
-        TestGameSetup testGameSetup = new TestGameSetup(cardService.getCards(), data, startGameInfo);
-        testGameSetup.apply();
+        GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo);
+        gameSetup.apply();
         GameContext gameContext = new GameContext(startGameInfo, data);
 
         MasterRandom random = new MasterRandom(new Random());

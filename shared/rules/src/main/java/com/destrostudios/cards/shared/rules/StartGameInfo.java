@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StartGameInfo {
-
     private String boardName;
     private PlayerInfo player1;
     private PlayerInfo player2;

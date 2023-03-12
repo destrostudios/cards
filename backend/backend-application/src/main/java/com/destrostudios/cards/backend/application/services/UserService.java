@@ -139,7 +139,7 @@ public class UserService {
         }
     }
 
-    public void setPacks(int userId, int packs) {
-        database.execute("UPDATE user SET packs = " + packs + " WHERE id = " + userId);
+    public void addPacks(int userId, int additionalPacks) {
+        database.execute("UPDATE user SET packs = packs + " + additionalPacks + " WHERE id = " + userId);
     }
 }

@@ -22,7 +22,7 @@ public class PackService {
         if (user.getPacks() <= 0) {
             throw new RuntimeException("User has no packs.");
         }
-        userService.setPacks(userId, user.getPacks() - 1);
+        userService.addPacks(userId, -1);
         PackResult packResult = createPackResult();
         Mode modeClassic = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
         UserCardList library = userService.getLibrary(userId, modeClassic.getId());

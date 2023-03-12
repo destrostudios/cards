@@ -32,37 +32,39 @@ public class QueueServerModule extends NetworkModule {
         this.userService = userService;
         playersInQueue = new HashMap<>();
     }
+    public static final int USER_ID_BOT = 0;
     private JwtServerModule jwtModule;
     private CardsGameStartServerModule cardsGameStartServerModule;
     private CardsBotModule cardsBotModule;
     private UserService userService;
-    private HashMap<Long, PlayerInfo> playersInQueue;
+    private HashMap<Integer, PlayerInfo> playersInQueue;
 
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof QueueMessage queueMessage) {
-            JwtAuthenticationUser user = jwtModule.getUser(connection.getID());
+            JwtAuthenticationUser jwtUser = jwtModule.getUser(connection.getID());
             // Successful login
-            if (user != null) {
-                LOG.info(user.login + " queued up (againstHumanOrBot = " + queueMessage.isAgainstHumanOrBot() + ", cardListId = " + queueMessage.getUserCardListId() + ").");
+            if (jwtUser != null) {
+                int userId = (int) jwtUser.id;
+                LOG.info(jwtUser.login + " queued up (againstHumanOrBot = " + queueMessage.isAgainstHumanOrBot() + ", cardListId = " + queueMessage.getUserCardListId() + ").");
                 UserCardList userCardList = userService.getUserCardList(queueMessage.getUserCardListId());
                 // TODO: Map amount, foil etc.
                 List<String> libraryTemplates = userCardList.getCardList().getCards().stream().map(c -> c.getCard().getPath()).collect(Collectors.toList());
-                PlayerInfo playerInfo = new PlayerInfo(user.id, user.login, libraryTemplates);
+                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, libraryTemplates);
                 if (queueMessage.isAgainstHumanOrBot()) {
-                    playersInQueue.put(user.id, playerInfo);
+                    playersInQueue.put(userId, playerInfo);
                     startGameIfPossible();
                 } else {
-                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(2, "Bot", new LinkedList<>())));
+                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(USER_ID_BOT, "Bot", new LinkedList<>())));
                     cardsBotModule.checkBotTurn(gameId);
                 }
             }
         } else if ((object instanceof UnqueueMessage) || (object instanceof Logout)) {
-            JwtAuthenticationUser user = jwtModule.getUser(connection.getID());
+            JwtAuthenticationUser jwtUser = jwtModule.getUser(connection.getID());
             // Successful login
-            if (user != null) {
-                LOG.info(user.login + " unqueued.");
-                playersInQueue.remove(user.id);
+            if (jwtUser != null) {
+                LOG.info(jwtUser.login + " unqueued.");
+                playersInQueue.remove((int) jwtUser.id);
             }
         }
     }
@@ -76,7 +78,7 @@ public class QueueServerModule extends NetworkModule {
     }
 
     private PlayerInfo popPlayerInfo() {
-        long playerId = playersInQueue.keySet().iterator().next();
+        int playerId = playersInQueue.keySet().iterator().next();
         return playersInQueue.remove(playerId);
     }
 }

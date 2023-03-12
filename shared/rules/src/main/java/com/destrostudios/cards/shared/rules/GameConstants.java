@@ -7,4 +7,5 @@ public class GameConstants {
     public static final int MAXIMUM_DECK_SIZE = 30;
     public static final String MODE_NAME_CLASSIC = "classic";
     public static final int PACKS_FOR_NEW_PLAYERS = 5;
+    public static final int PACKS_FOR_WINNER = 1;
 }

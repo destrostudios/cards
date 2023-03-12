@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class PlayerInfo {
-    private long id;
+    private int id;
     private String login;
     private List<String> libraryTemplates;
 }

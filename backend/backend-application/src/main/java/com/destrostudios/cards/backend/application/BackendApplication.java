@@ -47,8 +47,7 @@ public class BackendApplication {
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryo -> {}, kryoServer, jwtModule, gameModule, cardService);
         QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, userService);
-
-        GameOverModule gameOverModule = new GameOverModule(gameModule);
+        GameOverModule gameOverModule = new GameOverModule(gameModule, userService);
         AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);
 
         ToolsServer server = new ToolsServer(kryoServer, jwtModule, gameDataServerModule, gameModule, cardsBotModule, gameStartModule, queueModule, gameOverModule, autoRejoinModule);

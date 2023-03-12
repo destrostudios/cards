@@ -125,4 +125,14 @@ public class GameContext {
     public boolean isGameOver() {
         return (winner != null);
     }
+
+    public int getUserId(int player) {
+        String login = data.getComponent(player, Components.NAME);
+        if (startGameInfo.getPlayer1().getLogin().equals(login)) {
+            return startGameInfo.getPlayer1().getId();
+        } else if (startGameInfo.getPlayer2().getLogin().equals(login)) {
+            return startGameInfo.getPlayer2().getId();
+        }
+        throw new RuntimeException("User with login '" + login + "' not found.");
+    }
 }

@@ -25,12 +25,17 @@
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
-            <artifactId>files</artifactId>
+            <artifactId>events</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
-            <artifactId>events</artifactId>
+            <artifactId>model</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>files</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>

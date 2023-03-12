@@ -20,7 +20,6 @@ import com.destrostudios.gametools.network.server.modules.game.MasterRandom;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.impl.SimpleLogger;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -34,7 +33,7 @@ public class BotTest {
         Database database = BackendApplication.getDatabase();
         CardService cardService = new CardService(database);
 
-        StartGameInfo startGameInfo = new StartGameInfo("forest", new PlayerInfo(2, "Bot1", new LinkedList<>()), new PlayerInfo(2, "Bot2", new LinkedList<>()));
+        StartGameInfo startGameInfo = new StartGameInfo("forest", new PlayerInfo(2, "Bot1", null), new PlayerInfo(2, "Bot2", null));
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
         GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo);
         gameSetup.apply();

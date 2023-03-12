@@ -16,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class QueueServerModule extends NetworkModule {
 
@@ -48,14 +45,12 @@ public class QueueServerModule extends NetworkModule {
                 int userId = (int) jwtUser.id;
                 LOG.info(jwtUser.login + " queued up (againstHumanOrBot = " + queueMessage.isAgainstHumanOrBot() + ", cardListId = " + queueMessage.getUserCardListId() + ").");
                 UserCardList userCardList = userService.getUserCardList(queueMessage.getUserCardListId());
-                // TODO: Map amount, foil etc.
-                List<String> libraryTemplates = userCardList.getCardList().getCards().stream().map(c -> c.getCard().getPath()).collect(Collectors.toList());
-                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, libraryTemplates);
+                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, userCardList);
                 if (queueMessage.isAgainstHumanOrBot()) {
                     playersInQueue.put(userId, playerInfo);
                     startGameIfPossible();
                 } else {
-                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(USER_ID_BOT, "Bot", new LinkedList<>())));
+                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(USER_ID_BOT, "Bot", null)));
                     cardsBotModule.checkBotTurn(gameId);
                 }
             }

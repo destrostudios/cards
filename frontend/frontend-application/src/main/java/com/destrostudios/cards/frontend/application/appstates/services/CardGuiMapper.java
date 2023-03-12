@@ -3,11 +3,10 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
+import com.destrostudios.cards.shared.rules.util.ModelUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 
@@ -32,16 +31,9 @@ public class CardGuiMapper {
     }
 
     public static CardModel createModel(EntityData data, CardListCard cardListCard) {
-        int cardEntity = data.createEntity();
-        EntityTemplate.loadTemplate(data, cardEntity, cardListCard.getCard().getPath());
-        // TODO: Cleanup
-        if ("artwork".equals(cardListCard.getFoil().getName())) {
-            data.setComponent(cardEntity, Components.FOIL, Foil.ARTWORK);
-        } else if ("full".equals(cardListCard.getFoil().getName())) {
-            data.setComponent(cardEntity, Components.FOIL, Foil.FULL);
-        }
+        int card = ModelUtil.createCard(data, cardListCard);
         CardModel cardModel = new CardModel();
-        updateModel(data, cardEntity, cardModel, true);
+        updateModel(data, card, cardModel, true);
         return cardModel;
     }
 

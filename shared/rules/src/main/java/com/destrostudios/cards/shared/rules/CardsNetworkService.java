@@ -16,7 +16,6 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 
-import java.util.LinkedList;
 import java.util.Map;
 
 public class CardsNetworkService implements GameService<GameContext, Event> {
@@ -28,68 +27,9 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
 
     @Override
     public void initialize(Kryo kryo) {
-        kryo.register(PlayerInfo.class, new Serializer<PlayerInfo>() {
-
-            @Override
-            public void write(Kryo kryo, Output output, PlayerInfo object) {
-                output.writeInt(object.getId());
-                output.writeString(object.getLogin());
-                output.writeInt(object.getLibraryTemplates().size());
-                for (String template : object.getLibraryTemplates()) {
-                    output.writeString(template);
-                }
-            }
-
-            @Override
-            public PlayerInfo read(Kryo kryo, Input input, Class<PlayerInfo> type) {
-                int id = input.readInt();
-                String login = input.readString();
-                LinkedList<String> libraryTemplates = new LinkedList<>();
-                int librarySize = input.readInt();
-                for (int i = 0; i < librarySize; i++) {
-                    libraryTemplates.add(input.readString());
-                }
-                return new PlayerInfo(id, login, libraryTemplates);
-            }
-        });
-        kryo.register(StartGameInfo.class, new Serializer<StartGameInfo>() {
-
-            @Override
-            public void write(Kryo kryo, Output output, StartGameInfo object) {
-                output.writeString(object.getBoardName());
-                kryo.writeObject(output, object.getPlayer1());
-                kryo.writeObject(output, object.getPlayer2());
-            }
-
-            @Override
-            public StartGameInfo read(Kryo kryo, Input input, Class<StartGameInfo> type) {
-                StartGameInfo startGameInfo = new StartGameInfo();
-                startGameInfo.setBoardName(input.readString());
-                startGameInfo.setPlayer1(kryo.readObject(input, PlayerInfo.class));
-                startGameInfo.setPlayer2(kryo.readObject(input, PlayerInfo.class));
-                return startGameInfo;
-            }
-        });
-        kryo.register(String[].class, new Serializer<String[]>() {
-
-            @Override
-            public void write(Kryo kryo, Output output, String[] object) {
-                output.writeInt(object.length);
-                for (String string : object) {
-                    output.writeString(string);
-                }
-            }
-
-            @Override
-            public String[] read(Kryo kryo, Input input, Class<String[]> type) {
-                int length = input.readInt();
-                String[] object = new String[length];
-                for (int i = 0; i < length; i++) {
-                    object[i] = input.readString();
-                }
-                return object;
-            }
-        });
+        kryo.register(PlayerInfo.class);
+        kryo.register(StartGameInfo.class);
+        kryo.register(String[].class);
         kryo.register(Foil.class, new EnumSerializer<>(Foil.class));
         kryo.register(TargetPrefilter.class, new EnumSerializer<>(TargetPrefilter.class));
         kryo.register(SimpleEntityData.class, new Serializer<SimpleEntityData>() {

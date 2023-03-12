@@ -13,6 +13,12 @@ public class AssetPreloader {
     public static void preload(AssetManager assetManager) {
         preloadDirectory(assetManager, "images/");
         preloadDirectory(assetManager, "textures/");
+        // Preload bundled card-gui assets
+        assetManager.loadModel("card-gui/samples/models/card/card.j3o");
+        assetManager.loadAsset("card-gui/samples/materials/foil_card/foil_card.j3md");
+        assetManager.loadAsset("card-gui/samples/materials/glow_quad/glow_quad.j3md");
+        assetManager.loadTexture("card-gui/samples/textures/card_glow.png");
+        assetManager.loadTexture("card-gui/samples/textures/target_arrow.png");
         // Pre-generate a few textures, a few ones like mana cost and stats to some degree could also be preloaded with reasonable effort
         CardPainter.getFoil_None();
         CardPainter.getFoil_FullArt();

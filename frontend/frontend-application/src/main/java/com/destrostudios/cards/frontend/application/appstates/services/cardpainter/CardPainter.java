@@ -58,14 +58,14 @@ public class CardPainter {
 
     public static Texture2D getCost(CardModel cardModel, boolean fullArt) {
         return get(
-            "cost_" + cardModel.getManaCostDetails() + "_" + cardModel.getManaCostFullArt() + "_" + fullArt,
+            "cost_" + cardModel.getManaCostDetails() + "_" + cardModel.getManaCostFullArt() + "_" + cardModel.getManaCostModification() + "_" + fullArt,
             t -> t.draw(g -> CardPainterAWT.drawCardFront_CardCost(g, cardModel, fullArt))
         );
     }
 
     public static Texture2D getStats(CardModel cardModel, boolean fullArt) {
         return get(
-            "stats_" + cardModel.getAttackDamage() + "_" + cardModel.getLifepoints() + "_" + cardModel.isAttackBuffed() + "_" + cardModel.isHealthBuffed() + "_" + cardModel.isDamaged() + "_" + fullArt,
+            "stats_" + cardModel.getAttackDamage() + "_" + cardModel.getAttackDamageModification() + "_" + cardModel.getHealth() + "_" + cardModel.getHealthModification() + "_" + cardModel.isDamaged() + "_" + fullArt,
             t -> t.draw(g -> CardPainterAWT.drawCardFront_Stats(g, cardModel, fullArt))
         );
     }

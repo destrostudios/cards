@@ -3,6 +3,7 @@ package com.destrostudios.cards.frontend.application.appstates.services.cardpain
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Cost;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Spell;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.StatModification;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -133,7 +134,8 @@ public class CardPainterAWT {
             Rectangle2D manaCostTextBounds = graphics.getFontMetrics().getStringBounds(manaCostText, graphics);
             int centerX = (fullArt ? 335 : 350);
             tmpX = (int) (centerX - (manaCostTextBounds.getWidth() / 2));
-            drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, Color.WHITE, outlineStrength);
+            Color color = ((cardModel.getManaCostModification() == StatModification.DECREASED) ? Color.GREEN : ((cardModel.getManaCostModification() == StatModification.INCREASED) ? Color.RED : Color.WHITE));
+            drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
     }
 
@@ -148,18 +150,18 @@ public class CardPainterAWT {
             Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
             int centerX = (fullArt ? 65 : 60);
             tmpX = (int) (centerX - (attackDamageBounds.getWidth() / 2));
-            Color color = (cardModel.isAttackBuffed() ? Color.GREEN : Color.WHITE);
+            Color color = ((cardModel.getAttackDamageModification() == StatModification.INCREASED) ? Color.GREEN : Color.WHITE);
             drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
-        Integer lifepoints = cardModel.getLifepoints();
-        if (lifepoints != null) {
-            String lifepointsText = ("" + lifepoints);
+        Integer health = cardModel.getHealth();
+        if (health != null) {
+            String healthText = ("" + health);
             graphics.setFont(font);
-            Rectangle2D lifepointsBounds = graphics.getFontMetrics().getStringBounds(lifepointsText, graphics);
+            Rectangle2D healthBounds = graphics.getFontMetrics().getStringBounds(healthText, graphics);
             int centerX = (fullArt ? 335 : 340);
-            tmpX = (int) (centerX - (lifepointsBounds.getWidth() / 2));
-            Color color = (cardModel.isDamaged() ? Color.RED : (cardModel.isHealthBuffed() ? Color.GREEN : Color.WHITE));
-            drawOutlinedText(graphics, lifepointsText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
+            tmpX = (int) (centerX - (healthBounds.getWidth() / 2));
+            Color color = (cardModel.isDamaged() ? Color.RED : ((cardModel.getHealthModification() == StatModification.INCREASED) ? Color.GREEN : Color.WHITE));
+            drawOutlinedText(graphics, healthText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
     }
 

@@ -2,134 +2,62 @@ package com.destrostudios.cards.frontend.application.appstates.services.cardpain
 
 import com.destrostudios.cardgui.BoardObjectModel;
 import com.destrostudios.cards.shared.rules.cards.Foil;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class CardModel extends BoardObjectModel {
 
-    private boolean isFront;
-    private boolean isPlayable;
+    private boolean front;
+    private boolean playable;
 
     private String type;
     private String title;
     private Integer manaCostDetails;
     private Integer manaCostFullArt;
+    private StatModification manaCostModification;
     private List<String> tribes;
     private List<String> keywords;
     private String description;
     private List<Spell> spells;
     private Integer attackDamage;
-    private Integer lifepoints;
-    private boolean isAttackBuffed;
-    private boolean isHealthBuffed;
-    private boolean isDamaged;
+    private Integer health;
+    private StatModification attackDamageModification;
+    private StatModification healthModification;
+    private boolean damaged;
     private boolean divineShield;
     private boolean taunt;
     private String flavourText;
     private Foil foil;
 
-    public boolean isFront() {
-        return isFront;
-    }
-
-    public boolean isPlayable() {
-        return isPlayable;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Integer getManaCostDetails() {
-        return manaCostDetails;
-    }
-
-    public Integer getManaCostFullArt() {
-        return manaCostFullArt;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public List<String> getKeywords() {
-        return keywords;
-    }
-
-    public List<String> getTribes() {
-        return tribes;
-    }
-
-    public Integer getAttackDamage() {
-        return attackDamage;
-    }
-
-    public Integer getLifepoints() {
-        return lifepoints;
-    }
-
-    public boolean isAttackBuffed() {
-        return isAttackBuffed;
-    }
-
-    public boolean isHealthBuffed() {
-        return isHealthBuffed;
-    }
-
-    public boolean isDamaged() {
-        return isDamaged;
-    }
-
-    public boolean isDivineShield() {
-        return divineShield;
-    }
-
-    public boolean isTaunt() {
-        return taunt;
-    }
-
-    public List<Spell> getSpells() {
-        return spells;
-    }
-
-    public String getFlavourText() {
-        return flavourText;
-    }
-
-    public Foil getFoil() {
-        return foil;
-    }
-
     public void set(CardModel cardModel) {
-        setFront(cardModel.isFront);
-        setPlayable(cardModel.isPlayable);
+        setFront(cardModel.front);
+        setPlayable(cardModel.playable);
         setType(cardModel.type);
         setTitle(cardModel.title);
         setManaCostFullArt(cardModel.manaCostFullArt);
         setManaCostDetails(cardModel.manaCostDetails);
+        setManaCostModification(cardModel.manaCostModification);
         setDescription(cardModel.description);
         setKeywords(cardModel.keywords);
         setTribes(cardModel.tribes);
         setAttackDamage(cardModel.attackDamage);
-        setLifepoints(cardModel.lifepoints);
-        setAttackBuffed(cardModel.isAttackBuffed);
-        setHealthBuffed(cardModel.isHealthBuffed);
-        setDamaged(cardModel.isDamaged);
+        setHealth(cardModel.health);
+        setAttackDamageModification(cardModel.attackDamageModification);
+        setHealthModification(cardModel.healthModification);
+        setDamaged(cardModel.damaged);
         setSpells(cardModel.spells);
         setFlavourText(cardModel.flavourText);
         setFoil(cardModel.foil);
     }
 
-    public void setFront(boolean isFront) {
-        updateIfNotEquals(this.isFront, isFront, () -> this.isFront = isFront);
+    public void setFront(boolean front) {
+        updateIfNotEquals(this.front, front, () -> this.front = front);
     }
 
-    public void setPlayable(boolean isPlayable) {
-        updateIfNotEquals(this.isPlayable, isPlayable, () -> this.isPlayable = isPlayable);
+    public void setPlayable(boolean playable) {
+        updateIfNotEquals(this.playable, playable, () -> this.playable = playable);
     }
 
     public void setType(String type) {
@@ -148,6 +76,10 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.manaCostDetails, manaCostDetails, () -> this.manaCostDetails = manaCostDetails);
     }
 
+    public void setManaCostModification(StatModification manaCostModification) {
+        updateIfNotEquals(this.manaCostModification, manaCostModification, () -> this.manaCostModification = manaCostModification);
+    }
+
     public void setDescription(String description) {
         updateIfNotEquals(this.description, description, () -> this.description = description);
     }
@@ -164,20 +96,20 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.attackDamage, attackDamage, () -> this.attackDamage = attackDamage);
     }
 
-    public void setLifepoints(Integer lifepoints) {
-        updateIfNotEquals(this.lifepoints, lifepoints, () -> this.lifepoints = lifepoints);
+    public void setHealth(Integer health) {
+        updateIfNotEquals(this.health, health, () -> this.health = health);
     }
 
-    public void setAttackBuffed(boolean isAttackBuffed) {
-        updateIfNotEquals(this.isAttackBuffed, isAttackBuffed, () -> this.isAttackBuffed = isAttackBuffed);
+    public void setAttackDamageModification(StatModification attackDamageModification) {
+        updateIfNotEquals(this.attackDamageModification, attackDamageModification, () -> this.attackDamageModification = attackDamageModification);
     }
 
-    public void setHealthBuffed(boolean isHealthBuffed) {
-        updateIfNotEquals(this.isHealthBuffed, isHealthBuffed, () -> this.isHealthBuffed = isHealthBuffed);
+    public void setHealthModification(StatModification healthModification) {
+        updateIfNotEquals(this.healthModification, healthModification, () -> this.healthModification = healthModification);
     }
 
-    public void setDamaged(boolean isDamaged) {
-        updateIfNotEquals(this.isDamaged, isDamaged, () -> this.isDamaged = isDamaged);
+    public void setDamaged(boolean damaged) {
+        updateIfNotEquals(this.damaged, damaged, () -> this.damaged = damaged);
     }
 
     public void setDivineShield(boolean divineShield) {

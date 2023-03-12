@@ -51,6 +51,7 @@ public class CardGuiMapper {
         cardModel.setDescription(data.getComponent(card, Components.DESCRIPTION));
 
         boolean checkedDefaultPlaySpell = false;
+        Integer baseManaCost = null;
         Integer manaCostFullArt = null;
         Integer manaCostDetails = null;
         List<Spell> spells = new LinkedList<>();
@@ -59,6 +60,7 @@ public class CardGuiMapper {
             for (int spellEntity : spellEntities) {
                 Integer manaCost = CostUtil.getEffectiveManaCost(data, spellEntity);
                 if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
+                    baseManaCost = data.getComponent(spellEntity, Components.Cost.MANA_COST);
                     manaCostDetails = manaCost;
                     if (data.hasComponent(card, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
@@ -75,16 +77,17 @@ public class CardGuiMapper {
         }
         cardModel.setManaCostFullArt(manaCostFullArt);
         cardModel.setManaCostDetails(manaCostDetails);
+        cardModel.setManaCostModification(getStatModification(baseManaCost, manaCostDetails));
         cardModel.setSpells(spells);
 
-        Integer baseAttack = data.getComponent(card, Components.Stats.ATTACK);
-        Integer attack = StatsUtil.getEffectiveAttack(data, card);
+        Integer baseAttackDamage = data.getComponent(card, Components.Stats.ATTACK);
+        Integer attackDamage = StatsUtil.getEffectiveAttack(data, card);
         Integer baseHealth = data.getComponent(card, Components.Stats.HEALTH);
         Integer health = StatsUtil.getEffectiveHealth(data, card);
-        cardModel.setAttackDamage(attack);
-        cardModel.setLifepoints(health);
-        cardModel.setAttackBuffed((attack != null) && (attack > baseAttack));
-        cardModel.setHealthBuffed((health != null) && (health > baseHealth));
+        cardModel.setAttackDamage(attackDamage);
+        cardModel.setAttackDamageModification(getStatModification(baseAttackDamage, attackDamage));
+        cardModel.setHealth(health);
+        cardModel.setHealthModification(getStatModification(baseHealth, health));
         cardModel.setDamaged(data.hasComponent(card, Components.Stats.DAMAGED) || data.hasComponent(card, Components.Stats.BONUS_DAMAGED));
 
         cardModel.setDivineShield(data.getOptionalComponent(card, Components.Ability.DIVINE_SHIELD).orElse(false));
@@ -109,6 +112,17 @@ public class CardGuiMapper {
             Cost cost = new Cost();
             cost.setManaCost(manaCost);
             return cost;
+        }
+        return null;
+    }
+
+    private static StatModification getStatModification(Integer baseValue, Integer effectiveValue) {
+        if (effectiveValue != null) {
+            if (effectiveValue < baseValue) {
+                return StatModification.DECREASED;
+            } else if (effectiveValue > baseValue) {
+                return StatModification.INCREASED;
+            }
         }
         return null;
     }

@@ -27,6 +27,7 @@ public class UserService {
         if (user == null) {
             user = createUser(userId, jwtUser.login);
         }
+        createLibrariesIfNotExisting(user.getId());
         return user;
     }
 
@@ -45,20 +46,26 @@ public class UserService {
     private User createUser(int userId, String login) {
         User user = new User(userId, login, false, GameConstants.PACKS_FOR_NEW_PLAYERS);
         database.execute("INSERT INTO user (id, login, admin, packs) VALUES (" + user.getId() + ", '" + database.escape(user.getLogin()) + "', FALSE, " + user.getPacks() + ")");
-        for (Mode mode : modeService.getModes()) {
-            createUserCardList(user.getId(), mode.getId(), true);
-        }
-        createIntroDeck(user.getId());
         return user;
     }
 
-    private void createIntroDeck(int userId) {
-        Mode modeClassic = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
+    private void createLibrariesIfNotExisting(int userId) {
+        for (Mode mode : modeService.getModes()) {
+            if (!hasLibrary(userId, mode.getId())) {
+                createUserCardList(userId, mode.getId(), true);
+                if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
+                    createIntroDeck(userId, mode);
+                }
+            }
+        }
+    }
+
+    private void createIntroDeck(int userId, Mode modeClassic) {
         int introDeckId = createUserCardList(userId, modeClassic.getId(), false);
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
         List<NewCardListCard> cards = cardService.getCards_Core().stream()
-            .map(card -> new NewCardListCard(card.getId(), foilNone.getId(), 2))
-            .collect(Collectors.toList());
+                .map(card -> new NewCardListCard(card.getId(), foilNone.getId(), 2))
+                .collect(Collectors.toList());
         updateUserCardList(introDeckId, "Introduction Deck", cards);
     }
 
@@ -95,6 +102,12 @@ public class UserService {
         try (QueryResult result = database.select("SELECT * FROM user_card_list WHERE id = " + userCardListId)) {
             result.next();
             return mapUserList(result);
+        }
+    }
+
+    private boolean hasLibrary(int userId, int modeId) {
+        try (QueryResult result = database.select("SELECT id FROM user_card_list WHERE user_id = " + userId + " AND mode_id = " + modeId + " AND library = TRUE")) {
+            return result.next();
         }
     }
 

@@ -47,7 +47,7 @@ public class ModeAndDeckSelector extends GuiComponent {
         float y = -30;
         List<Mode> modes = getModule(GameDataClientModule.class).getModes();
         for (Mode mode : modes) {
-            Button button = GuiUtil.createButton(mode.getName(), buttonWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> selectMode(mode));
+            Button button = GuiUtil.createButton(mode.getTitle(), buttonWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> selectMode(mode));
             button.setLocalTranslation(x, y, 0);
             guiNode.attachChild(button);
             modeButtons.put(mode, button);

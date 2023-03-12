@@ -3,7 +3,6 @@ package com.destrostudios.cards.backend.application.services;
 import amara.libraries.database.Database;
 import amara.libraries.database.QueryResult;
 import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.rules.GameConstants;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -22,7 +21,7 @@ public class ModeService {
     public void loadModes() {
         try (QueryResult result = database.select("SELECT * FROM mode")) {
             while (result.next()) {
-                Mode mode = new Mode(result.getInteger("id"), result.getString("name"));
+                Mode mode = new Mode(result.getInteger("id"), result.getString("name"), result.getString("title"));
                 modes.put(mode.getId(), mode);
             }
         }

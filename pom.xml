@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jm3.group>org.jmonkeyengine</jm3.group>
         <jm3.version>3.2.1-stable</jm3.version>
-        <version.card-gui>84e01e8c4d40f4d1ecb0be0d58c341a0e96cb4e8</version.card-gui>
+        <version.card-gui>a41db640a7578a579c3c8a33557895712165a6e4</version.card-gui>
         <version.game-tools>7e3347ac946e2165141cb58dd2b2b595ce28f0aa</version.game-tools>
         <version.groovy>3.0.10</version.groovy>
         <version.jackson>2.14.2</version.jackson>

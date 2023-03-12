@@ -6,13 +6,14 @@ import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.CompositeComparator;
-import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
+import com.destrostudios.cards.frontend.application.appstates.services.CollectionCardAmountVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
@@ -99,6 +100,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CardZone deckZone = new SimpleIntervalZone(new Vector3f(8.25f, 0, -4.715f), new Vector3f(1, 1, 0.57f));
         IngameCardVisualizer collectionCardVisualizer = new IngameCardVisualizer(false, false, 4.25f);
+        CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(guiNode);
         DeckBuilderCardVisualizer deckCardVisualizer = new DeckBuilderCardVisualizer();
         Comparator<CardModel> cardOrder = new CompositeComparator<>(
             Comparator.comparing(CardModel::getManaCostDetails),
@@ -110,9 +112,11 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             .collectionZone(collectionZone)
             .deckZone(deckZone)
             .collectionCardVisualizer(collectionCardVisualizer)
+            .collectionCardAmountVisualizer(collectionCardAmountVisualizer)
             .deckCardVisualizer(deckCardVisualizer)
             .deckCardOrder(cardOrder)
             .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
+            .deckCardsMaximumGeneralUnique(GameConstants.MAXIMUM_DECK_UNIQUE_CARD_AMOUNT)
             .collectionCardsPerRow(4)
             .collectionRowsPerPage(2)
             .boardSettings(BoardSettings.builder()

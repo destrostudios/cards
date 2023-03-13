@@ -4,8 +4,9 @@ import com.destrostudios.cards.frontend.application.FrontendJmeApplication;
 import com.destrostudios.cards.frontend.application.gui.GuiComponent;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
+import com.destrostudios.cards.shared.model.CardList;
 import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
@@ -18,11 +19,11 @@ import java.util.List;
 public class ModeAndDeckSelector extends GuiComponent {
 
     private HashMap<Mode, Button> modeButtons = new HashMap<>();
-    private HashMap<UserCardList, Button> deckButtons = new HashMap<>();
+    private HashMap<UserModeDeck, Button> deckButtons = new HashMap<>();
     @Getter
     private Mode mode;
     @Getter
-    private UserCardList deck;
+    private UserModeDeck deck;
 
     @Override
     public void init(FrontendJmeApplication mainApplication) {
@@ -70,7 +71,7 @@ public class ModeAndDeckSelector extends GuiComponent {
     }
 
     public void updateDecks() {
-        List<UserCardList> decks = getModule(GameDataClientModule.class).getDecks(mode.getId());
+        List<UserModeDeck> decks = getModule(GameDataClientModule.class).getDecks(mode.getId());
         if (!decks.contains(deck)) {
             selectDeck(null);
         }
@@ -84,7 +85,7 @@ public class ModeAndDeckSelector extends GuiComponent {
         float x = 0;
         float y = -130;
         int i = 0;
-        for (UserCardList deck : decks) {
+        for (UserModeDeck deck : decks) {
             Button button = GuiUtil.createButton(getDeckName(deck), buttonWidth, buttonHeight, b -> selectDeck(deck));
             button.setLocalTranslation(x, y, 0);
             guiNode.attachChild(button);
@@ -98,7 +99,7 @@ public class ModeAndDeckSelector extends GuiComponent {
         }
     }
 
-    private void selectDeck(UserCardList deck) {
+    private void selectDeck(UserModeDeck deck) {
         if (deck != this.deck) {
             if (this.deck != null) {
                 setButtonSelected(deckButtons.get(this.deck), false);
@@ -114,8 +115,9 @@ public class ModeAndDeckSelector extends GuiComponent {
         GuiUtil.setButtonBackground(button, (selected ? ColorRGBA.Orange : null));
     }
 
-    private String getDeckName(UserCardList deck) {
-        String name = deck.getCardList().getName();
-        return ((name != null) ? name : "Unnamed deck") + "\n(" + deck.getCardList().getSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")";
+    private String getDeckName(UserModeDeck deck) {
+        CardList deckCardList = deck.getDeckCardList();
+        String name = deckCardList.getName();
+        return ((name != null) ? name : "Unnamed deck") + "\n(" + deckCardList.getSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")";
     }
 }

@@ -9,8 +9,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @ToString
-public class UpdateUserCardListMessage {
-    private int userCardListId;
+public class UpdateUserModeDeckMessage {
+    private int userModeDeckId;
     private String name;
     private List<NewCardListCard> cards;
 }

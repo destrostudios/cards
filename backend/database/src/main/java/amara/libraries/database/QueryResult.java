@@ -4,6 +4,7 @@ import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 
 public class QueryResult implements AutoCloseable {
 
@@ -143,6 +144,24 @@ public class QueryResult implements AutoCloseable {
     public Array getArray(String columnName) {
         try {
             return resultSet.getArray(columnName);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    // DateTime
+
+    public LocalDateTime getDateTime(int columnIndex) {
+        try {
+            return resultSet.getTimestamp(columnIndex).toLocalDateTime();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public LocalDateTime getDateTime(String columnName) {
+        try {
+            return resultSet.getTimestamp(columnName).toLocalDateTime();
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }

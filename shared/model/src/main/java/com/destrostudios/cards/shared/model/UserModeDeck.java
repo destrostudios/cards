@@ -6,9 +6,8 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class UserCardList {
+public class UserModeDeck {
     private int id;
-    private Mode mode;
-    private boolean library;
-    private CardList cardList;
+    private int userModeId;
+    private CardList deckCardList;
 }

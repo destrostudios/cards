@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 
 public abstract class Database {
 
@@ -93,6 +94,10 @@ public abstract class Database {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public String getEscapedNow() {
+        return escape(LocalDateTime.now().toString());
     }
 
     public String escapeNullable(String text) {

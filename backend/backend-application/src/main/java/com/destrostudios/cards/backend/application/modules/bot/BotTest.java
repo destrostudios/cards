@@ -4,13 +4,11 @@ import amara.libraries.database.Database;
 import com.destrostudios.cards.backend.application.BackendApplication;
 import com.destrostudios.cards.backend.application.GameSetup;
 import com.destrostudios.cards.backend.application.services.CardService;
+import com.destrostudios.cards.backend.application.services.ModeService;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.PlayerInfo;
-import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
@@ -31,9 +29,15 @@ public class BotTest {
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
 
         Database database = BackendApplication.getDatabase();
+        ModeService modeService = new ModeService(database);
         CardService cardService = new CardService(database);
 
-        StartGameInfo startGameInfo = new StartGameInfo("forest", new PlayerInfo(2, "Bot1", null), new PlayerInfo(2, "Bot2", null));
+        StartGameInfo startGameInfo = new StartGameInfo(
+            modeService.getMode(GameConstants.MODE_NAME_CLASSIC),
+            "forest",
+            new PlayerInfo(2, "Bot1", null),
+            new PlayerInfo(2, "Bot2", null)
+        );
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
         GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo);
         gameSetup.apply();

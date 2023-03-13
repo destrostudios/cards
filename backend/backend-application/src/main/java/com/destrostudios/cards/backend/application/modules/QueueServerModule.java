@@ -2,8 +2,10 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
+import com.destrostudios.cards.backend.application.services.ModeService;
 import com.destrostudios.cards.backend.application.services.UserService;
-import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.network.messages.QueueMessage;
 import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
@@ -22,19 +24,22 @@ public class QueueServerModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
-    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, UserService userService) {
+    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, ModeService modeService, UserService userService) {
         this.jwtModule = jwtModule;
         this.cardsGameStartServerModule = cardsGameStartServerModule;
         this.cardsBotModule = cardsBotModule;
+        this.modeService = modeService;
         this.userService = userService;
-        playersInQueue = new HashMap<>();
+        modeQueuedPlayers = new HashMap<>();
     }
     public static final int USER_ID_BOT = 0;
+    private static final String BOARD_NAME = "forest";
     private JwtServerModule jwtModule;
     private CardsGameStartServerModule cardsGameStartServerModule;
     private CardsBotModule cardsBotModule;
+    private ModeService modeService;
     private UserService userService;
-    private HashMap<Integer, PlayerInfo> playersInQueue;
+    private HashMap<Integer, HashMap<Integer, PlayerInfo>> modeQueuedPlayers;
 
     @Override
     public void received(Connection connection, Object object) {
@@ -43,14 +48,20 @@ public class QueueServerModule extends NetworkModule {
             // Successful login
             if (jwtUser != null) {
                 int userId = (int) jwtUser.id;
-                LOG.info(jwtUser.login + " queued up (againstHumanOrBot = " + queueMessage.isAgainstHumanOrBot() + ", cardListId = " + queueMessage.getUserCardListId() + ").");
-                UserCardList userCardList = userService.getUserCardList(queueMessage.getUserCardListId());
-                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, userCardList);
+                LOG.info(jwtUser.login + " queued up (" + queueMessage + ").");
+                Mode mode = modeService.getMode(queueMessage.getModeId());
+                UserModeDeck userModeDeck = userService.getUserModeDeck(queueMessage.getUserModeDeckId());
+                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, userModeDeck);
                 if (queueMessage.isAgainstHumanOrBot()) {
-                    playersInQueue.put(userId, playerInfo);
-                    startGameIfPossible();
+                    modeQueuedPlayers.computeIfAbsent(mode.getId(), mid -> new HashMap<>()).put(userId, playerInfo);
+                    startGameIfPossible(mode);
                 } else {
-                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo, new PlayerInfo(USER_ID_BOT, "Bot", null)));
+                    UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo(
+                        mode,
+                        BOARD_NAME,
+                        playerInfo,
+                        new PlayerInfo(USER_ID_BOT, "Bot", null)
+                    ));
                     cardsBotModule.checkBotTurn(gameId);
                 }
             }
@@ -59,21 +70,22 @@ public class QueueServerModule extends NetworkModule {
             // Successful login
             if (jwtUser != null) {
                 LOG.info(jwtUser.login + " unqueued.");
-                playersInQueue.remove((int) jwtUser.id);
+                modeQueuedPlayers.values().forEach(queuedPlayers -> queuedPlayers.remove((int) jwtUser.id));
             }
         }
     }
 
-    private void startGameIfPossible() {
-        if (playersInQueue.size() > 1) {
-            PlayerInfo playerInfo1 = popPlayerInfo();
-            PlayerInfo playerInfo2 = popPlayerInfo();
-            cardsGameStartServerModule.startGame(new StartGameInfo("forest", playerInfo1, playerInfo2));
+    private void startGameIfPossible(Mode mode) {
+        HashMap<Integer, PlayerInfo> queuedPlayers = modeQueuedPlayers.get(mode.getId());
+        if (queuedPlayers.size() > 1) {
+            PlayerInfo playerInfo1 = popPlayerInfo(queuedPlayers);
+            PlayerInfo playerInfo2 = popPlayerInfo(queuedPlayers);
+            cardsGameStartServerModule.startGame(new StartGameInfo(mode, BOARD_NAME, playerInfo1, playerInfo2));
         }
     }
 
-    private PlayerInfo popPlayerInfo() {
-        int playerId = playersInQueue.keySet().iterator().next();
-        return playersInQueue.remove(playerId);
+    private PlayerInfo popPlayerInfo(HashMap<Integer, PlayerInfo> queuedPlayers) {
+        int playerId = queuedPlayers.keySet().iterator().next();
+        return queuedPlayers.remove(playerId);
     }
 }

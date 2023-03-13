@@ -248,8 +248,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
         gameService.getGameContext().getEvents().resolved().add(BattleEvent.class, (event, random) -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
         gameService.getGameContext().getEvents().pre().add(ShuffleLibraryEvent.class, (event, random) -> {
-            LinkedList<Card> deckCards = playerZonesMap.get(event.player).getDeckZone().getCards();
-            // board.playAnimation(new ShuffleAnimation(deckCards, mainApplication));
+            LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
+            // board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
         });
 
         gameService.getGameContext().getEvents().instant().add(GameOverEvent.class, (event, random) -> {

@@ -4,12 +4,10 @@ import amara.libraries.database.Database;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.backend.application.services.ModeService;
-import com.destrostudios.cards.backend.application.services.PackService;
 import com.destrostudios.cards.backend.application.services.UserService;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.User;
-import com.destrostudios.cards.shared.model.UserCardList;
 import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
@@ -28,7 +26,6 @@ public class GameDataServerModule extends NetworkModule {
     private ModeService modeService;
     private CardService cardService;
     private UserService userService;
-    private PackService packService;
 
     @Override
     public void received(Connection connection, Object object) {
@@ -37,37 +34,34 @@ public class GameDataServerModule extends NetworkModule {
             database.transaction(() -> {
                 List<Mode> modes = modeService.getModes();
                 List<Card> cards = cardService.getCards();
-                User user = userService.getOrCreateUser(jwtUser);
-                List<UserCardList> userCardLists = userService.getUserCardLists(user.getId());
-                connection.sendTCP(new InitialGameDataMessage(modes, cards, user, userCardLists));
+                userService.onLogin(jwtUser);
+                User user = userService.getUser(getUserId(connection));
+                connection.sendTCP(new InitialGameDataMessage(modes, cards, user));
             });
-        } else if (object instanceof CreateUserCardListMessage createUserCardListMessage) {
-            database.transaction(() -> userService.createUserCardList(getUserId(connection), createUserCardListMessage.getModeId(), false));
-            sendUserCardLists(connection);
-        } else if (object instanceof UpdateUserCardListMessage updateUserCardListMessage) {
-            database.transaction(() -> userService.updateUserCardList(updateUserCardListMessage.getUserCardListId(), updateUserCardListMessage.getName(), updateUserCardListMessage.getCards()));
-            sendUserCardLists(connection);
-        } else if (object instanceof DeleteUserCardListMessage deleteUserCardListMessage) {
-            database.transaction(() -> userService.deleteUserCardList(deleteUserCardListMessage.getUserCardListId()));
-            sendUserCardLists(connection);
+        } else if (object instanceof CreateUserModeDeckMessage createUserModeDeckMessage) {
+            database.transaction(() -> userService.createUserModeDeck(createUserModeDeckMessage.getUserModeId()));
+            sendUser(connection);
+        } else if (object instanceof UpdateUserModeDeckMessage updateUserModeDeckMessage) {
+            database.transaction(() -> userService.updateUserModeDeck(updateUserModeDeckMessage.getUserModeDeckId(), updateUserModeDeckMessage.getName(), updateUserModeDeckMessage.getCards()));
+            sendUser(connection);
+        } else if (object instanceof DeleteUserModeDeckMessage deleteUserModeDeckMessage) {
+            database.transaction(() -> userService.deleteUserModeDeck(deleteUserModeDeckMessage.getUserModeDeckId()));
+            sendUser(connection);
         } else if (object instanceof GetUserMessage) {
-            User user = userService.getUser(getUserId(connection));
-            connection.sendTCP(new UserMessage(user));
-        } else if (object instanceof OpenPackMessage) {
+            sendUser(connection);
+        } else if (object instanceof OpenPackMessage openPackMessage) {
             int userId = getUserId(connection);
             database.transaction(() -> {
-                PackResult packResult = packService.openPack(userId);
+                PackResult packResult = userService.openPack(openPackMessage.getUserModeId());
                 User user = userService.getUser(userId);
-                List<UserCardList> userCardLists = userService.getUserCardLists(userId);
-                connection.sendTCP(new PackResultMessage(packResult, user, userCardLists));
+                connection.sendTCP(new PackResultMessage(packResult, user));
             });
         }
     }
 
-    private void sendUserCardLists(Connection connection) {
-        int userId = getUserId(connection);
-        List<UserCardList> userCardLists = userService.getUserCardLists(userId);
-        connection.sendTCP(new UserCardListsMessage(userCardLists));
+    private void sendUser(Connection connection) {
+        User user = userService.getUser(getUserId(connection));
+        connection.sendTCP(new UserMessage(user));
     }
 
     private int getUserId(Connection connection) {

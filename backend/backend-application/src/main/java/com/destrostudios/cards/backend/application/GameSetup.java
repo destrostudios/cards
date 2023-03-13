@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.CardListCard;
-import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
@@ -49,9 +49,9 @@ public class GameSetup {
         }
     }
 
-    private List<Integer> createLibrary(UserCardList deck) {
+    private List<Integer> createLibrary(UserModeDeck deck) {
         LinkedList<Integer> library = new LinkedList<>();
-        for (CardListCard cardListCard : deck.getCardList().getCards()) {
+        for (CardListCard cardListCard : deck.getDeckCardList().getCards()) {
             for (int i = 0; i < cardListCard.getAmount(); i++) {
                 int card = ModelUtil.createCard(data, cardListCard);
                 library.add(card);

@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -12,6 +13,8 @@ import java.util.List;
 public class CardList {
     private int id;
     private String name;
+    private LocalDateTime creationDate;
+    private LocalDateTime lastModificationDate;
     private List<CardListCard> cards;
 
     @JsonIgnore

@@ -22,8 +22,13 @@ public class CardListService {
             if (!result.next()) {
                 throw new RuntimeException("CardList #" + cardListId + " not found.");
             }
-            String name = result.getString("name");
-            return new CardList(cardListId, name, getCards(cardListId));
+            return new CardList(
+                cardListId,
+                result.getString("name"),
+                result.getDateTime("creation_date"),
+                result.getDateTime("last_modification_date"),
+                getCards(cardListId)
+            );
         }
     }
 
@@ -42,15 +47,17 @@ public class CardListService {
     }
 
     public int createCardList() {
-        try (QueryResult result = database.insert("INSERT INTO card_list () VALUES ()")) {
+        String escapedNow = database.getEscapedNow();
+        try (QueryResult result = database.insert("INSERT INTO card_list (creation_date, last_modification_date) VALUES ('" + escapedNow + "', '" + escapedNow + "')")) {
             result.next();
             return result.getInteger(1);
         }
     }
 
     public void updateCardList(int cardListId, String name, List<NewCardListCard> cards) {
-        database.execute("UPDATE card_list SET name = " + database.escapeNullable(name) + " WHERE id = " + cardListId);
-        clearCardListCards(cardListId);
+        String escapedNow = database.getEscapedNow();
+        database.execute("UPDATE card_list SET name = " + database.escapeNullable(name) + ", last_modification_date = '" + escapedNow + "' WHERE id = " + cardListId);
+        deleteAllCardListCards(cardListId);
         if (cards.size() > 0) {
             database.execute(
                 "INSERT INTO card_list_card (card_list_id, card_id, foil_id, amount) VALUES " +
@@ -62,6 +69,8 @@ public class CardListService {
     }
 
     public void addCard(int cardListId, int cardId, int foilId, int amount) {
+        String escapedNow = database.getEscapedNow();
+        database.execute("UPDATE card_list SET last_modification_date = '" + escapedNow + "' WHERE id = " + cardListId);
         try (QueryResult result = database.select("SELECT id, amount FROM card_list_card WHERE card_list_id = " + cardListId + " AND card_id = " + cardId + " AND foil_id = " + foilId)) {
             if (result.next()) {
                 int id = result.getInteger("id");
@@ -75,11 +84,11 @@ public class CardListService {
     }
 
     public void deleteCardList(int cardListId) {
-        clearCardListCards(cardListId);
+        deleteAllCardListCards(cardListId);
         database.execute("DELETE FROM card_list WHERE id = " + cardListId);
     }
 
-    private void clearCardListCards(int cardListId) {
+    private void deleteAllCardListCards(int cardListId) {
         database.execute("DELETE FROM card_list_card WHERE card_list_id = " + cardListId);
     }
 }

@@ -16,6 +16,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class CardsNetworkService implements GameService<GameContext, Event> {
@@ -27,6 +28,18 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
 
     @Override
     public void initialize(Kryo kryo) {
+        kryo.register(LocalDateTime.class, new Serializer<LocalDateTime>() {
+
+            @Override
+            public void write(Kryo kryo, Output output, LocalDateTime localDateTime) {
+                output.writeString(localDateTime.toString());
+            }
+
+            @Override
+            public LocalDateTime read(Kryo kryo, Input input, Class<LocalDateTime> type) {
+                return LocalDateTime.parse(input.readString());
+            }
+        });
         kryo.register(PlayerInfo.class);
         kryo.register(StartGameInfo.class);
         kryo.register(String[].class);

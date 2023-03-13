@@ -17,8 +17,10 @@ import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
+import com.destrostudios.cards.shared.model.CardList;
 import com.destrostudios.cards.shared.model.CardListCard;
-import com.destrostudios.cards.shared.model.UserCardList;
+import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
@@ -44,10 +46,12 @@ import java.util.function.Predicate;
 
 public class DeckAppState extends MenuAppState implements ActionListener {
 
-    public DeckAppState(UserCardList deck) {
+    public DeckAppState(Mode mode, UserModeDeck deck) {
+        this.mode = mode;
         this.deck = deck;
     }
-    private UserCardList deck;
+    private Mode mode;
+    private UserModeDeck deck;
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
     private HashMap<CardModel, Integer> collectionCards;
@@ -84,9 +88,9 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         collectionCards = new HashMap<>();
         cardsToCardModelsMap = new HashMap<>();
         cardModelsToCardsMap = new HashMap<>();
-        UserCardList library = getModule(GameDataClientModule.class).getLibrary(deck.getMode().getId());
+        CardList collection = getModule(GameDataClientModule.class).getCollection(mode.getId());
         EntityData data = new SimpleEntityData(Components.ALL);
-        for (CardListCard cardListCard : library.getCardList().getCards()) {
+        for (CardListCard cardListCard : collection.getCards()) {
             CardModel cardModel = CardGuiMapper.createModel(data, cardListCard);
             collectionCards.put(cardModel, cardListCard.getAmount());
 
@@ -125,7 +129,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             .build();
 
         HashMap<CardModel, Integer> deck = new HashMap<>();
-        for (CardListCard cardListCard : this.deck.getCardList().getCards()) {
+        for (CardListCard cardListCard : this.deck.getDeckCardList().getCards()) {
             CardModel cardModel = cardsToCardModelsMap.get(getCardListCardKey(cardListCard));
             deck.put(cardModel, cardListCard.getAmount());
         }
@@ -167,7 +171,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         labelName.setColor(ColorRGBA.White);
         guiNode.attachChild(labelName);
         y -= 20;
-        textFieldName = new TextField(deck.getCardList().getName());
+        textFieldName = new TextField(deck.getDeckCardList().getName());
         textFieldName.setLocalTranslation(rightColumnX, y, 0);
         textFieldName.setPreferredWidth(rightColumnWidth);
         textFieldName.setFontSize(16);
@@ -278,12 +282,12 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         if (name.isEmpty()) {
             name = null;
         }
-        getModule(GameDataClientModule.class).updateUserCardList(deck.getId(), name, cards);
+        getModule(GameDataClientModule.class).updateUserModeDeck(deck.getId(), name, cards);
         mainApplication.getStateManager().attach(new LoadingAppState() {
 
             @Override
             protected boolean shouldClose() {
-                return (getModule(GameDataClientModule.class).getUserCardLists() != null);
+                return (getModule(GameDataClientModule.class).getUser() != null);
             }
         });
     }

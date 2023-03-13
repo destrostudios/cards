@@ -30,7 +30,8 @@ public class GameOverModule extends NetworkModule {
                 LOG.info("Unlisted and unregistered game \"" + game.id + "\".");
                 int winnerUserId = game.state.getUserId(game.state.getWinner());
                 if (winnerUserId != QueueServerModule.USER_ID_BOT) {
-                    userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER);
+                    int modeId = game.state.getStartGameInfo().getMode().getId();
+                    userService.addPacks(winnerUserId, modeId, GameConstants.PACKS_FOR_WINNER);
                 }
             }
         }

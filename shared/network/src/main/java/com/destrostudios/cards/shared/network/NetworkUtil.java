@@ -9,16 +9,15 @@ public class NetworkUtil {
 
     public static void setupSerializer(Kryo kryo) {
         kryo.setDefaultSerializer(JsonSerializer.class);
-        kryo.register(CreateUserCardListMessage.class);
-        kryo.register(DeleteUserCardListMessage.class);
+        kryo.register(CreateUserModeDeckMessage.class);
+        kryo.register(DeleteUserModeDeckMessage.class);
         kryo.register(GetUserMessage.class);
         kryo.register(InitialGameDataMessage.class);
         kryo.register(OpenPackMessage.class);
         kryo.register(PackResultMessage.class);
         kryo.register(QueueMessage.class);
         kryo.register(UnqueueMessage.class);
-        kryo.register(UpdateUserCardListMessage.class);
+        kryo.register(UpdateUserModeDeckMessage.class);
         kryo.register(UserMessage.class);
-        kryo.register(UserCardListsMessage.class);
     }
 }

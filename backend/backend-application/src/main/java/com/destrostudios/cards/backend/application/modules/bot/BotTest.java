@@ -3,7 +3,9 @@ package com.destrostudios.cards.backend.application.modules.bot;
 import amara.libraries.database.Database;
 import com.destrostudios.cards.backend.application.BackendApplication;
 import com.destrostudios.cards.backend.application.GameSetup;
+import com.destrostudios.cards.backend.application.services.CardListService;
 import com.destrostudios.cards.backend.application.services.CardService;
+import com.destrostudios.cards.backend.application.services.FoilService;
 import com.destrostudios.cards.backend.application.services.ModeService;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
@@ -29,8 +31,10 @@ public class BotTest {
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
 
         Database database = BackendApplication.getDatabase();
-        ModeService modeService = new ModeService(database);
         CardService cardService = new CardService(database);
+        FoilService foilService = new FoilService(database);
+        CardListService cardListService = new CardListService(database, cardService, foilService);
+        ModeService modeService = new ModeService(database, cardListService);
 
         StartGameInfo startGameInfo = new StartGameInfo(
             modeService.getMode(GameConstants.MODE_NAME_CLASSIC),

@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @ToString
 public class InitialGameDataMessage {
-    private List<Mode> modes;
     private List<Card> cards;
+    private List<Mode> modes;
     private User user;
 }

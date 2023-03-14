@@ -28,10 +28,10 @@ public class BackendApplication {
         ApplicationSetup.setup();
 
         Database database = getDatabase();
-        ModeService modeService = new ModeService(database);
         CardService cardService = new CardService(database);
         FoilService foilService = new FoilService(database);
         CardListService cardListService = new CardListService(database, cardService, foilService);
+        ModeService modeService = new ModeService(database, cardListService);
         UserService userService = new UserService(database, modeService, cardService, foilService, cardListService);
 
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
@@ -43,7 +43,7 @@ public class BackendApplication {
 
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
-        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, modeService, cardService, userService);
+        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, cardService, modeService, userService);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryoServer, jwtModule, gameModule, cardService);

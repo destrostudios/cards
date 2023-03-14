@@ -23,8 +23,8 @@ public class GameDataServerModule extends NetworkModule {
 
     private JwtServerModule jwtModule;
     private Database database;
-    private ModeService modeService;
     private CardService cardService;
+    private ModeService modeService;
     private UserService userService;
 
     @Override
@@ -32,11 +32,11 @@ public class GameDataServerModule extends NetworkModule {
         if (object instanceof Login) {
             JwtAuthenticationUser jwtUser = jwtModule.getUser(connection.getID());
             database.transaction(() -> {
-                List<Mode> modes = modeService.getModes();
                 List<Card> cards = cardService.getCards();
+                List<Mode> modes = modeService.getModes();
                 userService.onLogin(jwtUser);
                 User user = userService.getUser(getUserId(connection));
-                connection.sendTCP(new InitialGameDataMessage(modes, cards, user));
+                connection.sendTCP(new InitialGameDataMessage(cards, modes, user));
             });
         } else if (object instanceof CreateUserModeDeckMessage createUserModeDeckMessage) {
             database.transaction(() -> userService.createUserModeDeck(createUserModeDeckMessage.getUserModeId()));

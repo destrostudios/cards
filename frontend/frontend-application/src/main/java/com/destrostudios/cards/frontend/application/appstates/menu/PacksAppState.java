@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 public class PacksAppState extends MenuAppState {
 
+    private ModeSelector modeSelector;
     private Button buttonOpen;
     private Button buttonBack;
     private CardPackAppState<CardModel> cardPackAppState;
@@ -34,6 +35,15 @@ public class PacksAppState extends MenuAppState {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         setTopDownCamera();
+        modeSelector = new ModeSelector() {
+
+            @Override
+            protected void onModeSelected() {
+                super.onModeSelected();
+                removePackResult();
+            }
+        };
+        addComponent(modeSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
         addButtons();
     }
 
@@ -41,13 +51,14 @@ public class PacksAppState extends MenuAppState {
     public void update(float tpf) {
         super.update(tpf);
         GameDataClientModule gameDataClientModule = getModule(GameDataClientModule.class);
-        Integer packsCount = ((gameDataClientModule.getUser() != null) ? gameDataClientModule.getPacks() : null);
+        Integer packsCount = ((gameDataClientModule.getUser() != null) ? gameDataClientModule.getPacks(modeSelector.getMode().getId()) : null);
         if (packsCount != null) {
             buttonOpen.setText((packsCount > 0) ? "Open pack (" + packsCount + ")" : "No packs left");
         }
         boolean hasPacksLeft = ((packsCount != null) && (packsCount > 0));
         boolean hasNoPackOpeningOngoing = ((cardPackAppState == null) || cardPackAppState.areAllCardsRevealed());
         boolean canOpenPack = (hasPacksLeft && hasNoPackOpeningOngoing);
+        modeSelector.setEnabled(canOpenPack);
         GuiUtil.setButtonEnabled(buttonOpen, canOpenPack);
         GuiUtil.setButtonEnabled(buttonBack, hasNoPackOpeningOngoing);
     }
@@ -72,7 +83,7 @@ public class PacksAppState extends MenuAppState {
 
     private void openPack() {
         removePackResult();
-        getModule(GameDataClientModule.class).openPack();
+        getModule(GameDataClientModule.class).openPack(modeSelector.getMode().getId());
         waitForPackResult();
     }
 

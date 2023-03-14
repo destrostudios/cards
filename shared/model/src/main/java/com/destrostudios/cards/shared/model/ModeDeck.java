@@ -2,16 +2,12 @@ package com.destrostudios.cards.shared.model;
 
 import lombok.*;
 
-import java.util.List;
-
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Getter
 @ToString
-public class Mode {
+public class ModeDeck {
     private int id;
-    private String name;
-    private String title;
-    private boolean hasUserLibrary;
-    private List<ModeDeck> decks;
+    private int modeId;
+    private CardList deckCardList;
 }

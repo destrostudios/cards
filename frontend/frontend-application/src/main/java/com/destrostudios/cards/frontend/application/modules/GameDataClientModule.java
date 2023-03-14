@@ -4,7 +4,6 @@ import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.network.messages.*;
-import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.esotericsoftware.kryonet.Connection;
 import lombok.Getter;
@@ -18,16 +17,16 @@ public class GameDataClientModule extends NetworkModule {
         this.connection = connection;
     }
     private Connection connection;
-    private List<Mode> modes;
     private List<Card> cards;
+    private List<Mode> modes;
     private User user;
     private PackResult packResult;
 
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof InitialGameDataMessage initialGameDataMessage) {
-            modes = initialGameDataMessage.getModes();
             cards = initialGameDataMessage.getCards();
+            modes = initialGameDataMessage.getModes();
             user = initialGameDataMessage.getUser();
         } else if (object instanceof UserMessage userMessage) {
             user = userMessage.getUser();
@@ -66,19 +65,19 @@ public class GameDataClientModule extends NetworkModule {
         connection.sendTCP(new GetUserMessage());
     }
 
-    public int getPacks() {
-        return getClassicUserMode().getPacks();
+    public int getTotalPacks() {
+        return user.getModes().stream().map(UserMode::getPacks).reduce(0, Integer::sum);
     }
 
-    public void openPack() {
-        int userModeId = getClassicUserMode().getId();
+    public int getPacks(int modeId) {
+        return getUserMode(modeId).getPacks();
+    }
+
+    public void openPack(int modeId) {
+        int userModeId = getUserMode(modeId).getId();
         user = null;
         packResult = null;
         connection.sendTCP(new OpenPackMessage(userModeId));
-    }
-
-    private UserMode getClassicUserMode() {
-        return user.getModes().stream().filter(um -> um.getMode().getName().equals(GameConstants.MODE_NAME_CLASSIC)).findFirst().orElseThrow();
     }
 
     private UserMode getUserMode(int modeId) {

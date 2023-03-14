@@ -55,7 +55,10 @@ public class UserService {
     }
 
     private void createUserMode(int userId, Mode mode) {
-        int collectionCardListId = cardListService.createCardList();
+        Integer collectionCardListId = null;
+        if (mode.isHasUserLibrary()) {
+            collectionCardListId = cardListService.createCardList();
+        }
         boolean isClassicMode = mode.getName().equals(GameConstants.MODE_NAME_CLASSIC);
         int packs = (isClassicMode ? GameConstants.PACKS_FOR_NEW_PLAYERS_CLASSIC : 0);
         try (QueryResult result = database.insert("INSERT INTO user_mode (user_id, mode_id, collection_card_list_id, packs, packs_opened) VALUES (" + userId + ", " + mode.getId() + ", " + collectionCardListId + ", " + packs + ", 0)")) {
@@ -127,11 +130,11 @@ public class UserService {
             result.next();
             int cardListId = result.getInteger("collection_card_list_id");
             CardList cardList = cardListService.getCardList(cardListId);
-            Mode mode = modeService.getMode(modeId);
-            if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
-                if (isAdmin(userId)) {
-                    addAllCardsToList(cardList);
-                } else if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
+            if (isAdmin(userId)) {
+                addAllCardsToList(cardList);
+            } else {
+                Mode mode = modeService.getMode(modeId);
+                if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
                     addCoreCardsToList(cardList);
                 }
             }
@@ -214,10 +217,9 @@ public class UserService {
         if (userMode.getPacks() <= 0) {
             throw new RuntimeException("User has no packs for this mode.");
         }
-        database.execute("UPDATE user_mode SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE user_id = " + userMode.getUserId());
+        database.execute("UPDATE user_mode SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE user_id = " + userMode.getUserId() + " AND mode_id = " + userMode.getMode().getId());
         PackResult packResult = createPackResult();
-        Mode modeClassic = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
-        CardList collectionCardList = getCollectionCardList(userMode.getUserId(), modeClassic.getId());
+        CardList collectionCardList = getCollectionCardList(userMode.getUserId(), userMode.getMode().getId());
         for (CardListCard cardListCard : packResult.getCards()) {
             cardListService.addCard(collectionCardList.getId(), cardListCard.getCard().getId(), cardListCard.getFoil().getId(), cardListCard.getAmount());
         }

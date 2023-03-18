@@ -58,7 +58,7 @@ public class PacksAppState extends MenuAppState {
         boolean hasPacksLeft = ((packsCount != null) && (packsCount > 0));
         boolean hasNoPackOpeningOngoing = ((cardPackAppState == null) || cardPackAppState.areAllCardsRevealed());
         boolean canOpenPack = (hasPacksLeft && hasNoPackOpeningOngoing);
-        modeSelector.setEnabled(canOpenPack);
+        modeSelector.setEnabled(hasNoPackOpeningOngoing);
         GuiUtil.setButtonEnabled(buttonOpen, canOpenPack);
         GuiUtil.setButtonEnabled(buttonBack, hasNoPackOpeningOngoing);
     }

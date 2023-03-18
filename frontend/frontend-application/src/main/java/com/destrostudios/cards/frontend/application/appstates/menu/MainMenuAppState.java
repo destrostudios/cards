@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
@@ -15,11 +16,12 @@ public class MainMenuAppState extends MenuAppState {
         addButton(0, "Play", b -> switchTo(new PlayAppState()));
         addButton(1, "Collection", b -> switchTo(new DecksAppState()));
         int totalPacks = getModule(GameDataClientModule.class).getTotalPacks();
-        addButton(2, "Packs" + ((totalPacks > 0) ? " (" + totalPacks + ")" : ""), b -> switchTo(new PacksAppState()));
+        Button buttonPacks = addButton(2, "Packs" + ((totalPacks > 0) ? " (" + totalPacks + ")" : ""), b -> switchTo(new PacksAppState()));
+        GuiUtil.setButtonBackground(buttonPacks, (totalPacks > 0) ? GuiUtil.BUTTON_COLOR_HIGHLIGHT : null);
         addButton(3, "Exit", b -> System.exit(0));
     }
 
-    private void addButton(int index, String text, Command<Button> command) {
+    private Button addButton(int index, String text, Command<Button> command) {
         float margin = 50;
         float buttonWidth = ((width - (5 * margin)) / 4);
         float buttonHeight = 100;
@@ -27,5 +29,6 @@ public class MainMenuAppState extends MenuAppState {
         float y = (margin + buttonHeight);
         Button button = addButton(text, buttonWidth, buttonHeight, command);
         button.setLocalTranslation(x, y, 0);
+        return button;
     }
 }

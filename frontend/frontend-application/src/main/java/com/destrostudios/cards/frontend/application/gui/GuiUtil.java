@@ -11,6 +11,8 @@ import com.simsilica.lemur.component.TbtQuadBackgroundComponent;
 public class GuiUtil {
 
     public static final float BUTTON_HEIGHT_DEFAULT = 50;
+    public static final ColorRGBA BUTTON_COLOR_SELECTED = new ColorRGBA(0.98f, 0.51f, 0, 0.8f);
+    public static final ColorRGBA BUTTON_COLOR_HIGHLIGHT = new ColorRGBA(0, 0.51f, 0.98f, 0.7f);
     private static TbtQuadBackgroundComponent DEFAULT_BUTTON_BACKGROUND;
 
     public static Button createButton(String text, float width, float height, Command<Button> command) {
@@ -43,7 +45,7 @@ public class GuiUtil {
 
     private static TbtQuadBackgroundComponent getDefaultButtonBackground() {
         if (DEFAULT_BUTTON_BACKGROUND == null) {
-            DEFAULT_BUTTON_BACKGROUND = (TbtQuadBackgroundComponent) new Button("").getBackground();
+            DEFAULT_BUTTON_BACKGROUND = (TbtQuadBackgroundComponent) new Button(null).getBackground();
         }
         return DEFAULT_BUTTON_BACKGROUND;
     }

@@ -70,7 +70,7 @@ public class ModeSelector extends GuiComponent {
     }
 
     protected void setButtonSelected(Button button, boolean selected) {
-        GuiUtil.setButtonBackground(button, (selected ? ColorRGBA.Orange : null));
+        GuiUtil.setButtonBackground(button, (selected ? GuiUtil.BUTTON_COLOR_SELECTED : null));
     }
 
     public void setEnabled(boolean enabled) {

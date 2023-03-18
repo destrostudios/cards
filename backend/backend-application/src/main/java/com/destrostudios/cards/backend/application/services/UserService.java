@@ -59,12 +59,19 @@ public class UserService {
         if (mode.isHasUserLibrary()) {
             collectionCardListId = cardListService.createCardList();
         }
-        boolean isClassicMode = mode.getName().equals(GameConstants.MODE_NAME_CLASSIC);
-        int packs = (isClassicMode ? GameConstants.PACKS_FOR_NEW_PLAYERS_CLASSIC : 0);
+        // TODO: Extract logic
+        boolean isModeClassic = mode.getName().equals(GameConstants.MODE_NAME_CLASSIC);
+        boolean isModeArena = mode.getName().equals(GameConstants.MODE_NAME_ARENA);
+        int packs = 0;
+        if (isModeClassic) {
+            packs = GameConstants.PACKS_FOR_NEW_PLAYERS_CLASSIC;
+        } else if (isModeArena) {
+            packs = GameConstants.PACKS_FOR_NEW_ARENA_RUN;
+        }
         try (QueryResult result = database.insert("INSERT INTO user_mode (user_id, mode_id, collection_card_list_id, packs, packs_opened) VALUES (" + userId + ", " + mode.getId() + ", " + collectionCardListId + ", " + packs + ", 0)")) {
             result.next();
             int userModeId = result.getInteger(1);
-            if (isClassicMode) {
+            if (isModeClassic) {
                 createIntroductionDeck(userModeId);
             }
         }
@@ -105,6 +112,13 @@ public class UserService {
 
     private UserMode getUserMode(int userModeId) {
         try (QueryResult result = database.select("SELECT * FROM user_mode WHERE id = " + userModeId)) {
+            result.next();
+            return mapUserMode(result);
+        }
+    }
+
+    private UserMode getUserMode(int userId, int modeId) {
+        try (QueryResult result = database.select("SELECT * FROM user_mode WHERE user_id = " + userId + " AND mode_id = " + modeId)) {
             result.next();
             return mapUserMode(result);
         }
@@ -202,10 +216,26 @@ public class UserService {
         cardListService.updateCardList(userModeDeck.getDeckCardList().getId(), name, cards);
     }
 
+    public void deleteAllUserModeDecksAndCollectionCards(int userId, int modeId) {
+        UserMode userMode = getUserMode(userId, modeId);
+        for (UserModeDeck userModeDeck : userMode.getDecks()) {
+            deleteUserModeDeck(userModeDeck);
+        }
+        cardListService.updateCardList(userMode.getCollectionCardList().getId(), null, new LinkedList<>());
+    }
+
     public void deleteUserModeDeck(int userModeDeckId) {
         UserModeDeck userModeDeck = getUserModeDeck(userModeDeckId);
-        database.execute("DELETE FROM user_mode_deck WHERE id = " + userModeDeckId);
+        deleteUserModeDeck(userModeDeck);
+    }
+
+    private void deleteUserModeDeck(UserModeDeck userModeDeck) {
+        database.execute("DELETE FROM user_mode_deck WHERE id = " + userModeDeck.getId());
         cardListService.deleteCardList(userModeDeck.getDeckCardList().getId());
+    }
+
+    public void setPacks(int userId, int modeId, int packs) {
+        database.execute("UPDATE user_mode SET packs = " + packs + " WHERE user_id = " + userId + " AND mode_id = " + modeId);
     }
 
     public void addPacks(int userId, int modeId, int additionalPacks) {

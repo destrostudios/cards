@@ -38,8 +38,10 @@ public class BotTest {
             modeService.getMode(GameConstants.MODE_NAME_CLASSIC),
             queueService.getQueue(GameConstants.QUEUE_NAME_BOT),
             "forest",
-            new PlayerInfo(2, "Bot1", null),
-            new PlayerInfo(2, "Bot2", null)
+            new PlayerInfo[] {
+                new PlayerInfo(1, "Bot1", null),
+                new PlayerInfo(2, "Bot2", null)
+            }
         );
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
         GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo);

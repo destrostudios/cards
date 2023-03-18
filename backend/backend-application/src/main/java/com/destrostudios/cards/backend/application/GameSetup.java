@@ -26,8 +26,8 @@ public class GameSetup {
     public void apply() {
         int player1 = data.createEntity();
         int player2 = data.createEntity();
-        initPlayer(player1, player2, startGameInfo.getPlayer1());
-        initPlayer(player2, player1, startGameInfo.getPlayer2());
+        initPlayer(player1, player2, startGameInfo.getPlayers()[0]);
+        initPlayer(player2, player1, startGameInfo.getPlayers()[1]);
     }
 
     private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {

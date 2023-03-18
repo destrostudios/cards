@@ -12,6 +12,5 @@ public class StartGameInfo {
     private Mode mode;
     private Queue queue;
     private String boardName;
-    private PlayerInfo player1;
-    private PlayerInfo player2;
+    private PlayerInfo[] players;
 }

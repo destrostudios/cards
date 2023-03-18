@@ -128,10 +128,10 @@ public class GameContext {
 
     public int getUserId(int player) {
         String login = data.getComponent(player, Components.NAME);
-        if (startGameInfo.getPlayer1().getLogin().equals(login)) {
-            return startGameInfo.getPlayer1().getId();
-        } else if (startGameInfo.getPlayer2().getLogin().equals(login)) {
-            return startGameInfo.getPlayer2().getId();
+        for (PlayerInfo playerInfo : startGameInfo.getPlayers()) {
+            if (playerInfo.getLogin().equals(login)) {
+                return playerInfo.getId();
+            }
         }
         throw new RuntimeException("User with login '" + login + "' not found.");
     }

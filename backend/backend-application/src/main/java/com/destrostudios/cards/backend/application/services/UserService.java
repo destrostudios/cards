@@ -24,8 +24,8 @@ public class UserService {
     private QueueService queueService;
 
     public void onLogin(JwtAuthenticationUser jwtUser) {
-        int userId = (int) jwtUser.id;
         String escapedNow = database.getEscapedNow();
+        int userId = (int) jwtUser.id;
         if (hasUser(userId)) {
             database.execute("UPDATE user SET last_login_date = '" + escapedNow + "' WHERE id = " + userId);
         } else {
@@ -136,7 +136,8 @@ public class UserService {
             getCollectionCardList(userId, modeId),
             result.getInteger("packs"),
             result.getInteger("packs_opened"),
-            getUserModeDecks(userModeId)
+            getUserModeDecks(userModeId),
+            getUserModeQueues(userModeId)
         );
     }
 
@@ -233,6 +234,50 @@ public class UserService {
     private void deleteUserModeDeck(UserModeDeck userModeDeck) {
         database.execute("DELETE FROM user_mode_deck WHERE id = " + userModeDeck.getId());
         cardListService.deleteCardList(userModeDeck.getDeckCardList().getId());
+    }
+
+    private List<UserModeQueue> getUserModeQueues(int userModeId) {
+        LinkedList<UserModeQueue> userModeQueues = new LinkedList<>();
+        try (QueryResult result = database.select("SELECT * FROM user_mode_queue WHERE user_mode_id = " + userModeId)) {
+            while (result.next()) {
+                userModeQueues.add(mapUserModeQueue(result));
+            }
+        }
+        return userModeQueues;
+    }
+
+    private UserModeQueue mapUserModeQueue(QueryResult result) {
+        return new UserModeQueue(
+            result.getInteger("id"),
+            result.getInteger("user_mode_id"),
+            queueService.getQueue(result.getInteger("queue_id")),
+            result.getInteger("games"),
+            result.getInteger("wins"),
+            result.getInteger("current_win_streak"),
+            result.getInteger("longest_win_streak"),
+            result.getDateTime("first_game_date"),
+            result.getDateTime("last_game_date")
+        );
+    }
+
+    public void onGameOver(int userId, int modeId, int queueId, boolean win) {
+        String escapedNow = database.getEscapedNow();
+        UserMode userMode = getUserMode(userId, modeId);
+        UserModeQueue userModeQueue = userMode.getQueues().stream().filter(umq -> umq.getQueue().getId() == queueId).findFirst().orElse(null);
+        if (userModeQueue == null) {
+            int wins = (win ? 1 : 0);
+            database.execute("INSERT INTO user_mode_queue (user_mode_id, queue_id, games, wins, current_win_streak, longest_win_streak, first_game_date, last_game_date) VALUES (" + userMode.getId() + ", " + queueId + ", 1, " + wins + ", " + wins + ", " + wins + ", '" + escapedNow + "', '" + escapedNow + "')");
+        } else {
+            int currentWinStreak = 0;
+            Integer newLongestWinStreak = null;
+            if (win) {
+                currentWinStreak = userModeQueue.getCurrentWinStreak() + 1;
+                if (currentWinStreak > userModeQueue.getLongestWinStreak()) {
+                    newLongestWinStreak = currentWinStreak;
+                }
+            }
+            database.execute("UPDATE user_mode_queue SET games = games + 1" + (win ? ", wins = wins + 1" : "") + ", current_win_streak = " + currentWinStreak + ((newLongestWinStreak != null) ? ", longest_win_streak = " + newLongestWinStreak : "") + ", last_game_date = '" + escapedNow + "' WHERE id = " + userModeQueue.getId());
+        }
     }
 
     public void setPacks(int userId, int modeId, int packs) {

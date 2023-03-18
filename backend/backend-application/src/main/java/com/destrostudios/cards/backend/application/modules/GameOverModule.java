@@ -1,10 +1,13 @@
 package com.destrostudios.cards.backend.application.modules;
 
+import amara.libraries.database.Database;
 import com.destrostudios.cards.backend.application.services.UserService;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
@@ -21,6 +24,7 @@ public class GameOverModule extends NetworkModule {
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
     private GameServerModule<GameContext, Event> gameModule;
+    private Database database;
     private UserService userService;
 
     @Override
@@ -38,18 +42,25 @@ public class GameOverModule extends NetworkModule {
     private void onGameOver(GameContext gameContext) {
         StartGameInfo startGameInfo = gameContext.getStartGameInfo();
         Mode mode = startGameInfo.getMode();
+        Queue queue = startGameInfo.getQueue();
+        // TODO: Cleanup
         int winnerUserId = gameContext.getUserId(gameContext.getWinner());
-        // TODO: Extract logic
-        if (winnerUserId != QueueServerModule.BOT_USER_ID) {
-            userService.addPacks(winnerUserId, mode.getId(), GameConstants.PACKS_FOR_WINNER);
-        }
-        // TODO: Extract and cleanup logic
-        if (mode.getName().equals(GameConstants.MODE_NAME_ARENA)) {
-            int loserUserId = ((winnerUserId == startGameInfo.getPlayer1().getId()) ? startGameInfo.getPlayer2().getId() : startGameInfo.getPlayer1().getId());
-            if (loserUserId != QueueServerModule.BOT_USER_ID) {
+        int loserUserId = ((winnerUserId == startGameInfo.getPlayers()[0].getId()) ? startGameInfo.getPlayers()[1].getId() : startGameInfo.getPlayers()[0].getId());
+        database.transaction(() -> {
+            for (PlayerInfo playerInfo : startGameInfo.getPlayers()) {
+                if (playerInfo.getId() != QueueServerModule.BOT_USER_ID) {
+                    boolean win = (playerInfo.getId() == winnerUserId);
+                    userService.onGameOver(playerInfo.getId(), mode.getId(), queue.getId(), win);
+                }
+            }
+            // TODO: Extract logic below?
+            if (winnerUserId != QueueServerModule.BOT_USER_ID) {
+                userService.addPacks(winnerUserId, mode.getId(), GameConstants.PACKS_FOR_WINNER);
+            }
+            if (mode.getName().equals(GameConstants.MODE_NAME_ARENA) && (loserUserId != QueueServerModule.BOT_USER_ID)) {
                 userService.deleteAllUserModeDecksAndCollectionCards(loserUserId, mode.getId());
                 userService.setPacks(loserUserId, mode.getId(), GameConstants.PACKS_FOR_NEW_ARENA_RUN);
             }
-        }
+        });
     }
 }

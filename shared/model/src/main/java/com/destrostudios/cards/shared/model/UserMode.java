@@ -16,4 +16,5 @@ public class UserMode {
     private int packs;
     private int packsOpened;
     private List<UserModeDeck> decks;
+    private List<UserModeQueue> queues;
 }

@@ -70,8 +70,10 @@ public class QueueServerModule extends NetworkModule {
                         mode,
                         queue,
                         BOARD_NAME,
-                        playerInfo,
-                        new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, null)
+                        new PlayerInfo[] {
+                            playerInfo,
+                            new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, null)
+                        }
                     ));
                     cardsBotModule.checkBotTurn(gameId);
                 }
@@ -93,7 +95,7 @@ public class QueueServerModule extends NetworkModule {
         if (players.size() > 1) {
             PlayerInfo playerInfo1 = popPlayerInfo(players);
             PlayerInfo playerInfo2 = popPlayerInfo(players);
-            cardsGameStartServerModule.startGame(new StartGameInfo(mode, queue, BOARD_NAME, playerInfo1, playerInfo2));
+            cardsGameStartServerModule.startGame(new StartGameInfo(mode, queue, BOARD_NAME, new PlayerInfo[] { playerInfo1, playerInfo2 }));
         }
     }
 

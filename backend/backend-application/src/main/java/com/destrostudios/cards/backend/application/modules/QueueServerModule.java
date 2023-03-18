@@ -32,7 +32,8 @@ public class QueueServerModule extends NetworkModule {
         this.userService = userService;
         modeQueuedPlayers = new HashMap<>();
     }
-    public static final int USER_ID_BOT = 0;
+    public static final int BOT_USER_ID = 0;
+    public static final String BOT_USER_NAME = "Bot";
     private static final String BOARD_NAME = "forest";
     private JwtServerModule jwtModule;
     private CardsGameStartServerModule cardsGameStartServerModule;
@@ -60,7 +61,7 @@ public class QueueServerModule extends NetworkModule {
                         mode,
                         BOARD_NAME,
                         playerInfo,
-                        new PlayerInfo(USER_ID_BOT, "Bot", null)
+                        new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, null)
                     ));
                     cardsBotModule.checkBotTurn(gameId);
                 }

@@ -40,13 +40,13 @@ public class GameOverModule extends NetworkModule {
         Mode mode = startGameInfo.getMode();
         int winnerUserId = gameContext.getUserId(gameContext.getWinner());
         // TODO: Extract logic
-        if (winnerUserId != QueueServerModule.USER_ID_BOT) {
+        if (winnerUserId != QueueServerModule.BOT_USER_ID) {
             userService.addPacks(winnerUserId, mode.getId(), GameConstants.PACKS_FOR_WINNER);
         }
         // TODO: Extract and cleanup logic
         if (mode.getName().equals(GameConstants.MODE_NAME_ARENA)) {
             int loserUserId = ((winnerUserId == startGameInfo.getPlayer1().getId()) ? startGameInfo.getPlayer2().getId() : startGameInfo.getPlayer1().getId());
-            if (loserUserId != QueueServerModule.USER_ID_BOT) {
+            if (loserUserId != QueueServerModule.BOT_USER_ID) {
                 userService.deleteAllUserModeDecksAndCollectionCards(loserUserId, mode.getId());
                 userService.setPacks(loserUserId, mode.getId(), GameConstants.PACKS_FOR_NEW_ARENA_RUN);
             }

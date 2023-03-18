@@ -1,5 +1,6 @@
 package com.destrostudios.cards.backend.application.modules.bot;
 
+import com.destrostudios.cards.backend.application.modules.QueueServerModule;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
@@ -46,7 +47,7 @@ public class CardsBotModule extends NetworkModule {
         while (true) {
             Integer activePlayer = data.query(Components.Game.ACTIVE_PLAYER).list().get(0);
             // Yeah... good enough for now
-            if (!"Bot".equals(data.getComponent(activePlayer, Components.NAME)) || game.state.isGameOver()) {
+            if (!data.getComponent(activePlayer, Components.NAME).equals(QueueServerModule.BOT_USER_NAME) || game.state.isGameOver()) {
                 break;
             }
             MctsBot bot = bots.computeIfAbsent(gameId, gid -> {

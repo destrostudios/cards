@@ -21,6 +21,7 @@ public abstract class Database {
 
     public void transaction(Runnable runnable) {
         try {
+            ensureConnection();
             connection.setAutoCommit(false);
             runnable.run();
             connection.commit();

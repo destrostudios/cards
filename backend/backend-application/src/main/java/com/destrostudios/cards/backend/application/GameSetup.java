@@ -6,6 +6,7 @@ import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.cards.Foil;
@@ -33,7 +34,7 @@ public class GameSetup {
     private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {
         data.setComponent(player, Components.NAME, playerInfo.getLogin());
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
-        data.setComponent(player, Components.Stats.HEALTH, 30);
+        data.setComponent(player, Components.Stats.HEALTH, GameConstants.PLAYER_HEALTH);
         data.setComponent(player, Components.BOARD);
         List<Integer> library;
         if (playerInfo.getDeck() != null) {

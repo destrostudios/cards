@@ -21,6 +21,7 @@ public class UserService {
     private CardService cardService;
     private FoilService foilService;
     private CardListService cardListService;
+    private QueueService queueService;
 
     public void onLogin(JwtAuthenticationUser jwtUser) {
         int userId = (int) jwtUser.id;

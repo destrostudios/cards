@@ -11,8 +11,8 @@ public class QueueClientModule extends NetworkModule {
 
     private Connection connection;
 
-    public void queue(int modeId, int userModeDeckId, boolean againstHumanOrBot) {
-        connection.sendTCP(new QueueMessage(modeId, userModeDeckId, againstHumanOrBot));
+    public void queue(int modeId, int userModeDeckId, int queueId) {
+        connection.sendTCP(new QueueMessage(modeId, userModeDeckId, queueId));
     }
 
     public void unqueue() {

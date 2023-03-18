@@ -3,8 +3,11 @@ package com.destrostudios.cards.frontend.application.appstates.menu;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.IngameAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.GameService;
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.model.Queue;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.gametools.network.client.modules.game.ClientGameData;
 import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
@@ -13,14 +16,14 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 public class PlayAppState extends MenuAppState {
 
     private ModeAndDeckSelector modeAndDeckSelector;
-    private Button buttonQueueHuman;
-    private Button buttonQueueBot;
+    private List<Button> buttonsQueue;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application){
@@ -37,26 +40,31 @@ public class PlayAppState extends MenuAppState {
         float buttonHeight = 100;
         float x = (width - margin - buttonWidth);
         float y = (margin + buttonHeight);
-        buttonQueueBot = addQueueButton(false, x, y, buttonWidth, buttonHeight);
-        x -= buttonWidth;
-        buttonQueueHuman = addQueueButton(true, x, y, buttonWidth, buttonHeight);
+        buttonsQueue = new LinkedList<>();
+        List<Queue> queues = getModule(GameDataClientModule.class).getQueues();
+        for (Queue queue : queues) {
+            Button buttonQueue = addQueueButton(queue, x, y, buttonWidth, buttonHeight);
+            x -= buttonWidth;
+            buttonsQueue.add(buttonQueue);
+        }
         x = margin;
         Button buttonBack = addButton("Back", buttonWidth, buttonHeight, b -> switchTo(new MainMenuAppState()));
         buttonBack.setLocalTranslation(x, y, 0);
     }
 
-    private Button addQueueButton(boolean againstHumanOrBot, float x, float y, float buttonWidth, float buttonHeight) {
-        Button button = addButton(againstHumanOrBot ? "Queue vs Human" : "Start vs Bot", buttonWidth, buttonHeight, b -> {
+    private Button addQueueButton(Queue queue, float x, float y, float buttonWidth, float buttonHeight) {
+        boolean isUserQueue = queue.getName().equals(GameConstants.QUEUE_NAME_USER);
+        Button button = addButton(isUserQueue ? "Queue vs Human" : "Start vs Bot", buttonWidth, buttonHeight, b -> {
             QueueClientModule queueModule = getModule(QueueClientModule.class);
             // Whatever, good enough for now
             if ("Unqueue vs Human".equals(b.getText())) {
                 queueModule.unqueue();
-                if (againstHumanOrBot) {
+                if (isUserQueue) {
                     b.setText("Queue vs Human");
                 }
             } else {
-                queueModule.queue(modeAndDeckSelector.getMode().getId(), modeAndDeckSelector.getDeck().getId(), againstHumanOrBot);
-                if (againstHumanOrBot) {
+                queueModule.queue(modeAndDeckSelector.getMode().getId(), modeAndDeckSelector.getDeck().getId(), queue.getId());
+                if (isUserQueue) {
                     b.setText("Unqueue vs Human");
                 }
             }
@@ -69,8 +77,7 @@ public class PlayAppState extends MenuAppState {
     public void update(float tpf) {
         super.update(tpf);
         boolean isDeckSelected = (modeAndDeckSelector.getDeck() != null);
-        GuiUtil.setButtonEnabled(buttonQueueHuman, isDeckSelected);
-        GuiUtil.setButtonEnabled(buttonQueueBot, isDeckSelected);
+        buttonsQueue.forEach(buttonQueue -> GuiUtil.setButtonEnabled(buttonQueue, isDeckSelected));
         switchToActiveGameIfExisting();
     }
 

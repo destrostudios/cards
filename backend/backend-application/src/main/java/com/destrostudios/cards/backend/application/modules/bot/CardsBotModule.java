@@ -55,7 +55,7 @@ public class CardsBotModule extends NetworkModule {
                 botSettings.verbose = true;
                 botSettings.maxThreads = 3;
                 botSettings.termination = TerminationType.MILLIS_ELAPSED;
-                botSettings.strength = 2000;
+                botSettings.strength = 3000;
                 botSettings.evaluation = CardsBotModule::eval;
                 return new MctsBot<>(new CardsBotService(), botSettings);
             });

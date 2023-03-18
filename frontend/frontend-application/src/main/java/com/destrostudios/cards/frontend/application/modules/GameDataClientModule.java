@@ -19,6 +19,7 @@ public class GameDataClientModule extends NetworkModule {
     private Connection connection;
     private List<Card> cards;
     private List<Mode> modes;
+    private List<Queue> queues;
     private User user;
     private PackResult packResult;
 
@@ -27,6 +28,7 @@ public class GameDataClientModule extends NetworkModule {
         if (object instanceof InitialGameDataMessage initialGameDataMessage) {
             cards = initialGameDataMessage.getCards();
             modes = initialGameDataMessage.getModes();
+            queues = initialGameDataMessage.getQueues();
             user = initialGameDataMessage.getUser();
         } else if (object instanceof UserMessage userMessage) {
             user = userMessage.getUser();

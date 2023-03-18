@@ -3,10 +3,7 @@ package com.destrostudios.cards.backend.application.modules.bot;
 import amara.libraries.database.Database;
 import com.destrostudios.cards.backend.application.BackendApplication;
 import com.destrostudios.cards.backend.application.GameSetup;
-import com.destrostudios.cards.backend.application.services.CardListService;
-import com.destrostudios.cards.backend.application.services.CardService;
-import com.destrostudios.cards.backend.application.services.FoilService;
-import com.destrostudios.cards.backend.application.services.ModeService;
+import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -35,9 +32,11 @@ public class BotTest {
         FoilService foilService = new FoilService(database);
         CardListService cardListService = new CardListService(database, cardService, foilService);
         ModeService modeService = new ModeService(database, cardListService);
+        QueueService queueService = new QueueService(database);
 
         StartGameInfo startGameInfo = new StartGameInfo(
             modeService.getMode(GameConstants.MODE_NAME_CLASSIC),
+            queueService.getQueue(GameConstants.QUEUE_NAME_BOT),
             "forest",
             new PlayerInfo(2, "Bot1", null),
             new PlayerInfo(2, "Bot2", null)

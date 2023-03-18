@@ -12,4 +12,6 @@ public class GameConstants {
     public static final int PACKS_FOR_NEW_PLAYERS_CLASSIC = 5;
     public static final int PACKS_FOR_NEW_ARENA_RUN = 6;
     public static final int PACKS_FOR_WINNER = 1;
+    public static final String QUEUE_NAME_BOT = "bot";
+    public static final String QUEUE_NAME_USER = "user";
 }

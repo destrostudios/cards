@@ -9,5 +9,5 @@ import lombok.*;
 public class QueueMessage {
     private int modeId;
     private int userModeDeckId;
-    private boolean againstHumanOrBot;
+    private int queueId;
 }

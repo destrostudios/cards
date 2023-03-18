@@ -4,9 +4,11 @@ import amara.libraries.database.Database;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.backend.application.services.ModeService;
+import com.destrostudios.cards.backend.application.services.QueueService;
 import com.destrostudios.cards.backend.application.services.UserService;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.model.User;
 import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.network.messages.*;
@@ -25,6 +27,7 @@ public class GameDataServerModule extends NetworkModule {
     private Database database;
     private CardService cardService;
     private ModeService modeService;
+    private QueueService queueService;
     private UserService userService;
 
     @Override
@@ -34,9 +37,10 @@ public class GameDataServerModule extends NetworkModule {
             database.transaction(() -> {
                 List<Card> cards = cardService.getCards();
                 List<Mode> modes = modeService.getModes();
+                List<Queue> queues = queueService.getQueues();
                 userService.onLogin(jwtUser);
                 User user = userService.getUser(getUserId(connection));
-                connection.sendTCP(new InitialGameDataMessage(cards, modes, user));
+                connection.sendTCP(new InitialGameDataMessage(cards, modes, queues, user));
             });
         } else if (object instanceof CreateUserModeDeckMessage createUserModeDeckMessage) {
             database.transaction(() -> userService.createUserModeDeck(createUserModeDeckMessage.getUserModeId()));

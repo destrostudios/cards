@@ -294,7 +294,7 @@ public class UserService {
             throw new RuntimeException("User has no packs for this mode.");
         }
         database.execute("UPDATE user_mode SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE user_id = " + userMode.getUserId() + " AND mode_id = " + userMode.getMode().getId());
-        PackResult packResult = createPackResult();
+        PackResult packResult = createPackResult(userMode.getMode());
         CardList collectionCardList = getCollectionCardList(userMode.getUserId(), userMode.getMode().getId());
         for (CardListCard cardListCard : packResult.getCards()) {
             cardListService.addCard(collectionCardList.getId(), cardListCard.getCard().getId(), cardListCard.getFoil().getId(), cardListCard.getAmount());
@@ -302,8 +302,9 @@ public class UserService {
         return packResult;
     }
 
-    private PackResult createPackResult() {
-        List<Card> availableCards = cardService.getCards_Pack();
+    private PackResult createPackResult(Mode mode) {
+        // TODO: Extract logic about modes
+        List<Card> availableCards = (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC) ? cardService.getCards_NonCore() : cardService.getCards());
         Foil foilArtwork = foilService.getFoil(GameConstants.FOIL_NAME_ARTWORK);
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
         LinkedList<CardListCard> cards = new LinkedList<>();

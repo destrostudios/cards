@@ -40,7 +40,7 @@ public class CardService {
         return getCards(Card::isCore);
     }
 
-    public List<Card> getCards_Pack() {
+    public List<Card> getCards_NonCore() {
         return getCards(card -> !card.isCore());
     }
 

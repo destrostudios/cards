@@ -1,25 +1,24 @@
 package com.destrostudios.cards.shared.entities.templates;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import org.jdom2.Document;
-import org.jdom2.Element;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Stack;
 
-public class XMLTemplateReader {
+public class TemplateParser<NODE> {
 
-    public XMLTemplateReader(XMLTemplateManager templateManager) {
+    public TemplateParser(TemplateManager templateManager, TemplateFormat<NODE> format) {
         this.templateManager = templateManager;
+        this.format = format;
     }
-    private XMLTemplateManager templateManager;
+    private TemplateManager templateManager;
+    private TemplateFormat<NODE> format;
     private Stack<String> currentDirectories = new Stack<>();
     private Stack<HashMap<String, Integer>> cachedEntities = new Stack<>();
     private Stack<HashMap<String, String>> cachedValues = new Stack<>();
 
-    public void loadTemplate(EntityData entityData, int entity, EntityTemplate template, Document document) {
-        Element templateElement = document.getRootElement();
+    public void loadTemplate(EntityData entityData, int entity, EntityTemplate template, NODE root) {
         String currentDirectory = "";
         String[] directories = template.getName().split("/");
         for (int i = 0; i < (directories.length - 1); i++) {
@@ -29,28 +28,26 @@ public class XMLTemplateReader {
         HashMap<String, Integer> entities = new HashMap<>(10);
         cachedEntities.push(entities);
         HashMap<String, String> values = new HashMap<>();
-        Element valuesElement = templateElement.getChild("values");
-        if (valuesElement != null) {
-            for (Element valueElement : valuesElement.getChildren()) {
-                values.put(valueElement.getName(), valueElement.getText());
+        NODE valuesNode = format.getChild(root, "values");
+        if (valuesNode != null) {
+            for (NODE valueNode : format.getChildren(valuesNode)) {
+                values.put(format.getName(valueNode), format.getText(valueNode));
                 // Save the unmodified default value so it can be exported and accessed by parent
-                values.put("_" + valueElement.getName(), valueElement.getText());
+                values.put("_" + format.getName(valueNode), format.getText(valueNode));
             }
         }
-        for (Entry<String, String> parameterEntry : template.getInput().entrySet()) {
-            values.put(parameterEntry.getKey(), parameterEntry.getValue());
-        }
+        values.putAll(template.getInput());
         cachedValues.push(values);
         boolean isFirstEntity = true;
-        for (Element entityElement : templateElement.getChildren("entity")) {
+        for (NODE entityNode : format.getChildren(root, "entity")) {
             if (isFirstEntity) {
-                String id = entityElement.getAttributeValue("id");
+                String id = format.getAttribute(entityNode, "id");
                 if (id != null) {
                     cachedEntities.lastElement().put(id, entity);
                 }
-                loadEntity(entityData, entity, entityElement);
+                loadEntity(entityData, entity, entityNode);
             } else {
-                createAndLoadEntity(entityData, entityElement);
+                createAndLoadEntity(entityData, entityNode);
             }
             isFirstEntity = false;
         }
@@ -68,19 +65,19 @@ public class XMLTemplateReader {
         cachedValues.pop();
     }
 
-    public int createAndLoadEntity(EntityData entityData, Element entityElement) {
-        if ((!isElementEnabled(entityData, entityElement)) || entityElement.getName().equals("empty")) {
+    public int createAndLoadEntity(EntityData entityData, NODE entityNode) {
+        if ((!isNodeEnabled(entityData, entityNode)) || format.getName(entityNode).equals("empty")) {
             return -1;
         }
         Integer entity = null;
-        String id = entityElement.getAttributeValue("id");
+        String id = format.getAttribute(entityNode, "id");
         if (id != null) {
             entity = cachedEntities.lastElement().get(id);
         }
         if (entity == null) {
             entity = createEntity(entityData, id);
         }
-        loadEntity(entityData, entity, entityElement);
+        loadEntity(entityData, entity, entityNode);
         return entity;
     }
 
@@ -92,15 +89,15 @@ public class XMLTemplateReader {
         return entity;
     }
 
-    private void loadEntity(EntityData entityData, int entity, Element entityElement) {
-        String templateXMLText = entityElement.getAttributeValue("template");
+    private void loadEntity(EntityData entityData, int entity, NODE entityNode) {
+        String templateXMLText = format.getAttribute(entityNode, "template");
         if (templateXMLText != null) {
             EntityTemplate.loadTemplate(entityData, entity, parseTemplate(entityData, templateXMLText));
         }
-        for (Element componentElement : entityElement.getChildren()) {
-            if (isElementEnabled(entityData, componentElement)) {
-                XMLComponentParser<Object> componentParser = templateManager.getComponentParser(componentElement);
-                Object value = componentParser.parseValue(this, entityData, componentElement);
+        for (NODE componentNode : format.getChildren(entityNode)) {
+            if (isNodeEnabled(entityData, componentNode)) {
+                ComponentParser componentParser = templateManager.getComponentParser(componentNode);
+                Object value = componentParser.parseValue(this, format, entityData, componentNode);
                 entityData.setComponent(entity, componentParser.getComponent(), value);
             }
         }
@@ -125,8 +122,8 @@ public class XMLTemplateReader {
         }, key -> parseValue(entityData, key), value -> parseValue(entityData, value));
     }
 
-    private boolean isElementEnabled(EntityData entityData, Element element) {
-        String ifCondition = element.getAttributeValue("if");
+    private boolean isNodeEnabled(EntityData entityData, NODE node) {
+        String ifCondition = format.getAttribute(node, "if");
         return ((ifCondition == null) || parseValueBoolean(entityData, ifCondition));
     }
 

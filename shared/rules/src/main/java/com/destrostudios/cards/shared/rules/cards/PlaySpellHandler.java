@@ -2,8 +2,8 @@ package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.effects.TriggerEffectTriggerIfPossibleEvent;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
+import com.destrostudios.cards.shared.rules.util.EffectTriggerUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +28,6 @@ public class PlaySpellHandler extends GameEventHandler<PlaySpellEvent> {
             events.fire(new PayManaEvent(owner, manaCost), random);
         }
 
-        int[] instantEffectTriggers = data.getComponent(event.spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
-        if (instantEffectTriggers != null) {
-            for (int effectTrigger : instantEffectTriggers) {
-                events.fire(new TriggerEffectTriggerIfPossibleEvent(card, event.targets, effectTrigger), random);
-            }
-        }
+        EffectTriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.INSTANT_EFFECT_TRIGGERS), card, event.targets, events, random);
     }
 }

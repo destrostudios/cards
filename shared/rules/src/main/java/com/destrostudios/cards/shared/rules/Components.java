@@ -116,6 +116,7 @@ public class Components {
     public static class Condition {
         public static final ComponentDefinition<int[]> ONE_OF = createComponent("oneOf");
         public static final ComponentDefinition<Void> NOT = createComponent("not");
+        public static final ComponentDefinition<Void> SOURCE = createComponent("source");
         public static final ComponentDefinition<Void> ALLY = createComponent("ally");
         public static final ComponentDefinition<Void> OPPONENT = createComponent("opponent");
         public static final ComponentDefinition<Void> PLAYER = createComponent("player");

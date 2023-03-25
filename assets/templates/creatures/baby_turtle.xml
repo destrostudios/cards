@@ -4,6 +4,9 @@
         <description>Death: Summon its mother, the 5/5 Tarasque.</description>
         <deathEffectTriggers>
             <entity>
+                <conditions>
+                    <entity template="../conditions/target_is_source"/>
+                </conditions>
                 <effects>
                     <entity template="../effects/spawn_for_owner(template=creatures/tarasque)"/>
                 </effects>

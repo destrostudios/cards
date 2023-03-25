@@ -13,7 +13,9 @@ public class TriggerOnDeathHandler extends GameEventHandler<DestructionEvent> {
 
     @Override
     public void handle(DestructionEvent event, NetworkRandom random) {
-        LOG.info("Checking death triggers of {}", event.target);
-        EffectTriggerUtil.trigger(data.getComponent(event.target, Components.DEATH_EFFECT_TRIGGERS), event.target, event.target, events, random);
+        LOG.info("Checking death triggers for death of {}", event.target);
+        for (int entity : data.query(Components.DEATH_EFFECT_TRIGGERS).list()) {
+            EffectTriggerUtil.trigger(data.getComponent(entity, Components.DEATH_EFFECT_TRIGGERS), entity, new int[] { event.target }, events, random);
+        }
     }
 }

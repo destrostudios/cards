@@ -75,6 +75,9 @@ public class ConditionUtil {
     }
 
     private static boolean isFulfilledIgnoringNegation(EntityData data, int condition, int source, int target) {
+        if (data.hasComponent(condition, Components.Condition.SOURCE) && (target != source)) {
+            return false;
+        }
         if (data.hasComponent(condition, Components.Condition.PLAYER)) {
             if (!data.hasComponent(target, Components.NEXT_PLAYER)) {
                 return false;

@@ -97,6 +97,7 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Entities(Components.Condition.ONE_OF));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.NOT));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.SOURCE));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.ALLY));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.OPPONENT));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.PLAYER));

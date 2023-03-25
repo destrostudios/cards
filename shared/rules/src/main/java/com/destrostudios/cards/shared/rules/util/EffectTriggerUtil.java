@@ -6,10 +6,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 public class EffectTriggerUtil {
 
-    public static void trigger(int[] effectTriggers, int source, int target, EventQueue events, NetworkRandom random) {
-        trigger(effectTriggers, source, new int[] { target }, events, random);
-    }
-
     public static void trigger(int[] effectTriggers, int source, int[] targets, EventQueue events, NetworkRandom random) {
         if (effectTriggers != null) {
             for (int effectTrigger : effectTriggers) {

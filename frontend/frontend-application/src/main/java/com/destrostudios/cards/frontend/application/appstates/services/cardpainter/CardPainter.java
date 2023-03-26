@@ -65,7 +65,7 @@ public class CardPainter {
 
     public static Texture2D getStats(CardModel cardModel, boolean fullArt) {
         return get(
-            "stats_" + cardModel.getAttackDamage() + "_" + cardModel.getAttackDamageModification() + "_" + cardModel.getHealth() + "_" + cardModel.getHealthModification() + "_" + cardModel.isDamaged() + "_" + fullArt,
+            "stats_" + cardModel.getAttack() + "_" + cardModel.getAttackModification() + "_" + cardModel.getHealth() + "_" + cardModel.getHealthModification() + "_" + cardModel.isDamaged() + "_" + fullArt,
             t -> t.draw(g -> CardPainterAWT.drawCardFront_Stats(g, cardModel, fullArt))
         );
     }

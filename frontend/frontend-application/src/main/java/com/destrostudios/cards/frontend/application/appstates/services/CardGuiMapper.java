@@ -77,12 +77,12 @@ public class CardGuiMapper {
         cardModel.setManaCostModification(getStatModification(baseManaCost, manaCostDetails));
         cardModel.setSpells(spells);
 
-        Integer baseAttackDamage = data.getComponent(card, Components.Stats.ATTACK);
-        Integer attackDamage = StatsUtil.getEffectiveAttack(data, card);
+        Integer baseAttack = data.getComponent(card, Components.Stats.ATTACK);
+        Integer attack = StatsUtil.getEffectiveAttack(data, card);
         Integer baseHealth = data.getComponent(card, Components.Stats.HEALTH);
         Integer health = StatsUtil.getEffectiveHealth(data, card);
-        cardModel.setAttackDamage(attackDamage);
-        cardModel.setAttackDamageModification(getStatModification(baseAttackDamage, attackDamage));
+        cardModel.setAttack(attack);
+        cardModel.setAttackModification(getStatModification(baseAttack, attack));
         cardModel.setHealth(health);
         cardModel.setHealthModification(getStatModification(baseHealth, health));
         cardModel.setDamaged(data.hasComponent(card, Components.Stats.DAMAGED) || data.hasComponent(card, Components.Stats.BONUS_DAMAGED));

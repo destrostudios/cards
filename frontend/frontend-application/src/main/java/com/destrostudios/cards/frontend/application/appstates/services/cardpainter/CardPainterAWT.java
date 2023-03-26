@@ -143,15 +143,15 @@ public class CardPainterAWT {
         tmpY = 513;
         int outlineStrength = (fullArt ? 3 : 1);
         Font font = (fullArt ? fontStatsLarge : fontStatsSmall);
-        Integer attackDamage = cardModel.getAttackDamage();
-        if (attackDamage != null) {
-            String attackDamageText = ("" + attackDamage);
+        Integer attack = cardModel.getAttack();
+        if (attack != null) {
+            String attackText = ("" + attack);
             graphics.setFont(font);
-            Rectangle2D attackDamageBounds = graphics.getFontMetrics().getStringBounds(attackDamageText, graphics);
+            Rectangle2D attackBounds = graphics.getFontMetrics().getStringBounds(attackText, graphics);
             int centerX = (fullArt ? 65 : 60);
-            tmpX = (int) (centerX - (attackDamageBounds.getWidth() / 2));
-            Color color = ((cardModel.getAttackDamageModification() == StatModification.INCREASED) ? Color.GREEN : Color.WHITE);
-            drawOutlinedText(graphics, attackDamageText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
+            tmpX = (int) (centerX - (attackBounds.getWidth() / 2));
+            Color color = ((cardModel.getAttackModification() == StatModification.INCREASED) ? Color.GREEN : Color.WHITE);
+            drawOutlinedText(graphics, attackText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
         Integer health = cardModel.getHealth();
         if (health != null) {

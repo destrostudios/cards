@@ -21,9 +21,9 @@ public class CardModel extends BoardObjectModel {
     private List<String> keywords;
     private String description;
     private List<Spell> spells;
-    private Integer attackDamage;
+    private Integer attack;
     private Integer health;
-    private StatModification attackDamageModification;
+    private StatModification attackModification;
     private StatModification healthModification;
     private boolean damaged;
     private boolean divineShield;
@@ -42,9 +42,9 @@ public class CardModel extends BoardObjectModel {
         setDescription(cardModel.description);
         setKeywords(cardModel.keywords);
         setTribes(cardModel.tribes);
-        setAttackDamage(cardModel.attackDamage);
+        setAttack(cardModel.attack);
         setHealth(cardModel.health);
-        setAttackDamageModification(cardModel.attackDamageModification);
+        setAttackModification(cardModel.attackModification);
         setHealthModification(cardModel.healthModification);
         setDamaged(cardModel.damaged);
         setSpells(cardModel.spells);
@@ -92,16 +92,16 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.tribes, tribes, () -> this.tribes = tribes);
     }
 
-    public void setAttackDamage(Integer attackDamage) {
-        updateIfNotEquals(this.attackDamage, attackDamage, () -> this.attackDamage = attackDamage);
+    public void setAttack(Integer attack) {
+        updateIfNotEquals(this.attack, attack, () -> this.attack = attack);
     }
 
     public void setHealth(Integer health) {
         updateIfNotEquals(this.health, health, () -> this.health = health);
     }
 
-    public void setAttackDamageModification(StatModification attackDamageModification) {
-        updateIfNotEquals(this.attackDamageModification, attackDamageModification, () -> this.attackDamageModification = attackDamageModification);
+    public void setAttackModification(StatModification attackModification) {
+        updateIfNotEquals(this.attackModification, attackModification, () -> this.attackModification = attackModification);
     }
 
     public void setHealthModification(StatModification healthModification) {

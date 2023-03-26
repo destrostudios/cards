@@ -15,10 +15,7 @@ public class ConditionUtil {
         simpleRequireableComponents.add(Components.NAME);
         simpleRequireableComponents.add(Components.CREATURE_CARD);
         simpleRequireableComponents.add(Components.SPELL_CARD);
-        simpleRequireableComponents.add(Components.Ability.SLOW);
         simpleRequireableComponents.add(Components.Ability.DIVINE_SHIELD);
-        simpleRequireableComponents.add(Components.Ability.HEXPROOF);
-        simpleRequireableComponents.add(Components.Ability.IMMUNE);
         simpleRequireableComponents.add(Components.Ability.TAUNT);
         simpleRequireableComponents.add(Components.Tribe.BEAST);
         simpleRequireableComponents.add(Components.Tribe.DRAGON);

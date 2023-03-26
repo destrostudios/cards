@@ -61,10 +61,7 @@ public class Components {
     }
 
     public static class Ability {
-        public static final ComponentDefinition<Void> SLOW = createComponent("slow");
         public static final ComponentDefinition<Boolean> DIVINE_SHIELD = createComponent("divineShield");
-        public static final ComponentDefinition<Void> HEXPROOF = createComponent("hexproof");
-        public static final ComponentDefinition<Void> IMMUNE = createComponent("immune");
         public static final ComponentDefinition<Void> TAUNT = createComponent("taunt");
     }
 

@@ -17,10 +17,7 @@ public class CardGuiMapper {
     private static Map<ComponentDefinition, String> keywordComponents = new LinkedHashMap<>();
     private static Map<ComponentDefinition, String> tribeComponents = new LinkedHashMap<>();
     static {
-        keywordComponents.put(Components.Ability.SLOW, "Slow");
         keywordComponents.put(Components.Ability.DIVINE_SHIELD, "Divine Shield");
-        keywordComponents.put(Components.Ability.HEXPROOF, "Hexproof");
-        keywordComponents.put(Components.Ability.IMMUNE, "Immune");
         keywordComponents.put(Components.Ability.TAUNT, "Taunt");
 
         tribeComponents.put(Components.Tribe.BEAST, "Beast");

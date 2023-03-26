@@ -52,10 +52,7 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Game.ACTIVE_PLAYER));
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Ability.SLOW));
         templateManager.registerComponent(new ComponentParser_Boolean(Components.Ability.DIVINE_SHIELD));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Ability.HEXPROOF));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Ability.IMMUNE));
         templateManager.registerComponent(new ComponentParser_Void(Components.Ability.TAUNT));
 
         templateManager.registerComponent(new ComponentParser_Entity(Components.Aura.AURA_BUFF));

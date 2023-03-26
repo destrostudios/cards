@@ -51,10 +51,6 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
             events.fire(new HealEvent(event.target, heal), random);
         }
 
-        if (data.hasComponent(event.effect, Components.Effect.BATTLE)) {
-            events.fire(new BattleEvent(event.source, event.target), random);
-        }
-
         String drawExpression = data.getComponent(event.effect, Components.Effect.DRAW);
         if (drawExpression != null) {
             int drawnCards = Expressions.evaluate(data, drawExpression, event.source, event.target);
@@ -73,9 +69,13 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
             events.fire(new DestructionEvent(event.target), random);
         }
 
+        if (data.hasComponent(event.effect, Components.Effect.BATTLE)) {
+            events.fire(new BattleEvent(event.source, event.target), random);
+        }
+
         Components.AddBuff addBuff = data.getComponent(event.effect, Components.Effect.ADD_BUFF);
         if (addBuff != null) {
-            int buff = (addBuff.isEvalutated() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event.source, event.target) : addBuff.getBuff());
+            int buff = (addBuff.isEvaluated() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event.source, event.target) : addBuff.getBuff());
             events.fire(new AddBuffEvent(event.target, buff), random);
         }
 

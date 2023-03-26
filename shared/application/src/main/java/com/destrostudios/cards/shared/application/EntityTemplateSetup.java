@@ -64,10 +64,10 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.DAMAGE));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.HEAL));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.BATTLE));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.DRAW));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.GAIN_MANA));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.DESTROY));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.BATTLE));
         templateManager.registerComponent(new ComponentParser<>(Components.Effect.ADD_BUFF) {
 
             @Override

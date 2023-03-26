@@ -81,10 +81,10 @@ public class Components {
     public static class Effect {
         public static final ComponentDefinition<String> DAMAGE = createComponent("damage");
         public static final ComponentDefinition<String> HEAL = createComponent("heal");
-        public static final ComponentDefinition<Void> BATTLE = createComponent("battle");
         public static final ComponentDefinition<String> DRAW = createComponent("draw");
         public static final ComponentDefinition<String> GAIN_MANA = createComponent("gainMana");
         public static final ComponentDefinition<Void> DESTROY = createComponent("destroy");
+        public static final ComponentDefinition<Void> BATTLE = createComponent("battle");
         public static final ComponentDefinition<AddBuff> ADD_BUFF = createComponent("addBuff");
         public static final ComponentDefinition<String[]> SUMMON = createComponent("summon");
 
@@ -139,6 +139,6 @@ public class Components {
     @Getter
     public static class AddBuff {
         private int buff;
-        private boolean evalutated;
+        private boolean evaluated;
     }
 }

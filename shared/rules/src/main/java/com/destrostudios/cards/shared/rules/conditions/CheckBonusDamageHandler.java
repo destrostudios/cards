@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.rules.auras;
+package com.destrostudios.cards.shared.rules.conditions;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;

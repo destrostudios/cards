@@ -67,14 +67,12 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Entities(Components.EffectTrigger.EFFECTS));
 
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Effect.DAMAGE));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Effect.HEAL));
+        templateManager.registerComponent(new ComponentParser_String(Components.Effect.DAMAGE));
+        templateManager.registerComponent(new ComponentParser_String(Components.Effect.HEAL));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.BATTLE));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Effect.DRAW));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Effect.GAIN_MANA));
+        templateManager.registerComponent(new ComponentParser_String(Components.Effect.DRAW));
+        templateManager.registerComponent(new ComponentParser_String(Components.Effect.GAIN_MANA));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.DESTROY));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Effect.ADD_AURAS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Effect.REMOVE_AURAS));
         templateManager.registerComponent(new ComponentParser_Entities(Components.Effect.ADD_BUFFS));
         templateManager.registerComponent(new ComponentParser_Entities(Components.Effect.REMOVE_BUFFS));
         templateManager.registerComponent(new ComponentParser_Templates(Components.Effect.SUMMON));

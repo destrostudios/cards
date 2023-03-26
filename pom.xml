@@ -22,6 +22,7 @@
         <version.jackson>2.14.2</version.jackson>
         <version.javax.activation>1.1.1</version.javax.activation>
         <version.jaxb>2.3.0</version.jaxb>
+        <version.jexl>3.2.1</version.jexl>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
         <version.lombok>1.18.24</version.lombok>
@@ -39,6 +40,12 @@
     </repositories>
     <dependencyManagement>
         <dependencies>
+            <!--JEXL-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-jexl3</artifactId>
+                <version>${version.jexl}</version>
+            </dependency>
             <!--Jackson-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

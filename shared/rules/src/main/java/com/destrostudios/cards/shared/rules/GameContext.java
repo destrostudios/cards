@@ -5,7 +5,7 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventHandlers;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.abilities.*;
-import com.destrostudios.cards.shared.rules.auras.*;
+import com.destrostudios.cards.shared.rules.conditions.*;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.buffs.*;
 import com.destrostudios.cards.shared.rules.cards.*;
@@ -97,8 +97,6 @@ public class GameContext {
         );
         addEventHandler(events.instant(), TriggerEffectTriggerIfPossibleEvent.class, new TriggerEffectTriggerIfPossibleHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
-        addEventHandler(events.instant(), AddAuraEvent.class, new AddAuraHandler());
-        addEventHandler(events.instant(), RemoveAuraEvent.class, new RemoveAuraHandler());
         addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
         addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
         addEventHandler(events.instant(), SummonEvent.class, new SummonHandler());

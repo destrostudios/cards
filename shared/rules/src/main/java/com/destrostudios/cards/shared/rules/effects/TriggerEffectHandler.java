@@ -2,8 +2,6 @@ package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.auras.AddAuraEvent;
-import com.destrostudios.cards.shared.rules.auras.RemoveAuraEvent;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
@@ -14,6 +12,7 @@ import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
+import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +39,15 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
             events.fire(new AddCardToHandEvent(event.target), random);
         }
 
-        Integer damage = data.getComponent(event.effect, Components.Effect.DAMAGE);
-        if (damage != null) {
+        String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);
+        if (damageExpression != null) {
+            int damage = Expressions.evaluate(data, event.source, event.target, damageExpression);
             events.fire(new DamageEvent(event.target, damage), random);
         }
 
-        Integer heal = data.getComponent(event.effect, Components.Effect.HEAL);
-        if (heal != null) {
+        String healExpression = data.getComponent(event.effect, Components.Effect.HEAL);
+        if (healExpression != null) {
+            int heal = Expressions.evaluate(data, event.source, event.target, healExpression);
             events.fire(new HealEvent(event.target, heal), random);
         }
 
@@ -54,34 +55,22 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
             events.fire(new BattleEvent(event.source, event.target), random);
         }
 
-        Integer draw = data.getComponent(event.effect, Components.Effect.DRAW);
-        if (draw != null) {
-            for (int i = 0; i < draw; i++) {
+        String drawExpression = data.getComponent(event.effect, Components.Effect.DRAW);
+        if (drawExpression != null) {
+            int drawnCards = Expressions.evaluate(data, event.source, event.target, drawExpression);
+            for (int i = 0; i < drawnCards; i++) {
                 events.fire(new DrawCardEvent(event.target), random);
             }
         }
 
-        Integer gainedMana = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
-        if (gainedMana != null) {
+        String gainManaExpression = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
+        if (gainManaExpression != null) {
+            int gainedMana = Expressions.evaluate(data, event.source, event.target, gainManaExpression);
             events.fire(new AddManaEvent(event.target, gainedMana), random);
         }
 
         if (data.hasComponent(event.effect, Components.Effect.DESTROY)) {
             events.fire(new DestructionEvent(event.target), random);
-        }
-
-        int[] aurasToAttach = data.getComponent(event.effect, Components.Effect.ADD_AURAS);
-        if (aurasToAttach != null) {
-            for (int aura : aurasToAttach) {
-                events.fire(new AddAuraEvent(event.target, aura), random);
-            }
-        }
-
-        int[] aurasToDetach = data.getComponent(event.effect, Components.Effect.REMOVE_AURAS);
-        if (aurasToDetach != null) {
-            for (int aura : aurasToDetach) {
-                events.fire(new RemoveAuraEvent(event.target, aura), random);
-            }
         }
 
         int[] buffsToAttach = data.getComponent(event.effect, Components.Effect.ADD_BUFFS);

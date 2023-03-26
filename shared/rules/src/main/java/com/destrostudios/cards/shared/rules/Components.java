@@ -80,14 +80,12 @@ public class Components {
     }
 
     public static class Effect {
-        public static final ComponentDefinition<Integer> DAMAGE = createComponent("damage");
-        public static final ComponentDefinition<Integer> HEAL = createComponent("heal");
+        public static final ComponentDefinition<String> DAMAGE = createComponent("damage");
+        public static final ComponentDefinition<String> HEAL = createComponent("heal");
         public static final ComponentDefinition<Void> BATTLE = createComponent("battle");
-        public static final ComponentDefinition<Integer> DRAW = createComponent("draw");
-        public static final ComponentDefinition<Integer> GAIN_MANA = createComponent("gainMana");
+        public static final ComponentDefinition<String> DRAW = createComponent("draw");
+        public static final ComponentDefinition<String> GAIN_MANA = createComponent("gainMana");
         public static final ComponentDefinition<Void> DESTROY = createComponent("destroy");
-        public static final ComponentDefinition<int[]> ADD_AURAS = createComponent("addAuras");
-        public static final ComponentDefinition<int[]> REMOVE_AURAS = createComponent("removeAuras");
         public static final ComponentDefinition<int[]> ADD_BUFFS = createComponent("addBuffs");
         public static final ComponentDefinition<int[]> REMOVE_BUFFS = createComponent("removeBuffs");
         public static final ComponentDefinition<String[]> SUMMON = createComponent("summon");

@@ -61,9 +61,6 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.BEAST));
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.DRAGON));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.FISH));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.GOD));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.HUMAN));
 
         templateManager.registerComponent(new ComponentParser_Entities(Components.EffectTrigger.EFFECTS));
 

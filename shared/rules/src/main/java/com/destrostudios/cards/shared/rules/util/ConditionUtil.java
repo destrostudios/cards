@@ -22,9 +22,6 @@ public class ConditionUtil {
         simpleRequireableComponents.add(Components.Ability.TAUNT);
         simpleRequireableComponents.add(Components.Tribe.BEAST);
         simpleRequireableComponents.add(Components.Tribe.DRAGON);
-        simpleRequireableComponents.add(Components.Tribe.FISH);
-        simpleRequireableComponents.add(Components.Tribe.GOD);
-        simpleRequireableComponents.add(Components.Tribe.HUMAN);
     }
 
     public static boolean areConditionsFulfilled(EntityData data, int entity, int source, int[] targets) {

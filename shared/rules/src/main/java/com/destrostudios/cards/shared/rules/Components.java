@@ -70,9 +70,6 @@ public class Components {
     public static class Tribe {
         public static final ComponentDefinition<Void> BEAST = createComponent("beast");
         public static final ComponentDefinition<Void> DRAGON = createComponent("dragon");
-        public static final ComponentDefinition<Void> FISH = createComponent("fish");
-        public static final ComponentDefinition<Void> GOD = createComponent("god");
-        public static final ComponentDefinition<Void> HUMAN = createComponent("human");
     }
 
     public static class EffectTrigger {

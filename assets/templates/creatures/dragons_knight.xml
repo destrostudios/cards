@@ -2,7 +2,7 @@
     <values>
         <bonusManaCost>-2</bonusManaCost>
     </values>
-    <entity template="./templates/vanilla(name=Dragon's Knight,manaCost=2,attack=2,health=2)">
+    <entity id="card" template="./templates/vanilla(name=Dragon's Knight,manaCost=2,attack=2,health=2)">
         <description>Your Dragons cost (2) less.</description>
         <auras>
             <entity>
@@ -17,6 +17,7 @@
                 </conditions>
                 <auraBuff>
                     <entity>
+                        <source>#card</source>
                         <bonusManaCost>[bonusManaCost]</bonusManaCost>
                     </entity>
                 </auraBuff>

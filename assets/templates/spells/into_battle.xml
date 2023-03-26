@@ -3,7 +3,7 @@
         <bonusAttack>2</bonusAttack>
         <bonusHealth>2</bonusHealth>
     </values>
-    <entity>
+    <entity id="card">
         <name>Into Battle</name>
         <spellCard/>
         <description>Your creatures in hand gain +[bonusAttack]/+[bonusHealth].</description>
@@ -21,12 +21,13 @@
                                 <targetChains>
                                     <entity template="../targets/all_ally_creatures_in_hand"/>
                                 </targetChains>
-                                <addBuffs>
+                                <addBuff>
                                     <entity>
+                                        <source>#card</source>
                                         <bonusAttack>[bonusAttack]</bonusAttack>
                                         <bonusHealth>[bonusHealth]</bonusHealth>
                                     </entity>
-                                </addBuffs>
+                                </addBuff>
                             </entity>
                         </effects>
                     </entity>

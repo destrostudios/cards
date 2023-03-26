@@ -7,7 +7,7 @@ public class Expressions {
 
     private static JexlEngine jexlEngine = new JexlBuilder().cache(512).strict(true).silent(false).create();
 
-    public static <T> T evaluate(EntityData data, int source, int target, String expression) {
+    public static <T> T evaluate(EntityData data, String expression, int source, int target) {
         JexlContext context = new MapContext();
         context.set("source", new ExpressionEntity(data, source));
         context.set("target", new ExpressionEntity(data, target));

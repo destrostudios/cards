@@ -19,7 +19,7 @@
                                 <targetChains>
                                     <entity template="../../targets/targets"/>
                                 </targetChains>
-                                <addBuffs>[buff]</addBuffs>
+                                <addBuff>[buff]</addBuff>
                             </entity>
                         </effects>
                     </entity>

@@ -2,6 +2,10 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.cards.Foil;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
@@ -16,6 +20,7 @@ public class Components {
     }
 
     public static final ComponentDefinition<String> NAME = createComponent("name");
+    public static final ComponentDefinition<Integer> SOURCE = createComponent("source");
     public static final ComponentDefinition<Void> BOARD = createComponent("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = createComponent("creatureCard");
     public static final ComponentDefinition<Integer> CREATURE_ZONE = createComponent("creatureZone");
@@ -39,14 +44,14 @@ public class Components {
 
     public static class Cost {
         public static final ComponentDefinition<Integer> MANA_COST = createComponent("manaCost");
-        public static final ComponentDefinition<Integer> BONUS_MANA_COST = createComponent("bonusManaCost");
+        public static final ComponentDefinition<String> BONUS_MANA_COST = createComponent("bonusManaCost");
     }
 
     public static class Stats {
         public static final ComponentDefinition<Integer> ATTACK = createComponent("attack");
-        public static final ComponentDefinition<Integer> BONUS_ATTACK = createComponent("bonusAttack");
+        public static final ComponentDefinition<String> BONUS_ATTACK = createComponent("bonusAttack");
         public static final ComponentDefinition<Integer> HEALTH = createComponent("health");
-        public static final ComponentDefinition<Integer> BONUS_HEALTH = createComponent("bonusHealth");
+        public static final ComponentDefinition<String> BONUS_HEALTH = createComponent("bonusHealth");
         public static final ComponentDefinition<Integer> DAMAGED = createComponent("damaged");
         public static final ComponentDefinition<Integer> BONUS_DAMAGED = createComponent("bonusDamaged");
     }
@@ -83,8 +88,7 @@ public class Components {
         public static final ComponentDefinition<String> DRAW = createComponent("draw");
         public static final ComponentDefinition<String> GAIN_MANA = createComponent("gainMana");
         public static final ComponentDefinition<Void> DESTROY = createComponent("destroy");
-        public static final ComponentDefinition<int[]> ADD_BUFFS = createComponent("addBuffs");
-        public static final ComponentDefinition<int[]> REMOVE_BUFFS = createComponent("removeBuffs");
+        public static final ComponentDefinition<AddBuff> ADD_BUFF = createComponent("addBuff");
         public static final ComponentDefinition<String[]> SUMMON = createComponent("summon");
 
         public static class Zones {
@@ -111,7 +115,7 @@ public class Components {
     public static class Condition {
         public static final ComponentDefinition<int[]> ONE_OF = createComponent("oneOf");
         public static final ComponentDefinition<Void> NOT = createComponent("not");
-        public static final ComponentDefinition<Void> SOURCE = createComponent("source");
+        public static final ComponentDefinition<Void> IS_SOURCE = createComponent("isSource");
         public static final ComponentDefinition<Void> ALLY = createComponent("ally");
         public static final ComponentDefinition<Void> OPPONENT = createComponent("opponent");
         public static final ComponentDefinition<Void> PLAYER = createComponent("player");
@@ -131,5 +135,13 @@ public class Components {
         public static final ComponentDefinition<Integer> MAXIMUM_CASTS_PER_TURN = createComponent("maximumCastsPerTurn");
         public static final ComponentDefinition<Void> TAUNTABLE = createComponent("tauntable");
         public static final ComponentDefinition<int[]> INSTANT_EFFECT_TRIGGERS = createComponent("instantEffectTriggers");
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
+    @Getter
+    public static class AddBuff {
+        private int buff;
+        private boolean evalutated;
     }
 }

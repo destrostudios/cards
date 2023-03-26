@@ -20,7 +20,7 @@
                                 <targetChains>
                                     <entity template="../../targets/targets"/>
                                 </targetChains>
-                                <addBuffs>[buff]</addBuffs>
+                                <addBuff>[buff]</addBuff>
                             </entity>
                             <entity template="../../effects/add_source_to_board"/>
                         </effects>

@@ -3,6 +3,6 @@
         <targetChains>
             <entity template="../targets/targets"/>
         </targetChains>
-        <source/>
+        <isSource/>
     </entity>
 </template>

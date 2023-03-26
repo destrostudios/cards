@@ -1,7 +1,7 @@
 package com.destrostudios.cards.shared.application;
 
-import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
-import com.destrostudios.cards.shared.entities.templates.TemplateManager;
+import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.templates.*;
 import com.destrostudios.cards.shared.entities.templates.components.*;
 import com.destrostudios.cards.shared.entities.templates.xml.*;
 import com.destrostudios.cards.shared.files.FileAssets;
@@ -18,6 +18,7 @@ public class EntityTemplateSetup {
         );
 
         templateManager.registerComponent(new ComponentParser_String(Components.NAME));
+        templateManager.registerComponent(new ComponentParser_Entity(Components.SOURCE));
         templateManager.registerComponent(new ComponentParser_Void(Components.BOARD));
         templateManager.registerComponent(new ComponentParser_Void(Components.CREATURE_CARD));
         templateManager.registerComponent(new ComponentParser_Integer(Components.CREATURE_ZONE));
@@ -40,12 +41,12 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Entities(Components.DEATH_EFFECT_TRIGGERS));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.BONUS_MANA_COST));
+        templateManager.registerComponent(new ComponentParser_String(Components.Cost.BONUS_MANA_COST));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.ATTACK));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.BONUS_ATTACK));
+        templateManager.registerComponent(new ComponentParser_String(Components.Stats.BONUS_ATTACK));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.HEALTH));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.BONUS_HEALTH));
+        templateManager.registerComponent(new ComponentParser_String(Components.Stats.BONUS_HEALTH));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.DAMAGED));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.BONUS_DAMAGED));
 
@@ -70,8 +71,15 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.DRAW));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.GAIN_MANA));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.DESTROY));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Effect.ADD_BUFFS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Effect.REMOVE_BUFFS));
+        templateManager.registerComponent(new ComponentParser<>(Components.Effect.ADD_BUFF) {
+
+            @Override
+            public Components.AddBuff parseValue(TemplateParser parser, TemplateFormat format, EntityData entityData, Object node) {
+                int buff = createChildEntity(parser, format, entityData, node, 0, "buff");
+                boolean evaluated = "true".equals(format.getAttribute(node, "evaluated"));
+                return new Components.AddBuff(buff, evaluated);
+            }
+        });
         templateManager.registerComponent(new ComponentParser_Templates(Components.Effect.SUMMON));
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_HAND));
@@ -92,7 +100,7 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Entities(Components.Condition.ONE_OF));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.NOT));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.SOURCE));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.IS_SOURCE));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.ALLY));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.OPPONENT));
         templateManager.registerComponent(new ComponentParser_Void(Components.Condition.PLAYER));

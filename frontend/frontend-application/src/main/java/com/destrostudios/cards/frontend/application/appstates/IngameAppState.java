@@ -20,7 +20,6 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
-import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
@@ -36,7 +35,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
@@ -247,10 +245,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
         });
         gameService.getGameContext().getEvents().resolved().add(BattleEvent.class, (event, random) -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
-        gameService.getGameContext().getEvents().pre().add(ShuffleLibraryEvent.class, (event, random) -> {
+        /*gameService.getGameContext().getEvents().pre().add(ShuffleLibraryEvent.class, (event, random) -> {
             LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
-            // board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
-        });
+            board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
+        });*/
 
         gameService.getGameContext().getEvents().instant().add(GameOverEvent.class, (event, random) -> {
             gameService.onGameOver();

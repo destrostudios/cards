@@ -3,10 +3,11 @@
         <bonusAttack>1</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
-    <entity template="./templates/simple_target_buffer(name=Fairy,manaCost=2,attack=2,health=1,buff=#buff)">
+    <entity id="card" template="./templates/simple_target_buffer(name=Fairy,manaCost=2,attack=2,health=1,buff=#buff)">
         <description>Cast: Target creature on board gains +[bonusAttack]/+[bonusHealth].</description>
     </entity>
     <entity id="buff">
+        <source>#card</source>
         <bonusAttack>[bonusAttack]</bonusAttack>
         <bonusHealth>[bonusHealth]</bonusHealth>
     </entity>

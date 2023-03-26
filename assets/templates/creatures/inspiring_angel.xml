@@ -3,7 +3,7 @@
         <bonusAttack>1</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
-    <entity>
+    <entity id="card">
         <name>Inspiring Angel</name>
         <creatureCard/>
         <attack>4</attack>
@@ -22,12 +22,13 @@
                                 <targetChains>
                                     <entity template="../targets/all_ally_creatures_on_board"/>
                                 </targetChains>
-                                <addBuffs>
+                                <addBuff>
                                     <entity>
+                                        <source>#card</source>
                                         <bonusAttack>[bonusAttack]</bonusAttack>
                                         <bonusHealth>[bonusHealth]</bonusHealth>
                                     </entity>
-                                </addBuffs>
+                                </addBuff>
                             </entity>
                             <entity template="../effects/add_source_to_board"/>
                         </effects>

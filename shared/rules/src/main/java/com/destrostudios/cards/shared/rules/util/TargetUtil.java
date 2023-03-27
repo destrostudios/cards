@@ -33,8 +33,8 @@ public class TargetUtil {
         }
         String targetAllCondition = data.getComponent(targetDefinition, Components.Target.TARGET_ALL);
         if (targetAllCondition != null) {
-            List<Integer> prefilteredTargets = getPrefilteredTargets(data, targetDefinition);
-            affectedTargets.addAll(getAllConditionTargets(data, prefilteredTargets, targetAllCondition, source));
+            TargetPrefilter targetPrefilter = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTER);
+            affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilter, targetAllCondition));
         }
         Integer maxRandomTargets = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
         if (maxRandomTargets != null) {
@@ -47,24 +47,25 @@ public class TargetUtil {
         return affectedTargets;
     }
 
-    public static List<Integer> getPrefilteredTargets(EntityData data, int entity) {
-        TargetPrefilter targetPrefilter = data.getComponent(entity, Components.Target.TARGET_PREFILTER);
-        ComponentDefinition<?> prefilterComponent = null;
-        switch (targetPrefilter) {
-            case LIBRARY -> prefilterComponent = Components.LIBRARY;
-            case BOARD -> prefilterComponent = Components.BOARD;
-            case HAND -> prefilterComponent = Components.HAND;
-            case GRAVEYARD -> prefilterComponent = Components.GRAVEYARD;
-        }
-        return data.query(prefilterComponent).list();
-    }
-
-    private static List<Integer> getAllConditionTargets(EntityData data, List<Integer> prefilteredTargets, String condition, int source) {
+    public static List<Integer> getAllConditionTargets(EntityData data, int source, TargetPrefilter targetPrefilter, String condition) {
+        List<Integer> prefilteredTargets = getPrefilteredTargets(data, targetPrefilter);
         if (condition.isEmpty()) {
             return prefilteredTargets;
         }
         return prefilteredTargets.stream()
                 .filter(target -> ConditionUtil.isConditionFulfilled(data, condition, source, new int[] { target }))
                 .collect(Collectors.toList());
+    }
+
+    public static List<Integer> getPrefilteredTargets(EntityData data, TargetPrefilter targetPrefilter) {
+        ComponentDefinition<?> prefilterComponent = null;
+        switch (targetPrefilter) {
+            case BOARD -> prefilterComponent = Components.BOARD;
+            case CREATURE_ZONE -> prefilterComponent = Components.CREATURE_ZONE;
+            case GRAVEYARD -> prefilterComponent = Components.GRAVEYARD;
+            case HAND -> prefilterComponent = Components.HAND;
+            case LIBRARY -> prefilterComponent = Components.LIBRARY;
+        }
+        return data.query(prefilterComponent).list();
     }
 }

@@ -3,7 +3,7 @@
         <maximumCastsPerTurn>1</maximumCastsPerTurn>
         <tauntable/>
         <targetPrefilter>BOARD</targetPrefilter>
-        <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; (target.isCreatureCard || (target.isPlayer &amp;&amp; target.hasNoCreatures))</condition>
+        <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; (target.isCreatureCard || (target.isPlayer &amp;&amp; !target.exists("CREATURE_ZONE", "target.owner == source")))</condition>
         <instantEffectTriggers>
             <entity>
                 <effects>

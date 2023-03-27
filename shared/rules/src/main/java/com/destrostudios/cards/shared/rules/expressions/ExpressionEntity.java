@@ -2,12 +2,13 @@ package com.destrostudios.cards.shared.rules.expressions;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.util.ConditionUtil;
-import com.destrostudios.cards.shared.rules.util.CostUtil;
-import com.destrostudios.cards.shared.rules.util.SpellUtil;
-import com.destrostudios.cards.shared.rules.util.StatsUtil;
+import com.destrostudios.cards.shared.rules.TargetPrefilter;
+import com.destrostudios.cards.shared.rules.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class ExpressionEntity {
@@ -80,8 +81,18 @@ public class ExpressionEntity {
         return SpellUtil.isDefaultCastFromHandSpell(data, entity);
     }
 
-    public boolean getHasNoCreatures() {
-        return data.query(Components.CREATURE_ZONE).list(card -> data.getComponent(card, Components.OWNED_BY) == entity).isEmpty();
+    public boolean exists(String targetPrefilterName, String expression) {
+        return count(targetPrefilterName, expression) > 0;
+    }
+
+    public int count(String targetPrefilterName, String expression) {
+        return all(targetPrefilterName, expression).size();
+    }
+
+    public List<ExpressionEntity> all(String targetPrefilterName, String expression) {
+        return TargetUtil.getAllConditionTargets(data, entity, TargetPrefilter.valueOf(targetPrefilterName), expression).stream()
+                .map(this::wrap)
+                .collect(Collectors.toList());
     }
 
     public ExpressionEntity getOwner() {

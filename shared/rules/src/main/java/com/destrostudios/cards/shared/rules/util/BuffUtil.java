@@ -38,7 +38,7 @@ public class BuffUtil {
             int[] auras = data.getComponent(source, Components.AURAS);
             for (int aura : auras) {
                 int buff = data.getComponent(aura, Components.Aura.AURA_BUFF);
-                if (ConditionUtil.areConditionsFulfilled(data, aura, source, targets)) {
+                if (ConditionUtil.isConditionFulfilled(data, aura, source, targets)) {
                     affectingBuffs.add(buff);
                 }
             }

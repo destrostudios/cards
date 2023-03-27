@@ -9,7 +9,7 @@ public class SpellUtil {
         return data.hasComponent(entity, Components.Target.TARGET_PREFILTER);
     }
 
-    public static boolean isCastable(EntityData data, int card, int spell, int[] targets) {
+    public static boolean isCastable_WithoutSpellCondition(EntityData data, int card, int spell) {
         Integer maximumCastsPerTurn = data.getComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN);
         if (maximumCastsPerTurn != null) {
             int currentCastsPerTurn = data.getOptionalComponent(spell, Components.Spell.CURRENT_CASTS_PER_TURN).orElse(0);
@@ -17,33 +17,21 @@ public class SpellUtil {
                 return false;
             }
         }
-        if (!ConditionUtil.areConditionsFulfilled(data, spell, card, targets)) {
-            return false;
-        }
         int player = data.getComponent(card, Components.OWNED_BY);
         return CostUtil.isPayable(data, player, spell);
+    }
+
+    public static boolean isCastable_OnlySpellCondition(EntityData data, int card, int spell, int[] targets) {
+        return ConditionUtil.isConditionFulfilled(data, spell, card, targets);
     }
 
     // TODO: Maybe just mark the default spells (cast from hand + attack) as such, saves this whole logic and also performance, especially on conditions
 
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
-        int[] conditions = data.getComponent(spell, Components.CONDITIONS);
-        if (conditions != null) {
-            for (int condition : conditions) {
-                if (!data.hasComponent(condition, Components.Condition.IN_HAND)) {
-                    int[] targetChains = data.getComponent(condition, Components.Target.TARGET_CHAINS);
-                    if (targetChains != null) {
-                        for (int targetChain : targetChains) {
-                            int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
-                            int initialTargetChainStep = targetChainSteps[0];
-                            if (data.hasComponent(initialTargetChainStep, Components.Target.TARGET_SOURCE)) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
+        String conditionExpression = data.getComponent(spell, Components.CONDITION);
+        if (conditionExpression != null) {
+            // Currently, all spells with a source.isInHand condition are defaultCastFromHandSpells
+            return conditionExpression.contains("source.isInHand");
         }
         return false;
     }

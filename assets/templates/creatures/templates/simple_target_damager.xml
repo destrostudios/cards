@@ -9,9 +9,7 @@
             <entity>
                 <targetOptional/>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <conditions>
-                    <entity template="../../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>[manaCost]</manaCost>
                 <instantEffectTriggers>
                     <entity>

@@ -6,9 +6,7 @@
         <description>Death: Deal [damage] damage to your opponent.</description>
         <deathEffectTriggers>
             <entity>
-                <conditions>
-                    <entity template="../conditions/target_is_source"/>
-                </conditions>
+                <condition>target == source</condition>
                 <effects>
                     <entity>
                         <targetChains>

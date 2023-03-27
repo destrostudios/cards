@@ -8,9 +8,7 @@
         <description>Draw [draw] random beasts from your deck.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>5</manaCost>
                 <instantEffectTriggers>
                     <entity>
@@ -22,15 +20,7 @@
                                         <targetChain>
                                             <entity>
                                                 <targetPrefilter>LIBRARY</targetPrefilter>
-                                                <targetAll>
-                                                    <entity>
-                                                        <targetChains>
-                                                            <entity template="../targets/targets"/>
-                                                        </targetChains>
-                                                        <ally/>
-                                                        <beast/>
-                                                    </entity>
-                                                </targetAll>
+                                                <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
                                             </entity>
                                             <entity>
                                                 <targetRandom>[draw]</targetRandom>

@@ -10,9 +10,7 @@
         <description>Cast: Draw a spell from your deck that costs ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>3</manaCost>
                 <instantEffectTriggers>
                     <entity>
@@ -24,16 +22,7 @@
                                         <targetChain>
                                             <entity>
                                                 <targetPrefilter>LIBRARY</targetPrefilter>
-                                                <targetAll>
-                                                    <entity>
-                                                        <targetChains>
-                                                            <entity template="../targets/targets"/>
-                                                        </targetChains>
-                                                        <ally/>
-                                                        <spellCard/>
-                                                        <maximumManaCost>[maximumManaCost]</maximumManaCost>
-                                                    </entity>
-                                                </targetAll>
+                                                <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard &amp;&amp; target.manaCost &lt;= [maximumManaCost]</targetAll>
                                             </entity>
                                             <entity>
                                                 <targetRandom>1</targetRandom>

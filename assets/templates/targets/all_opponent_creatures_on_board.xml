@@ -3,15 +3,7 @@
         <targetChain>
             <entity>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <targetAll>
-                    <entity>
-                        <targetChains>
-                            <entity template="./targets"/>
-                        </targetChains>
-                        <opponent/>
-                        <creatureCard/>
-                    </entity>
-                </targetAll>
+                <targetAll>!target.isAlly(source) &amp;&amp; target.isCreatureCard</targetAll>
             </entity>
         </targetChain>
     </entity>

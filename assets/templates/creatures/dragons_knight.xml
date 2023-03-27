@@ -6,15 +6,7 @@
         <description>Your Dragons cost (2) less.</description>
         <auras>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_on_board"/>
-                    <entity template="../conditions/target_is_default_cast_from_hand_spell"/>
-                    <entity template="../conditions/templates/target_caster">
-                        <ally/>
-                        <dragon/>
-                        <inHand/>
-                    </entity>
-                </conditions>
+                <condition>source.isOnBoard &amp;&amp; target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source) &amp;&amp; target.caster.isDragon &amp;&amp; target.caster.isInHand</condition>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

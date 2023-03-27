@@ -8,9 +8,7 @@
         <description>Heal [heal] health of all creatures.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>1</manaCost>
                 <instantEffectTriggers>
                     <entity>

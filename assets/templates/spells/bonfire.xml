@@ -8,9 +8,7 @@
         <description>Heal [heal] health of yourself.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>2</manaCost>
                 <instantEffectTriggers>
                     <entity>

@@ -3,32 +3,7 @@
         <maximumCastsPerTurn>1</maximumCastsPerTurn>
         <tauntable/>
         <targetPrefilter>BOARD</targetPrefilter>
-        <conditions>
-            <entity template="../../conditions/source_on_board"/>
-            <entity>
-                <targetChains>
-                    <entity template="../../targets/targets"/>
-                </targetChains>
-                <opponent/>
-            </entity>
-            <entity>
-                <oneOf>
-                    <entity>
-                        <targetChains>
-                            <entity template="../../targets/targets"/>
-                        </targetChains>
-                        <creatureCard/>
-                    </entity>
-                    <entity>
-                        <targetChains>
-                            <entity template="../../targets/targets"/>
-                        </targetChains>
-                        <player/>
-                        <noCreatures/>
-                    </entity>
-                </oneOf>
-            </entity>
-        </conditions>
+        <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; (target.isCreatureCard || (target.isPlayer &amp;&amp; target.hasNoCreatures))</condition>
         <instantEffectTriggers>
             <entity>
                 <effects>

@@ -5,12 +5,18 @@ import org.apache.commons.jexl3.*;
 
 public class Expressions {
 
-    private static JexlEngine jexlEngine = new JexlBuilder().cache(512).strict(true).silent(false).create();
+    private static final JexlEngine JEXL_ENGINE = new JexlBuilder()
+            .silent(false)
+            .strict(true)
+            .debug(false)
+            .cache(512)
+            .cacheThreshold(Integer.MAX_VALUE)
+            .create();
 
-    public static <T> T evaluate(EntityData data, String expression, int source, int target) {
+    public static <T> T evaluate(EntityData data, String expression, int source, Integer target) {
         JexlContext context = new MapContext();
-        context.set("source", new ExpressionEntity(data, source));
-        context.set("target", new ExpressionEntity(data, target));
-        return (T) jexlEngine.createExpression(expression).evaluate(context);
+        context.set("source", ExpressionEntity.wrap(data, source));
+        context.set("target", ExpressionEntity.wrap(data, target));
+        return (T) JEXL_ENGINE.createExpression(expression).evaluate(context);
     }
 }

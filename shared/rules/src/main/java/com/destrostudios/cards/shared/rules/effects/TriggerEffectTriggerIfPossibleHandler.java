@@ -18,7 +18,7 @@ public class TriggerEffectTriggerIfPossibleHandler extends GameEventHandler<Trig
     public void handle(TriggerEffectTriggerIfPossibleEvent event, NetworkRandom random) {
         LOG.info("Trying to trigger effect trigger (source={}, target={}, effectTrigger={})", event.source, event.targets, event.effectTrigger);
 
-        if (ConditionUtil.areConditionsFulfilled(data, event.effectTrigger, event.source, event.targets)) {
+        if (ConditionUtil.isConditionFulfilled(data, event.effectTrigger, event.source, event.targets)) {
             int[] effects = data.getComponent(event.effectTrigger, Components.EffectTrigger.EFFECTS);
             for (int effect : effects) {
                 int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);

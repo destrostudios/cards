@@ -10,9 +10,7 @@
         <description>Cast: Deal [damage] damage to all creatures.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>8</manaCost>
                 <instantEffectTriggers>
                     <entity>

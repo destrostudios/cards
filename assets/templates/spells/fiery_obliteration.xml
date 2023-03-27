@@ -8,9 +8,7 @@
         <description>Deal [damage] damage to all opponent creatures.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>7</manaCost>
                 <instantEffectTriggers>
                     <entity>

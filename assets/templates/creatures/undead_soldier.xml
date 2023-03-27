@@ -3,9 +3,7 @@
         <description>Death: Summon a 1/1 Zombie.</description>
         <deathEffectTriggers>
             <entity>
-                <conditions>
-                    <entity template="../conditions/target_is_source"/>
-                </conditions>
+                <condition>target == source</condition>
                 <effects>
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
                 </effects>

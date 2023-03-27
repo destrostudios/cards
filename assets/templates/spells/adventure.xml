@@ -8,9 +8,7 @@
         <description>Draw a random creature from your deck that costs ([minimumManaCost]) or more.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>3</manaCost>
                 <instantEffectTriggers>
                     <entity>
@@ -22,16 +20,7 @@
                                         <targetChain>
                                             <entity>
                                                 <targetPrefilter>LIBRARY</targetPrefilter>
-                                                <targetAll>
-                                                    <entity>
-                                                        <targetChains>
-                                                            <entity template="../targets/targets"/>
-                                                        </targetChains>
-                                                        <ally/>
-                                                        <creatureCard/>
-                                                        <minimumManaCost>[minimumManaCost]</minimumManaCost>
-                                                    </entity>
-                                                </targetAll>
+                                                <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
                                             </entity>
                                             <entity>
                                                 <targetRandom>1</targetRandom>

@@ -33,7 +33,7 @@ public class Components {
     public static final ComponentDefinition<Integer> OWNED_BY = createComponent("ownedBy");
     public static final ComponentDefinition<int[]> AURAS = createComponent("auras");
     public static final ComponentDefinition<int[]> BUFFS = createComponent("buffs");
-    public static final ComponentDefinition<int[]> CONDITIONS = createComponent("conditions");
+    public static final ComponentDefinition<String> CONDITION = createComponent("condition");
     public static final ComponentDefinition<Void> SPELL_CARD = createComponent("spellCard");
     public static final ComponentDefinition<int[]> SPELLS = createComponent("spells");
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = createComponent("availableMana");
@@ -102,7 +102,7 @@ public class Components {
         public static final ComponentDefinition<Void> TARGET_SOURCE = createComponent("targetSource");
         public static final ComponentDefinition<Void> TARGET_TARGETS = createComponent("targetTargets");
         public static final ComponentDefinition<int[]> TARGET_CUSTOM = createComponent("targetCustom");
-        public static final ComponentDefinition<int[]> TARGET_ALL = createComponent("targetAll");
+        public static final ComponentDefinition<String> TARGET_ALL = createComponent("targetAll");
         public static final ComponentDefinition<Void> TARGET_OWNER = createComponent("targetOwner");
         public static final ComponentDefinition<Void> TARGET_OPPONENT = createComponent("targetOpponent");
         public static final ComponentDefinition<Void> TARGET_CASTER = createComponent("targetCaster");

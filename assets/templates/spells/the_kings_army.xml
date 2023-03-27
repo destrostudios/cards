@@ -5,9 +5,7 @@
         <description>Summon 2 2/2 Kings Soldiers.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>4</manaCost>
                 <instantEffectTriggers>
                     <entity>

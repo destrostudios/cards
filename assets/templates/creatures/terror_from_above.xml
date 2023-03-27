@@ -8,9 +8,7 @@
         <description>Cast: Destroy all creatures on board.</description>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>10</manaCost>
                 <instantEffectTriggers>
                     <entity>

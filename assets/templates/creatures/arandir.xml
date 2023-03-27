@@ -9,9 +9,7 @@
         <health>3</health>
         <spells>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>5</manaCost>
                 <instantEffectTriggers>
                     <entity>
@@ -26,16 +24,7 @@
                 <description>Deal [damage] damage to target opponent creature.</description>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <conditions>
-                    <entity template="../conditions/source_on_board"/>
-                    <entity>
-                        <targetChains>
-                            <entity template="../targets/targets"/>
-                        </targetChains>
-                        <opponent/>
-                        <creatureCard/>
-                    </entity>
-                </conditions>
+                <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; target.isCreatureCard</condition>
                 <manaCost>1</manaCost>
                 <instantEffectTriggers>
                     <entity>

@@ -9,9 +9,7 @@
         <spells>
             <entity>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                </conditions>
+                <condition>source.isInHand</condition>
                 <manaCost>1</manaCost>
                 <instantEffectTriggers>
                     <entity>

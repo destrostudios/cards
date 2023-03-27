@@ -8,17 +8,7 @@
         <description>Your "[name]"s on board have +[bonusAttack]/+[bonusHealth].</description>
         <auras>
             <entity>
-                <conditions>
-                    <entity template="../conditions/source_on_board"/>
-                    <entity>
-                        <targetChains>
-                            <entity template="../targets/targets"/>
-                        </targetChains>
-                        <ally/>
-                        <name>[name]</name>
-                        <onBoard/>
-                    </entity>
-                </conditions>
+                <condition>source.isOnBoard &amp;&amp; target.isAlly(source) &amp;&amp; (target.name == "[name]") &amp;&amp; target.isOnBoard</condition>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

@@ -31,7 +31,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Entity(Components.OWNED_BY));
         templateManager.registerComponent(new ComponentParser_Entities(Components.AURAS));
         templateManager.registerComponent(new ComponentParser_Entities(Components.BUFFS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.CONDITIONS));
+        templateManager.registerComponent(new ComponentParser_String(Components.CONDITION));
         templateManager.registerComponent(new ComponentParser_Void(Components.SPELL_CARD));
         templateManager.registerComponent(new ComponentParser_Entities(Components.SPELLS));
         templateManager.registerComponent(new ComponentParser_Integer(Components.AVAILABLE_MANA));
@@ -89,7 +89,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_SOURCE));
         templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_TARGETS));
         templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGET_CUSTOM));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGET_ALL));
+        templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_ALL));
         templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_OWNER));
         templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_OPPONENT));
         templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_CASTER));

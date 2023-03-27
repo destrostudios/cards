@@ -6,15 +6,7 @@
         <spells>
             <entity>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <conditions>
-                    <entity template="../conditions/source_in_hand"/>
-                    <entity>
-                        <targetChains>
-                            <entity template="../targets/targets"/>
-                        </targetChains>
-                        <dragon/>
-                    </entity>
-                </conditions>
+                <condition>source.isInHand &amp;&amp; target.isDragon</condition>
                 <manaCost>4</manaCost>
                 <instantEffectTriggers>
                     <entity>

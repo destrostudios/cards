@@ -8,6 +8,7 @@ import com.destrostudios.cards.shared.rules.TargetPrefilter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TargetUtil {
 
@@ -49,22 +50,21 @@ public class TargetUtil {
                 initialTargets.add(customTarget);
             }
         }
-        int[] conditions = data.getComponent(targetChainStep, Components.Target.TARGET_ALL);
-        if (conditions != null) {
+        String condition = data.getComponent(targetChainStep, Components.Target.TARGET_ALL);
+        if (condition != null) {
             List<Integer> prefilteredTargets = getPrefilteredTargets(data, targetChainStep);
-            initialTargets.addAll(getAllConditionTargets(data, prefilteredTargets, conditions, source));
+            initialTargets.addAll(getAllConditionTargets(data, prefilteredTargets, condition, source));
         }
         return initialTargets;
     }
 
-    private static LinkedList<Integer> getAllConditionTargets(EntityData data, List<Integer> prefilteredTarget, int[] conditions, int source) {
-        LinkedList<Integer> targets = new LinkedList<>();
-        for (int target : prefilteredTarget) {
-            if (ConditionUtil.areConditionsFulfilled(data, conditions, source, new int[] { target })) {
-                targets.add(target);
-            }
+    private static List<Integer> getAllConditionTargets(EntityData data, List<Integer> prefilteredTargets, String condition, int source) {
+        if (condition.isEmpty()) {
+            return prefilteredTargets;
         }
-        return targets;
+        return prefilteredTargets.stream()
+                .filter(target -> ConditionUtil.isConditionFulfilled(data, condition, source, new int[] { target }))
+                .collect(Collectors.toList());
     }
 
     public static List<Integer> getPrefilteredTargets(EntityData data, int entity) {

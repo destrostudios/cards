@@ -15,19 +15,13 @@
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity>
-                                        <targetChain>
-                                            <entity>
-                                                <targetPrefilter>LIBRARY</targetPrefilter>
-                                                <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
-                                            </entity>
-                                            <entity>
-                                                <targetRandom>[draw]</targetRandom>
-                                            </entity>
-                                        </targetChain>
+                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                        <targetRandom>[draw]</targetRandom>
                                     </entity>
-                                </targetChains>
+                                </targets>
                                 <addToHand/>
                             </entity>
                         </effects>

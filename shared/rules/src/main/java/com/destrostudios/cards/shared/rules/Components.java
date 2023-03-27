@@ -97,15 +97,9 @@ public class Components {
 
     public static class Target {
         public static final ComponentDefinition<TargetPrefilter> TARGET_PREFILTER = createComponent("targetPrefilter");
-        public static final ComponentDefinition<int[]> TARGET_CHAINS = createComponent("targetChains");
-        public static final ComponentDefinition<int[]> TARGET_CHAIN = createComponent("targetChain");
-        public static final ComponentDefinition<Void> TARGET_SOURCE = createComponent("targetSource");
-        public static final ComponentDefinition<Void> TARGET_TARGETS = createComponent("targetTargets");
-        public static final ComponentDefinition<int[]> TARGET_CUSTOM = createComponent("targetCustom");
+        public static final ComponentDefinition<int[]> TARGETS = createComponent("targets");
+        public static final ComponentDefinition<String> TARGET = createComponent("target");
         public static final ComponentDefinition<String> TARGET_ALL = createComponent("targetAll");
-        public static final ComponentDefinition<Void> TARGET_OWNER = createComponent("targetOwner");
-        public static final ComponentDefinition<Void> TARGET_OPPONENT = createComponent("targetOpponent");
-        public static final ComponentDefinition<Void> TARGET_CASTER = createComponent("targetCaster");
         public static final ComponentDefinition<Integer> TARGET_RANDOM = createComponent("targetRandom");
     }
 

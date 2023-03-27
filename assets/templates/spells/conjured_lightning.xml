@@ -16,15 +16,15 @@
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/all_opponent_creatures_on_board"/>
-                                </targetChains>
+                                </targets>
                                 <damage>[opponentDamage]</damage>
                             </entity>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/all_ally_creatures_on_board"/>
-                                </targetChains>
+                                </targets>
                                 <damage>[allyDamage]</damage>
                             </entity>
                         </effects>

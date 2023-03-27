@@ -21,8 +21,8 @@ public class TriggerEffectTriggerIfPossibleHandler extends GameEventHandler<Trig
         if (ConditionUtil.isConditionFulfilled(data, event.effectTrigger, event.source, event.targets)) {
             int[] effects = data.getComponent(event.effectTrigger, Components.EffectTrigger.EFFECTS);
             for (int effect : effects) {
-                int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);
-                List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetChains, event.source, event.targets);
+                int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);
+                List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event.targets);
                 for (int target : affectedTargets) {
                     events.fire(new TriggerEffectEvent(event.source, target, effect), random);
                 }

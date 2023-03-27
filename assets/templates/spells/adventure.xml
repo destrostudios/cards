@@ -15,19 +15,13 @@
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity>
-                                        <targetChain>
-                                            <entity>
-                                                <targetPrefilter>LIBRARY</targetPrefilter>
-                                                <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
-                                            </entity>
-                                            <entity>
-                                                <targetRandom>1</targetRandom>
-                                            </entity>
-                                        </targetChain>
+                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
+                                        <targetRandom>1</targetRandom>
                                     </entity>
-                                </targetChains>
+                                </targets>
                                 <addToHand/>
                             </entity>
                         </effects>

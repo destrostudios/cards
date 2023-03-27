@@ -7,11 +7,13 @@ import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 public class ExpressionEntity {
 
     private EntityData data;
+    @Getter
     private int entity;
 
     public String getName() {
@@ -80,6 +82,14 @@ public class ExpressionEntity {
 
     public boolean getHasNoCreatures() {
         return data.query(Components.CREATURE_ZONE).list(card -> data.getComponent(card, Components.OWNED_BY) == entity).isEmpty();
+    }
+
+    public ExpressionEntity getOwner() {
+        return wrap(data.getComponent(entity, Components.OWNED_BY));
+    }
+
+    public ExpressionEntity getOpponent() {
+        return wrap(data.getComponent(entity, Components.NEXT_PLAYER));
     }
 
     public ExpressionEntity getCaster() {

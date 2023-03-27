@@ -15,9 +15,9 @@
                     <entity>
                         <effects>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../../targets/targets"/>
-                                </targetChains>
+                                </targets>
                                 <damage>[damage]</damage>
                             </entity>
                             <entity template="../../effects/add_source_to_board"/>

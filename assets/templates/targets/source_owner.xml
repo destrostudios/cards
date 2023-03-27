@@ -1,12 +1,5 @@
 <template>
     <entity>
-        <targetChain>
-            <entity>
-                <targetSource/>
-            </entity>
-            <entity>
-                <targetOwner/>
-            </entity>
-        </targetChain>
+        <target>source.owner</target>
     </entity>
 </template>

@@ -17,19 +17,13 @@
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity>
-                                        <targetChain>
-                                            <entity>
-                                                <targetPrefilter>GRAVEYARD</targetPrefilter>
-                                                <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
-                                            </entity>
-                                            <entity>
-                                                <targetRandom>1</targetRandom>
-                                            </entity>
-                                        </targetChain>
+                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
+                                        <targetRandom>1</targetRandom>
                                     </entity>
-                                </targetChains>
+                                </targets>
                                 <addToHand/>
                             </entity>
                         </effects>

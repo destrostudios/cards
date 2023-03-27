@@ -14,19 +14,13 @@
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity>
-                                        <targetChain>
-                                            <entity>
-                                                <targetPrefilter>GRAVEYARD</targetPrefilter>
-                                                <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
-                                            </entity>
-                                            <entity>
-                                                <targetRandom>1</targetRandom>
-                                            </entity>
-                                        </targetChain>
+                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                        <targetRandom>1</targetRandom>
                                     </entity>
-                                </targetChains>
+                                </targets>
                                 <addToBoard/>
                             </entity>
                         </effects>

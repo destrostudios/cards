@@ -13,9 +13,9 @@
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/all_creatures_on_board"/>
-                                </targetChains>
+                                </targets>
                                 <addToHand/>
                             </entity>
                         </effects>

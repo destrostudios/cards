@@ -43,11 +43,10 @@ public class SpellUtil {
                 int[] effects = data.getComponent(instantEffectTrigger, Components.EffectTrigger.EFFECTS);
                 for (int effect : effects) {
                     if (data.hasComponent(effect, Components.Effect.BATTLE)) {
-                        int[] targetChains = data.getComponent(effect, Components.Target.TARGET_CHAINS);
-                        for (int targetChain : targetChains) {
-                            int[] targetChainSteps = data.getComponent(targetChain, Components.Target.TARGET_CHAIN);
-                            int initialTargetChainStep = targetChainSteps[0];
-                            if (data.hasComponent(initialTargetChainStep, Components.Target.TARGET_TARGETS)) {
+                        int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);
+                        for (int targetDefinition : targetDefinitions) {
+                            String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
+                            if (targetExpression.equals("targets")) {
                                 return true;
                             }
                         }

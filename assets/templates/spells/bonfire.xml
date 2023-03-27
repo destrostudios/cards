@@ -15,9 +15,9 @@
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/source_owner"/>
-                                </targetChains>
+                                </targets>
                                 <heal>[heal]</heal>
                             </entity>
                         </effects>

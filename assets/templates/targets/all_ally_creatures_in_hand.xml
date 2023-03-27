@@ -1,10 +1,6 @@
 <template>
     <entity>
-        <targetChain>
-            <entity>
-                <targetPrefilter>HAND</targetPrefilter>
-                <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard</targetAll>
-            </entity>
-        </targetChain>
+        <targetPrefilter>HAND</targetPrefilter>
+        <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard</targetAll>
     </entity>
 </template>

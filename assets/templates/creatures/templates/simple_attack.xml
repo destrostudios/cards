@@ -8,9 +8,9 @@
             <entity>
                 <effects>
                     <entity>
-                        <targetChains>
+                        <targets>
                             <entity template="../../targets/targets"/>
-                        </targetChains>
+                        </targets>
                         <battle/>
                     </entity>
                 </effects>

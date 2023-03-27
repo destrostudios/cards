@@ -84,15 +84,9 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
         templateManager.registerComponent(new ComponentParser_Enum<>(Components.Target.TARGET_PREFILTER, TargetPrefilter::valueOf));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGET_CHAINS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGET_CHAIN));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_SOURCE));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_TARGETS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGET_CUSTOM));
+        templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGETS));
+        templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET));
         templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_ALL));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_OWNER));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_OPPONENT));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_CASTER));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Target.TARGET_RANDOM));
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TARGET_OPTIONAL));

@@ -17,19 +17,13 @@
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity>
-                                        <targetChain>
-                                            <entity>
-                                                <targetPrefilter>LIBRARY</targetPrefilter>
-                                                <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard &amp;&amp; target.manaCost &lt;= [maximumManaCost]</targetAll>
-                                            </entity>
-                                            <entity>
-                                                <targetRandom>1</targetRandom>
-                                            </entity>
-                                        </targetChain>
+                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard &amp;&amp; target.manaCost &lt;= [maximumManaCost]</targetAll>
+                                        <targetRandom>1</targetRandom>
                                     </entity>
-                                </targetChains>
+                                </targets>
                                 <addToHand/>
                             </entity>
                         </effects>

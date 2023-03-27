@@ -13,9 +13,9 @@
                     <entity>
                         <effects>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../../targets/source_owner"/>
-                                </targetChains>
+                                </targets>
                                 <draw>[draw]</draw>
                             </entity>
                             <entity template="../../effects/add_source_to_board"/>

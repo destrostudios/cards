@@ -1,10 +1,6 @@
 <template>
     <entity>
-        <targetChain>
-            <entity>
-                <targetPrefilter>BOARD</targetPrefilter>
-                <targetAll/>
-            </entity>
-        </targetChain>
+        <targetPrefilter>BOARD</targetPrefilter>
+        <targetAll/>
     </entity>
 </template>

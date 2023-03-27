@@ -17,9 +17,9 @@
                     <entity>
                         <effects>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/all_ally_creatures_on_board"/>
-                                </targetChains>
+                                </targets>
                                 <addBuff>
                                     <entity>
                                         <source>#card</source>

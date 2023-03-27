@@ -16,9 +16,9 @@
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/targets"/>
-                                </targetChains>
+                                </targets>
                                 <damage>[damage]</damage>
                             </entity>
                         </effects>

@@ -18,15 +18,15 @@
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/source_owner"/>
-                                </targetChains>
+                                </targets>
                                 <damage>[damage]</damage>
                             </entity>
                             <entity>
-                                <targetChains>
+                                <targets>
                                     <entity template="../targets/source_owner"/>
-                                </targetChains>
+                                </targets>
                                 <heal>[heal]</heal>
                             </entity>
                         </effects>

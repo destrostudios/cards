@@ -1,8 +1,0 @@
-<template>
-    <entity>
-        <targetChains>
-            <entity template="../targets/targets"/>
-        </targetChains>
-        <defaultCastFromHandSpell/>
-    </entity>
-</template>

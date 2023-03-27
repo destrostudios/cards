@@ -1,9 +1,0 @@
-<template>
-    <entity>
-        <targetChain>
-            <entity>
-                <targetCustom>[target]</targetCustom>
-            </entity>
-        </targetChain>
-    </entity>
-</template>

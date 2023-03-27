@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
-public class DestroyCardsWithZeroHealthHandler extends GameEventHandler<DamageEvent> {
+public class DestroyOnZeroHealthHandler extends GameEventHandler<DamageEvent> {
 
     @Override
     public void handle(DamageEvent event, NetworkRandom random) {

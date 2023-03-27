@@ -95,21 +95,6 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Void(Components.Target.TARGET_CASTER));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Target.TARGET_RANDOM));
 
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Condition.ONE_OF));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.NOT));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.IS_SOURCE));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.ALLY));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.OPPONENT));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.PLAYER));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.IN_LIBRARY));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.IN_HAND));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.ON_BOARD));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.IN_GRAVEYARD));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Condition.MINIMUM_MANA_COST));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Condition.MAXIMUM_MANA_COST));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.NO_CREATURES));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Condition.DEFAULT_CAST_FROM_HAND_SPELL));
-
         templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.CURRENT_CASTS_PER_TURN));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.MAXIMUM_CASTS_PER_TURN));

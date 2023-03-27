@@ -109,23 +109,6 @@ public class Components {
         public static final ComponentDefinition<Integer> TARGET_RANDOM = createComponent("targetRandom");
     }
 
-    public static class Condition {
-        public static final ComponentDefinition<int[]> ONE_OF = createComponent("oneOf");
-        public static final ComponentDefinition<Void> NOT = createComponent("not");
-        public static final ComponentDefinition<Void> IS_SOURCE = createComponent("isSource");
-        public static final ComponentDefinition<Void> ALLY = createComponent("ally");
-        public static final ComponentDefinition<Void> OPPONENT = createComponent("opponent");
-        public static final ComponentDefinition<Void> PLAYER = createComponent("player");
-        public static final ComponentDefinition<Void> IN_LIBRARY = createComponent("inLibrary");
-        public static final ComponentDefinition<Void> IN_HAND = createComponent("inHand");
-        public static final ComponentDefinition<Void> ON_BOARD = createComponent("onBoard");
-        public static final ComponentDefinition<Void> IN_GRAVEYARD = createComponent("inGraveyard");
-        public static final ComponentDefinition<Integer> MINIMUM_MANA_COST = createComponent("minimumManaCost");
-        public static final ComponentDefinition<Integer> MAXIMUM_MANA_COST = createComponent("maximumManaCost");
-        public static final ComponentDefinition<Void> NO_CREATURES = createComponent("noCreatures");
-        public static final ComponentDefinition<Void> DEFAULT_CAST_FROM_HAND_SPELL = createComponent("defaultCastFromHandSpell");
-    }
-
     public static class Spell {
         public static final ComponentDefinition<Void> TARGET_OPTIONAL = createComponent("targetOptional");
         public static final ComponentDefinition<Integer> CURRENT_CASTS_PER_TURN = createComponent("currentCastsThisTurn");

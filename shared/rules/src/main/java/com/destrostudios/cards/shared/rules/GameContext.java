@@ -57,7 +57,7 @@ public class GameContext {
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
         addEventHandlers(events.instant(), DamageEvent.class,
                 new DamageHandler(),
-                new DestroyCardsWithZeroHealthHandler()
+                new DestroyOnZeroHealthHandler()
         );
         addEventHandler(events.instant(), HealEvent.class, new HealHandler());
         addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());

@@ -3,7 +3,7 @@ package com.destrostudios.cards.shared.application;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.templates.*;
 import com.destrostudios.cards.shared.entities.templates.components.*;
-import com.destrostudios.cards.shared.entities.templates.xml.*;
+import com.destrostudios.cards.shared.entities.templates.formats.*;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.TargetPrefilter;

@@ -9,23 +9,19 @@ import java.io.FileNotFoundException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author Carl
- */
-public class FileAssets{
-    
+public class FileAssets {
+
     public static String ROOT;
-    
-    public static void readRootFile(){
+
+    public static void readRootFile() {
         ROOT = FileManager.getFileContent("./assets.ini");
     }
-    
-    public static boolean exists(String filePath){
+
+    public static boolean exists(String filePath) {
         return FileManager.existsFile(ROOT + filePath);
     }
-    
-    public static ImageIcon getImageIcon(String filePath){
+
+    public static ImageIcon getImageIcon(String filePath) {
         return new ImageIcon(ROOT + filePath);
     }
 
@@ -33,15 +29,14 @@ public class FileAssets{
         return new ImageIcon(getImage(filePath, width, height));
     }
 
-    public static BufferedImage getImage(String filePath, int width, int height){
+    public static BufferedImage getImage(String filePath, int width, int height) {
         BufferedImage image = getImage(filePath);
-        if(width == -1){
+        if (width == -1) {
             width = (int) ((((float) image.getWidth()) / image.getHeight()) * height);
-        }
-        else if(height == -1){
+        } else if (height == -1) {
             height = (int) ((((float) image.getHeight()) / image.getWidth()) * width);
         }
-        if((width != image.getWidth()) || (height != image.getHeight())){
+        if ((width != image.getWidth()) || (height != image.getHeight())) {
             BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = resizedImage.createGraphics();
             graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -51,20 +46,20 @@ public class FileAssets{
         }
         return image;
     }
-    
-    public static BufferedImage getImage(String filePath){
-        try{
+
+    public static BufferedImage getImage(String filePath) {
+        try {
             return ImageIO.read(new File(ROOT + filePath));
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.err.println("Error while reading image file '" + filePath + "': " + ex.getMessage());
         }
         return null;
     }
-    
-    public static FileInputStream getInputStream(String filePath){
-        try{
+
+    public static FileInputStream getInputStream(String filePath) {
+        try {
             return new FileInputStream(ROOT + filePath);
-        }catch(FileNotFoundException ex){
+        } catch (FileNotFoundException ex) {
             System.err.println("Error while reading file '" + filePath + "': " + ex.getMessage());
         }
         return null;

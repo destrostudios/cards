@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.entities.templates.xml;
+package com.destrostudios.cards.shared.entities.templates.formats;
 
 import com.destrostudios.cards.shared.entities.templates.TemplateFormat;
 import org.jdom2.Document;

@@ -90,9 +90,9 @@ public class TemplateParser<NODE> {
     }
 
     private void loadEntity(EntityData entityData, int entity, NODE entityNode) {
-        String templateXMLText = format.getAttribute(entityNode, "template");
-        if (templateXMLText != null) {
-            EntityTemplate.loadTemplate(entityData, entity, parseTemplate(entityData, templateXMLText));
+        String templateText = format.getAttribute(entityNode, "template");
+        if (templateText != null) {
+            EntityTemplate.loadTemplate(entityData, entity, parseTemplate(entityData, templateText));
         }
         for (NODE componentNode : format.getChildren(entityNode)) {
             if (isNodeEnabled(entityData, componentNode)) {
@@ -103,12 +103,12 @@ public class TemplateParser<NODE> {
         }
     }
 
-    public String parseTemplateText(EntityData entityData, String templateXMLText) {
-        return parseTemplate(entityData, templateXMLText).getText();
+    public String parseTemplateText(EntityData entityData, String templateText) {
+        return parseTemplate(entityData, templateText).getText();
     }
 
-    public EntityTemplate parseTemplate(EntityData entityData, String templateXMLText) {
-        String template = templateXMLText;
+    public EntityTemplate parseTemplate(EntityData entityData, String templateText) {
+        String template = templateText;
         if (template.startsWith("./") || template.startsWith("../")) {
             template = currentDirectories.lastElement() + template;
         }

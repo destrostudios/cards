@@ -34,9 +34,9 @@ public class TemplateManager {
     }
 
     public ComponentParser getComponentParser(Object node){
-        ComponentParser xmlComponentParser = componentParsers.get(format.getName(node));
-        if (xmlComponentParser != null) {
-            return xmlComponentParser;
+        ComponentParser componentParser = componentParsers.get(format.getName(node));
+        if (componentParser != null) {
+            return componentParser;
         }
         throw new RuntimeException("Unregistered component '" + format.getName(node) + "'");
     }

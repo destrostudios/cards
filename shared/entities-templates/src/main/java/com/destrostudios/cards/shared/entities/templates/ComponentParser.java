@@ -19,7 +19,7 @@ public abstract class ComponentParser<NODE, T> {
 
     public abstract T parseValue(TemplateParser<NODE> parser, TemplateFormat<NODE> format, EntityData entityData, NODE node);
 
-    protected int[] createChildEntities(TemplateParser<NODE> parser, TemplateFormat<NODE> format, EntityData entityData, NODE node, int offset, String parameterName) {
+    protected int[] createChildEntities(TemplateParser<NODE> parser, TemplateFormat<NODE> format, EntityData entityData, NODE node, String attributeName) {
         LinkedList<Integer> childEntities = new LinkedList<>();
         List<NODE> children = format.getChildren(node);
         if (children.size() > 0) {
@@ -34,14 +34,14 @@ public abstract class ComponentParser<NODE, T> {
         }
         int parameterIndex = 0;
         String attributeValue;
-        while ((attributeValue = format.getAttribute(node, parameterName + parameterIndex)) != null) {
+        while ((attributeValue = format.getAttribute(node, attributeName + parameterIndex)) != null) {
             childEntities.add(parseEntity(parser, entityData,  attributeValue));
             parameterIndex++;
         }
         return Util.convertToArray_Integer(childEntities);
     }
 
-    protected int createChildEntity(TemplateParser<NODE> parser, TemplateFormat<NODE> format, EntityData entityData, NODE node, int index, String parameterName) {
+    protected int createChildEntity(TemplateParser<NODE> parser, TemplateFormat<NODE> format, EntityData entityData, NODE node, int index, String attributeName) {
         List<NODE> children = format.getChildren(node);
         if (children.size() > 0) {
             if (index < children.size()) {
@@ -50,7 +50,7 @@ public abstract class ComponentParser<NODE, T> {
         } else if ((index == 0) && (format.getText(node).length() > 0)) {
             return parseEntity(parser, entityData, format.getText(node));
         }
-        return parseEntity(parser, entityData, format.getAttribute(node, parameterName));
+        return parseEntity(parser, entityData, format.getAttribute(node, attributeName));
     }
 
     private int parseEntity(TemplateParser<NODE> parser, EntityData entityData, String text) {

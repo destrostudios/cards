@@ -28,7 +28,7 @@ public class TemplateParser<NODE> {
         HashMap<String, Integer> entities = new HashMap<>(10);
         cachedEntities.push(entities);
         HashMap<String, String> values = new HashMap<>();
-        NODE valuesNode = format.getChild(root, "values");
+        NODE valuesNode = format.getChild(root, TemplateKeyword.VALUES);
         if (valuesNode != null) {
             for (NODE valueNode : format.getChildren(valuesNode)) {
                 values.put(format.getName(valueNode), format.getText(valueNode));
@@ -39,9 +39,9 @@ public class TemplateParser<NODE> {
         values.putAll(template.getInput());
         cachedValues.push(values);
         boolean isFirstEntity = true;
-        for (NODE entityNode : format.getChildren(root, "entity")) {
+        for (NODE entityNode : format.getChildren(root, TemplateKeyword.ENTITY)) {
             if (isFirstEntity) {
-                String id = format.getAttribute(entityNode, "id");
+                String id = format.getAttribute(entityNode, TemplateKeyword.ID);
                 if (id != null) {
                     cachedEntities.lastElement().put(id, entity);
                 }
@@ -66,11 +66,11 @@ public class TemplateParser<NODE> {
     }
 
     public int createAndLoadEntity(EntityData entityData, NODE entityNode) {
-        if ((!isNodeEnabled(entityData, entityNode)) || format.getName(entityNode).equals("empty")) {
+        if ((!isNodeEnabled(entityData, entityNode)) || format.getName(entityNode).equals(TemplateKeyword.EMPTY)) {
             return -1;
         }
         Integer entity = null;
-        String id = format.getAttribute(entityNode, "id");
+        String id = format.getAttribute(entityNode, TemplateKeyword.ID);
         if (id != null) {
             entity = cachedEntities.lastElement().get(id);
         }
@@ -90,7 +90,7 @@ public class TemplateParser<NODE> {
     }
 
     private void loadEntity(EntityData entityData, int entity, NODE entityNode) {
-        String templateText = format.getAttribute(entityNode, "template");
+        String templateText = format.getAttribute(entityNode, TemplateKeyword.TEMPLATE);
         if (templateText != null) {
             EntityTemplate.loadTemplate(entityData, entity, parseTemplate(entityData, templateText));
         }
@@ -123,7 +123,7 @@ public class TemplateParser<NODE> {
     }
 
     private boolean isNodeEnabled(EntityData entityData, NODE node) {
-        String ifCondition = format.getAttribute(node, "if");
+        String ifCondition = format.getAttribute(node, TemplateKeyword.IF);
         return ((ifCondition == null) || parseValueBoolean(entityData, ifCondition));
     }
 

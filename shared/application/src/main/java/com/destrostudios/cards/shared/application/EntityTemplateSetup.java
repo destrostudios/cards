@@ -62,6 +62,7 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Entities(Components.EffectTrigger.EFFECTS));
 
+        templateManager.registerComponent(new ComponentParser_String(Components.Effect.REPEAT));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.DAMAGE));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.HEAL));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.DRAW));

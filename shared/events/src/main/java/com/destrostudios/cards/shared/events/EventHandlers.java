@@ -3,7 +3,6 @@ package com.destrostudios.cards.shared.events;
 import java.util.*;
 import java.util.function.Predicate;
 
-@SuppressWarnings({"unchecked"})
 public class EventHandlers {
 
     private final Map<Predicate, List<EventHandler>> handlers = new LinkedHashMap<>();

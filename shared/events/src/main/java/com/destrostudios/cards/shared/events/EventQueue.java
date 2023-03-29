@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-@SuppressWarnings({"unchecked"})
 public class EventQueue {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventQueue.class);
@@ -15,8 +14,8 @@ public class EventQueue {
     private final EventHandlers instantHandlers = new EventHandlers();
     private final EventHandlers resolvedHandlers = new EventHandlers();
     private Event parentEvent;
-    private LinkedList<TriggeredEventHandler> triggeredEventHandlers = new LinkedList<>();
-    private Map<Event, List<TriggeredEventHandler>> waitingResolvedEventHandlers = new HashMap<>();
+    private LinkedList<PendingEventHandler> pendingEventHandlers = new LinkedList<>();
+    private Map<Event, List<PendingEventHandler>> waitingForRootResolvedEventHandlers = new HashMap<>();
 
     public void fire(Event event, NetworkRandom random) {
         event.setParent(parentEvent);
@@ -24,15 +23,22 @@ public class EventQueue {
         triggerHandlers(instantHandlers, event, random);
         Event rootEvent = event.getRoot();
         for (EventHandler eventHandler : resolvedHandlers.get(event.getClass())) {
-            waitingResolvedEventHandlers.computeIfAbsent(rootEvent, e -> new LinkedList<>()).add(new TriggeredEventHandler(event, eventHandler, random));
+            waitingForRootResolvedEventHandlers.computeIfAbsent(rootEvent, e -> new LinkedList<>()).add(new PendingEventHandler(event, eventHandler, random));
         }
+    }
+
+    // TODO: Will be used for cases like Defile, where subtrees should be resolved (e.g. deathrattles between the different aoes)
+    public void fireAndResolve(Event event, NetworkRandom random) {
+        triggerHandlers(preHandlers, event, random);
+        triggerHandlers(instantHandlers, event, random);
+        triggerHandlers(resolvedHandlers, event, random);
     }
 
     private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event, NetworkRandom random) {
         Iterator<EventHandler> eventHandlersIterator = eventHandlers.get(event.getClass()).iterator();
         int startingIndex = 0;
-        for (TriggeredEventHandler tiggeredEventHandler : triggeredEventHandlers) {
-            if (tiggeredEventHandler.getEvent().getParent() != event.getParent()) {
+        for (PendingEventHandler pendingEventHandler : pendingEventHandlers) {
+            if (pendingEventHandler.getEvent().getParent() != event.getParent()) {
                 break;
             }
             startingIndex++;
@@ -40,50 +46,45 @@ public class EventQueue {
         int i = startingIndex;
         while (eventHandlersIterator.hasNext()) {
             EventHandler eventHandler = eventHandlersIterator.next();
-            triggeredEventHandlers.add(i, new TriggeredEventHandler(event, eventHandler, random));
+            pendingEventHandlers.add(i, new PendingEventHandler(event, eventHandler, random));
             i++;
         }
     }
 
-    public boolean hasNextTriggeredHandler() {
-        return (triggeredEventHandlers.size() > 0);
+    public boolean hasPendingEventHandler() {
+        return (pendingEventHandlers.size() > 0);
     }
 
-    public void triggerNextHandler() {
-        TriggeredEventHandler triggeredHandler = triggeredEventHandlers.poll();
-        Event event = triggeredHandler.getEvent();
+    public void triggerNextEventHandler() {
+        PendingEventHandler pendingEventHandler = pendingEventHandlers.poll();
+        Event event = pendingEventHandler.getEvent();
         parentEvent = event;
-        LOG.debug("handling {}", event);
-        triggeredHandler.handleEvent();
+        LOG.debug("Handling {}", event);
+        pendingEventHandler.handleEvent();
         parentEvent = null;
-        checkCancelledEvents();
-        checkIfRootEventIsResolved(event.getRoot());
+        // Add first and then remove cancelled ones (In case any of those new handlers were cancelled, they are being removed directly as well)
+        addHandlersWaitingForRootResolved(event.getRoot());
+        removeCancelledHandlers();
     }
 
-    private void checkCancelledEvents() {
-        for (int i = 0; i < triggeredEventHandlers.size(); i++) {
-            TriggeredEventHandler pendingTriggeredEventHandler = triggeredEventHandlers.get(i);
-            if (pendingTriggeredEventHandler.getEvent().isCancelled()) {
-                LOG.debug("{} was cancelled", pendingTriggeredEventHandler);
-                triggeredEventHandlers.remove(i);
-                i--;
-            }
-        }
-    }
-
-    private void checkIfRootEventIsResolved(Event rootEvent) {
-        boolean isRootResolved = true;
-        for (TriggeredEventHandler pendingTriggeredHandler : triggeredEventHandlers) {
-            Event pendingRootEvent = pendingTriggeredHandler.getEvent().getRoot();
-            if (pendingRootEvent == rootEvent) {
-                isRootResolved = false;
-                break;
-            }
-        }
+    private void addHandlersWaitingForRootResolved(Event rootEvent) {
+        boolean isRootResolved = pendingEventHandlers.stream().noneMatch(pendingTriggeredHandler -> pendingTriggeredHandler.getEvent().getRoot() == rootEvent);
         if (isRootResolved) {
-            List<TriggeredEventHandler> resolvedEventHandlers = waitingResolvedEventHandlers.remove(rootEvent);
+            List<PendingEventHandler> resolvedEventHandlers = waitingForRootResolvedEventHandlers.remove(rootEvent);
             if (resolvedEventHandlers != null) {
-                triggeredEventHandlers.addAll(resolvedEventHandlers);
+                pendingEventHandlers.addAll(resolvedEventHandlers);
+            }
+        }
+    }
+
+    private void removeCancelledHandlers() {
+        for (int i = 0; i < pendingEventHandlers.size(); i++) {
+            PendingEventHandler pendingPendingEventHandler = pendingEventHandlers.get(i);
+            if (pendingPendingEventHandler.getEvent().isCancelled()) {
+                LOG.debug("{} was cancelled", pendingPendingEventHandler);
+                pendingEventHandlers.remove(i);
+                waitingForRootResolvedEventHandlers.remove(pendingPendingEventHandler.getEvent());
+                i--;
             }
         }
     }

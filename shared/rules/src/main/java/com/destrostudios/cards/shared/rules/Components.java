@@ -79,6 +79,7 @@ public class Components {
     }
 
     public static class Effect {
+        public static final ComponentDefinition<String> REPEAT = createComponent("repeat");
         public static final ComponentDefinition<String> DAMAGE = createComponent("damage");
         public static final ComponentDefinition<String> HEAL = createComponent("heal");
         public static final ComponentDefinition<String> DRAW = createComponent("draw");

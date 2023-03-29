@@ -55,10 +55,8 @@ public class GameContext {
         addEventHandler(events.instant(), SetAvailableManaEvent.class, new SetAvailableManaHandler());
         addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
-        addEventHandlers(events.instant(), DamageEvent.class,
-                new DamageHandler(),
-                new DestroyOnZeroHealthHandler()
-        );
+        addEventHandlers(events.instant(), DamageEvent.class, new DamageHandler());
+        addEventHandlers(events.resolved(), DamageEvent.class, new DestroyOnZeroHealthHandler());
         addEventHandler(events.instant(), HealEvent.class, new HealHandler());
         addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
         addEventHandler(events.resolved(), DestructionEvent.class, new TriggerOnDeathHandler());
@@ -97,6 +95,7 @@ public class GameContext {
         );
         addEventHandler(events.instant(), TriggerEffectTriggerIfPossibleEvent.class, new TriggerEffectTriggerIfPossibleHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
+        addEventHandler(events.instant(), TriggerEffectImpactEvent.class, new TriggerEffectImpactHandler());
         addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
         addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
         addEventHandler(events.instant(), SummonEvent.class, new SummonHandler());

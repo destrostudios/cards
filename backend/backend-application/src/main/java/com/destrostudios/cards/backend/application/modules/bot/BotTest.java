@@ -79,8 +79,8 @@ public class BotTest {
 
     private static void applyAction(GameContext gameContext, Event action, NetworkRandom random) {
         gameContext.getEvents().fire(action, random);
-        while (gameContext.getEvents().hasNextTriggeredHandler()) {
-            gameContext.getEvents().triggerNextHandler();
+        while (gameContext.getEvents().hasPendingEventHandler()) {
+            gameContext.getEvents().triggerNextEventHandler();
         }
     }
 }

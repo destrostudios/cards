@@ -1,14 +1,12 @@
 package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.util.ConditionUtil;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.util.TargetUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class TriggerEffectTriggerIfPossibleHandler extends GameEventHandler<TriggerEffectTriggerIfPossibleEvent> {
 
@@ -19,12 +17,12 @@ public class TriggerEffectTriggerIfPossibleHandler extends GameEventHandler<Trig
         LOG.info("Trying to trigger effect trigger (source={}, target={}, effectTrigger={})", event.source, event.targets, event.effectTrigger);
 
         if (ConditionUtil.isConditionFulfilled(data, event.effectTrigger, event.source, event.targets)) {
+            String repeatExpression = data.getComponent(event.effectTrigger, Components.Effect.REPEAT);
+            int repetitions = ((repeatExpression != null) ? Expressions.evaluate(data, repeatExpression, event.source, event.targets) : 1);
             int[] effects = data.getComponent(event.effectTrigger, Components.EffectTrigger.EFFECTS);
             for (int effect : effects) {
-                int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);
-                List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event.targets);
-                for (int target : affectedTargets) {
-                    events.fire(new TriggerEffectEvent(event.source, target, effect), random);
+                for (int i = 0; i < repetitions; i++) {
+                    events.fire(new TriggerEffectEvent(event.source, event.targets, effect), random);
                 }
             }
         }

@@ -13,6 +13,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
 
     @Override
     public void handle(DamageEvent event, NetworkRandom random) {
+        boolean damaged = false;
         LOG.info("Dealing {} damage to {}", event.damage, event.target);
         if (data.getOptionalComponent(event.target, Components.Ability.DIVINE_SHIELD).orElse(false)) {
             LOG.info("Remove divine shield from {}", event.target);
@@ -23,17 +24,24 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
             if (bonusHealth > 0) {
                 int oldBonusDamaged = data.getOptionalComponent(event.target, Components.Stats.BONUS_DAMAGED).orElse(0);
                 int bonusDamageDealt = Math.min(remainingDamage, bonusHealth - oldBonusDamaged);
-                int newBonusDamaged = oldBonusDamaged + bonusDamageDealt;
-                data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
-                LOG.info("Changing bonus damaged of {} from {} to {}", event.target, oldBonusDamaged, newBonusDamaged);
-                remainingDamage -= bonusDamageDealt;
+                if (bonusDamageDealt > 0) {
+                    int newBonusDamaged = oldBonusDamaged + bonusDamageDealt;
+                    data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
+                    LOG.info("Changing bonus damaged of {} from {} to {}", event.target, oldBonusDamaged, newBonusDamaged);
+                    remainingDamage -= bonusDamageDealt;
+                    damaged = true;
+                }
             }
             if (remainingDamage > 0) {
                 int oldDamaged = data.getOptionalComponent(event.target, Components.Stats.DAMAGED).orElse(0);
                 int newDamaged = oldDamaged + remainingDamage;
                 LOG.info("Changing damaged of {} from {} to {}", event.target, oldDamaged, newDamaged);
                 data.setComponent(event.target, Components.Stats.DAMAGED, newDamaged);
+                damaged = true;
             }
+        }
+        if (!damaged) {
+            event.cancel();
         }
     }
 }

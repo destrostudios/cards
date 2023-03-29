@@ -1,34 +1,28 @@
 package com.destrostudios.cards.shared.events;
 
-/**
- *
- * @author Philipp
- */
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 public abstract class Event {
 
+    @Getter(AccessLevel.PACKAGE)
+    @Setter(AccessLevel.PACKAGE)
     private Event parent;
     private boolean cancelled;
-
-    void setParent(Event parent) {
-        this.parent = parent;
-    }
-
-    Event getParent() {
-        return parent;
-    }
 
     Event getRoot() {
         return ((parent != null) ? parent.getRoot() : this);
     }
 
-    public boolean isCancelled() {
+    public void cancel() {
+        this.cancelled = true;
+    }
+
+    boolean isCancelled() {
         if ((parent != null) && parent.isCancelled()) {
             return true;
         }
         return cancelled;
-    }
-
-    public void cancel() {
-        this.cancelled = true;
     }
 }

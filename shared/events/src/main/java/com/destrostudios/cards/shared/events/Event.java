@@ -9,10 +9,15 @@ public abstract class Event {
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
     private Event parent;
+    private boolean root;
     private boolean cancelled;
 
+    public void markAsRoot() {
+        root = true;
+    }
+
     Event getRoot() {
-        return ((parent != null) ? parent.getRoot() : this);
+        return (root || (parent == null)) ? this : parent.getRoot();
     }
 
     public void cancel() {

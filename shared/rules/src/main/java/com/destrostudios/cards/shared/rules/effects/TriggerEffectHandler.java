@@ -5,13 +5,19 @@ import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TriggerEffectHandler.class);
+
     @Override
     public void handle(TriggerEffectEvent event, NetworkRandom random) {
+        LOG.info("Triggering effect (source={}, targets={}, effect={})", event.source, event.targets, event.effect);
+
         String repeatExpression = data.getComponent(event.effect, Components.Effect.REPEAT);
         int repetitions = ((repeatExpression != null) ? Expressions.evaluate(data, repeatExpression, event.source, event.targets) : 1);
         int[] targetDefinitions = data.getComponent(event.effect, Components.Target.TARGETS);

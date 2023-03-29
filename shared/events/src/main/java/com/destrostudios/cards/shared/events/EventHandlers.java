@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public class EventHandlers {
 
-    private final Map<Predicate, List<EventHandler>> handlers = new LinkedHashMap<>();
+    private Map<Predicate, List<EventHandler>> handlers = new LinkedHashMap<>();
 
     public <T extends Event> void add(Class<T> eventClass, EventHandler<T> handler) {
         add(eventClass::isAssignableFrom, handler);

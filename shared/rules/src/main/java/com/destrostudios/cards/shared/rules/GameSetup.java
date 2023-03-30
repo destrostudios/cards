@@ -1,14 +1,10 @@
-package com.destrostudios.cards.backend.application;
+package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.model.UserModeDeck;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameConstants;
-import com.destrostudios.cards.shared.rules.PlayerInfo;
-import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.ModelUtil;
 import lombok.AllArgsConstructor;
@@ -32,22 +28,13 @@ public class GameSetup {
     }
 
     private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {
-        data.setComponent(player, Components.NAME, playerInfo.getLogin());
-        data.setComponent(player, Components.NEXT_PLAYER, opponent);
-        data.setComponent(player, Components.Stats.HEALTH, GameConstants.PLAYER_HEALTH);
-        data.setComponent(player, Components.BOARD);
         List<Integer> library;
         if (playerInfo.getDeck() != null) {
             library = createLibrary(playerInfo.getDeck());
         } else {
             library = createTestLibrary();
         }
-        int i = 0;
-        for (int card : library) {
-            data.setComponent(card, Components.OWNED_BY, player);
-            data.setComponent(card, Components.LIBRARY, i);
-            i++;
-        }
+        initPlayer(data, player, opponent, playerInfo.getLogin(), library);
     }
 
     private List<Integer> createLibrary(UserModeDeck deck) {
@@ -73,6 +60,19 @@ public class GameSetup {
         switch ((int) (Math.random() * 7)) {
             case 0: data.setComponent(card, Components.FOIL, Foil.ARTWORK); break;
             case 1: data.setComponent(card, Components.FOIL, Foil.FULL); break;
+        }
+    }
+
+    public static void initPlayer(EntityData data, int player, int opponent, String name, List<Integer> library) {
+        data.setComponent(player, Components.NAME, name);
+        data.setComponent(player, Components.NEXT_PLAYER, opponent);
+        data.setComponent(player, Components.Stats.HEALTH, GameConstants.PLAYER_HEALTH);
+        data.setComponent(player, Components.BOARD);
+        int i = 0;
+        for (int card : library) {
+            data.setComponent(card, Components.OWNED_BY, player);
+            data.setComponent(card, Components.LIBRARY, i);
+            i++;
         }
     }
 }

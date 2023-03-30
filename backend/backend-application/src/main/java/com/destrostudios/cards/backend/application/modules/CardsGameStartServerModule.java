@@ -1,12 +1,12 @@
 package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
-import com.destrostudios.cards.backend.application.GameSetup;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.GameSetup;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;

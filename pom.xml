@@ -7,8 +7,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>backend</module>
-        <module>shared</module>
         <module>frontend</module>
+        <module>shared</module>
+        <module>test</module>
     </modules>
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,9 +24,11 @@
         <version.javax.activation>1.1.1</version.javax.activation>
         <version.jaxb>2.3.0</version.jaxb>
         <version.jexl>3.2.1</version.jexl>
+        <version.junit>5.9.2</version.junit>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
         <version.lombok>1.18.24</version.lombok>
+        <version.mockito>5.2.0</version.mockito>
         <version.mysql>8.0.20</version.mysql>
     </properties>
     <repositories>
@@ -91,6 +94,26 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${version.mysql}</version>
             </dependency>
+            <!--JUnit-->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${version.junit}</version>
+                <scope>test</scope>
+            </dependency>
+            <!--Mockito-->
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${version.mockito}</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
@@ -102,6 +125,14 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <workingDirectory>${session.executionRootDirectory}/test/workspace</workingDirectory>
                 </configuration>
             </plugin>
             <plugin>

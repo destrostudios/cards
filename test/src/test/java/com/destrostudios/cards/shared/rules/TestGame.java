@@ -7,6 +7,7 @@ import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
+import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
@@ -14,7 +15,6 @@ import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.destrostudios.cards.shared.rules.util.ZoneUtil;
-import com.destrostudios.cards.shared.rules.wrappers.Vanilla;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class TestGame {
@@ -70,13 +71,22 @@ public class TestGame {
         return new LinkedList<>();
     }
 
-    protected Vanilla createVanilla(int manaCost, int attack, int health, int owner, ComponentDefinition<Integer> zone) {
-        int card = create("creatures/templates/vanilla(name=Generic Target,manaCost=" + manaCost + ",attack=" + attack + ",health=" + health + ")", owner, zone);
-        return new Vanilla(card, manaCost, attack, health);
+    protected void createCards(int player, int size, ComponentDefinition<Integer> zone) {
+        for (int i = 0; i < size; i++) {
+            createVanilla(player, zone);
+        }
     }
 
-    protected int create(String templateName, int owner, ComponentDefinition<Integer> zone) {
-        int card = create(templateName, owner);
+    protected int createVanilla(int owner, ComponentDefinition<Integer> zone) {
+        return createVanilla(0, 1, 1, owner, zone);
+    }
+
+    protected int createVanilla(int manaCost, int attack, int health, int owner, ComponentDefinition<Integer> zone) {
+        return create("creatures/templates/vanilla(name=Generic Target,manaCost=" + manaCost + ",attack=" + attack + ",health=" + health + ")", owner, zone);
+    }
+
+    protected int create(String template, int owner, ComponentDefinition<Integer> zone) {
+        int card = create(template, owner);
         ZoneUtil.addCardToZone(data, card, zone);
         if (zone == Components.CREATURE_ZONE) {
             data.setComponent(card, Components.BOARD);
@@ -84,18 +94,22 @@ public class TestGame {
         return card;
     }
 
-    protected int create(String templateName, int owner) {
-        int card = create(templateName);
+    protected int create(String template, int owner) {
+        int card = create(template);
         data.setComponent(card, Components.OWNED_BY, owner);
         return card;
     }
 
-    protected int create(String templateName) {
-        return EntityTemplate.createFromTemplate(data, templateName);
+    protected int create(String template) {
+        return EntityTemplate.createFromTemplate(data, template);
     }
 
     protected void castFromHand(int card) {
         castFromHand(card, new int[0]);
+    }
+
+    protected void castFromHand(int card, int target) {
+        castFromHand(card, new int[] { target });
     }
 
     protected void castFromHand(int card, int[] targets) {
@@ -103,11 +117,19 @@ public class TestGame {
     }
 
     protected void attack(int card, int target) {
-        cast(getDefaultAttackSpell(card), new int[] { target });
+        cast(getDefaultAttackSpell(card), target);
+    }
+
+    protected void cast(int spell, int target) {
+        cast(spell, new int[] { target });
     }
 
     protected void cast(int spell, int[] targets) {
         fire(new PlaySpellEvent(spell, targets));
+    }
+
+    protected void damage(int entity, int damage) {
+        fire(new DamageEvent(entity, damage));
     }
 
     protected void destroy(int entity) {
@@ -144,12 +166,37 @@ public class TestGame {
         throw new RuntimeException("Can't find matching spell.");
     }
 
+    protected void assertCardsCount(int player, ComponentDefinition<Integer> zone, int count) {
+        assertEquals(count, getCardsCount(player, zone));
+    }
+
+    protected int getCardsCount(int player, ComponentDefinition<Integer> zone) {
+        return data.query(zone).count(entity -> data.getComponent(entity, Components.OWNED_BY) == player);
+    }
+
     protected void assertAttack(int entity, int value) {
-        assertEquals(value, StatsUtil.getEffectiveAttack(data, entity));
+        assertEquals(value, getAttack(entity));
+    }
+
+    protected int getAttack(int entity) {
+        return StatsUtil.getEffectiveAttack(data, entity);
+    }
+
+    protected void assertHealthAndDamaged(int entity, int value) {
+        assertHealth(entity, value);
+        assertDamaged(entity);
     }
 
     protected void assertHealth(int entity, int value) {
-        assertEquals(value, StatsUtil.getEffectiveHealth(data, entity));
+        assertEquals(value, getHealth(entity));
+    }
+
+    protected int getHealth(int entity) {
+        return StatsUtil.getEffectiveHealth(data, entity);
+    }
+
+    protected void assertDamaged(int entity) {
+        assertTrue(data.hasComponent(entity, Components.Stats.DAMAGED) || data.hasComponent(entity, Components.Stats.BONUS_DAMAGED));
     }
 
     protected void assertHasComponent(int entity, ComponentDefinition<?> component) {

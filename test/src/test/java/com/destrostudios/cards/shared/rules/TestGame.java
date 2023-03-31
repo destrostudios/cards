@@ -22,8 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 public class TestGame {
@@ -163,7 +162,8 @@ public class TestGame {
                 return spell;
             }
         }
-        throw new RuntimeException("Can't find matching spell.");
+        fail("Can't find matching spell.");
+        return -1;
     }
 
     protected void assertCardsCount(int player, ComponentDefinition<Integer> zone, int count) {
@@ -172,6 +172,26 @@ public class TestGame {
 
     protected int getCardsCount(int player, ComponentDefinition<Integer> zone) {
         return data.query(zone).count(entity -> data.getComponent(entity, Components.OWNED_BY) == player);
+    }
+
+    protected void assertOneCard(int player, ComponentDefinition<Integer> zone, String name) {
+        assertCardsCount(player, zone, name, 1);
+    }
+
+    protected void assertCardsCount(int player, ComponentDefinition<Integer> zone, String name, int count) {
+        assertEquals(count, getCards(player, zone, name).size());
+    }
+
+    protected int getCard(int player, ComponentDefinition<Integer> zone, String name) {
+        List<Integer> cards = getCards(player, zone, name);
+        if (cards.size() != 1) {
+            fail("More than one matching card found.");
+        }
+        return cards.get(0);
+    }
+
+    protected List<Integer> getCards(int player, ComponentDefinition<Integer> zone, String name) {
+        return data.query(zone).list(entity -> (data.getComponent(entity, Components.OWNED_BY) == player) && (data.getComponent(entity, Components.NAME).equals(name)));
     }
 
     protected void assertAttack(int entity, int value) {

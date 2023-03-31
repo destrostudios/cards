@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 public class TestBasicDestruction extends TestGame {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/creatures/basic_destruction.csv")
+    @CsvFileSource(resources = "/creatures/basic_destruction.csv", numLinesToSkip = 1)
     public void testDestruction(String template) {
         int card = create(template, player, Components.CREATURE_ZONE);
         destroy(card);

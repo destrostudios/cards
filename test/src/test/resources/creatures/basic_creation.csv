@@ -1,3 +1,4 @@
+template,name,manaCost,attack,health
 creatures/ancient_tree,Ancient Tree,7,4,7
 creatures/arandir,Arandir,5,3,3
 creatures/army_commander,Army Commander,4,1,1

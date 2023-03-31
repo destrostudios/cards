@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 public class TestSimpleDrawer extends TestGame {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/creatures/simple_drawer.csv")
+    @CsvFileSource(resources = "/creatures/simple_drawer.csv", numLinesToSkip = 1)
     public void testDrawOnSummon(String template, int draw) {
         createCards(player, draw + 1, Components.LIBRARY);
         int card = create(template, player, Components.HAND);

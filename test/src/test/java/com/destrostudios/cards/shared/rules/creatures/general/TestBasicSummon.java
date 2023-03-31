@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 public class TestBasicSummon extends TestGame {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/creatures/basic_summon.csv")
+    @CsvFileSource(resources = "/creatures/basic_summon.csv", numLinesToSkip = 1)
     public void testSummon(String template) {
         int card = create(template, player, Components.HAND);
         castFromHand(card);

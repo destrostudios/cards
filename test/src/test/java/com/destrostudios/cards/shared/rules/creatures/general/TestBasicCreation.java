@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 public class TestBasicCreation extends TestGame {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/creatures/basic_creation.csv")
+    @CsvFileSource(resources = "/creatures/basic_creation.csv", numLinesToSkip = 1)
     public void testCreation(String template, String name, int manaCost, int attack, int health) {
         int card = create(template, player);
         assertComponent(card, Components.NAME, name);

@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 public class TestSimpleTargetStatsBuffer extends TestGame {
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/creatures/simple_target_stats_buffer.csv")
+    @CsvFileSource(resources = "/creatures/simple_target_stats_buffer.csv", numLinesToSkip = 1)
     public void testBuffOnSummon(String template, int bonusAttack, int bonusHealth) {
         int card = create(template, player, Components.HAND);
         int target = createVanilla( 0, 1, 1, player, Components.CREATURE_ZONE);

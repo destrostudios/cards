@@ -169,6 +169,11 @@ public class TestGame {
         }
     }
 
+    protected void setFullMana(int entity, int mana) {
+        data.setComponent(entity, Components.AVAILABLE_MANA, mana);
+        data.setComponent(entity, Components.MANA, mana);
+    }
+
     protected void castFromHand(int card) {
         castFromHand(card, new int[0]);
     }
@@ -277,12 +282,28 @@ public class TestGame {
     }
 
     protected void assertHealthAndDamaged(int[] entities, int value) {
-        forEach(entities, entity -> assertHealthAndDamaged(entity, value));
+        assertHealthAndDamaged(entities, value, true);
     }
 
     protected void assertHealthAndDamaged(int entity, int value) {
+        assertHealthAndDamaged(entity, value, true);
+    }
+
+    protected void assertHealthAndUndamaged(int[] entities, int value) {
+        assertHealthAndDamaged(entities, value, false);
+    }
+
+    protected void assertHealthAndUndamaged(int entity, int value) {
+        assertHealthAndDamaged(entity, value, false);
+    }
+
+    protected void assertHealthAndDamaged(int[] entities, int value, boolean damaged) {
+        forEach(entities, entity -> assertHealthAndDamaged(entity, value, damaged));
+    }
+
+    protected void assertHealthAndDamaged(int entity, int value, boolean damaged) {
         assertHealth(entity, value);
-        assertDamaged(entity);
+        assertDamaged(entity, damaged);
     }
 
     protected void assertHealth(int[] entities, int value) {
@@ -298,11 +319,27 @@ public class TestGame {
     }
 
     protected void assertDamaged(int[] entities) {
-        forEach(entities, this::assertDamaged);
+        assertDamaged(entities, true);
     }
 
     protected void assertDamaged(int entity) {
-        assertTrue(data.hasComponent(entity, Components.Stats.DAMAGED) || data.hasComponent(entity, Components.Stats.BONUS_DAMAGED));
+        assertDamaged(entity, true);
+    }
+
+    protected void assertUndamaged(int[] entities) {
+        assertDamaged(entities, false);
+    }
+
+    protected void assertUndamaged(int entity) {
+        assertDamaged(entity, false);
+    }
+
+    protected void assertDamaged(int[] entities, boolean damaged) {
+        forEach(entities, entity -> assertDamaged(entity, damaged));
+    }
+
+    protected void assertDamaged(int entity, boolean damaged) {
+        assertEquals(damaged, data.hasComponent(entity, Components.Stats.DAMAGED) || data.hasComponent(entity, Components.Stats.BONUS_DAMAGED));
     }
 
     protected void assertHasComponent(int[] entities, ComponentDefinition<?> component) {

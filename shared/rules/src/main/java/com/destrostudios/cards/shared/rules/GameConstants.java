@@ -8,6 +8,7 @@ public class GameConstants {
     public static final int INITIAL_HAND_SIZE = 5;
     public static final int MAXIMUM_DECK_SIZE = 30;
     public static final int MAXIMUM_DECK_UNIQUE_CARD_AMOUNT = 2;
+    public static final int MAXIMUM_AVAILABLE_MANA = 10;
     public static final String MODE_NAME_ARENA = "arena";
     public static final String MODE_NAME_CLASSIC = "classic";
     public static final int PACKS_FOR_NEW_PLAYERS_CLASSIC = 5;

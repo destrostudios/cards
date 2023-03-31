@@ -7,7 +7,7 @@
         <spells>
             <entity>
                 <condition>source.isInHand</condition>
-                <manaCost>8</manaCost>
+                <manaCost>7</manaCost>
                 <instantEffectTriggers>
                     <entity>
                         <effects>

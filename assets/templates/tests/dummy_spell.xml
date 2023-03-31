@@ -1,0 +1,12 @@
+<template>
+    <entity>
+        <name>Dummy Spell</name>
+        <spellCard/>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>[manaCost]</manaCost>
+            </entity>
+        </spells>
+    </entity>
+</template>

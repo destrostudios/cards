@@ -10,8 +10,8 @@ public class TestSimpleTargetStatsBuffer extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/creatures/simple_target_stats_buffer.csv", numLinesToSkip = 1)
     public void testBuffOnSummon(String template, int bonusAttack, int bonusHealth) {
+        int target = createVanilla(0, 1, 1, player, Components.CREATURE_ZONE);
         int card = create(template, player, Components.HAND);
-        int target = createVanilla( 0, 1, 1, player, Components.CREATURE_ZONE);
         castFromHand(card, target);
         assertAttack(target, 1 + bonusAttack);
         assertHealth(target, 1 + bonusHealth);

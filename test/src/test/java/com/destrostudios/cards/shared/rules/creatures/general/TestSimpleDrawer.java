@@ -10,7 +10,7 @@ public class TestSimpleDrawer extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/creatures/simple_drawer.csv", numLinesToSkip = 1)
     public void testDrawOnSummon(String template, int draw) {
-        createCards(player, draw + 1, Components.LIBRARY);
+        createCards(draw + 1, player, Components.LIBRARY);
         int card = create(template, player, Components.HAND);
         castFromHand(card);
         assertCardsCount(player, Components.LIBRARY, 1);

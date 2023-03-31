@@ -1,3 +1,3 @@
 <template>
-    <entity template="./templates/vanilla(name=Kings Soldier,manaCost=2,attack=2,health=2)"/>
+    <entity template="./templates/vanilla(name=King's Soldier,manaCost=2,attack=2,health=2)"/>
 </template>

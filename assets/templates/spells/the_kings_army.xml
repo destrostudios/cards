@@ -2,7 +2,7 @@
     <entity>
         <name>The Kings Army</name>
         <spellCard/>
-        <description>Summon 2 2/2 Kings Soldiers.</description>
+        <description>Summon 2 2/2 King's Soldiers.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>

@@ -31,7 +31,7 @@ creatures/guardian_dragon,Guardian Dragon,6,6,6,false,false
 creatures/injured_legend,Injured Legend,3,3,6,false,false
 creatures/inspiring_angel,Inspiring Angel,6,4,4,false,false
 creatures/khazar_merchant,Khazar Merchant,3,2,2,false,false
-creatures/kings_soldier,Kings Soldier,2,2,2,false,false
+creatures/kings_soldier,King's Soldier,2,2,2,false,false
 creatures/legion_angel,Legion Angel,6,4,5,true,true
 creatures/leviathan,Leviathan,8,6,6,false,false
 creatures/mermaid,Mermaid,2,2,2,false,false

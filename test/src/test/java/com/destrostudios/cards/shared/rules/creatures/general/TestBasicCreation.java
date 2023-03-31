@@ -9,11 +9,13 @@ public class TestBasicCreation extends TestGame {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/creatures/basic_creation.csv", numLinesToSkip = 1)
-    public void testCreation(String template, String name, int manaCost, int attack, int health) {
+    public void testCreation(String template, String name, int manaCost, int attack, int health, boolean taunt, boolean divineShield) {
         int card = create(template, player);
         assertComponent(card, Components.NAME, name);
         assertManaCost(card, manaCost);
         assertAttack(card, attack);
         assertHealth(card, health);
+        assertComponentExistence(card, Components.Ability.TAUNT, taunt);
+        assertComponentExistence(card, Components.Ability.DIVINE_SHIELD, divineShield);
     }
 }

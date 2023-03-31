@@ -1,56 +1,56 @@
-template,name,manaCost,attack,health
-creatures/ancient_tree,Ancient Tree,7,4,7
-creatures/arandir,Arandir,5,3,3
-creatures/army_commander,Army Commander,4,1,1
-creatures/artificial_guardian,Artificial Guardian,2,1,0
-creatures/baby_turtle,Baby Turtle,4,0,5
-creatures/battle_cleric,Battle Cleric,3,2,3
-creatures/blademaster,Blademaster,2,3,1
-creatures/blessed_barbarian,Blessed Barbarian,2,1,2
-creatures/brave_soldier,Brave Soldier,1,1,1
-creatures/bronze_golem,Bronze Golem,1,1,2
-creatures/crazed_doctor,Crazed Doctor,5,2,2
-creatures/dam,Dam,1,0,4
-creatures/dark_rider,Dark Rider,2,2,1
-creatures/divine_justicar,Divine Justicar,9,6,6
-creatures/dragons_knight,Dragon's Knight,2,2,2
-creatures/elven_guard,Elven Guard,1,1,1
-creatures/elven_queen,Elven Queen,5,3,3
-creatures/emperor_tamarin,Emperor Tamarin,4,4,4
-creatures/exiled_druid,Exiled Druid,7,5,5
-creatures/fairy,Fairy,2,2,1
-creatures/fire_dragon,Fire Dragon,7,5,5
-creatures/gideas,Gideas,7,4,4
-creatures/goblin_dentist,Goblin Dentist,3,2,4
-creatures/goblin_hunter,Goblin Hunter,3,4,1
-creatures/goblin_warhead_launcher,Goblin Warhead Launcher,4,3,3
-creatures/golden_emperor,Golden Emperor,8,7,7
-creatures/good_boy,Good Boy,1,2,1
-creatures/grumpy_captain,Grumpy Captain,2,2,2
-creatures/guardian_dragon,Guardian Dragon,6,6,6
-creatures/injured_legend,Injured Legend,3,3,6
-creatures/inspiring_angel,Inspiring Angel,6,4,4
-creatures/khazar_merchant,Khazar Merchant,3,2,2
-creatures/kings_soldier,Kings Soldier,2,2,2
-creatures/legion_angel,Legion Angel,6,4,5
-creatures/leviathan,Leviathan,8,6,6
-creatures/mermaid,Mermaid,2,2,2
-creatures/mounted_dwarf_warrior,Mounted Dwarf Warrior,3,3,3
-creatures/novice_paladin,Novice Paladin,1,1,1
-creatures/old_alchemist,Old Alchemist,6,5,5
-creatures/old_archer,Old Archer,1,1,1
-creatures/pebble,Pebble,0,1,1
-creatures/plated_aradon,Plated Aradon,4,3,5
-creatures/shieldmaster,Shieldmaster,2,1,3
-creatures/sir_theodor_the_third,Sir Theodor the Third,1,1,1
-creatures/siren,Siren,3,2,2
-creatures/tarasque,Tarasque,5,5,5
-creatures/terror_from_above,Terror from Above,10,8,8
-creatures/tiny_dragon,Tiny Dragon,2,2,2
-creatures/undead_general,Undead General,3,2,8
-creatures/undead_soldier,Undead Soldier,1,1,1
-creatures/valkyrie,Valkyrie,3,3,1
-creatures/walking_mortuary,Walking Mortuary,9,9,9
-creatures/war_angel,War Angel,6,4,4
-creatures/young_inventor,Young Inventor,2,1,1
-creatures/zombie,Zombie,1,1,1
+template,name,manaCost,attack,health,taunt,divine_shield
+creatures/ancient_tree,Ancient Tree,7,4,7,true,false
+creatures/arandir,Arandir,5,3,3,false,false
+creatures/army_commander,Army Commander,4,1,1,false,false
+creatures/artificial_guardian,Artificial Guardian,2,1,0,false,false
+creatures/baby_turtle,Baby Turtle,4,0,5,false,false
+creatures/battle_cleric,Battle Cleric,3,2,3,false,false
+creatures/blademaster,Blademaster,2,3,1,false,false
+creatures/blessed_barbarian,Blessed Barbarian,2,1,2,false,true
+creatures/brave_soldier,Brave Soldier,1,1,1,false,true
+creatures/bronze_golem,Bronze Golem,1,1,2,false,false
+creatures/crazed_doctor,Crazed Doctor,5,2,2,false,false
+creatures/dam,Dam,1,0,4,false,false
+creatures/dark_rider,Dark Rider,2,2,1,false,false
+creatures/divine_justicar,Divine Justicar,9,6,6,false,false
+creatures/dragons_knight,Dragon's Knight,2,2,2,false,false
+creatures/elven_guard,Elven Guard,1,1,1,true,false
+creatures/elven_queen,Elven Queen,5,3,3,false,false
+creatures/emperor_tamarin,Emperor Tamarin,4,4,4,false,false
+creatures/exiled_druid,Exiled Druid,7,5,5,false,false
+creatures/fairy,Fairy,2,2,1,false,false
+creatures/fire_dragon,Fire Dragon,7,5,5,false,false
+creatures/gideas,Gideas,7,4,4,false,false
+creatures/goblin_dentist,Goblin Dentist,3,2,4,false,false
+creatures/goblin_hunter,Goblin Hunter,3,4,1,false,false
+creatures/goblin_warhead_launcher,Goblin Warhead Launcher,4,3,3,false,false
+creatures/golden_emperor,Golden Emperor,8,7,7,false,true
+creatures/good_boy,Good Boy,1,2,1,false,false
+creatures/grumpy_captain,Grumpy Captain,2,2,2,true,false
+creatures/guardian_dragon,Guardian Dragon,6,6,6,false,false
+creatures/injured_legend,Injured Legend,3,3,6,false,false
+creatures/inspiring_angel,Inspiring Angel,6,4,4,false,false
+creatures/khazar_merchant,Khazar Merchant,3,2,2,false,false
+creatures/kings_soldier,Kings Soldier,2,2,2,false,false
+creatures/legion_angel,Legion Angel,6,4,5,true,true
+creatures/leviathan,Leviathan,8,6,6,false,false
+creatures/mermaid,Mermaid,2,2,2,false,false
+creatures/mounted_dwarf_warrior,Mounted Dwarf Warrior,3,3,3,false,false
+creatures/novice_paladin,Novice Paladin,1,1,1,false,false
+creatures/old_alchemist,Old Alchemist,6,5,5,false,false
+creatures/old_archer,Old Archer,1,1,1,false,false
+creatures/pebble,Pebble,0,1,1,false,false
+creatures/plated_aradon,Plated Aradon,4,3,5,true,false
+creatures/shieldmaster,Shieldmaster,2,1,3,false,false
+creatures/sir_theodor_the_third,Sir Theodor the Third,1,1,1,true,false
+creatures/siren,Siren,3,2,2,false,false
+creatures/tarasque,Tarasque,5,5,5,false,false
+creatures/terror_from_above,Terror from Above,10,8,8,false,false
+creatures/tiny_dragon,Tiny Dragon,2,2,2,false,false
+creatures/undead_general,Undead General,3,2,8,false,false
+creatures/undead_soldier,Undead Soldier,1,1,1,false,false
+creatures/valkyrie,Valkyrie,3,3,1,false,true
+creatures/walking_mortuary,Walking Mortuary,9,9,9,false,false
+creatures/war_angel,War Angel,6,4,4,false,false
+creatures/young_inventor,Young Inventor,2,1,1,false,false
+creatures/zombie,Zombie,1,1,1,false,false

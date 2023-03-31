@@ -8,7 +8,7 @@ public class TestExiledDruid extends TestGame {
 
     @Test
     public void testReviveBeastOnSummon() {
-        int beast = createVanilla(0, 1, 1, player, Components.GRAVEYARD);
+        int beast = createCreature(player, Components.GRAVEYARD);
         data.setComponent(beast, Components.Tribe.BEAST);
         int card = create("creatures/exiled_druid", player, Components.HAND);
         castFromHand(card);

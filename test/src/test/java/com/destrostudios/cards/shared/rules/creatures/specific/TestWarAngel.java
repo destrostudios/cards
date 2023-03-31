@@ -8,7 +8,7 @@ public class TestWarAngel extends TestGame {
 
     @Test
     public void testReduceCreaturesManaCostWhenOnBoard() {
-        int creature = createVanilla(2, 1, 1, player, Components.HAND);
+        int creature = createVanilla(2, 0, 1, player, Components.HAND);
         create("creatures/war_angel", player, Components.CREATURE_ZONE);
         assertManaCost(creature, 1);
     }

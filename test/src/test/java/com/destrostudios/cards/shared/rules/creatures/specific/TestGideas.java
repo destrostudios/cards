@@ -8,7 +8,7 @@ public class TestGideas extends TestGame {
 
     @Test
     public void testIncreaseOpponentCreaturesManaCostsWhenOnBoard() {
-        int opponentCard = createVanilla(0, 1, 1, opponent, Components.HAND);
+        int opponentCard = createVanilla(0, 0, 1, opponent, Components.HAND);
         create("creatures/gideas", player, Components.CREATURE_ZONE);
         assertManaCost(opponentCard, 1);
     }

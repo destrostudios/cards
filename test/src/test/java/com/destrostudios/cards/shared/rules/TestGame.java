@@ -82,7 +82,7 @@ public class TestGame {
     }
 
     protected int createCreature(int owner, ComponentDefinition<Integer> zone) {
-        return createVanilla(0, 1, 1, owner, zone);
+        return createVanilla(0, 0, 1, owner, zone);
     }
 
     protected int[] createVanillasForBothPlayers(int countPerPlayer, int manaCost, int attack, int health, ComponentDefinition<Integer> zone) {

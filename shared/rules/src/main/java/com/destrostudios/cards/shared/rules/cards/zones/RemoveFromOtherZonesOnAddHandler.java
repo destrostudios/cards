@@ -10,14 +10,9 @@ public class RemoveFromOtherZonesOnAddHandler extends GameEventHandler<AddCardTo
     public void handle(AddCardToZoneEvent event, NetworkRandom random) {
         if ((event.zone != Components.LIBRARY) && data.hasComponent(event.card, Components.LIBRARY)) {
             events.fire(new RemoveCardFromLibraryEvent(event.card), random);
-        }
-        else if ((event.zone != Components.HAND) && data.hasComponent(event.card, Components.HAND)) {
+        } else if ((event.zone != Components.HAND) && data.hasComponent(event.card, Components.HAND)) {
             events.fire(new RemoveCardFromHandEvent(event.card), random);
-        }
-        else if ((event.zone != Components.SPELL_ZONE) && data.hasComponent(event.card, Components.SPELL_ZONE)) {
-            events.fire(new RemoveCardFromSpellZoneEvent(event.card), random);
-        }
-        else if ((event.zone != Components.CREATURE_ZONE) && data.hasComponent(event.card, Components.CREATURE_ZONE)) {
+        } else if ((event.zone != Components.CREATURE_ZONE) && data.hasComponent(event.card, Components.CREATURE_ZONE)) {
             events.fire(new RemoveCardFromCreatureZoneEvent(event.card), random);
         }
     }

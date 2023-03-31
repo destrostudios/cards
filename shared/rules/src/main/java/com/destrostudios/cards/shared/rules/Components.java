@@ -28,7 +28,6 @@ public class Components {
     public static final ComponentDefinition<Integer> HAND = createComponent("hand");
     public static final ComponentDefinition<Integer> LIBRARY = createComponent("library");
     public static final ComponentDefinition<Integer> GRAVEYARD = createComponent("graveyard");
-    public static final ComponentDefinition<Integer> SPELL_ZONE = createComponent("spellZone");
     public static final ComponentDefinition<Integer> NEXT_PLAYER = createComponent("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = createComponent("ownedBy");
     public static final ComponentDefinition<int[]> AURAS = createComponent("auras");

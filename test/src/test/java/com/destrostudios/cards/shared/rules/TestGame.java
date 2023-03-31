@@ -78,7 +78,7 @@ public class TestGame {
     protected int create(String templateName, int owner, ComponentDefinition<Integer> zone) {
         int card = create(templateName, owner);
         ZoneUtil.addCardToZone(data, card, zone);
-        if ((zone == Components.CREATURE_ZONE) || (zone == Components.SPELL_ZONE)) {
+        if (zone == Components.CREATURE_ZONE) {
             data.setComponent(card, Components.BOARD);
         }
         return card;

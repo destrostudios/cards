@@ -25,7 +25,6 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_String(Components.FLAVOUR_TEXT));
         templateManager.registerComponent(new ComponentParser_Integer(Components.GRAVEYARD));
         templateManager.registerComponent(new ComponentParser_Integer(Components.HAND));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.SPELL_ZONE));
         templateManager.registerComponent(new ComponentParser_Integer(Components.LIBRARY));
         templateManager.registerComponent(new ComponentParser_Entity(Components.NEXT_PLAYER));
         templateManager.registerComponent(new ComponentParser_Entity(Components.OWNED_BY));

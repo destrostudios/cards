@@ -46,7 +46,6 @@ public class GameContext {
         addEventHandler(events.instant(), AddCardToGraveyardEvent.class, new AddCardToGraveyardHandler());
         addEventHandler(events.instant(), AddCardToHandEvent.class, new AddCardToHandHandler());
         addEventHandler(events.instant(), AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
-        addEventHandler(events.instant(), AddCardToSpellZoneEvent.class, new AddCardToSpellZoneHandler());
         addEventHandlers(events.instant(), AddCardToZoneEvent.class,
                 new RemoveFromOtherZonesOnAddHandler(),
                 new AddCardToZoneHandler()
@@ -84,7 +83,6 @@ public class GameContext {
         addEventHandler(events.instant(), RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
         addEventHandler(events.instant(), RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
         addEventHandler(events.instant(), RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
-        addEventHandler(events.instant(), RemoveCardFromSpellZoneEvent.class, new RemoveCardFromSpellZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
         addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
         addEventHandlers(events.instant(), StartTurnEvent.class,

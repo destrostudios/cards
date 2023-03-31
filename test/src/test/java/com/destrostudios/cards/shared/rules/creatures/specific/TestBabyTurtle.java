@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.rules.creatures.custom;
+package com.destrostudios.cards.shared.rules.creatures.specific;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.TestGame;

@@ -2,7 +2,7 @@
     <entity>
         <name>Sandstorm</name>
         <spellCard/>
-        <description>Return all creatures on the board to their owners hand.</description>
+        <description>Return all creatures on the board to their owner's hand.</description>
         <flavourText>"Doo doo doo doo doo."</flavourText>
         <spells>
             <entity>

@@ -39,6 +39,7 @@ public class TestGame {
     private NetworkRandom random;
     protected int player;
     protected int opponent;
+    protected int[] players;
 
     @BeforeEach
     public void before() {
@@ -61,6 +62,7 @@ public class TestGame {
     protected void setupGame() {
         player = data.createEntity();
         opponent = data.createEntity();
+        players = new int[] { player, opponent };
         GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), createPlayerLibrary());
         GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), createOpponentLibrary());
     }
@@ -75,6 +77,10 @@ public class TestGame {
 
     protected int[] createCards(int count, int owner, ComponentDefinition<Integer> zone) {
         return createCreatures(count, owner, zone);
+    }
+
+    protected int[] createCreaturesForBothPlayers(int countPerPlayer, ComponentDefinition<Integer> zone) {
+        return createForBothPlayers(countPerPlayer, owner -> createCreature(owner, zone));
     }
 
     protected int[] createCreatures(int count, int owner, ComponentDefinition<Integer> zone) {
@@ -185,6 +191,10 @@ public class TestGame {
 
     protected void cast(int spell, int[] targets) {
         fire(new PlaySpellEvent(spell, targets));
+    }
+
+    protected void damage(int[] entities, int damage) {
+        forEach(entities, entity -> damage(entity, damage));
     }
 
     protected void damage(int entity, int damage) {

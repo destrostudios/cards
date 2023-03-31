@@ -12,6 +12,6 @@ public class TestCrazedDoctor extends TestGame {
         damage(player, 15);
         int card = create("creatures/crazed_doctor", player, Components.HAND);
         castFromHand(card);
-        assertHealth(player, GameConstants.PLAYER_HEALTH - 5);
+        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 5);
     }
 }

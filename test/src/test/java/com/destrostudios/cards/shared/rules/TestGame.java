@@ -97,6 +97,14 @@ public class TestGame {
         return create("creatures/templates/vanilla(name=Dummy Creature,manaCost=" + manaCost + ",attack=" + attack + ",health=" + health + ")", owner, zone);
     }
 
+    protected int[] createSpells(int count, int owner, ComponentDefinition<Integer> zone) {
+        return create(count, () -> createSpell(owner, zone));
+    }
+
+    protected int createSpell(int owner, ComponentDefinition<Integer> zone) {
+        return createSpell(0, owner, zone);
+    }
+
     protected int[] createSpells(int count, int manaCost, int owner, ComponentDefinition<Integer> zone) {
         return create(count, () -> createSpell(manaCost, owner, zone));
     }

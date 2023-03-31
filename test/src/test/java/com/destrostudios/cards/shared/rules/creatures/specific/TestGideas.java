@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class TestGideas extends TestGame {
 
     @Test
-    public void testIncreaseOpponentManaCostsWhenOnBoard() {
+    public void testIncreaseOpponentCreaturesManaCostsWhenOnBoard() {
         int opponentCard = createVanilla(0, 1, 1, opponent, Components.HAND);
         create("creatures/gideas", player, Components.CREATURE_ZONE);
         assertManaCost(opponentCard, 1);

@@ -60,6 +60,7 @@ public class GameContext {
         addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
         addEventHandler(events.resolved(), DestructionEvent.class, new TriggerOnDeathHandler());
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
+        addEventHandler(events.pre(), EndTurnEvent.class, new TriggerOnEndTurnHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
                 new ResetCurrentCastsPerTurnOnEndTurnHandler()

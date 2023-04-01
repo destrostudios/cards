@@ -11,6 +11,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -208,6 +209,10 @@ public class TestGame {
 
     protected void destroy(int entity) {
         fire(new DestructionEvent(entity));
+    }
+
+    protected void endTurn(int player) {
+        fire(new EndTurnEvent(player));
     }
 
     protected void fire(Event event) {

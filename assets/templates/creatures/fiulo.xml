@@ -1,0 +1,13 @@
+<template>
+    <entity template="./templates/vanilla(name=Fiulo,manaCost=1,attack=1,health=1)">
+        <description>End of turn: Put this card from your graveyard to your hand.</description>
+        <turnEndTriggers>
+            <entity>
+                <condition>source.isInGraveyard</condition>
+                <effects>
+                    <entity template="../effects/add_source_to_hand"/>
+                </effects>
+            </entity>
+        </turnEndTriggers>
+    </entity>
+</template>

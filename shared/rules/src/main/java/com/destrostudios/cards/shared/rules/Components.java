@@ -40,6 +40,7 @@ public class Components {
     public static final ComponentDefinition<String> DESCRIPTION = createComponent("description");
     public static final ComponentDefinition<Foil> FOIL = createComponent("foil");
     public static final ComponentDefinition<int[]> DEATH_TRIGGERS = createComponent("deathTriggers");
+    public static final ComponentDefinition<int[]> TURN_END_TRIGGERS = createComponent("turnEndTriggers");
 
     public static class Cost {
         public static final ComponentDefinition<Integer> MANA_COST = createComponent("manaCost");

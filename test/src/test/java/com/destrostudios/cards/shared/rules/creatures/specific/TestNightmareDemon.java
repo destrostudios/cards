@@ -5,12 +5,12 @@ import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.TestGame;
 import org.junit.jupiter.api.Test;
 
-public class TestDarkRider extends TestGame {
+public class TestNightmareDemon extends TestGame {
 
     @Test
-    public void testDamageOpponentOnDeath() {
-        int card = create("creatures/dark_rider", player, Components.CREATURE_ZONE);
-        destroy(card);
+    public void testDamageOpponentOnDamageTaken() {
+        int card = create("creatures/nightmare_demon", player, Components.CREATURE_ZONE);
+        damage(card, 1);
         assertHealth(opponent, GameConstants.PLAYER_HEALTH - 2);
     }
 }

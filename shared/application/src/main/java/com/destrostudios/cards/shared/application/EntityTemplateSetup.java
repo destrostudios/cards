@@ -39,6 +39,8 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
         templateManager.registerComponent(new ComponentParser_Entities(Components.DEATH_TRIGGERS));
         templateManager.registerComponent(new ComponentParser_Entities(Components.TURN_END_TRIGGERS));
+        templateManager.registerComponent(new ComponentParser_Entities(Components.DAMAGE_TRIGGERS));
+        templateManager.registerComponent(new ComponentParser_Entities(Components.HEAL_TRIGGERS));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));
         templateManager.registerComponent(new ComponentParser_String(Components.Cost.BONUS_MANA_COST));

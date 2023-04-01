@@ -9,6 +9,7 @@ import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
+import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
@@ -64,20 +65,16 @@ public class TestGame {
         player = data.createEntity();
         opponent = data.createEntity();
         players = new int[] { player, opponent };
-        GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), createPlayerLibrary());
-        GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), createOpponentLibrary());
-    }
-
-    protected List<Integer> createPlayerLibrary() {
-        return new LinkedList<>();
-    }
-
-    protected List<Integer> createOpponentLibrary() {
-        return new LinkedList<>();
+        GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), new LinkedList<>());
+        GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), new LinkedList<>());
     }
 
     protected int[] createCards(int count, int owner, ComponentDefinition<Integer> zone) {
-        return createCreatures(count, owner, zone);
+        return create(count, () -> createCard(owner, zone));
+    }
+
+    protected int createCard(int owner, ComponentDefinition<Integer> zone) {
+        return createCreature(owner, zone);
     }
 
     protected int[] createCreaturesForBothPlayers(int countPerPlayer, ComponentDefinition<Integer> zone) {
@@ -205,6 +202,14 @@ public class TestGame {
 
     protected void damage(int entity, int damage) {
         fire(new DamageEvent(entity, damage));
+    }
+
+    protected void heal(int[] entities, int heal) {
+        forEach(entities, entity -> heal(entity, heal));
+    }
+
+    protected void heal(int entity, int heal) {
+        fire(new HealEvent(entity, heal));
     }
 
     protected void destroy(int entity) {

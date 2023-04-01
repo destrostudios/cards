@@ -1,0 +1,18 @@
+<template>
+    <entity template="./templates/vanilla(name=Priestess of Valdas,manaCost=2,attack=1,health=3)">
+        <description>Whenever this creature is healed, draw a card.</description>
+        <healTriggers>
+            <entity>
+                <condition>target == source</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source_owner"/>
+                        </targets>
+                        <draw>1</draw>
+                    </entity>
+                </effects>
+            </entity>
+        </healTriggers>
+    </entity>
+</template>

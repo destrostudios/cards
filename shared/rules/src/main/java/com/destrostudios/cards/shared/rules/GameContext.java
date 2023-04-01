@@ -55,8 +55,14 @@ public class GameContext {
         addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
         addEventHandlers(events.instant(), DamageEvent.class, new DamageHandler());
-        addEventHandlers(events.resolved(), DamageEvent.class, new DestroyOnZeroHealthHandler());
-        addEventHandler(events.instant(), HealEvent.class, new HealHandler());
+        addEventHandlers(events.resolved(), DamageEvent.class,
+                new TriggerOnDamageHandler(),
+                new DestroyOnZeroHealthHandler()
+        );
+        addEventHandler(events.instant(), HealEvent.class,new HealHandler());
+        addEventHandlers(events.resolved(), HealEvent.class,
+                new TriggerOnHealHandler()
+        );
         addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
         addEventHandler(events.resolved(), DestructionEvent.class, new TriggerOnDeathHandler());
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());

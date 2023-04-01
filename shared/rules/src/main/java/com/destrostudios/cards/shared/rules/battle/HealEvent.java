@@ -13,6 +13,6 @@ public class HealEvent extends Event {
 
     @Override
     public String toString() {
-        return "DamageEvent{" + "target=" + target + ", heal=" + heal + '}';
+        return "HealEvent{" + "target=" + target + ", heal=" + heal + '}';
     }
 }

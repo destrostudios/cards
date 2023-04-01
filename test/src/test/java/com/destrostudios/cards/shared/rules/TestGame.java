@@ -339,7 +339,7 @@ public class TestGame {
     }
 
     protected void assertDamaged(int entity, boolean damaged) {
-        assertEquals(damaged, data.hasComponent(entity, Components.Stats.DAMAGED) || data.hasComponent(entity, Components.Stats.BONUS_DAMAGED));
+        assertEquals(damaged, StatsUtil.isDamaged(data, entity));
     }
 
     protected void assertHasComponent(int[] entities, ComponentDefinition<?> component) {

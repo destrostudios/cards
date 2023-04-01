@@ -39,4 +39,8 @@ public class StatsUtil {
     public static int getBonusHealth(EntityData data, int entity) {
         return BuffUtil.modifyViaBuffs(data, entity, 0, BONUS_HEALTH_MODIFIER);
     }
+
+    public static boolean isDamaged(EntityData data, int entity) {
+        return data.hasComponent(entity, Components.Stats.DAMAGED) || data.hasComponent(entity, Components.Stats.BONUS_DAMAGED);
+    }
 }

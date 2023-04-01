@@ -1,0 +1,22 @@
+<template>
+    <entity>
+        <name>Peaceful Death</name>
+        <spellCard/>
+        <description>Destroy target undamaged creature.</description>
+        <spells>
+            <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
+                <condition>source.isInHand &amp;&amp; target.isCreatureCard &amp;&amp; !target.isDamaged</condition>
+                <manaCost>4</manaCost>
+                <instantEffectTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/destroy_target"/>
+                        </effects>
+                    </entity>
+                </instantEffectTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

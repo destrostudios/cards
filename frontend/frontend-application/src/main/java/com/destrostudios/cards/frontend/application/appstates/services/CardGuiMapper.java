@@ -82,7 +82,7 @@ public class CardGuiMapper {
         cardModel.setAttackModification(getStatModification(baseAttack, attack));
         cardModel.setHealth(health);
         cardModel.setHealthModification(getStatModification(baseHealth, health));
-        cardModel.setDamaged(data.hasComponent(card, Components.Stats.DAMAGED) || data.hasComponent(card, Components.Stats.BONUS_DAMAGED));
+        cardModel.setDamaged(StatsUtil.isDamaged(data, card));
 
         cardModel.setDivineShield(data.getOptionalComponent(card, Components.Ability.DIVINE_SHIELD).orElse(false));
         cardModel.setTaunt(data.hasComponent(card, Components.Ability.TAUNT));

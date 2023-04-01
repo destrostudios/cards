@@ -65,6 +65,10 @@ public class ExpressionEntity {
         return StatsUtil.getEffectiveHealth(data, entity);
     }
 
+    public boolean getIsDamaged() {
+        return StatsUtil.isDamaged(data, entity);
+    }
+
     public boolean getIsBeast() {
         return data.hasComponent(entity, Components.Tribe.BEAST);
     }

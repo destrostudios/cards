@@ -11,7 +11,7 @@
             <entity>
                 <condition>source.isInHand</condition>
                 <manaCost>6</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
@@ -29,7 +29,7 @@
                             </entity>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
         </spells>
     </entity>

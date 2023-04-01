@@ -12,7 +12,7 @@
             <entity>
                 <condition>source.isInHand</condition>
                 <manaCost>3</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
@@ -28,7 +28,7 @@
                             </entity>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
             <entity template="../spells/templates/simple_attack"/>
         </spells>

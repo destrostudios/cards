@@ -2,12 +2,12 @@
     <entity>
         <condition>source.isInHand</condition>
         <manaCost>[manaCost]</manaCost>
-        <instantEffectTriggers>
+        <castTriggers>
             <entity>
                 <effects>
                     <entity template="../../effects/add_source_to_board"/>
                 </effects>
             </entity>
-        </instantEffectTriggers>
+        </castTriggers>
     </entity>
 </template>

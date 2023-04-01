@@ -11,13 +11,13 @@
             <entity>
                 <condition>source.isInHand</condition>
                 <manaCost>5</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
             <entity template="../spells/templates/simple_attack"/>
             <entity>
@@ -26,7 +26,7 @@
                 <targetPrefilter>BOARD</targetPrefilter>
                 <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; target.isCreatureCard</condition>
                 <manaCost>1</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity>
@@ -37,7 +37,7 @@
                             </entity>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
         </spells>
     </entity>

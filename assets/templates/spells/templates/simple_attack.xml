@@ -7,7 +7,7 @@
         <tauntable/>
         <targetPrefilter>BOARD</targetPrefilter>
         <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; (target.isCreatureCard || (target.isPlayer &amp;&amp; !target.exists("CREATURE_ZONE", "target.owner == source")))</condition>
-        <instantEffectTriggers>
+        <castTriggers>
             <entity>
                 <effects>
                     <entity>
@@ -18,6 +18,6 @@
                     </entity>
                 </effects>
             </entity>
-        </instantEffectTriggers>
+        </castTriggers>
     </entity>
 </template>

@@ -7,7 +7,7 @@
             <entity>
                 <condition>source.isInHand</condition>
                 <manaCost>4</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
@@ -15,7 +15,7 @@
                             <entity template="../effects/spawn_for_owner(template=creatures/kings_soldier)"/>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
         </spells>
     </entity>

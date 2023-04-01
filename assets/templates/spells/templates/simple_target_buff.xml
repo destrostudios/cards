@@ -8,7 +8,7 @@
                 <targetPrefilter>BOARD</targetPrefilter>
                 <condition>source.isInHand &amp;&amp; target.isCreatureCard</condition>
                 <manaCost>[manaCost]</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../../effects/add_source_to_graveyard"/>
@@ -20,7 +20,7 @@
                             </entity>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
         </spells>
     </entity>

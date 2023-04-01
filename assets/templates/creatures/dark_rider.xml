@@ -4,7 +4,7 @@
     </values>
     <entity template="./templates/vanilla(name=Dark Rider,manaCost=2,attack=2,health=1)">
         <description>Death: Deal [damage] damage to your opponent.</description>
-        <deathEffectTriggers>
+        <deathTriggers>
             <entity>
                 <condition>target == source</condition>
                 <effects>
@@ -16,6 +16,6 @@
                     </entity>
                 </effects>
             </entity>
-        </deathEffectTriggers>
+        </deathTriggers>
     </entity>
 </template>

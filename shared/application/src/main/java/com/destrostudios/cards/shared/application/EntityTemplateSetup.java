@@ -37,7 +37,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Integer(Components.MANA));
         templateManager.registerComponent(new ComponentParser_String(Components.DESCRIPTION));
         templateManager.registerComponent(new ComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.DEATH_EFFECT_TRIGGERS));
+        templateManager.registerComponent(new ComponentParser_Entities(Components.DEATH_TRIGGERS));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));
         templateManager.registerComponent(new ComponentParser_String(Components.Cost.BONUS_MANA_COST));
@@ -59,7 +59,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.BEAST));
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.DRAGON));
 
-        templateManager.registerComponent(new ComponentParser_Entities(Components.EffectTrigger.EFFECTS));
+        templateManager.registerComponent(new ComponentParser_Entities(Components.Trigger.EFFECTS));
 
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.REPEAT));
         templateManager.registerComponent(new ComponentParser_String(Components.Effect.DAMAGE));
@@ -93,7 +93,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.CURRENT_CASTS_PER_TURN));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.MAXIMUM_CASTS_PER_TURN));
         templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TAUNTABLE));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Spell.INSTANT_EFFECT_TRIGGERS));
+        templateManager.registerComponent(new ComponentParser_Entities(Components.Spell.CAST_TRIGGERS));
 
         EntityTemplate.addLoader(templateManager::loadTemplate);
     }

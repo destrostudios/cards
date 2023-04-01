@@ -8,14 +8,14 @@
                 <targetPrefilter>BOARD</targetPrefilter>
                 <condition>source.isInHand &amp;&amp; target.isCreatureCard &amp;&amp; !target.isDamaged</condition>
                 <manaCost>4</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_graveyard"/>
                             <entity template="../effects/destroy_target"/>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
         </spells>
     </entity>

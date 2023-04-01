@@ -37,10 +37,10 @@ public class SpellUtil {
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {
-        int[] instantEffectTriggers = data.getComponent(spell, Components.Spell.INSTANT_EFFECT_TRIGGERS);
-        if (instantEffectTriggers != null) {
-            for (int instantEffectTrigger : instantEffectTriggers) {
-                int[] effects = data.getComponent(instantEffectTrigger, Components.EffectTrigger.EFFECTS);
+        int[] castTriggers = data.getComponent(spell, Components.Spell.CAST_TRIGGERS);
+        if (castTriggers != null) {
+            for (int castTrigger : castTriggers) {
+                int[] effects = data.getComponent(castTrigger, Components.Trigger.EFFECTS);
                 for (int effect : effects) {
                     if (data.hasComponent(effect, Components.Effect.BATTLE)) {
                         int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);

@@ -91,7 +91,7 @@ public class GameContext {
                 new SetManaToAvailableManaOnTurnStartHandler(),
                 new DrawCardOnTurnStartHandler()
         );
-        addEventHandler(events.instant(), TriggerEffectTriggerIfPossibleEvent.class, new TriggerEffectTriggerIfPossibleHandler());
+        addEventHandler(events.instant(), TriggerIfPossibleEvent.class, new TriggerIfPossibleHandler());
         addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
         addEventHandler(events.instant(), TriggerEffectImpactEvent.class, new TriggerEffectImpactHandler());
         addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());

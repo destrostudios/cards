@@ -39,7 +39,7 @@ public class Components {
     public static final ComponentDefinition<Integer> MANA = createComponent("mana");
     public static final ComponentDefinition<String> DESCRIPTION = createComponent("description");
     public static final ComponentDefinition<Foil> FOIL = createComponent("foil");
-    public static final ComponentDefinition<int[]> DEATH_EFFECT_TRIGGERS = createComponent("deathEffectTriggers");
+    public static final ComponentDefinition<int[]> DEATH_TRIGGERS = createComponent("deathTriggers");
 
     public static class Cost {
         public static final ComponentDefinition<Integer> MANA_COST = createComponent("manaCost");
@@ -73,7 +73,7 @@ public class Components {
         public static final ComponentDefinition<Void> DRAGON = createComponent("dragon");
     }
 
-    public static class EffectTrigger {
+    public static class Trigger {
         public static final ComponentDefinition<int[]> EFFECTS = createComponent("effects");
     }
 
@@ -108,7 +108,7 @@ public class Components {
         public static final ComponentDefinition<Integer> CURRENT_CASTS_PER_TURN = createComponent("currentCastsThisTurn");
         public static final ComponentDefinition<Integer> MAXIMUM_CASTS_PER_TURN = createComponent("maximumCastsPerTurn");
         public static final ComponentDefinition<Void> TAUNTABLE = createComponent("tauntable");
-        public static final ComponentDefinition<int[]> INSTANT_EFFECT_TRIGGERS = createComponent("instantEffectTriggers");
+        public static final ComponentDefinition<int[]> CAST_TRIGGERS = createComponent("castTriggers");
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

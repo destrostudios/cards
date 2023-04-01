@@ -9,7 +9,7 @@
             <entity>
                 <condition>source.isInHand</condition>
                 <manaCost>5</manaCost>
-                <instantEffectTriggers>
+                <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/spawn_for_owner(template=creatures/elven_guard)"/>
@@ -17,7 +17,7 @@
                             <entity template="../effects/spawn_for_owner(template=creatures/elven_guard)"/>
                         </effects>
                     </entity>
-                </instantEffectTriggers>
+                </castTriggers>
             </entity>
             <entity template="../spells/templates/simple_attack"/>
         </spells>

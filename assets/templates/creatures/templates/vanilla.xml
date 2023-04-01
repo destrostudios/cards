@@ -1,22 +1,15 @@
 <template>
+    <values>
+        <manaCost>0</manaCost>
+    </values>
     <entity>
         <name>[name]</name>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
         <spells>
-            <entity>
-                <condition>source.isInHand</condition>
-                <manaCost>[manaCost]</manaCost>
-                <instantEffectTriggers>
-                    <entity>
-                        <effects>
-                            <entity template="../../effects/add_source_to_board"/>
-                        </effects>
-                    </entity>
-                </instantEffectTriggers>
-            </entity>
-            <entity template="./simple_attack"/>
+            <entity template="../../spells/templates/simple_summon([manaCost])"/>
+            <entity template="../../spells/templates/simple_attack"/>
         </spells>
     </entity>
 </template>

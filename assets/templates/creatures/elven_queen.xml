@@ -19,7 +19,7 @@
                     </entity>
                 </instantEffectTriggers>
             </entity>
-            <entity template="./templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack"/>
         </spells>
     </entity>
 </template>

@@ -1,0 +1,9 @@
+<template>
+    <entity template="./templates/vanilla(name=Two-headed Chimera,attack=2,health=4)">
+        <description>Can attack twice per turn.</description>
+        <spells>
+            <entity template="../spells/templates/simple_summon(manaCost=3)"/>
+            <entity template="../spells/templates/simple_attack(timesPerTurn=2)"/>
+        </spells>
+    </entity>
+</template>

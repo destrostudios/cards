@@ -16,10 +16,10 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
 
     @Override
     public void handle(DrawCardEvent event, NetworkRandom random) {
-        List<Integer> cardsInLibary = data.query(Components.LIBRARY).list();
+        List<Integer> libraryCards = data.query(Components.LIBRARY).list();
         Integer drawnCard = null;
         int drawnCardLibraryIndex = -1;
-        for (int card : cardsInLibary) {
+        for (int card : libraryCards) {
             if (data.getComponent(card, Components.OWNED_BY) == event.player) {
                 int cardLibraryIndex = data.getComponent(card, Components.LIBRARY);
                 if (cardLibraryIndex > drawnCardLibraryIndex) {

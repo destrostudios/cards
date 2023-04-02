@@ -1,0 +1,20 @@
+<template>
+    <entity template="./templates/vanilla(name=Underground Knave,attack=2,health=1)">
+        <description>Can attack any opponent.</description>
+        <spells>
+            <entity template="../spells/templates/simple_summon(manaCost=1)"/>
+            <entity>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <targetPrefilter>BOARD</targetPrefilter>
+                <condition>source.isOnBoard &amp;&amp; !target.isAlly(source)</condition>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/battle_target"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

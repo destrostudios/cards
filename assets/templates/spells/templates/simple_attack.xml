@@ -10,12 +10,7 @@
         <castTriggers>
             <entity>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../../targets/targets"/>
-                        </targets>
-                        <battle/>
-                    </entity>
+                    <entity template="../../effects/battle_target"/>
                 </effects>
             </entity>
         </castTriggers>

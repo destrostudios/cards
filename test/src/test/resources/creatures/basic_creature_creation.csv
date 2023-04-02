@@ -54,6 +54,7 @@ creatures/tiny_dragon,Tiny Dragon,2,2,2,false,false
 creatures/two_headed_chimera,Two-headed Chimera,3,2,4,false,false
 creatures/undead_general,Undead General,3,2,8,false,false
 creatures/undead_soldier,Undead Soldier,1,1,1,false,false
+creatures/underground_knave,Underground Knave,1,2,1,false,false
 creatures/valkyrie,Valkyrie,3,3,1,false,true
 creatures/walking_mortuary,Walking Mortuary,9,9,9,false,false
 creatures/war_angel,War Angel,6,4,4,false,false

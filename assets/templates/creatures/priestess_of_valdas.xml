@@ -1,6 +1,6 @@
 <template>
     <entity template="./templates/vanilla(name=Priestess of Valdas,manaCost=2,attack=1,health=3)">
-        <description>Whenever this creature is healed, draw a card.</description>
+        <description>After this creature is healed, draw a card.</description>
         <postHealTriggers>
             <entity>
                 <condition>target == source</condition>

@@ -1,0 +1,21 @@
+<template>
+    <values>
+        <damage>2</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Ixius,manaCost=5,attack=3,health=4)">
+        <description>After you play a spell, deal [damage] damage to all opponents.</description>
+        <postCastSpellTriggers>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source) &amp;&amp; target.caster.isSpellCard</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/all_opponent_creatures_on_board"/>
+                        </targets>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </postCastSpellTriggers>
+    </entity>
+</template>

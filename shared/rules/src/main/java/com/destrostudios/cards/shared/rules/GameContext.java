@@ -87,6 +87,9 @@ public class GameContext {
                 new CastSpellHandler(),
                 new IncreaseCurrentCastsPerTurnHandler()
         );
+        addEventHandlers(events.resolved(), CastSpellEvent.class,
+                new TriggerHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
+        );
         addEventHandlers(events.instant(), RemoveCardFromBoardZoneEvent.class,
                 new RemoveCardFromBoardZoneHandler(),
                 new RemoveDamageOnRemoveFromBoardHandler(),

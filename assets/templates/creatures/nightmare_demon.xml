@@ -3,7 +3,7 @@
         <damage>2</damage>
     </values>
     <entity template="./templates/vanilla(name=Nightmare Demon,manaCost=3,attack=3,health=2)">
-        <description>Whenever this creature takes damage, deal [damage] damage to your opponent.</description>
+        <description>After this creature takes damage, deal [damage] damage to your opponent.</description>
         <postDamageTriggers>
             <entity>
                 <condition>target == source</condition>

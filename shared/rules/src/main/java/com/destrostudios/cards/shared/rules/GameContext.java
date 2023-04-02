@@ -83,8 +83,8 @@ public class GameContext {
                 new DrawCardsOnGameStartHandler(),
                 new SetStartingPlayerHandler());
         addEventHandler(events.instant(), PayManaEvent.class, new PayManaHandler());
-        addEventHandlers(events.instant(), PlaySpellEvent.class,
-                new PlaySpellHandler(),
+        addEventHandlers(events.instant(), CastSpellEvent.class,
+                new CastSpellHandler(),
                 new IncreaseCurrentCastsPerTurnHandler()
         );
         addEventHandlers(events.instant(), RemoveCardFromBoardZoneEvent.class,

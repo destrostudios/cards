@@ -93,17 +93,17 @@ public class UpdateBoardService {
         EntityData data = gameService.getGameContext().getData();
         validSpellTargets.clear();
         for (Event event : possibleEvents) {
-            if (event instanceof PlaySpellEvent playSpellEvent) {
-                LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(playSpellEvent.spell, s -> new LinkedList<>());
+            if (event instanceof CastSpellEvent castSpellEvent) {
+                LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(castSpellEvent.spell, s -> new LinkedList<>());
                 if (validTargets.isEmpty()) {
                     // TODO: Improve?
                     int cardEntity = data.query(Components.SPELLS)
                             .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))
-                                    .anyMatch(entity -> entity == playSpellEvent.spell)).getAsInt();
+                                    .anyMatch(entity -> entity == castSpellEvent.spell)).getAsInt();
                     Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
 
                     Interactivity interactivity;
-                    if (SpellUtil.isTargeted(data, playSpellEvent.spell) && (playSpellEvent.targets.length > 0)) {
+                    if (SpellUtil.isTargeted(data, castSpellEvent.spell) && (castSpellEvent.targets.length > 0)) {
                         interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                             @Override
@@ -115,7 +115,7 @@ public class UpdateBoardService {
                             @Override
                             public void trigger(BoardObject boardObject, BoardObject target) {
                                 int targetEntity = getEntity(target);
-                                gameService.sendAction(new PlaySpellEvent(playSpellEvent.spell, new int[] { targetEntity }));
+                                gameService.sendAction(new CastSpellEvent(castSpellEvent.spell, new int[] { targetEntity }));
                             }
 
                             private Integer getEntity(BoardObject<?> boardObject) {
@@ -130,7 +130,7 @@ public class UpdateBoardService {
 
                             @Override
                             public void trigger(BoardObject boardObject, BoardObject target) {
-                                gameService.sendAction(playSpellEvent);
+                                gameService.sendAction(castSpellEvent);
                             }
                         };
                     } else {
@@ -138,16 +138,16 @@ public class UpdateBoardService {
 
                             @Override
                             public void trigger(BoardObject boardObject, BoardObject target) {
-                                gameService.sendAction(playSpellEvent);
+                                gameService.sendAction(castSpellEvent);
                             }
                         };
                     }
-                    boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, playSpellEvent.spell) || SpellUtil.isDefaultAttackSpell(data, playSpellEvent.spell));
+                    boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, castSpellEvent.spell) || SpellUtil.isDefaultAttackSpell(data, castSpellEvent.spell));
                     InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
                     card.setInteractivity(interactivitySource, interactivity);
                     card.getModel().setPlayable(true);
                 }
-                for (int target : playSpellEvent.targets) {
+                for (int target : castSpellEvent.targets) {
                     validTargets.add(target);
                 }
             }

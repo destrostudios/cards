@@ -44,7 +44,7 @@ public class CardGuiMapper {
         cardModel.setKeywords(createListBasedOnComponents(data, card, keywordComponents));
         cardModel.setDescription(data.getComponent(card, Components.DESCRIPTION));
 
-        boolean checkedDefaultPlaySpell = false;
+        boolean checkedDefaultCastFromHandSpell = false;
         Integer baseManaCost = null;
         Integer manaCostFullArt = null;
         Integer manaCostDetails = null;
@@ -53,13 +53,13 @@ public class CardGuiMapper {
         if (spellEntities != null) {
             for (int spellEntity : spellEntities) {
                 Integer manaCost = CostUtil.getEffectiveManaCost(data, spellEntity);
-                if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
+                if ((!checkedDefaultCastFromHandSpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
                     baseManaCost = data.getComponent(spellEntity, Components.Cost.MANA_COST);
                     manaCostDetails = manaCost;
                     if (data.hasComponent(card, Components.HAND)) {
                         manaCostFullArt = manaCostDetails;
                     }
-                    checkedDefaultPlaySpell = true;
+                    checkedDefaultCastFromHandSpell = true;
                 } else if (!SpellUtil.isDefaultAttackSpell(data, spellEntity)) {
                     String spellDescription = SpellDescriptionGenerator.generateDescription(data, spellEntity);
                     Spell spell = new Spell();

@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.stream.IntStream;
 
-public class PlaySpellHandler extends GameEventHandler<PlaySpellEvent> {
+public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PlaySpellHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CastSpellHandler.class);
 
     @Override
-    public void handle(PlaySpellEvent event, NetworkRandom random) {
-        LOG.info("Casting spell {}", event.spell);
+    public void handle(CastSpellEvent event, NetworkRandom random) {
+        LOG.info("Casting spell {} on {}", event.spell, event.targets);
 
         int card = data.query(Components.SPELLS)
                 .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))

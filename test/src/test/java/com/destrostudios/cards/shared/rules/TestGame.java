@@ -10,7 +10,7 @@ import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
-import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
+import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
@@ -193,7 +193,7 @@ public class TestGame {
     }
 
     protected void cast(int spell, int[] targets) {
-        fire(new PlaySpellEvent(spell, targets));
+        fire(new CastSpellEvent(spell, targets));
     }
 
     protected void damage(int[] entities, int damage) {

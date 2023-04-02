@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.cards.PlaySpellEvent;
+import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
@@ -20,13 +20,13 @@ public class PlayerActionsGenerator {
     public List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new LinkedList<>();
         if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
-            generatePlaySpells(data, player, possibleEvents::add);
+            generateSpellCasts(data, player, possibleEvents::add);
             possibleEvents.add(new EndTurnEvent(player));
         }
         return possibleEvents;
     }
 
-    private void generatePlaySpells(EntityData data, int player, Consumer<Event> out) {
+    private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
         List<Integer> ownedCardEntities = new LinkedList<>();
         // Currently, only cards in hand and on board have castable spells (so only checking those speeds up the process a lot)
         ownedCardEntities.addAll(data.query(Components.HAND).list(ownedBy(data, player)));
@@ -35,13 +35,13 @@ public class PlayerActionsGenerator {
             int[] spells = data.getComponent(card, Components.SPELLS);
             if (spells != null) {
                 for (int spell : spells) {
-                    generatePlaySpellEvents(data, card, spell, out);
+                    generateCastSpellEvents(data, card, spell, out);
                 }
             }
         }
     }
 
-    private void generatePlaySpellEvents(EntityData data, int card, int spell, Consumer<Event> out) {
+    private void generateCastSpellEvents(EntityData data, int card, int spell, Consumer<Event> out) {
         if (!SpellUtil.isCastable_WithoutSpellCondition(data, card, spell)) {
             return;
         }
@@ -58,7 +58,7 @@ public class PlayerActionsGenerator {
             }
             if (validTargets.size() > 0) {
                 for (int target : validTargets) {
-                    out.accept(new PlaySpellEvent(spell, new int[] { target }));
+                    out.accept(new CastSpellEvent(spell, new int[] { target }));
                 }
                 return;
             }
@@ -68,7 +68,7 @@ public class PlayerActionsGenerator {
             }
         }
         if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, NO_TARGETS)) {
-            out.accept(new PlaySpellEvent(spell, NO_TARGETS));
+            out.accept(new CastSpellEvent(spell, NO_TARGETS));
         }
     }
 

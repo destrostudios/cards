@@ -5,24 +5,24 @@ import com.destrostudios.cards.shared.events.Event;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class PlaySpellEvent extends Event {
+public class CastSpellEvent extends Event {
 
     public int spell;
     public int[] targets;
 
     // Used by serializer
-    private PlaySpellEvent() {
+    private CastSpellEvent() {
         this(0, null);
     }
 
-    public PlaySpellEvent(int spell, int[] targets) {
+    public CastSpellEvent(int spell, int[] targets) {
         this.spell = spell;
         this.targets = targets;
     }
 
     @Override
     public String toString() {
-        return "PlaySpellEvent{" + "spell=" + spell + ", targets=" + targets + '}';
+        return "CastSpellEvent{" + "spell=" + spell + ", targets=" + targets + '}';
     }
 
     // Used by game-tools bot
@@ -31,7 +31,7 @@ public class PlaySpellEvent extends Event {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PlaySpellEvent that = (PlaySpellEvent) o;
+        CastSpellEvent that = (CastSpellEvent) o;
         return spell == that.spell && Arrays.equals(targets, that.targets);
     }
 

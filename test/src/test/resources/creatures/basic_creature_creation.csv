@@ -24,6 +24,7 @@ creatures/fiulo,Fiulo,1,1,1,false,false
 creatures/gideas,Gideas,7,4,4,false,false
 creatures/goblin_dentist,Goblin Dentist,3,2,4,false,false
 creatures/goblin_hunter,Goblin Hunter,3,4,1,false,false
+creatures/goblin_pillager,Goblin Pillager,2,1,2,false,false
 creatures/goblin_warhead_launcher,Goblin Warhead Launcher,4,3,3,false,false
 creatures/golden_emperor,Golden Emperor,8,7,7,false,true
 creatures/good_boy,Good Boy,1,2,1,false,false

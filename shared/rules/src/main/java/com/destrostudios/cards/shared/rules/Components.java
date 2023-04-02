@@ -70,6 +70,7 @@ public class Components {
     public static class Tribe {
         public static final ComponentDefinition<Void> BEAST = create("beast");
         public static final ComponentDefinition<Void> DRAGON = create("dragon");
+        public static final ComponentDefinition<Void> GOBLIN = create("goblin");
     }
 
     public static class Trigger {

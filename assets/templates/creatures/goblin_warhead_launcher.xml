@@ -1,3 +1,5 @@
 <template>
-    <entity template="./templates/simple_target_damager(name=Goblin Warhead Launcher,manaCost=4,attack=3,health=3,damage=2)"/>
+    <entity template="./templates/simple_target_damager(name=Goblin Warhead Launcher,manaCost=4,attack=3,health=3,damage=2)">
+        <goblin/>
+    </entity>
 </template>

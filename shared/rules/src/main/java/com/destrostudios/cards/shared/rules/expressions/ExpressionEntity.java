@@ -77,6 +77,10 @@ public class ExpressionEntity {
         return data.hasComponent(entity, Components.Tribe.DRAGON);
     }
 
+    public boolean getIsGoblin() {
+        return data.hasComponent(entity, Components.Tribe.GOBLIN);
+    }
+
     public boolean isAlly(ExpressionEntity other) {
         return ConditionUtil.isAlly(data, entity, other.entity);
     }
@@ -109,6 +113,10 @@ public class ExpressionEntity {
 
     public ExpressionEntity getCaster() {
         return wrap(SpellUtil.getCaster(data, entity));
+    }
+
+    public ExpressionEntity getTopLibraryCard() {
+        return wrap(ZoneUtil.getTopLibraryCard(data, entity));
     }
 
     private ExpressionEntity wrap(Integer otherEntity) {

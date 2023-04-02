@@ -1,0 +1,35 @@
+<template>
+    <entity id="card">
+        <name>Goblin Pillager</name>
+        <creatureCard/>
+        <attack>1</attack>
+        <health>2</health>
+        <goblin/>
+        <description>Cast: If the top card of your library is a Goblin, draw it.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <condition>(source.owner.topLibraryCard != null) &amp;&amp; source.owner.topLibraryCard.isGoblin</condition>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <draw>1</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

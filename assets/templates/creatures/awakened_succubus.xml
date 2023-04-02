@@ -1,0 +1,33 @@
+<template>
+    <entity>
+        <name>Awakened Succubus</name>
+        <creatureCard/>
+        <attack>6</attack>
+        <health>4</health>
+        <description>Cast: Discard a random card.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>4</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>HAND</targetPrefilter>
+                                        <targetAll>target.owner == source.owner</targetAll>
+                                        <targetRandom>1</targetRandom>
+                                    </entity>
+                                </targets>
+                                <addToGraveyard/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

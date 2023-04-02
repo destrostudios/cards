@@ -3,6 +3,7 @@ creatures/ancient_tree,Ancient Tree,7,4,7,true,false
 creatures/arandir,Arandir,5,3,3,false,false
 creatures/army_commander,Army Commander,4,1,1,false,false
 creatures/artificial_guardian,Artificial Guardian,2,1,0,false,false
+creatures/awakened_succubus,Awakened Succubus,4,6,4,false,false
 creatures/baby_turtle,Baby Turtle,4,0,5,false,false
 creatures/battle_cleric,Battle Cleric,3,2,3,false,false
 creatures/blademaster,Blademaster,2,3,1,false,false
@@ -60,4 +61,5 @@ creatures/valkyrie,Valkyrie,3,3,1,false,true
 creatures/walking_mortuary,Walking Mortuary,9,9,9,false,false
 creatures/war_angel,War Angel,6,4,4,false,false
 creatures/young_inventor,Young Inventor,2,1,1,false,false
+creatures/young_succubus,Young Succubus,1,2,2,false,false
 creatures/zombie,Zombie,1,1,1,false,false

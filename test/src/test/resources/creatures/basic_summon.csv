@@ -3,6 +3,7 @@ creatures/ancient_tree
 creatures/arandir
 creatures/army_commander
 creatures/artificial_guardian
+creatures/awakened_succubus
 creatures/baby_turtle
 creatures/battle_cleric
 creatures/blademaster
@@ -60,4 +61,5 @@ creatures/valkyrie
 creatures/walking_mortuary
 creatures/war_angel
 creatures/young_inventor
+creatures/young_succubus
 creatures/zombie

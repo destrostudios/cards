@@ -1,0 +1,32 @@
+<template>
+    <values>
+        <damage>5</damage>
+    </values>
+    <entity>
+        <name>Young Succubus</name>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>2</health>
+        <description>Cast: Deal [damage] damage to yourself.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

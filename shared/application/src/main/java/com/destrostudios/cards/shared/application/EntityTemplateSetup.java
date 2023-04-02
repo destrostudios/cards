@@ -42,11 +42,14 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));
         templateManager.registerComponent(new ComponentParser_String(Components.Cost.BONUS_MANA_COST));
+        templateManager.registerComponent(new ComponentParser_String(Components.Cost.SET_MANA_COST));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.ATTACK));
         templateManager.registerComponent(new ComponentParser_String(Components.Stats.BONUS_ATTACK));
+        templateManager.registerComponent(new ComponentParser_String(Components.Stats.SET_ATTACK));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.HEALTH));
         templateManager.registerComponent(new ComponentParser_String(Components.Stats.BONUS_HEALTH));
+        templateManager.registerComponent(new ComponentParser_String(Components.Stats.SET_HEALTH));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.DAMAGED));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.BONUS_DAMAGED));
 

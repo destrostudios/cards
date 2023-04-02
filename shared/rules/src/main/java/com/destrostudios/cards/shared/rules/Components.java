@@ -43,13 +43,16 @@ public class Components {
     public static class Cost {
         public static final ComponentDefinition<Integer> MANA_COST = create("manaCost");
         public static final ComponentDefinition<String> BONUS_MANA_COST = create("bonusManaCost");
+        public static final ComponentDefinition<String> SET_MANA_COST = create("setManaCost");
     }
 
     public static class Stats {
         public static final ComponentDefinition<Integer> ATTACK = create("attack");
         public static final ComponentDefinition<String> BONUS_ATTACK = create("bonusAttack");
+        public static final ComponentDefinition<String> SET_ATTACK = create("setAttack");
         public static final ComponentDefinition<Integer> HEALTH = create("health");
         public static final ComponentDefinition<String> BONUS_HEALTH = create("bonusHealth");
+        public static final ComponentDefinition<String> SET_HEALTH = create("setHealth");
         public static final ComponentDefinition<Integer> DAMAGED = create("damaged");
         public static final ComponentDefinition<Integer> BONUS_DAMAGED = create("bonusDamaged");
     }

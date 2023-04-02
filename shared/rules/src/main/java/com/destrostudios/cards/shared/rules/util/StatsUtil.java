@@ -5,25 +5,22 @@ import com.destrostudios.cards.shared.rules.Components;
 
 public class StatsUtil {
 
-    private static final BuffUtil.BuffModifier BONUS_ATTACK_MODIFIER = new BuffUtil.SimpleAdditionBuffModifier(Components.Stats.BONUS_ATTACK);
-    private static final BuffUtil.BuffModifier BONUS_HEALTH_MODIFIER = new BuffUtil.SimpleAdditionBuffModifier(Components.Stats.BONUS_HEALTH);
+    private static final BuffUtil.BuffModifier ATTACK_BUFF_MODIFIER = new BuffUtil.SimpleBuffModifier(Components.Stats.BONUS_ATTACK, Components.Stats.SET_ATTACK);
+    private static final BuffUtil.BuffModifier HEALTH_BUFF_MODIFIER = new BuffUtil.SimpleBuffModifier(Components.Stats.BONUS_HEALTH, Components.Stats.SET_HEALTH);
 
     public static Integer getEffectiveAttack(EntityData data, int entity) {
-        Integer attack = data.getComponent(entity, Components.Stats.ATTACK);
-        if (attack != null) {
-            attack += getBonusAttack(data, entity);
-        }
-        return attack;
+        BuffUtil.BuffCalculationResult result = calculateAttack(data, entity);
+        return ((result != null) ? result.getEffectiveValue() : null);
     }
 
-    public static int getBonusAttack(EntityData data, int entity) {
-        return BuffUtil.modifyViaBuffs(data, entity, 0, BONUS_ATTACK_MODIFIER);
+    private static BuffUtil.BuffCalculationResult calculateAttack(EntityData data, int entity) {
+        return BuffUtil.calculateWithBuffs(data, entity, Components.Stats.ATTACK, ATTACK_BUFF_MODIFIER);
     }
 
     public static Integer getEffectiveHealth(EntityData data, int entity) {
-        Integer health = data.getComponent(entity, Components.Stats.HEALTH);
-        if (health != null) {
-            health += getBonusHealth(data, entity);
+        BuffUtil.BuffCalculationResult result = calculateHealth(data, entity);
+        if (result != null) {
+            int health = result.getEffectiveValue();
             Integer damage = data.getComponent(entity, Components.Stats.DAMAGED);
             if (damage != null) {
                 health -= damage;
@@ -32,12 +29,18 @@ public class StatsUtil {
             if (bonusDamage != null) {
                 health -= bonusDamage;
             }
+            return health;
         }
-        return health;
+        return null;
     }
 
-    public static int getBonusHealth(EntityData data, int entity) {
-        return BuffUtil.modifyViaBuffs(data, entity, 0, BONUS_HEALTH_MODIFIER);
+    public static Integer getBonusHealth(EntityData data, int entity) {
+        BuffUtil.BuffCalculationResult result = calculateHealth(data, entity);
+        return ((result != null) ? result.getBonusValue() : null);
+    }
+
+    private static BuffUtil.BuffCalculationResult calculateHealth(EntityData data, int entity) {
+        return BuffUtil.calculateWithBuffs(data, entity, Components.Stats.HEALTH, HEALTH_BUFF_MODIFIER);
     }
 
     public static boolean isDamaged(EntityData data, int entity) {

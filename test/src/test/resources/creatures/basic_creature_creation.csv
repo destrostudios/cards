@@ -23,6 +23,7 @@ creatures/fairy,Fairy,2,2,1,false,false
 creatures/fire_dragon,Fire Dragon,7,5,5,false,false
 creatures/fiulo,Fiulo,1,1,1,false,false
 creatures/gideas,Gideas,7,4,4,false,false
+creatures/goblin_alchemist,Goblin Alchemist,3,2,2,false,false
 creatures/goblin_dentist,Goblin Dentist,3,2,4,false,false
 creatures/goblin_hunter,Goblin Hunter,3,4,1,false,false
 creatures/goblin_pillager,Goblin Pillager,2,1,2,false,false

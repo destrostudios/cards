@@ -384,7 +384,7 @@ public class TestGame {
         assertEquals(value, data.getComponent(entity, component));
     }
 
-    private void forEach(int[] entities, Consumer<Integer> assertEntity) {
+    protected void forEach(int[] entities, Consumer<Integer> assertEntity) {
         for (int entity : entities) {
             assertEntity.accept(entity);
         }

@@ -1,0 +1,35 @@
+<template>
+    <entity id="card">
+        <name>Goblin King</name>
+        <creatureCard/>
+        <attack>4</attack>
+        <health>5</health>
+        <goblin/>
+        <description>Cast: Gain +1 attack for each Goblin in your hand.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>5</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source"/>
+                                </targets>
+                                <addBuff constant="true">
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusAttack>source.owner.count("CREATURE_ZONE", "target.owner == source &amp;&amp; target.isGoblin")</bonusAttack>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

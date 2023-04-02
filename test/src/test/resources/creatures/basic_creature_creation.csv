@@ -26,6 +26,7 @@ creatures/gideas,Gideas,7,4,4,false,false
 creatures/goblin_alchemist,Goblin Alchemist,3,2,2,false,false
 creatures/goblin_dentist,Goblin Dentist,3,2,4,false,false
 creatures/goblin_hunter,Goblin Hunter,3,4,1,false,false
+creatures/goblin_king,Goblin King,5,4,5,false,false
 creatures/goblin_pillager,Goblin Pillager,2,1,2,false,false
 creatures/goblin_warhead_launcher,Goblin Warhead Launcher,4,3,3,false,false
 creatures/golden_emperor,Golden Emperor,8,7,7,false,true
@@ -51,6 +52,7 @@ creatures/priestess_of_valdas,Priestess of Valdas,2,1,3,false,false
 creatures/shieldmaster,Shieldmaster,2,1,3,false,false
 creatures/sir_theodor_the_third,Sir Theodor the Third,1,1,1,true,false
 creatures/siren,Siren,3,2,2,false,false
+creatures/sun_ornament_dragon,Sun Ornament Dragon,3,2,4,false,false
 creatures/tarasque,Tarasque,5,5,5,false,false
 creatures/terror_from_above,Terror from Above,10,8,8,false,false
 creatures/tiny_dragon,Tiny Dragon,2,2,2,false,false

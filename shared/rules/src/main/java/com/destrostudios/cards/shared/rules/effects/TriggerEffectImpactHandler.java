@@ -73,7 +73,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         Components.AddBuff addBuff = data.getComponent(event.effect, Components.Effect.ADD_BUFF);
         if (addBuff != null) {
-            int buff = (addBuff.isEvaluated() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event.source, event.target) : addBuff.getBuff());
+            int buff = (addBuff.isConstant() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event.source, event.target) : addBuff.getBuff());
             events.fire(new AddBuffEvent(event.target, buff), random);
         }
 

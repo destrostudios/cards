@@ -119,6 +119,6 @@ public class Components {
     @Getter
     public static class AddBuff {
         private int buff;
-        private boolean evaluated;
+        private boolean constant;
     }
 }

@@ -78,8 +78,8 @@ public class EntityTemplateSetup {
             @Override
             public Components.AddBuff parseValue(TemplateParser parser, TemplateFormat format, EntityData entityData, Object node) {
                 int buff = createChildEntity(parser, format, entityData, node, 0, "buff");
-                boolean evaluated = "true".equals(format.getAttribute(node, "evaluated"));
-                return new Components.AddBuff(buff, evaluated);
+                boolean constant = "true".equals(format.getAttribute(node, "constant"));
+                return new Components.AddBuff(buff, constant);
             }
         });
         templateManager.registerComponent(new ComponentParser_Templates(Components.Effect.SUMMON));

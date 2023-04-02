@@ -22,19 +22,21 @@ public class BuffUtil {
 
     public static int createEvaluatedBuffCopy(EntityData data, int buff, int source, int target) {
         int buffCopy = data.createEntity();
+        // TODO: Good enough for now
         for (ComponentDefinition component : Components.ALL) {
             Object value = data.getComponent(buff, component);
-            // TODO: Good enough for now
-            if ((component == Components.Cost.BONUS_MANA_COST)
-             || (component == Components.Cost.SET_MANA_COST)
-             || (component == Components.Stats.BONUS_ATTACK)
-             || (component == Components.Stats.SET_ATTACK)
-             || (component == Components.Stats.BONUS_HEALTH)
-             || (component == Components.Stats.SET_HEALTH)
-            ) {
-                value = Expressions.evaluate(data, value.toString(), source, target).toString();
+            if (value != null) {
+                if ((component == Components.Cost.BONUS_MANA_COST)
+                 || (component == Components.Cost.SET_MANA_COST)
+                 || (component == Components.Stats.BONUS_ATTACK)
+                 || (component == Components.Stats.SET_ATTACK)
+                 || (component == Components.Stats.BONUS_HEALTH)
+                 || (component == Components.Stats.SET_HEALTH)
+                ) {
+                    value = Expressions.evaluate(data, value.toString(), source, target).toString();
+                }
+                data.setComponent(buffCopy, component, value);
             }
-            data.setComponent(buffCopy, component, value);
         }
         return buffCopy;
     }

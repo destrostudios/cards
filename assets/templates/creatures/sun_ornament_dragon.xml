@@ -1,0 +1,33 @@
+<template>
+    <values>
+        <heal>2</heal>
+    </values>
+    <entity>
+        <name>Sun Ornament Dragon</name>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>4</health>
+        <dragon/>
+        <description>Cast: Heal [heal] health of yourself for each dragon in your hand.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <heal>[heal] * source.owner.count("HAND", "target.owner == source &amp;&amp; target.isDragon")</heal>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

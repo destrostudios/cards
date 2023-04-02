@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 public class ComponentsTriggers {
 
-    private static HashMap<Class<? extends Event>, HashMap<Boolean, TriggerDefinition>> TRIGGERS = new HashMap<>();
     public static final boolean PRE = false;
     public static final boolean POST = true;
+    private static HashMap<Class<? extends Event>, HashMap<Boolean, TriggerDefinition>> TRIGGERS = new HashMap<>();
     static {
         TriggerRegistration<?>[] triggers = new TriggerRegistration[] {
             new TriggerRegistration<>(new boolean[] { true }, DestructionEvent.class, event -> new int[] { event.target }),

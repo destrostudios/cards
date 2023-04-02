@@ -1,11 +1,13 @@
 package com.destrostudios.cards.shared.application;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.templates.*;
 import com.destrostudios.cards.shared.entities.templates.components.*;
 import com.destrostudios.cards.shared.entities.templates.formats.*;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.ComponentsTriggers;
 import com.destrostudios.cards.shared.rules.TargetPrefilter;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
@@ -37,10 +39,6 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Integer(Components.MANA));
         templateManager.registerComponent(new ComponentParser_String(Components.DESCRIPTION));
         templateManager.registerComponent(new ComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.DEATH_TRIGGERS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.TURN_END_TRIGGERS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.DAMAGE_TRIGGERS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.HEAL_TRIGGERS));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));
         templateManager.registerComponent(new ComponentParser_String(Components.Cost.BONUS_MANA_COST));
@@ -97,6 +95,10 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.MAXIMUM_CASTS_PER_TURN));
         templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TAUNTABLE));
         templateManager.registerComponent(new ComponentParser_Entities(Components.Spell.CAST_TRIGGERS));
+
+        for (ComponentDefinition<int[]> component : ComponentsTriggers.getAllComponents()) {
+            templateManager.registerComponent(new ComponentParser_Entities(component));
+        }
 
         EntityTemplate.addLoader(templateManager::loadTemplate);
     }

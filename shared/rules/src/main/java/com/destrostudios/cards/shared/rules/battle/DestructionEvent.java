@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.events.Event;
 
 public class DestructionEvent extends Event {
 
-    final int target;
+    public int target;
 
     public DestructionEvent(int target) {
         this.target = target;

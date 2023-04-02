@@ -2,13 +2,13 @@
     <entity template="./templates/vanilla(name=Baby Turtle,manaCost=4,attack=0,health=5)">
         <beast/>
         <description>Death: Summon its mother, the 5/5 Tarasque.</description>
-        <deathTriggers>
+        <postDestructionTriggers>
             <entity>
                 <condition>target == source</condition>
                 <effects>
                     <entity template="../effects/spawn_for_owner(template=creatures/tarasque)"/>
                 </effects>
             </entity>
-        </deathTriggers>
+        </postDestructionTriggers>
     </entity>
 </template>

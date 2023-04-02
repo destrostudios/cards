@@ -2,7 +2,7 @@
     <entity template="./templates/vanilla(name=Walking Mortuary,manaCost=9,attack=9,health=9)">
         <beast/>
         <description>Death: Summon 9 1/1 Zombies.</description>
-        <deathTriggers>
+        <postDestructionTriggers>
             <entity>
                 <condition>target == source</condition>
                 <effects>
@@ -17,6 +17,6 @@
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
                 </effects>
             </entity>
-        </deathTriggers>
+        </postDestructionTriggers>
     </entity>
 </template>

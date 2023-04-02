@@ -13,7 +13,10 @@ import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.effects.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.*;
+import com.destrostudios.cards.shared.rules.triggers.TriggerHandler;
 import lombok.Getter;
+
+import static com.destrostudios.cards.shared.rules.ComponentsTriggers.*;
 
 public class GameContext {
 
@@ -56,17 +59,21 @@ public class GameContext {
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
         addEventHandlers(events.instant(), DamageEvent.class, new DamageHandler());
         addEventHandlers(events.resolved(), DamageEvent.class,
-                new TriggerOnDamageHandler(),
+                new TriggerHandler<>(getTriggersComponent(POST, DamageEvent.class)),
                 new DestroyOnZeroHealthHandler()
         );
         addEventHandler(events.instant(), HealEvent.class,new HealHandler());
         addEventHandlers(events.resolved(), HealEvent.class,
-                new TriggerOnHealHandler()
+                new TriggerHandler<>(getTriggersComponent(POST, HealEvent.class))
         );
         addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
-        addEventHandler(events.resolved(), DestructionEvent.class, new TriggerOnDeathHandler());
+        addEventHandler(events.resolved(), DestructionEvent.class,
+                new TriggerHandler<>(getTriggersComponent(POST, DestructionEvent.class))
+        );
         addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
-        addEventHandler(events.pre(), EndTurnEvent.class, new TriggerOnEndTurnHandler());
+        addEventHandler(events.pre(), EndTurnEvent.class,
+                new TriggerHandler<>(getTriggersComponent(PRE, EndTurnEvent.class))
+        );
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
                 new ResetCurrentCastsPerTurnOnEndTurnHandler()

@@ -91,7 +91,7 @@ public class BuffUtil {
             } else {
                 Integer bonusValue = getValue(data, target, buff, bonusComponent);
                 if (bonusValue != null) {
-                    result.bonusValue = bonusValue;
+                    result.bonusValue += bonusValue;
                 }
             }
         }

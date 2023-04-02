@@ -8,6 +8,7 @@ creatures/baby_turtle,Baby Turtle,4,0,5,false,false
 creatures/battle_cleric,Battle Cleric,3,2,3,false,false
 creatures/blademaster,Blademaster,2,3,1,false,false
 creatures/blessed_barbarian,Blessed Barbarian,2,1,2,false,true
+creatures/bloodhawk,Bloodhawk,6,5,5,false,false
 creatures/brave_soldier,Brave Soldier,1,1,1,false,true
 creatures/bronze_golem,Bronze Golem,1,1,2,false,false
 creatures/crazed_doctor,Crazed Doctor,5,2,2,false,false

@@ -74,6 +74,7 @@ public class GameContext {
         addEventHandler(events.pre(), EndTurnEvent.class,
                 new TriggerHandler<>(getTriggersComponent(PRE, EndTurnEvent.class))
         );
+        addEventHandlers(events.pre(), EndTurnEvent.class, new RemoveTemporaryBuffsOnEndTurnHandler());
         addEventHandlers(events.instant(), EndTurnEvent.class,
                 new EndTurnHandler(),
                 new ResetCurrentCastsPerTurnOnEndTurnHandler()

@@ -60,6 +60,8 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(new ComponentParser_Entity(Components.Aura.AURA_BUFF));
 
+        templateManager.registerComponent(new ComponentParser_Void(Components.Buff.UNTIL_END_OF_TURN));
+
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.BEAST));
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.DRAGON));
         templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.GOBLIN));

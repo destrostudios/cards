@@ -1,0 +1,38 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+    </values>
+    <entity id="card">
+        <name>Warcry</name>
+        <spellCard/>
+        <description>Your Goblins gain +[bonusAttack] attack until end of turn.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isGoblin</targetAll>
+                                    </entity>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <untilEndOfTurn/>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

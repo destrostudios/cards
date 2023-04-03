@@ -70,6 +70,10 @@ public class Components {
         public static final ComponentDefinition<Integer> AURA_BUFF = create("auraBuff");
     }
 
+    public static class Buff {
+        public static final ComponentDefinition<Void> UNTIL_END_OF_TURN = create("untilEndOfTurn");
+    }
+
     public static class Tribe {
         public static final ComponentDefinition<Void> BEAST = create("beast");
         public static final ComponentDefinition<Void> DRAGON = create("dragon");

@@ -23,8 +23,8 @@
             <entity>
                 <description>Deal [damage] damage to target opponent creature.</description>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
-                <targetPrefilter>BOARD</targetPrefilter>
-                <condition>source.isOnBoard &amp;&amp; !target.isAlly(source) &amp;&amp; target.isCreatureCard</condition>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isOnBoard &amp;&amp; !target.isAlly(source)</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

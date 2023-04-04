@@ -12,6 +12,6 @@ public class TestBasicSummon extends TestGame {
     public void testSummon(String template) {
         int card = create(template, player, Components.HAND);
         castFromHand(card);
-        assertHasComponent(card, Components.BOARD);
+        assertHasComponent(card, Components.CREATURE_ZONE);
     }
 }

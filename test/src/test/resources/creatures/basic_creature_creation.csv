@@ -56,6 +56,7 @@ creatures/siren,Siren,3,2,2,false,false
 creatures/sun_ornament_dragon,Sun Ornament Dragon,3,2,4,false,false
 creatures/tarasque,Tarasque,5,5,5,false,false
 creatures/terror_from_above,Terror from Above,10,8,8,false,false
+creatures/the_ether_dragon,The Ether Dragon,10,10,10,false,false
 creatures/tiny_dragon,Tiny Dragon,2,2,2,false,false
 creatures/two_headed_chimera,Two-headed Chimera,3,2,4,false,false
 creatures/undead_general,Undead General,3,2,8,false,false

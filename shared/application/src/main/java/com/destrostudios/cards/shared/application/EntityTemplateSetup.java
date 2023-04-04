@@ -85,6 +85,7 @@ public class EntityTemplateSetup {
             }
         });
         templateManager.registerComponent(new ComponentParser_Templates(Components.Effect.SUMMON));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.END_TURN));
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_HAND));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));

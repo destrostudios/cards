@@ -12,6 +12,7 @@ import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.BuffUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
@@ -82,6 +83,11 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             for (String template : templates) {
                 events.fire(new SummonEvent(event.target, template), random);
             }
+        }
+
+        if (data.hasComponent(event.effect, Components.Effect.END_TURN)) {
+            int activePlayer = data.query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
+            events.fire(new EndTurnEvent(activePlayer), random);
         }
     }
 }

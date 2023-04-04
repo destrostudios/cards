@@ -94,6 +94,7 @@ public class Components {
         public static final ComponentDefinition<Void> BATTLE = create("battle");
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
         public static final ComponentDefinition<String[]> SUMMON = create("summon");
+        public static final ComponentDefinition<Void> END_TURN = create("endTurn");
 
         public static class Zones {
             public static final ComponentDefinition<Void> ADD_TO_HAND = create("addToHand");

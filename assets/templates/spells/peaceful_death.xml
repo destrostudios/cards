@@ -5,8 +5,8 @@
         <description>Destroy target undamaged creature.</description>
         <spells>
             <entity>
-                <targetPrefilter>BOARD</targetPrefilter>
-                <condition>source.isInHand &amp;&amp; target.isCreatureCard &amp;&amp; !target.isDamaged</condition>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isInHand &amp;&amp; !target.isDamaged</condition>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

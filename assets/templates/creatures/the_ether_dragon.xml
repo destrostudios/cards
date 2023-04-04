@@ -1,0 +1,34 @@
+<template>
+    <entity>
+        <name>The Ether Dragon</name>
+        <creatureCard/>
+        <attack>10</attack>
+        <health>10</health>
+        <dragon/>
+        <description>Cast: Summon all Dragons from your hand and end your turn.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>10</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>HAND</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isDragon</targetAll>
+                                    </entity>
+                                </targets>
+                                <addToBoard/>
+                            </entity>
+                            <entity template="../effects/end_turn"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

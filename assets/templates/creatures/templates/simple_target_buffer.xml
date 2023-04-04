@@ -7,8 +7,8 @@
         <spells>
             <entity>
                 <targetOptional/>
-                <targetPrefilter>BOARD</targetPrefilter>
-                <condition>source.isInHand &amp;&amp; ((target == null) || target.isCreatureCard)</condition>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isInHand</condition>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

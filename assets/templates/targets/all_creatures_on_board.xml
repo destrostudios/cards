@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilter>BOARD</targetPrefilter>
-        <targetAll>target.isCreatureCard</targetAll>
+        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+        <targetAll/>
     </entity>
 </template>

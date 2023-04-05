@@ -4,7 +4,7 @@
         <creatureCard/>
         <attack>5</attack>
         <health>5</health>
-        <description>Cast: Revive a random allied Beast.</description>
+        <description>Cast: Revive a random ally Beast.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>

@@ -1,0 +1,27 @@
+<template>
+    <entity>
+        <name>[name]</name>
+        <spellCard/>
+        <description>Deal [damage] damage to target character.</description>
+        <spells>
+            <entity>
+                <targetPrefilter>BOARD</targetPrefilter>
+                <condition>source.isInHand</condition>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../../targets/targets"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

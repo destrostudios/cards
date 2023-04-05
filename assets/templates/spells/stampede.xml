@@ -1,0 +1,39 @@
+<template>
+    <entity>
+        <name>Stampede</name>
+        <spellCard/>
+        <description>Destroy all ally Beasts and as many random opponent creatures.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand &amp;&amp; source.count("CREATURE_ZONE", "target.isAlly(source) &amp;&amp; target.isBeast") > 0</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                                        <targetAll>!target.isAlly(source)</targetAll>
+                                        <targetRandom>source.count("CREATURE_ZONE", "target.isAlly(source) &amp;&amp; target.isBeast")</targetRandom>
+                                    </entity>
+                                </targets>
+                                <destroy/>
+                            </entity>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                    </entity>
+                                </targets>
+                                <destroy/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -5,7 +5,7 @@
     <entity>
         <name>Adventure</name>
         <spellCard/>
-        <description>Draw a random creature from your deck that costs ([minimumManaCost]) or more.</description>
+        <description>Draw a random creature from your library that costs ([minimumManaCost]) or more.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>

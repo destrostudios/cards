@@ -1,0 +1,33 @@
+<template>
+    <values>
+        <amount>2</amount>
+    </values>
+    <entity>
+        <name>Fall of the First Dragons</name>
+        <spellCard/>
+        <description>Put [amount] random Dragons from your graveyard to your hand.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand &amp;&amp; source.count("GRAVEYARD", "target.isAlly(source) &amp;&amp; target.isDragon") >= [amount]</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isDragon</targetAll>
+                                        <targetRandom>[amount]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

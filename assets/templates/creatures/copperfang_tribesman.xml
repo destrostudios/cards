@@ -1,0 +1,40 @@
+<template>
+    <values>
+        <bonusHealth>2</bonusHealth>
+    </values>
+    <entity id="card">
+        <name>Copperfang Tribesman</name>
+        <creatureCard/>
+        <attack>3</attack>
+        <health>2</health>
+        <description>Cast: Your beasts on board gain +[bonusHealth] health.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                    </entity>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

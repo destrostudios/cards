@@ -1,0 +1,30 @@
+<template>
+    <values>
+        <damage>4</damage>
+    </values>
+    <entity>
+        <name>Rimefire Bolt</name>
+        <spellCard/>
+        <description>Deal [damage] damage to target creature.</description>
+        <spells>
+            <entity>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isInHand</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

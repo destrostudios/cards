@@ -5,14 +5,14 @@
     <entity>
         <name>Sun Ornament Dragon</name>
         <creatureCard/>
-        <attack>2</attack>
-        <health>4</health>
+        <attack>3</attack>
+        <health>5</health>
         <dragon/>
         <description>Cast: Heal [heal] health of yourself for each dragon in your hand.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>
-                <manaCost>3</manaCost>
+                <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

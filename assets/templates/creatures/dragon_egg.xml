@@ -1,0 +1,25 @@
+<template>
+    <entity>
+        <name>Dragon Egg</name>
+        <creatureCard/>
+        <attack>0</attack>
+        <health>3</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(manaCost=2)"/>
+            <entity template="../spells/templates/simple_attack"/>
+            <entity>
+                <description>Hatch into a 4/4 Dragon.</description>
+                <condition>source.isOnBoard</condition>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/dragon)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

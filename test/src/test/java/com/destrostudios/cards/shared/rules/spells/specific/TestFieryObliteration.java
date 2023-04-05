@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class TestFieryObliteration extends TestGame {
 
     @Test
-    public void testDamageCreaturesOnCast() {
+    public void testDamageOpponentCreaturesOnCast() {
         int[] creatures = createVanillas(2, 0, 0, 5, opponent, Components.CREATURE_ZONE);
         int card = create("spells/fiery_obliteration", player, Components.HAND);
         castFromHand(card);

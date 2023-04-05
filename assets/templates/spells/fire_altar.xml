@@ -1,0 +1,34 @@
+<template>
+    <values>
+        <sacrifices>2</sacrifices>
+    </values>
+    <entity>
+        <name>Fire Altar</name>
+        <spellCard/>
+        <description>Destroy [sacrifices] random ally creatures to summon target Dragon from your hand.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand &amp;&amp; source.count("CREATURE_ZONE", "target.isAlly(source)") >= [sacrifices]</condition>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                                        <targetAll>target.isAlly(source)</targetAll>
+                                        <targetRandom>[sacrifices]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <destroy/>
+                            </entity>
+                            <entity template="../effects/add_target_to_board"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

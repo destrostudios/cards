@@ -6,7 +6,7 @@
     <entity>
         <name>Conjured Lightning</name>
         <spellCard/>
-        <description>Deal [opponentDamage] damage to all opponent creatures and [allyDamage] damage to all allied creatures.</description>
+        <description>Deal [opponentDamage] damage to all opponent creatures and [allyDamage] damage to all ally creatures.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>

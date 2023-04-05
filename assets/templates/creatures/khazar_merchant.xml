@@ -7,7 +7,7 @@
         <creatureCard/>
         <attack>2</attack>
         <health>2</health>
-        <description>Cast: Draw a spell from your deck that costs ([maximumManaCost]) or less.</description>
+        <description>Cast: Draw a spell from your library that costs ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>

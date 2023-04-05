@@ -1,0 +1,20 @@
+<template>
+    <values>
+        <bonusHealth>2</bonusHealth>
+    </values>
+    <entity id="card" template="./templates/vanilla(name=Ox Warhero,manaCost=2,attack=3,health=1)">
+        <beast/>
+        <description>Has +[bonusHealth] health if you have another Beast on board.</description>
+        <auras>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; (target == source) &amp;&amp; source.exists("CREATURE_ZONE", "target.isAlly(source) &amp;&amp; target.isBeast &amp;&amp; (target != source)")</condition>
+                <auraBuff>
+                    <entity>
+                        <source>#card</source>
+                        <bonusHealth>[bonusHealth]</bonusHealth>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

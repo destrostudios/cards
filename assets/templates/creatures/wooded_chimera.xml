@@ -1,0 +1,27 @@
+<template>
+    <entity>
+        <name>Wooded Chimera</name>
+        <creatureCard/>
+        <attack>8</attack>
+        <health>8</health>
+        <beast/>
+        <description>Cast: Summon its children!</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>8</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_firstborn)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_secondborn)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_thirdborn)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

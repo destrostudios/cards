@@ -1,0 +1,41 @@
+<template>
+    <values>
+        <bonusAttack>2</bonusAttack>
+        <bonusHealth>2</bonusHealth>
+    </values>
+    <entity>
+        <name>Mahabit Shaman</name>
+        <creatureCard/>
+        <attack>5</attack>
+        <health>4</health>
+        <description>Cast: Target ally Beast gains +[bonusAttack]/+[bonusHealth].</description>
+        <spells>
+            <entity>
+                <targetOptional/>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isInHand &amp;&amp; ((target == null) || (target.isAlly(source) &amp;&amp; target.isBeast))</condition>
+                <manaCost>5</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

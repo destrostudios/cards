@@ -1,0 +1,33 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity>
+        <name>Unremembered Griffin</name>
+        <creatureCard/>
+        <attack>3</attack>
+        <health>3</health>
+        <beast/>
+        <description>Cast: Deal [damage] damage to all creatures.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>4</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/all_creatures_on_board"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

@@ -108,7 +108,7 @@ public class Components {
         public static final ComponentDefinition<int[]> TARGETS = create("targets");
         public static final ComponentDefinition<String> TARGET = create("target");
         public static final ComponentDefinition<String> TARGET_ALL = create("targetAll");
-        public static final ComponentDefinition<Integer> TARGET_RANDOM = create("targetRandom");
+        public static final ComponentDefinition<String> TARGET_RANDOM = create("targetRandom");
     }
 
     public static class Spell {

@@ -1,18 +1,26 @@
 template,name,manaCost
+spells/a_long_trip,A Long Trip,3
 spells/adventure,Adventure,2
 spells/begone_lizard,"Begone, Lizard!",4
 spells/blue_lagoon,Blue Lagoon,5
 spells/bonfire,Bonfire,2
 spells/conjured_lightning,Conjured Lightning,5
+spells/dragons_counterattack,Dragon's Counterattack,5
 spells/eruption,Eruption,10
+spells/fall_of_the_first_dragons,Fall of the First Dragons,2
 spells/fiery_obliteration,Fiery Obliteration,7
+spells/fire_altar,Fire Altar,1
+spells/goblin_assault_squad,Goblin Assault Squad,3
+spells/grand_fireball,Grand Fireball,4
 spells/into_battle,Into Battle,6
 spells/medusa_shield,Medusa Shield,2
 spells/murder,Murder,5
 spells/peaceful_death,Peaceful Death,4
 spells/power_of_the_eclipse,Power of the Eclipse,3
+spells/rimefire_bolt,Rimefire Bolt,2
 spells/sandstorm,Sandstorm,7
 spells/sea_storm,Sea Storm,4
+spells/stampede,Stampede,2
 spells/sunray,Sunray,0
 spells/sword_of_the_crusader,Sword of the Crusader,2
 spells/technology,Technology,3

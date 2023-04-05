@@ -95,7 +95,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGETS));
         templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET));
         templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_ALL));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Target.TARGET_RANDOM));
+        templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_RANDOM));
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.CURRENT_CASTS_PER_TURN));

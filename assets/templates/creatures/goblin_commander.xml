@@ -1,0 +1,23 @@
+<template>
+    <values>
+        <name>Goblin Commander</name>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity id="card" template="./templates/vanilla(name=Goblin Commander,manaCost=3,attack=2,health=2)">
+        <goblin/>
+        <description>Your Goblins on board have +[bonusAttack]/+[bonusHealth].</description>
+        <auras>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; target.isAlly(source) &amp;&amp; target.isOnBoard &amp;&amp; target.isGoblin</condition>
+                <auraBuff>
+                    <entity>
+                        <source>#card</source>
+                        <bonusAttack>[bonusAttack]</bonusAttack>
+                        <bonusHealth>[bonusHealth]</bonusHealth>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

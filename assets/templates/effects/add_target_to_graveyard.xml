@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/targets"/>
+        </targets>
+        <addToGraveyard/>
+    </entity>
+</template>

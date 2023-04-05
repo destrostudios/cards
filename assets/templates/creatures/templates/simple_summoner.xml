@@ -1,0 +1,24 @@
+<template>
+    <entity>
+        <name>[name]</name>
+        <creatureCard/>
+        <attack>[attack]</attack>
+        <health>[health]</health>
+        <description>Cast: Summon a [summonDescription].</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/add_source_to_board"/>
+                            <entity template="../../effects/spawn_for_owner(template=[summonTemplate])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

@@ -172,15 +172,7 @@ public class TestGame {
         data.setComponent(entity, Components.MANA, mana);
     }
 
-    protected void castFromHand(int card) {
-        castFromHand(card, new int[0]);
-    }
-
-    protected void castFromHand(int card, int target) {
-        castFromHand(card, new int[] { target });
-    }
-
-    protected void castFromHand(int card, int[] targets) {
+    protected void castFromHand(int card, int... targets) {
         cast(getDefaultCastFromHandSpell(card), targets);
     }
 
@@ -188,11 +180,7 @@ public class TestGame {
         cast(getDefaultAttackSpell(card), target);
     }
 
-    protected void cast(int spell, int target) {
-        cast(spell, new int[] { target });
-    }
-
-    protected void cast(int spell, int[] targets) {
+    protected void cast(int spell, int... targets) {
         fire(new CastSpellEvent(spell, targets));
     }
 
@@ -227,9 +215,13 @@ public class TestGame {
         }
     }
 
-    protected void assertManaCost(int entity, int value) {
-        int defaultCastFromHandSpell = getDefaultCastFromHandSpell(entity);
-        assertEquals(value, CostUtil.getEffectiveManaCost(data, defaultCastFromHandSpell));
+    protected void assertManaCost(int card, int value) {
+        int defaultCastFromHandSpell = getDefaultCastFromHandSpell(card);
+        assertManaCostSpell(defaultCastFromHandSpell, value);
+    }
+
+    protected void assertManaCostSpell(int spell, int value) {
+        assertEquals(value, CostUtil.getEffectiveManaCost(data, spell));
     }
 
     protected int getDefaultCastFromHandSpell(int entity) {

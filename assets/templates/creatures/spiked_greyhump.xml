@@ -1,0 +1,23 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Spiked Greyhump,manaCost=5,attack=2,health=5)">
+        <taunt/>
+        <dragon/>
+        <description>When this creature takes damage, deal [damage] damage to all opponent creatures.</description>
+        <postDamageTriggers>
+            <entity>
+                <condition>target == source</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/all_opponent_creatures_on_board"/>
+                        </targets>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </postDamageTriggers>
+    </entity>
+</template>

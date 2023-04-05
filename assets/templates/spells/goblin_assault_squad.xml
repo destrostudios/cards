@@ -1,0 +1,23 @@
+<template>
+    <entity>
+        <name>Goblin Assault Squad</name>
+        <spellCard/>
+        <description>Summon 3 1/1 Goblins.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/goblin)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/goblin)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/goblin)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -1,0 +1,34 @@
+<template>
+    <values>
+        <draw>3</draw>
+        <maximumManaCost>2</maximumManaCost>
+    </values>
+    <entity>
+        <name>A Long Trip</name>
+        <spellCard/>
+        <description>Draw [draw] random goblins from your library that cost ([maximumManaCost]) or less.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isGoblin</targetAll>
+                                        <targetRandom>[draw]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

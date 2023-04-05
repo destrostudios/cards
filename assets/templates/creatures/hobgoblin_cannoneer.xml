@@ -1,0 +1,37 @@
+<template>
+    <values>
+        <damage>1</damage>
+        <amount>3</amount>
+    </values>
+    <entity template="./templates/vanilla(name=Hobgoblin Cannoneer,attack=3,health=3)">
+        <goblin/>
+        <description>When this creature attacks, deal [damage] damage to [amount] random opponents.</description>
+        <spells>
+            <entity template="../spells/templates/simple_summon(manaCost=4)"/>
+            <entity template="../spells/templates/simple_attack">
+                <castTriggers>
+                    <entity>
+                        <repeat>[amount]</repeat>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>BOARD</targetPrefilter>
+                                        <targetAll>!target.isAlly(source) &amp;&amp; target.health > 0</targetAll>
+                                        <targetRandom>[amount]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/battle_target"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

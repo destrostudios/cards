@@ -5,7 +5,7 @@
     <entity>
         <name>Blue Lagoon</name>
         <spellCard/>
-        <description>Draw [draw] random beasts from your deck.</description>
+        <description>Draw [draw] random beasts from your library.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>

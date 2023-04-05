@@ -1,0 +1,26 @@
+<template>
+    <values>
+        <damage>2</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Goblin Technician,manaCost=1,attack=1,health=1)">
+        <goblin/>
+        <description>Death: Deal [damage] damage to a random opponent.</description>
+        <postDestructionTriggers>
+            <entity>
+                <condition>target == source</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity>
+                                <targetPrefilter>BOARD</targetPrefilter>
+                                <targetAll>!target.isAlly(source)</targetAll>
+                                <targetRandom>1</targetRandom>
+                            </entity>
+                        </targets>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

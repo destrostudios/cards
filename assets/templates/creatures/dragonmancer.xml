@@ -1,0 +1,14 @@
+<template>
+    <entity template="./templates/vanilla(name=Dragonmancer,manaCost=3,attack=2,health=3)">
+        <description>Wen an ally Dragon is destroyed, destroy this creature and revive the Dragon.</description>
+        <postDestructionTriggers>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; target.isAlly(source) &amp;&amp; target.isDragon</condition>
+                <effects>
+                    <entity template="../effects/add_source_to_graveyard"/>
+                    <entity template="../effects/add_target_to_board"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

@@ -1,0 +1,25 @@
+<template>
+    <entity>
+        <name>Goblin Recruiter</name>
+        <creatureCard/>
+        <attack>1</attack>
+        <health>1</health>
+        <goblin/>
+        <spells>
+            <entity template="../spells/templates/simple_summon(manaCost=2)"/>
+            <entity template="../spells/templates/simple_attack"/>
+            <entity>
+                <description>Summon a 1/1 Goblin.</description>
+                <condition>source.isOnBoard</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/spawn_for_owner(template=creatures/goblin)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

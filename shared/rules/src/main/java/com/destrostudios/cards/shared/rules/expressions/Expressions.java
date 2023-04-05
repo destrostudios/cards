@@ -52,6 +52,11 @@ public class Expressions {
     }
 
     private static <T> T evaluate(String expression, JexlContext context) {
-        return (T) JEXL_ENGINE.createExpression(expression).evaluate(context);
+        try {
+            return (T) JEXL_ENGINE.createExpression(expression).evaluate(context);
+        } catch (JexlException ex) {
+            System.err.println("Error while evaluating expression: " + expression);
+            throw ex;
+        }
     }
 }

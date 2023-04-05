@@ -36,8 +36,9 @@ public class TargetUtil {
             TargetPrefilter targetPrefilter = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTER);
             affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilter, targetAllCondition));
         }
-        Integer maxRandomTargets = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
-        if (maxRandomTargets != null) {
+        String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
+        if (maxRandomTargetsExpression != null) {
+            int maxRandomTargets = Expressions.evaluate(data, maxRandomTargetsExpression, source, targets);
             // TODO: Use random game-tools interface?
             Collections.shuffle(affectedTargets);
             while (affectedTargets.size() > maxRandomTargets) {

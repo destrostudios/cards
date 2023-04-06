@@ -10,8 +10,7 @@ public class ShuffleLibraryHandler extends GameEventHandler<ShuffleLibraryEvent>
 
     @Override
     public void handle(ShuffleLibraryEvent event, NetworkRandom random) {
-        List<Integer> libraryCards = data.query(Components.LIBRARY).list(hasComponentValue(Components.OWNED_BY, event.player));
-        
+        List<Integer> libraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == event.player);
         for (int i = libraryCards.size(); i > 0; i--) {
             int cardIndex = random.nextInt(i);
             int cardEntity = libraryCards.remove(cardIndex);

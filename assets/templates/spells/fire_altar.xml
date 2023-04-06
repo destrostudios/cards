@@ -8,7 +8,8 @@
         <description>Destroy [sacrifices] random ally creatures to summon target Dragon from your hand.</description>
         <spells>
             <entity>
-                <condition>source.isInHand &amp;&amp; source.count("CREATURE_ZONE", "target.isAlly(source)") >= [sacrifices]</condition>
+                <targetPrefilter>HAND</targetPrefilter>
+                <condition>source.isInHand &amp;&amp; target.isAlly(source) &amp;&amp; target.isDragon &amp;&amp; source.count("CREATURE_ZONE", "target.isAlly(source)") >= [sacrifices]</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

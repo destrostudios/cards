@@ -19,7 +19,11 @@ public class CheckBonusDamageHandler extends GameEventHandler<ConditionsAffected
             int bonusDamage = data.getComponent(entity, Components.Stats.BONUS_DAMAGED);
             int bonusHealth = StatsUtil.getBonusHealth(data, entity);
             if (bonusHealth < bonusDamage) {
-                data.setComponent(entity, Components.Stats.BONUS_DAMAGED, bonusHealth);
+                if (bonusHealth > 0) {
+                    data.setComponent(entity, Components.Stats.BONUS_DAMAGED, bonusHealth);
+                } else {
+                    data.removeComponent(entity, Components.Stats.BONUS_DAMAGED);
+                }
             }
         }
     }

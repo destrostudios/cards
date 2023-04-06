@@ -16,11 +16,10 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
 
     @Override
     public void handle(DestructionEvent event, NetworkRandom random) {
-        LOG.info("{} destroyed", event.target);
+        LOG.info("Destroying " + inspect(event.target));
         Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
         if (nextPlayer.isPresent()) {
             int winner = nextPlayer.get();
-            LOG.info("Game over: Winner = " + winner);
             events.fire(new GameOverEvent(winner), random);
         } else {
             events.fire(new AddCardToGraveyardEvent(event.target), random);

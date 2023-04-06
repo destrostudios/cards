@@ -5,10 +5,14 @@ import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.buffs.RemoveBuffEvent;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class RemoveTemporaryBuffsOnEndTurnHandler extends GameEventHandler<EndTurnEvent> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RemoveTemporaryBuffsOnEndTurnHandler.class);
 
     @Override
     public void handle(EndTurnEvent event, NetworkRandom random) {
@@ -17,6 +21,7 @@ public class RemoveTemporaryBuffsOnEndTurnHandler extends GameEventHandler<EndTu
         for (int buff : buffs) {
             for (int target : targets) {
                 if (ArrayUtil.contains(data, target, Components.BUFFS, buff)) {
+                    LOG.info("Removing temporary buff " + inspect(buff) + " from " + inspect(target) + " at end of turn");
                     events.fire(new RemoveBuffEvent(target, buff), random);
                 }
             }

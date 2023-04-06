@@ -14,7 +14,7 @@ public class SummonHandler extends GameEventHandler<SummonEvent> {
 
     @Override
     public void handle(SummonEvent event, NetworkRandom random) {
-        LOG.info("Summoning \"" + event.template + "\" for {}", event.template, event.player);
+        LOG.info("Summoning \"" + event.template + "\" for " + inspect(event.player));
         int creature = EntityTemplate.createFromTemplate(data, event.template);
         data.setComponent(creature, Components.OWNED_BY, event.player);
         events.fire(new AddCardToCreatureZoneEvent(creature), random);

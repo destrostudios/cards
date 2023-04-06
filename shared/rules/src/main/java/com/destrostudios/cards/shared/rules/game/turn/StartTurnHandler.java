@@ -12,7 +12,7 @@ public class StartTurnHandler extends GameEventHandler<StartTurnEvent> {
 
     @Override
     public void handle(StartTurnEvent event, NetworkRandom random) {
+        LOG.info("Starting turn of " + inspect(event.player));
         data.setComponent(event.player, Components.Game.ACTIVE_PLAYER);
-        LOG.info("Turn of {} started.", event.player);
     }
 }

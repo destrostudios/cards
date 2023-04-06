@@ -12,7 +12,7 @@ public class RemoveCardFromLibraryHandler extends GameEventHandler<RemoveCardFro
 
     @Override
     public void handle(RemoveCardFromLibraryEvent event, NetworkRandom random) {
+        LOG.info("Removing " + inspect(event.card) + " from library");
         events.fire(new RemoveCardFromZoneEvent(event.card, Components.LIBRARY), random);
-        LOG.info("Removed {} from library", event.card);
     }
 }

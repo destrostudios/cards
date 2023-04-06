@@ -14,9 +14,9 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
     @Override
     public void handle(DamageEvent event, NetworkRandom random) {
         boolean damaged = false;
-        LOG.info("Dealing {} damage to {}", event.damage, event.target);
+        LOG.info("Dealing " + event.damage + " damage to " + inspect(event.target));
         if (data.getOptionalComponent(event.target, Components.Ability.DIVINE_SHIELD).orElse(false)) {
-            LOG.info("Remove divine shield from {}", event.target);
+            LOG.info("Removing divine shield from " + inspect(event.target));
             data.setComponent(event.target, Components.Ability.DIVINE_SHIELD, false);
         } else {
             int remainingDamage = event.damage;
@@ -27,7 +27,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
                 if (bonusDamageDealt > 0) {
                     int newBonusDamaged = oldBonusDamaged + bonusDamageDealt;
                     data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
-                    LOG.info("Changing bonus damaged of {} from {} to {}", event.target, oldBonusDamaged, newBonusDamaged);
+                    LOG.info("Changing bonus damaged of " + inspect(event.target) + " from " + oldBonusDamaged + " to " + newBonusDamaged);
                     remainingDamage -= bonusDamageDealt;
                     damaged = true;
                 }
@@ -35,7 +35,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
             if (remainingDamage > 0) {
                 int oldDamaged = data.getOptionalComponent(event.target, Components.Stats.DAMAGED).orElse(0);
                 int newDamaged = oldDamaged + remainingDamage;
-                LOG.info("Changing damaged of {} from {} to {}", event.target, oldDamaged, newDamaged);
+                LOG.info("Changing damaged of " + inspect(event.target) + " from " + oldDamaged + " to " + newDamaged);
                 data.setComponent(event.target, Components.Stats.DAMAGED, newDamaged);
                 damaged = true;
             }

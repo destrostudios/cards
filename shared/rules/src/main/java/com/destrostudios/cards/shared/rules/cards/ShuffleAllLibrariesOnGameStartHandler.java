@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 
 public class ShuffleAllLibrariesOnGameStartHandler extends GameEventHandler<GameStartEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ShuffleLibraryHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ShuffleAllLibrariesOnGameStartHandler.class);
 
     @Override
     public void handle(GameStartEvent event, NetworkRandom random) {
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
-        LOG.info("Shuffling libraries of players {}", players);
+        LOG.info("Shuffling libraries of players " + inspect(players));
         players.forEach(player -> events.fire(new ShuffleLibraryEvent(player), random));
     }
 }

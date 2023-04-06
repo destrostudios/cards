@@ -10,15 +10,15 @@ import org.slf4j.LoggerFactory;
 
 public class CheckBonusDamageHandler extends GameEventHandler<ConditionsAffectedEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ConditionsAffectedEvent.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CheckBonusDamageHandler.class);
 
     @Override
     public void handle(ConditionsAffectedEvent event, NetworkRandom random) {
-        LOG.info("Checking bonus health");
         for (int entity : data.query(Components.Stats.BONUS_DAMAGED).list()) {
             int bonusDamage = data.getComponent(entity, Components.Stats.BONUS_DAMAGED);
             int bonusHealth = StatsUtil.getBonusHealth(data, entity);
             if (bonusHealth < bonusDamage) {
+                LOG.info("Changing bonus damaged of " + inspect(entity) + " to " + bonusHealth);
                 if (bonusHealth > 0) {
                     data.setComponent(entity, Components.Stats.BONUS_DAMAGED, bonusHealth);
                 } else {

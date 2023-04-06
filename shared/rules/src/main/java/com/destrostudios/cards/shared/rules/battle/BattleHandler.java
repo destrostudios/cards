@@ -12,7 +12,7 @@ public class BattleHandler extends GameEventHandler<BattleEvent> {
 
     @Override
     public void handle(BattleEvent event, NetworkRandom random) {
-        LOG.info("{} is battling {}", event.source, event.target);
+        LOG.info(inspect(event.source) + " is attacking " + inspect(event.target));
         Integer damageToTarget = StatsUtil.getEffectiveAttack(data, event.source);
         Integer damageToSource = StatsUtil.getEffectiveAttack(data, event.target);
         tryDealDamage(event.target, damageToTarget, random);

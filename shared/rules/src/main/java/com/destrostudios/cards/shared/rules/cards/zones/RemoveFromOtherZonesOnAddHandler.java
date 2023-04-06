@@ -14,6 +14,8 @@ public class RemoveFromOtherZonesOnAddHandler extends GameEventHandler<AddCardTo
             events.fire(new RemoveCardFromHandEvent(event.card), random);
         } else if ((event.zone != Components.CREATURE_ZONE) && data.hasComponent(event.card, Components.CREATURE_ZONE)) {
             events.fire(new RemoveCardFromCreatureZoneEvent(event.card), random);
+        } else if ((event.zone != Components.GRAVEYARD) && data.hasComponent(event.card, Components.GRAVEYARD)) {
+            events.fire(new RemoveCardFromGraveyardEvent(event.card), random);
         }
     }
 }

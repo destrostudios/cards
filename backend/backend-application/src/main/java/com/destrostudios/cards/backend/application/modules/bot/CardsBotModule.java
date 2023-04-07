@@ -11,6 +11,7 @@ import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 import com.destrostudios.gametools.bot.mcts.TerminationType;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
+import com.destrostudios.gametools.network.server.modules.game.MasterRandom;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
 import com.destrostudios.gametools.network.shared.modules.game.messages.GameActionRequest;
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class CardsBotModule extends NetworkModule {
@@ -59,7 +61,7 @@ public class CardsBotModule extends NetworkModule {
                 botSettings.evaluation = CardsBotModule::eval;
                 return new MctsBot<>(new CardsBotService(), botSettings);
             });
-            CardsBotState botState = new CardsBotState(game.state);
+            CardsBotState botState = new CardsBotState(game.state, new MasterRandom(new Random()));
             LOG.info("Bot started calculating...");
             long startNanos = System.nanoTime();
             List<Event> actions = bot.sortedActions(botState, botState.activeTeam());

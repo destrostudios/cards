@@ -5,24 +5,24 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.TargetPrefilter;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
+import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class TargetUtil {
 
-    public static List<Integer> getAffectedTargets(EntityData data, int[] targetDefinitions, int source, int[] targets) {
+    public static List<Integer> getAffectedTargets(EntityData data, int[] targetDefinitions, int source, int[] targets, NetworkRandom random) {
         // TODO: Use Set so entities are not affected multiple times? Dependent on effect/context? (here and in the methods below)
         LinkedList<Integer> affectedTargets = new LinkedList<>();
         for (int targetDefinition : targetDefinitions) {
-            affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, targets));
+            affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, targets, random));
         }
         return affectedTargets;
     }
 
-    private static LinkedList<Integer> getAffectedTargets(EntityData data, int targetDefinition, int source, int[] targets) {
+    private static LinkedList<Integer> getAffectedTargets(EntityData data, int targetDefinition, int source, int[] targets, NetworkRandom random) {
         LinkedList<Integer> affectedTargets = new LinkedList<>();
         String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
         if (targetExpression != null) {
@@ -39,10 +39,8 @@ public class TargetUtil {
         String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
         if (maxRandomTargetsExpression != null) {
             int maxRandomTargets = Expressions.evaluate(data, maxRandomTargetsExpression, source, targets);
-            // TODO: Use random game-tools interface?
-            Collections.shuffle(affectedTargets);
             while (affectedTargets.size() > maxRandomTargets) {
-                affectedTargets.removeLast();
+                affectedTargets.remove(random.nextInt(affectedTargets.size() - 1));
             }
         }
         return affectedTargets;

@@ -57,8 +57,7 @@ public class BotTest {
         botSettings.strength = 1000;
         botSettings.evaluation = CardsBotModule::eval;
         MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
-        CardsBotState botState = new CardsBotState(gameContext);
-        botState.setRandom(random);
+        CardsBotState botState = new CardsBotState(gameContext, random);
 
         long gameStartNanos = System.nanoTime();
         int actionIndex = 0;

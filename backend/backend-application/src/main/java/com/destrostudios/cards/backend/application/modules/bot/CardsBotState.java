@@ -8,7 +8,6 @@ import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.BotGameState;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.*;
 
@@ -21,16 +20,16 @@ public class CardsBotState implements BotGameState<Event, Integer> {
         random = cardsBotState.random;
     }
 
-    public CardsBotState(GameContext gameContext) {
+    public CardsBotState(GameContext gameContext, NetworkRandom random) {
         this.gameContext = gameContext;
         players = gameContext.getData().query(Components.NEXT_PLAYER).list();
         playerActionsGenerator = new PlayerActionsGenerator();
+        this.random = random;
     }
     @Getter
     private GameContext gameContext;
     private List<Integer> players;
     private PlayerActionsGenerator playerActionsGenerator;
-    @Setter
     private NetworkRandom random;
 
     @Override

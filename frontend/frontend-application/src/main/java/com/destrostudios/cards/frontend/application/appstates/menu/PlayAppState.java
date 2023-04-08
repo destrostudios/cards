@@ -29,7 +29,7 @@ public class PlayAppState extends MenuAppState {
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
         addTitle("Play");
-        modeAndDeckSelector = new ModeAndDeckSelector();
+        modeAndDeckSelector = new ModeAndDeckSelector(false);
         addComponent(modeAndDeckSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
         addButtons();
     }

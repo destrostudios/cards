@@ -66,13 +66,17 @@ public class QueueServerModule extends NetworkModule {
                             .put(userId, playerInfo);
                     startGameIfPossible(mode, queue);
                 } else {
+                    CardList botDeck = null;
+                    if (!mode.isHasUserLibrary()) {
+                        botDeck = mode.getDecks().get((int) (Math.random() * mode.getDecks().size())).getDeckCardList();
+                    }
                     UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo(
                         mode,
                         queue,
                         BOARD_NAME,
                         new PlayerInfo[] {
                             playerInfo,
-                            new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, null)
+                            new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, botDeck)
                         }
                     ));
                     cardsBotModule.checkBotTurn(gameId);

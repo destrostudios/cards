@@ -18,7 +18,7 @@ public class DecksAppState extends MenuAppState {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         addTitle("Collection");
-        modeAndDeckSelector = new ModeAndDeckSelector();
+        modeAndDeckSelector = new ModeAndDeckSelector(true);
         addComponent(modeAndDeckSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
         addButtons();
     }

@@ -35,7 +35,7 @@ public class PacksAppState extends MenuAppState {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         setTopDownCamera();
-        modeSelector = new ModeSelector() {
+        modeSelector = new ModeSelector(true) {
 
             @Override
             protected void onModeSelected() {

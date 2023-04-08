@@ -1,6 +1,6 @@
-package amara.libraries.database.databases;
+package com.destrostudios.cards.backend.database.databases.databases;
 
-import amara.libraries.database.Database;
+import com.destrostudios.cards.backend.database.databases.Database;
 
 public class MySQLDatabase extends Database {
 

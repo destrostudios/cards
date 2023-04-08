@@ -1,8 +1,8 @@
 package com.destrostudios.cards.backend.application.modules.bot;
 
-import amara.libraries.database.Database;
 import com.destrostudios.cards.backend.application.BackendApplication;
 import com.destrostudios.cards.backend.application.services.*;
+import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;

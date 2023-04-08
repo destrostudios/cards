@@ -1,11 +1,11 @@
 package com.destrostudios.cards.backend.application;
 
-import amara.libraries.database.Database;
-import amara.libraries.database.databases.MySQLDatabase;
 import com.destrostudios.authtoken.NoValidateJwtService;
 import com.destrostudios.cards.backend.application.modules.*;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
 import com.destrostudios.cards.backend.application.services.*;
+import com.destrostudios.cards.backend.database.databases.Database;
+import com.destrostudios.cards.backend.database.databases.databases.MySQLDatabase;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.files.FileManager;

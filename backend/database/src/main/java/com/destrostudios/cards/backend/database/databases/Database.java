@@ -1,4 +1,4 @@
-package amara.libraries.database;
+package com.destrostudios.cards.backend.database.databases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

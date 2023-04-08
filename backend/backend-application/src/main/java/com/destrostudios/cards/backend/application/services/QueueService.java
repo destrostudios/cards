@@ -1,7 +1,7 @@
 package com.destrostudios.cards.backend.application.services;
 
-import amara.libraries.database.Database;
-import amara.libraries.database.QueryResult;
+import com.destrostudios.cards.backend.database.databases.Database;
+import com.destrostudios.cards.backend.database.databases.QueryResult;
 import com.destrostudios.cards.shared.model.Queue;
 
 import java.util.HashMap;

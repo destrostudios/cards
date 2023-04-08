@@ -1,8 +1,8 @@
 package com.destrostudios.cards.backend.application.modules;
 
-import amara.libraries.database.Database;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.*;
+import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;

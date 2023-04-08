@@ -1,6 +1,6 @@
 package com.destrostudios.cards.backend.application.modules;
 
-import amara.libraries.database.Database;
+import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.backend.application.services.UserService;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Mode;

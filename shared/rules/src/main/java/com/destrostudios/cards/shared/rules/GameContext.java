@@ -93,15 +93,17 @@ public class GameContext {
         addEventHandlers(events.resolved(), CastSpellEvent.class,
                 new TriggerHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
         );
-        addEventHandlers(events.instant(), RemoveCardFromBoardZoneEvent.class,
-                new RemoveCardFromBoardZoneHandler(),
+        addEventHandlers(events.instant(), RemoveCardFromBoardEvent.class,
                 new RemoveDamageOnRemoveFromBoardHandler(),
                 new DeactivateDivineShieldOnRemoveFromBoardHandler(),
                 new RemoveBuffsOnRemoveFromBoardHandler()
         );
         addEventHandler(events.instant(), RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
         addEventHandler(events.instant(), RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
-        addEventHandler(events.instant(), RemoveCardFromHandEvent.class, new RemoveCardFromHandHandler());
+        addEventHandlers(events.instant(), RemoveCardFromHandEvent.class,
+                new RemoveCardFromHandHandler(),
+                new RemoveDefaultCastFromHandSpellBuffsOnRemoveFromHandHandler()
+        );
         addEventHandler(events.instant(), RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
         addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
         addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());

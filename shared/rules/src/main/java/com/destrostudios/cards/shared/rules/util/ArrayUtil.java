@@ -24,10 +24,14 @@ public class ArrayUtil {
                 }
             }
             if (valueIndex != null) {
-                int[] newArray = new int[oldArray.length - 1];
-                System.arraycopy(oldArray, 0, newArray, 0, valueIndex);
-                System.arraycopy(oldArray, valueIndex + 1, newArray, 0, oldArray.length - valueIndex - 1);
-                data.setComponent(entity, component, newArray);
+                if (oldArray.length > 1) {
+                    int[] newArray = new int[oldArray.length - 1];
+                    System.arraycopy(oldArray, 0, newArray, 0, valueIndex);
+                    System.arraycopy(oldArray, valueIndex + 1, newArray, 0, oldArray.length - valueIndex - 1);
+                    data.setComponent(entity, component, newArray);
+                } else {
+                    data.removeComponent(entity, component);
+                }
             }
         }
     }

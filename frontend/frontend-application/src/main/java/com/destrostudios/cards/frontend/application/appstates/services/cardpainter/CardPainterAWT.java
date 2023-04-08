@@ -135,7 +135,7 @@ public class CardPainterAWT {
             int centerX = (fullArt ? 335 : 350);
             tmpX = (int) (centerX - (manaCostTextBounds.getWidth() / 2));
             Color color = ((cardModel.getManaCostModification() == StatModification.DECREASED) ? Color.GREEN : ((cardModel.getManaCostModification() == StatModification.INCREASED) ? Color.RED : Color.WHITE));
-            drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
+            AWTUtil.drawOutlinedText(graphics, manaCostText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
     }
 
@@ -151,7 +151,7 @@ public class CardPainterAWT {
             int centerX = (fullArt ? 65 : 60);
             tmpX = (int) (centerX - (attackBounds.getWidth() / 2));
             Color color = ((cardModel.getAttackModification() == StatModification.INCREASED) ? Color.GREEN : Color.WHITE);
-            drawOutlinedText(graphics, attackText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
+            AWTUtil.drawOutlinedText(graphics, attackText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
         Integer health = cardModel.getHealth();
         if (health != null) {
@@ -161,7 +161,7 @@ public class CardPainterAWT {
             int centerX = (fullArt ? 335 : 340);
             tmpX = (int) (centerX - (healthBounds.getWidth() / 2));
             Color color = (cardModel.isDamaged() ? Color.RED : ((cardModel.getHealthModification() == StatModification.INCREASED) ? Color.GREEN : Color.WHITE));
-            drawOutlinedText(graphics, healthText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
+            AWTUtil.drawOutlinedText(graphics, healthText, tmpX, tmpY, Color.BLACK, color, outlineStrength);
         }
     }
 
@@ -173,21 +173,6 @@ public class CardPainterAWT {
         }
         text += description;
         drawStringMultiLine(graphics, text, lineWidth, startX, followingX, y, -2);
-    }
-
-    private static void drawOutlinedText(Graphics2D graphics, String text, int x, int y, Color outlineColor, Color textColor, int outlineStrength) {
-        graphics.setColor(outlineColor);
-        graphics.drawString(text, x - outlineStrength, y - outlineStrength);
-        graphics.drawString(text, x, y - outlineStrength);
-        graphics.drawString(text, x + outlineStrength, y - outlineStrength);
-        graphics.drawString(text, x - outlineStrength, y);
-        graphics.drawString(text, x, y);
-        graphics.drawString(text, x + outlineStrength, y);
-        graphics.drawString(text, x - outlineStrength, y + outlineStrength);
-        graphics.drawString(text, x, y + outlineStrength);
-        graphics.drawString(text, x + outlineStrength, y + outlineStrength);
-        graphics.setColor(textColor);
-        graphics.drawString(text, x, y);
     }
 
     // http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring

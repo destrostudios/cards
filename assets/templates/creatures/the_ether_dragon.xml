@@ -1,6 +1,7 @@
 <template>
     <entity>
         <name>The Ether Dragon</name>
+        <legendary/>
         <creatureCard/>
         <attack>10</attack>
         <health>10</health>

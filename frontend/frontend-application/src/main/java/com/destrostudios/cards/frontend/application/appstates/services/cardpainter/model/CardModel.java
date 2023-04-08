@@ -29,6 +29,7 @@ public class CardModel extends BoardObjectModel {
     private boolean divineShield;
     private boolean taunt;
     private String flavourText;
+    private boolean legendary;
     private Foil foil;
 
     public void set(CardModel cardModel) {
@@ -49,6 +50,7 @@ public class CardModel extends BoardObjectModel {
         setDamaged(cardModel.damaged);
         setSpells(cardModel.spells);
         setFlavourText(cardModel.flavourText);
+        setLegendary(cardModel.legendary);
         setFoil(cardModel.foil);
     }
 
@@ -128,7 +130,11 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.flavourText, flavourText, () -> this.flavourText = flavourText);
     }
 
+    public void setLegendary(boolean legendary) {
+        updateIfNotEquals(this.legendary, legendary, () -> this.legendary = legendary);
+    }
+
     public void setFoil(Foil foil) {
-        this.foil = foil;
+        updateIfNotEquals(this.foil, foil, () -> this.foil = foil);
     }
 }

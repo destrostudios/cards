@@ -1,5 +1,6 @@
 <template>
     <entity template="./templates/vanilla(name=Fiulo,manaCost=1,attack=1,health=1)">
+        <legendary/>
         <goblin/>
         <description>End of turn: Put this card from your graveyard to your hand.</description>
         <preEndTurnTriggers>

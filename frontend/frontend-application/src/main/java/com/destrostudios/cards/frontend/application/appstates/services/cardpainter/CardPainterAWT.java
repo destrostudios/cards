@@ -111,6 +111,12 @@ public class CardPainterAWT {
         graphics.dispose();
     }
 
+    public static void drawCardFront_Gem(Graphics2D graphics) {
+        graphics = (Graphics2D) graphics.create();
+        graphics.drawImage(CardImages.getCachedImage("images/gem.png"), 178, 306, null);
+        graphics.dispose();
+    }
+
     public static void drawCardFront_Stats(Graphics2D graphics, CardModel cardModel, boolean fullArt) {
         graphics = (Graphics2D) graphics.create();
         drawStats(graphics, cardModel, fullArt);

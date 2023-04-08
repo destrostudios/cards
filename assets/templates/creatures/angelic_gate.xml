@@ -4,6 +4,7 @@
     </values>
     <entity>
         <name>Angelic Gate</name>
+        <legendary/>
         <creatureCard/>
         <attack>0</attack>
         <health>2</health>

@@ -1,35 +1,35 @@
-template,name,manaCost
-spells/a_long_trip,A Long Trip,3
-spells/adventure,Adventure,2
-spells/arcane_graveyard,Arcane Graveyard,2
-spells/begone_lizard,"Begone, Lizard!",4
-spells/blue_lagoon,Blue Lagoon,5
-spells/bonfire,Bonfire,2
-spells/conjured_lightning,Conjured Lightning,5
-spells/dark_sphere,Dark Sphere,2
-spells/dragons_counterattack,Dragon's Counterattack,5
-spells/elemental_orb,Elemental Orb,6
-spells/eruption,Eruption,10
-spells/fall_of_the_first_dragons,Fall of the First Dragons,2
-spells/fiery_obliteration,Fiery Obliteration,7
-spells/fire_altar,Fire Altar,1
-spells/goblin_assault_squad,Goblin Assault Squad,3
-spells/golden_fractal_plant,Golden Fractal Plant,2
-spells/grand_fireball,Grand Fireball,4
-spells/into_battle,Into Battle,6
-spells/medusa_shield,Medusa Shield,2
-spells/murder,Murder,5
-spells/peaceful_death,Peaceful Death,4
-spells/power_of_the_eclipse,Power of the Eclipse,3
-spells/relic_guardians,Relic Guardians,2
-spells/rimefire_bolt,Rimefire Bolt,2
-spells/sandstorm,Sandstorm,7
-spells/sea_storm,Sea Storm,4
-spells/stampede,Stampede,2
-spells/sunray,Sunray,0
-spells/sword_of_the_crusader,Sword of the Crusader,2
-spells/technology,Technology,3
-spells/the_kings_army,The King's Army,4
-spells/thunder,Thunder,1
-spells/unprocessed_mana_crystal,Unprocessed Mana Crystal,1
-spells/warcry,Warcry,2
+template,name,legendary,manaCost
+spells/a_long_trip,A Long Trip,false,3
+spells/adventure,Adventure,false,2
+spells/arcane_graveyard,Arcane Graveyard,false,2
+spells/begone_lizard,"Begone, Lizard!",false,4
+spells/blue_lagoon,Blue Lagoon,false,5
+spells/bonfire,Bonfire,false,2
+spells/conjured_lightning,Conjured Lightning,false,5
+spells/dark_sphere,Dark Sphere,false,2
+spells/dragons_counterattack,Dragon's Counterattack,false,5
+spells/elemental_orb,Elemental Orb,false,6
+spells/eruption,Eruption,false,10
+spells/fall_of_the_first_dragons,Fall of the First Dragons,false,2
+spells/fiery_obliteration,Fiery Obliteration,false,7
+spells/fire_altar,Fire Altar,false,1
+spells/goblin_assault_squad,Goblin Assault Squad,false,3
+spells/golden_fractal_plant,Golden Fractal Plant,false,2
+spells/grand_fireball,Grand Fireball,false,4
+spells/into_battle,Into Battle,false,6
+spells/medusa_shield,Medusa Shield,false,2
+spells/murder,Murder,false,5
+spells/peaceful_death,Peaceful Death,false,4
+spells/power_of_the_eclipse,Power of the Eclipse,false,3
+spells/relic_guardians,Relic Guardians,false,2
+spells/rimefire_bolt,Rimefire Bolt,false,2
+spells/sandstorm,Sandstorm,false,7
+spells/sea_storm,Sea Storm,false,4
+spells/stampede,Stampede,false,2
+spells/sunray,Sunray,false,0
+spells/sword_of_the_crusader,Sword of the Crusader,false,2
+spells/technology,Technology,false,3
+spells/the_kings_army,The King's Army,false,4
+spells/thunder,Thunder,false,1
+spells/unprocessed_mana_crystal,Unprocessed Mana Crystal,false,1
+spells/warcry,Warcry,false,2

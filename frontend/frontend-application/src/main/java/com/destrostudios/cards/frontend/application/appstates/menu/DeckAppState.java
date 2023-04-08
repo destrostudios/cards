@@ -120,7 +120,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             .deckCardVisualizer(deckCardVisualizer)
             .deckCardOrder(cardOrder)
             .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
-            .deckCardsMaximumGeneralUnique(GameConstants.MAXIMUM_DECK_UNIQUE_CARD_AMOUNT)
+            .deckCardsMaximumUnique(cardModel -> cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY)
             .collectionCardsPerRow(4)
             .collectionRowsPerPage(2)
             .boardSettings(BoardSettings.builder()

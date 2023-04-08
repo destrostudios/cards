@@ -4,6 +4,7 @@
     </values>
     <entity>
         <name>The Wizard King</name>
+        <legendary/>
         <creatureCard/>
         <attack>6</attack>
         <health>9</health>

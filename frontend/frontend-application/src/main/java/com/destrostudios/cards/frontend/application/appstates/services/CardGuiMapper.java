@@ -88,6 +88,7 @@ public class CardGuiMapper {
         cardModel.setDivineShield(data.getOptionalComponent(card, Components.Ability.DIVINE_SHIELD).orElse(false));
         cardModel.setTaunt(data.hasComponent(card, Components.Ability.TAUNT));
         cardModel.setFlavourText(data.getComponent(card, Components.FLAVOUR_TEXT));
+        cardModel.setLegendary(data.hasComponent(card, Components.LEGENDARY));
         cardModel.setTribes(createListBasedOnComponents(data, card, tribeComponents));
         cardModel.setFoil(data.getComponent(card, Components.FOIL));
     }

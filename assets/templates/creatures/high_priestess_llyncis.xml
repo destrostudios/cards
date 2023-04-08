@@ -5,6 +5,7 @@
     </values>
     <entity>
         <name>High Priestess Llyncis</name>
+        <legendary/>
         <creatureCard/>
         <attack>7</attack>
         <health>7</health>

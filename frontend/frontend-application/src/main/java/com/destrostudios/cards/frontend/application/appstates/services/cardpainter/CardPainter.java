@@ -51,6 +51,9 @@ public class CardPainter {
                 } else {
                     t.draw(g -> CardPainterAWT.drawCardFront_Full_Content(g, cardModel));
                     t.draw(g -> CardPainterAWT.drawCardFront_Full_Artwork(g, cardModel));
+                    if (cardModel.isLegendary()) {
+                        t.draw(CardPainterAWT::drawCardFront_Gem);
+                    }
                 }
             }
         );

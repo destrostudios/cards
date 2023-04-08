@@ -1,6 +1,7 @@
 <template>
     <entity>
         <name>Wooded Chimera</name>
+        <legendary/>
         <creatureCard/>
         <attack>8</attack>
         <health>8</health>

@@ -38,6 +38,7 @@ public class Components {
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = create("availableMana");
     public static final ComponentDefinition<Integer> MANA = create("mana");
     public static final ComponentDefinition<String> DESCRIPTION = create("description");
+    public static final ComponentDefinition<Void> LEGENDARY = create("legendary");
     public static final ComponentDefinition<Foil> FOIL = create("foil");
 
     public static class Cost {

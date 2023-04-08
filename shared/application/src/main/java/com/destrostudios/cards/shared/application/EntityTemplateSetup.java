@@ -39,6 +39,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Integer(Components.AVAILABLE_MANA));
         templateManager.registerComponent(new ComponentParser_Integer(Components.MANA));
         templateManager.registerComponent(new ComponentParser_String(Components.DESCRIPTION));
+        templateManager.registerComponent(new ComponentParser_Void(Components.LEGENDARY));
         templateManager.registerComponent(new ComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
 
         templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));

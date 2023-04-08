@@ -3,7 +3,6 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 import com.destrostudios.cardgui.StatefulBoardObjectVisualizer;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderCollectionCardAmount;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderCollectionCardAmountModel;
-import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -45,8 +44,8 @@ public class CollectionCardAmountVisualizer extends StatefulBoardObjectVisualize
         int amountLeft = (amountCollection - amountDeck);
         label.setText(amountLeft + "/" + amountCollection);
 
-        // TODO: This should be a call to the deck builder, as it has all the rules
-        boolean canBeAdded = ((amountDeck < GameConstants.MAXIMUM_DECK_UNIQUE_CARD_AMOUNT) && (amountLeft > 0));
+        // TODO: This should maybe be a call to the deck builder, as it has all the rules
+        boolean canBeAdded = ((amountDeck < model.getMaximumAmountDeck()) && (amountLeft > 0));
         label.setColor(canBeAdded ? ColorRGBA.White : ColorRGBA.Red);
     }
 

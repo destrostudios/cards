@@ -1,6 +1,7 @@
 <template>
     <entity id="card">
         <name>Goblin King</name>
+        <legendary/>
         <creatureCard/>
         <attack>4</attack>
         <health>5</health>

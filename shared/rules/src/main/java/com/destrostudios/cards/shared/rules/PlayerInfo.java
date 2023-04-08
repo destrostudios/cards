@@ -1,6 +1,6 @@
 package com.destrostudios.cards.shared.rules;
 
-import com.destrostudios.cards.shared.model.UserModeDeck;
+import com.destrostudios.cards.shared.model.CardList;
 import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -10,5 +10,5 @@ import lombok.*;
 public class PlayerInfo {
     private int id;
     private String login;
-    private UserModeDeck deck;
+    private CardList deck;
 }

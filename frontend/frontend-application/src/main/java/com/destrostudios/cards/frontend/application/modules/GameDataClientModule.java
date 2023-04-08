@@ -38,28 +38,31 @@ public class GameDataClientModule extends NetworkModule {
         }
     }
 
-    public CardList getCollection(int modeId) {
-        return getUserMode(modeId).getCollectionCardList();
+    public CardList getCollection(Mode mode) {
+        return getUserMode(mode).getCollectionCardList();
     }
 
-    public List<UserModeDeck> getDecks(int modeId) {
-        return getUserMode(modeId).getDecks();
+    public List<? extends Deck> getDecks(Mode mode) {
+        if (mode.isHasUserLibrary()) {
+            return getUserMode(mode).getDecks();
+        } else {
+            return mode.getDecks();
+        }
     }
 
-    public void createUserModeDeck(int modeId) {
-        int userModeId = getUserMode(modeId).getId();
+    public void createDeck(Mode mode) {
         user = null;
-        connection.sendTCP(new CreateUserModeDeckMessage(userModeId));
+        connection.sendTCP(new CreateDeckMessage(mode.getId()));
     }
 
-    public void updateUserModeDeck(int userModeDeckId, String name, List<NewCardListCard> cards) {
+    public void updateDeck(Mode mode, Deck deck, String name, List<NewCardListCard> cards) {
         user = null;
-        connection.sendTCP(new UpdateUserModeDeckMessage(userModeDeckId, name, cards));
+        connection.sendTCP(new UpdateDeckMessage(mode.getId(), deck.getId(), name, cards));
     }
 
-    public void deleteUserModeDeck(int userModeDeckId) {
+    public void deleteDeck(Mode mode, Deck deck) {
         user = null;
-        connection.sendTCP(new DeleteUserModeDeckMessage(userModeDeckId));
+        connection.sendTCP(new DeleteDeckMessage(mode.getId(), deck.getId()));
     }
 
     public void refreshUser() {
@@ -71,18 +74,18 @@ public class GameDataClientModule extends NetworkModule {
         return user.getModes().stream().map(UserMode::getPacks).reduce(0, Integer::sum);
     }
 
-    public int getPacks(int modeId) {
-        return getUserMode(modeId).getPacks();
+    public int getPacks(Mode mode) {
+        return getUserMode(mode).getPacks();
     }
 
-    public void openPack(int modeId) {
-        int userModeId = getUserMode(modeId).getId();
+    public void openPack(Mode mode) {
+        int userModeId = getUserMode(mode).getId();
         user = null;
         packResult = null;
         connection.sendTCP(new OpenPackMessage(userModeId));
     }
 
-    private UserMode getUserMode(int modeId) {
-        return user.getModes().stream().filter(um -> um.getMode().getId() == modeId).findFirst().orElseThrow();
+    private UserMode getUserMode(Mode mode) {
+        return user.getModes().stream().filter(um -> um.getMode().getId() == mode.getId()).findFirst().orElseThrow();
     }
 }

@@ -54,7 +54,7 @@ public class GameOverModule extends NetworkModule {
                 }
             }
             // TODO: Extract logic below?
-            if (winnerUserId != QueueServerModule.BOT_USER_ID) {
+            if (mode.isHasUserLibrary() && (winnerUserId != QueueServerModule.BOT_USER_ID)) {
                 userService.addPacks(winnerUserId, mode.getId(), GameConstants.PACKS_FOR_WINNER);
             }
             if (mode.getName().equals(GameConstants.MODE_NAME_ARENA) && (loserUserId != QueueServerModule.BOT_USER_ID)) {

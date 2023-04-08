@@ -17,10 +17,7 @@ import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.model.CardList;
-import com.destrostudios.cards.shared.model.CardListCard;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.UserModeDeck;
+import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
@@ -46,12 +43,12 @@ import java.util.function.Predicate;
 
 public class DeckAppState extends MenuAppState implements ActionListener {
 
-    public DeckAppState(Mode mode, UserModeDeck deck) {
+    public DeckAppState(Mode mode, Deck deck) {
         this.mode = mode;
         this.deck = deck;
     }
     private Mode mode;
-    private UserModeDeck deck;
+    private Deck deck;
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
     private HashMap<CardModel, Integer> collectionCards;
@@ -88,7 +85,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         collectionCards = new HashMap<>();
         cardsToCardModelsMap = new HashMap<>();
         cardModelsToCardsMap = new HashMap<>();
-        CardList collection = getModule(GameDataClientModule.class).getCollection(mode.getId());
+        CardList collection = getModule(GameDataClientModule.class).getCollection(mode);
         EntityData data = new SimpleEntityData(Components.ALL);
         for (CardListCard cardListCard : collection.getCards()) {
             CardModel cardModel = CardGuiMapper.createModel(data, cardListCard);
@@ -282,7 +279,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         if (name.isEmpty()) {
             name = null;
         }
-        getModule(GameDataClientModule.class).updateUserModeDeck(deck.getId(), name, cards);
+        getModule(GameDataClientModule.class).updateDeck(mode, deck, name, cards);
         mainApplication.getStateManager().attach(new LoadingAppState() {
 
             @Override

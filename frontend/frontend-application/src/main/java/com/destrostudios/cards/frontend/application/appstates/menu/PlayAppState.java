@@ -63,7 +63,7 @@ public class PlayAppState extends MenuAppState {
                     b.setText("Queue vs Human");
                 }
             } else {
-                queueModule.queue(modeAndDeckSelector.getMode().getId(), modeAndDeckSelector.getDeck().getId(), queue.getId());
+                queueModule.queue(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck(), queue);
                 if (isUserQueue) {
                     b.setText("Unqueue vs Human");
                 }

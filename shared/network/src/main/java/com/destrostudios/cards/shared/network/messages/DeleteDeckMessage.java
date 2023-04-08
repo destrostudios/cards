@@ -6,6 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class CreateUserModeDeckMessage {
-    private int userModeId;
+public class DeleteDeckMessage {
+    private int modeId;
+    private int deckId;
 }

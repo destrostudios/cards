@@ -53,7 +53,7 @@ public class DecksAppState extends MenuAppState {
     }
 
     private void createDeck() {
-        getModule(GameDataClientModule.class).createUserModeDeck(modeAndDeckSelector.getMode().getId());
+        getModule(GameDataClientModule.class).createDeck(modeAndDeckSelector.getMode());
         waitForUpdatedDecks();
     }
 
@@ -62,7 +62,7 @@ public class DecksAppState extends MenuAppState {
     }
 
     private void deleteDeck() {
-        getModule(GameDataClientModule.class).deleteUserModeDeck(modeAndDeckSelector.getDeck().getId());
+        getModule(GameDataClientModule.class).deleteDeck(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck());
         waitForUpdatedDecks();
     }
 

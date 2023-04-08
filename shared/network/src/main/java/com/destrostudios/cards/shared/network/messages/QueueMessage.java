@@ -8,6 +8,6 @@ import lombok.*;
 @ToString
 public class QueueMessage {
     private int modeId;
-    private int userModeDeckId;
+    private int deckId;
     private int queueId;
 }

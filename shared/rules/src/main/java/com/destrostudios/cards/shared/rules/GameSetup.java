@@ -3,8 +3,8 @@ package com.destrostudios.cards.shared.rules;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.Card;
+import com.destrostudios.cards.shared.model.CardList;
 import com.destrostudios.cards.shared.model.CardListCard;
-import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.ModelUtil;
 import lombok.AllArgsConstructor;
@@ -37,9 +37,9 @@ public class GameSetup {
         initPlayer(data, player, opponent, playerInfo.getLogin(), library);
     }
 
-    private List<Integer> createLibrary(UserModeDeck deck) {
+    private List<Integer> createLibrary(CardList deck) {
         LinkedList<Integer> library = new LinkedList<>();
-        for (CardListCard cardListCard : deck.getDeckCardList().getCards()) {
+        for (CardListCard cardListCard : deck.getCards()) {
             for (int i = 0; i < cardListCard.getAmount(); i++) {
                 int card = ModelUtil.createCard(data, cardListCard);
                 library.add(card);

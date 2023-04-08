@@ -43,15 +43,15 @@ public class UserService {
 
     private void createUserModesIfNotExisting(int userId) {
         for (Mode mode : modeService.getModes()) {
-            if (!hasUserMode(userId, mode.getId())) {
+            if (getUserModeId(userId, mode.getId()) == null) {
                 createUserMode(userId, mode);
             }
         }
     }
 
-    private boolean hasUserMode(int userId, int modeId) {
+    public Integer getUserModeId(int userId, int modeId) {
         try (QueryResult result = database.select("SELECT id FROM user_mode WHERE user_id = " + userId + " AND mode_id = " + modeId)) {
-            return result.next();
+            return (result.next() ? result.getInteger("id") : null);
         }
     }
 
@@ -145,16 +145,20 @@ public class UserService {
         try (QueryResult result = database.select("SELECT collection_card_list_id FROM user_mode WHERE user_id = " + userId + " AND mode_id = " + modeId)) {
             result.next();
             int cardListId = result.getInteger("collection_card_list_id");
-            CardList cardList = cardListService.getCardList(cardListId);
-            if (isAdmin(userId)) {
-                addAllCardsToList(cardList);
-            } else {
-                Mode mode = modeService.getMode(modeId);
-                if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
-                    addCoreCardsToList(cardList);
+            // getInteger returns null as 0 at the moment
+            if (cardListId != 0) {
+                CardList cardList = cardListService.getCardList(cardListId);
+                if (isAdmin(userId)) {
+                    addAllCardsToList(cardList);
+                } else {
+                    Mode mode = modeService.getMode(modeId);
+                    if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
+                        addCoreCardsToList(cardList);
+                    }
                 }
+                return cardList;
             }
-            return cardList;
+            return null;
         }
     }
 

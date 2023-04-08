@@ -6,7 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class ModeDeck {
+public class ModeDeck implements Deck {
     private int id;
     private int modeId;
     private CardList deckCardList;

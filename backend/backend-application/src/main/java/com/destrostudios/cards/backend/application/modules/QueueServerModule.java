@@ -2,12 +2,12 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
+import com.destrostudios.cards.backend.application.services.DeckService;
 import com.destrostudios.cards.backend.application.services.ModeService;
 import com.destrostudios.cards.backend.application.services.QueueService;
-import com.destrostudios.cards.backend.application.services.UserService;
+import com.destrostudios.cards.shared.model.CardList;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
-import com.destrostudios.cards.shared.model.UserModeDeck;
 import com.destrostudios.cards.shared.network.messages.QueueMessage;
 import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
 import com.destrostudios.cards.shared.rules.GameConstants;
@@ -27,13 +27,13 @@ public class QueueServerModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
-    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, ModeService modeService, QueueService queueService, UserService userService) {
+    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, ModeService modeService, DeckService deckService, QueueService queueService) {
         this.jwtModule = jwtModule;
         this.cardsGameStartServerModule = cardsGameStartServerModule;
         this.cardsBotModule = cardsBotModule;
         this.modeService = modeService;
+        this.deckService = deckService;
         this.queueService = queueService;
-        this.userService = userService;
         modeQueuePlayers = new HashMap<>();
     }
     public static final int BOT_USER_ID = 0;
@@ -43,8 +43,8 @@ public class QueueServerModule extends NetworkModule {
     private CardsGameStartServerModule cardsGameStartServerModule;
     private CardsBotModule cardsBotModule;
     private ModeService modeService;
+    private DeckService deckService;
     private QueueService queueService;
-    private UserService userService;
     private HashMap<Integer, HashMap<Integer, HashMap<Integer, PlayerInfo>>> modeQueuePlayers;
 
     @Override
@@ -56,8 +56,8 @@ public class QueueServerModule extends NetworkModule {
                 int userId = (int) jwtUser.id;
                 LOG.info(jwtUser.login + " queued up (" + queueMessage + ").");
                 Mode mode = modeService.getMode(queueMessage.getModeId());
-                UserModeDeck userModeDeck = userService.getUserModeDeck(queueMessage.getUserModeDeckId());
-                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, userModeDeck);
+                CardList deck = deckService.getCardList(queueMessage.getModeId(), queueMessage.getDeckId());
+                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, deck);
                 Queue queue = queueService.getQueue(queueMessage.getQueueId());
                 if (queue.getName().equals(GameConstants.QUEUE_NAME_USER)) {
                     modeQueuePlayers

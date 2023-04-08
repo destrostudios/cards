@@ -34,6 +34,7 @@ public class BackendApplication {
         ModeService modeService = new ModeService(database, cardListService);
         QueueService queueService = new QueueService(database);
         UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService);
+        DeckService deckService = new DeckService(modeService, userService);
 
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
         // Log.DEBUG();
@@ -44,11 +45,11 @@ public class BackendApplication {
 
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
-        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, cardService, modeService, queueService, userService);
+        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, cardService, modeService, queueService, userService, deckService);
         GameServerModule<GameContext, Event> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryoServer, jwtModule, gameModule, cardService);
-        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, modeService, queueService, userService);
+        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, modeService, deckService, queueService);
         GameOverModule gameOverModule = new GameOverModule(gameModule, database, userService);
         AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);
 

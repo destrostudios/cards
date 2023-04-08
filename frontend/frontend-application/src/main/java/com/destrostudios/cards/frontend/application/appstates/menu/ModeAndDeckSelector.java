@@ -4,7 +4,7 @@ import com.destrostudios.cards.frontend.application.FrontendJmeApplication;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.model.CardList;
-import com.destrostudios.cards.shared.model.UserModeDeck;
+import com.destrostudios.cards.shared.model.Deck;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.simsilica.lemur.Button;
 import lombok.Getter;
@@ -14,9 +14,9 @@ import java.util.List;
 
 public class ModeAndDeckSelector extends ModeSelector {
 
-    private HashMap<UserModeDeck, Button> deckButtons = new HashMap<>();
+    private HashMap<Deck, Button> deckButtons = new HashMap<>();
     @Getter
-    private UserModeDeck deck;
+    private Deck deck;
 
     @Override
     public void init(FrontendJmeApplication mainApplication) {
@@ -30,7 +30,7 @@ public class ModeAndDeckSelector extends ModeSelector {
     }
 
     public void updateDecks() {
-        List<UserModeDeck> decks = getModule(GameDataClientModule.class).getDecks(getMode().getId());
+        List<? extends Deck> decks = getModule(GameDataClientModule.class).getDecks(getMode());
         if (!decks.contains(deck)) {
             selectDeck(null);
         }
@@ -44,7 +44,7 @@ public class ModeAndDeckSelector extends ModeSelector {
         float x = 0;
         float y = -130;
         int i = 0;
-        for (UserModeDeck deck : decks) {
+        for (Deck deck : decks) {
             Button button = GuiUtil.createButton(getDeckName(deck), buttonWidth, buttonHeight, b -> selectDeck(deck));
             button.setLocalTranslation(x, y, 0);
             guiNode.attachChild(button);
@@ -58,13 +58,13 @@ public class ModeAndDeckSelector extends ModeSelector {
         }
     }
 
-    private String getDeckName(UserModeDeck deck) {
+    private String getDeckName(Deck deck) {
         CardList deckCardList = deck.getDeckCardList();
         String name = deckCardList.getName();
         return ((name != null) ? name : "Unnamed deck") + "\n(" + deckCardList.getSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")";
     }
 
-    private void selectDeck(UserModeDeck deck) {
+    private void selectDeck(Deck deck) {
         if (deck != this.deck) {
             if (this.deck != null) {
                 setButtonSelected(deckButtons.get(this.deck), false);

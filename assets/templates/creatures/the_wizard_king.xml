@@ -12,7 +12,7 @@
             <entity>
                 <targetOptional/>
                 <targetPrefilter>HAND</targetPrefilter>
-                <condition>source.isInHand &amp;&amp; target.isAlly(source) &amp;&amp; target.isSpellCard</condition>
+                <condition>source.isInHand &amp;&amp; ((target == null) || (target.isAlly(source) &amp;&amp; target.isSpellCard))</condition>
                 <manaCost>9</manaCost>
                 <castTriggers>
                     <entity>

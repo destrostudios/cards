@@ -94,7 +94,7 @@ creatures/the_ether_dragon,The Ether Dragon,10,10,10,false,false
 creatures/the_wizard_king,The Wizard King,9,6,9,false,false
 creatures/tiny_dragon,Tiny Dragon,2,2,2,false,false
 creatures/two_headed_chimera,Two-headed Chimera,3,2,4,false,false
-creatures/ultriia_the_flower_of_corruption,"Ultriia, the Flower of Corruption",8,5,3,false,false
+creatures/ultriia_flower_of_corruption,"Ultriia, Flower of Corruption",8,5,3,false,false
 creatures/undead_general,Undead General,3,2,8,false,false
 creatures/undead_priest,Undead Priest,4,3,5,false,false
 creatures/undead_soldier,Undead Soldier,1,1,1,false,false

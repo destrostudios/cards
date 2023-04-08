@@ -1,8 +1,3 @@
 <template>
-    <entity>
-        <targets>
-            <entity template="../targets/source_owner"/>
-        </targets>
-        <summon>[template]</summon>
-    </entity>
+    <entity template="./create_for_owner(template=[template],location=CREATURE_ZONE)"/>
 </template>

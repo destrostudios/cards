@@ -1,0 +1,29 @@
+<template>
+    <values>
+        <damage>4</damage>
+    </values>
+    <entity>
+        <name>Dark Sphere</name>
+        <spellCard/>
+        <description>Deal [damage] damage to your opponent.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner_opponent"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

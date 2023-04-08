@@ -93,7 +93,7 @@ public class Components {
         public static final ComponentDefinition<Void> DESTROY = create("destroy");
         public static final ComponentDefinition<Void> BATTLE = create("battle");
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
-        public static final ComponentDefinition<String[]> SUMMON = create("summon");
+        public static final ComponentDefinition<Create> CREATE = create("create");
         public static final ComponentDefinition<Void> END_TURN = create("endTurn");
 
         public static class Zones {
@@ -125,5 +125,13 @@ public class Components {
     public static class AddBuff {
         private int buff;
         private boolean constant;
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
+    @Getter
+    public static class Create {
+        private String template;
+        private CreateLocation location;
     }
 }

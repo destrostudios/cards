@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/vanilla(name=Landed Elemental Orb,manaCost=4,attack=4,health=4)"/>
+</template>

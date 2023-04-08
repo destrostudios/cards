@@ -4,19 +4,23 @@ import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToCreatureZoneEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SummonHandler extends GameEventHandler<SummonEvent> {
+public class CreateHandler extends GameEventHandler<CreateEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SummonHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreateHandler.class);
 
     @Override
-    public void handle(SummonEvent event, NetworkRandom random) {
-        LOG.info("Summoning \"" + event.template + "\" for " + inspect(event.player));
+    public void handle(CreateEvent event, NetworkRandom random) {
+        LOG.info("Creating \"" + event.template + "\" in " + event.location + " for " + inspect(event.player));
         int creature = EntityTemplate.createFromTemplate(data, event.template);
         data.setComponent(creature, Components.OWNED_BY, event.player);
-        events.fire(new AddCardToCreatureZoneEvent(creature), random);
+        switch (event.location) {
+            case CREATURE_ZONE -> events.fire(new AddCardToCreatureZoneEvent(creature), random);
+            case HAND -> events.fire(new AddCardToHandEvent(creature), random);
+        }
     }
 }

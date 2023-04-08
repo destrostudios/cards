@@ -1,12 +1,12 @@
 <template>
     <values>
-        <allyDamage>1</allyDamage>
-        <opponentDamage>2</opponentDamage>
+        <damage>2</damage>
+        <heal>2</heal>
     </values>
     <entity>
         <name>Conjured Lightning</name>
         <spellCard/>
-        <description>Deal [opponentDamage] damage to all opponent creatures and [allyDamage] damage to all ally creatures.</description>
+        <description>Deal [damage] damage to all opponent creatures and heal [heal] health of all ally creatures.</description>
         <spells>
             <entity>
                 <condition>source.isInHand</condition>
@@ -19,13 +19,13 @@
                                 <targets>
                                     <entity template="../targets/all_opponent_creatures_on_board"/>
                                 </targets>
-                                <damage>[opponentDamage]</damage>
+                                <damage>[damage]</damage>
                             </entity>
                             <entity>
                                 <targets>
                                     <entity template="../targets/all_ally_creatures_on_board"/>
                                 </targets>
-                                <damage>[allyDamage]</damage>
+                                <heal>[heal]</heal>
                             </entity>
                         </effects>
                     </entity>

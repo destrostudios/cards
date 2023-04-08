@@ -78,11 +78,9 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             events.fire(new AddBuffEvent(event.target, buff), random);
         }
 
-        String[] templates = data.getComponent(event.effect, Components.Effect.SUMMON);
-        if (templates != null) {
-            for (String template : templates) {
-                events.fire(new SummonEvent(event.target, template), random);
-            }
+        Components.Create create = data.getComponent(event.effect, Components.Effect.CREATE);
+        if (create != null) {
+            events.fire(new CreateEvent(event.target, create.getTemplate(), create.getLocation()), random);
         }
 
         if (data.hasComponent(event.effect, Components.Effect.END_TURN)) {

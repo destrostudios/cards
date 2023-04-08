@@ -13,6 +13,6 @@ public class TestDragonEgg extends TestGame {
         assertManaCostSpell(spell, 3);
         cast(spell);
         assertHasComponent(card, Components.GRAVEYARD);
-        assertCardsCount(player, Components.CREATURE_ZONE, "Dragon", 1);
+        assertOneCard(player, Components.CREATURE_ZONE, "Dragon");
     }
 }

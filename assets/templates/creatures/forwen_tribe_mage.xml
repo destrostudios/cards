@@ -1,0 +1,13 @@
+<template>
+    <entity template="./templates/vanilla(name=Forwen Tribe Mage,manaCost=4,attack=3,health=5)">
+        <description>Death: Add a Thunder to your hand.</description>
+        <postDestructionTriggers>
+            <entity>
+                <condition>target == source</condition>
+                <effects>
+                    <entity template="../effects/create_for_owner(template=spells/thunder,location=HAND)"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

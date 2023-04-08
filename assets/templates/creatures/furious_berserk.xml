@@ -1,0 +1,26 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+    </values>
+    <entity template="./templates/vanilla(name=Furious Berserk,manaCost=3,attack=1,health=6)">
+        <description>After this creature takes damage, it gains +[bonusAttack] attack.</description>
+        <postDamageTriggers>
+            <entity>
+                <condition>target == source</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source"/>
+                        </targets>
+                        <addBuff>
+                            <entity>
+                                <source>#card</source>
+                                <bonusAttack>[bonusAttack]</bonusAttack>
+                            </entity>
+                        </addBuff>
+                    </entity>
+                </effects>
+            </entity>
+        </postDamageTriggers>
+    </entity>
+</template>

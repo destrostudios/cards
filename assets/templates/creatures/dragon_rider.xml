@@ -17,8 +17,12 @@
                     <entity>
                         <effects>
                             <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <condition>source.exists("HAND", "target.isAlly(source) &amp;&amp; target.isDragon")</condition>
+                        <effects>
                             <entity>
-                                <condition>source.exists("HAND", "target.isAlly(source) &amp;&amp; target.isDragon")</condition>
                                 <targets>
                                     <entity template="../targets/source"/>
                                 </targets>

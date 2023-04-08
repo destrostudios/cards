@@ -12,6 +12,6 @@ public class TestGoblinRecruiter extends TestGame {
         int spell = data.getComponent(card, Components.SPELLS)[2];
         assertManaCostSpell(spell, 2);
         cast(spell);
-        assertCardsCount(player, Components.CREATURE_ZONE, "Goblin", 1);
+        assertOneCard(player, Components.CREATURE_ZONE, "Goblin");
     }
 }

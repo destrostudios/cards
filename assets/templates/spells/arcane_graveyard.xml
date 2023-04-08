@@ -1,0 +1,33 @@
+<template>
+    <values>
+        <amount>2</amount>
+    </values>
+    <entity>
+        <name>Arcane Graveyard</name>
+        <spellCard/>
+        <description>Put [amount] random spells from your graveyard to your hand.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand &amp;&amp; source.count("GRAVEYARD", "target.isAlly(source) &amp;&amp; target.isSpellCard") >= [amount]</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
+                                        <targetRandom>[amount]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <addToHand/>
+                            </entity>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -3,7 +3,7 @@
         <bonusAttack>3</bonusAttack>
         <bonusHealth>3</bonusHealth>
     </values>
-    <entity id="card" template="./templates/simple_target_buff(name=Power of the Eclipse,manaCost=3,buff=#buff)">
+    <entity id="card" template="./templates/simple_target_creature_buff(name=Power of the Eclipse,manaCost=3,buff=#buff)">
         <description>Target creature on board gains +[bonusAttack]/+[bonusHealth].</description>
     </entity>
     <entity id="buff">

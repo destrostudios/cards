@@ -44,7 +44,6 @@ public class GameContext {
                 new AddCardToBoardHandler(),
                 new ActivateDivineShieldOnAddToBoardHandler()
         );
-        addEventHandler(events.instant(), AddCardToBoardZoneEvent.class, new AddCardToBoardZoneHandler());
         addEventHandler(events.instant(), AddCardToCreatureZoneEvent.class, new AddCardToCreatureZoneHandler());
         addEventHandler(events.instant(), AddCardToGraveyardEvent.class, new AddCardToGraveyardHandler());
         addEventHandler(events.instant(), AddCardToHandEvent.class, new AddCardToHandHandler());
@@ -57,10 +56,13 @@ public class GameContext {
         addEventHandler(events.instant(), SetAvailableManaEvent.class, new SetAvailableManaHandler());
         addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
         addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
+        addEventHandler(events.resolved(), BattleEvent.class,
+                new TriggerHandler<>(getTriggersComponent(POST, BattleEvent.class))
+        );
         addEventHandlers(events.instant(), DamageEvent.class, new DamageHandler());
         addEventHandlers(events.resolved(), DamageEvent.class,
                 new TriggerHandler<>(getTriggersComponent(POST, DamageEvent.class)),
-                new DestroyOnZeroHealthHandler()
+                new CheckDestructionAfterDamageHandler()
         );
         addEventHandler(events.instant(), HealEvent.class,new HealHandler());
         addEventHandlers(events.resolved(), HealEvent.class,
@@ -114,8 +116,11 @@ public class GameContext {
         addEventHandler(events.instant(), TriggerEffectImpactEvent.class, new TriggerEffectImpactHandler());
         addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
         addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
-        addEventHandler(events.instant(), SummonEvent.class, new SummonHandler());
-        addEventHandler(events.instant(), ConditionsAffectedEvent.class, new CheckBonusDamageHandler());
+        addEventHandler(events.instant(), CreateEvent.class, new CreateHandler());
+        addEventHandlers(events.instant(), ConditionsAffectedEvent.class,
+                new CheckBonusDamageHandler(),
+                new CheckDestructionAfterConditionsAffectedHandler()
+        );
         addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));
     }
 

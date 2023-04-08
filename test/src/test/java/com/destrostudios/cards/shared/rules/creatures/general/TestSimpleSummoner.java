@@ -12,6 +12,6 @@ public class TestSimpleSummoner extends TestGame {
     public void testSummonOnSummon(String template, String summonName) {
         int card = create(template, player, Components.HAND);
         castFromHand(card);
-        assertCardsCount(player, Components.CREATURE_ZONE, summonName, 1);
+        assertOneCard(player, Components.CREATURE_ZONE, summonName);
     }
 }

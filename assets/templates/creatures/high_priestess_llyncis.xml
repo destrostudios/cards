@@ -1,0 +1,50 @@
+<template>
+    <values>
+        <heal>4</heal>
+        <damage>7</damage>
+    </values>
+    <entity>
+        <name>High Priestess Llyncis</name>
+        <creatureCard/>
+        <attack>7</attack>
+        <health>7</health>
+        <description>Cast: Heal [heal] health of target character. Then, if it's undamaged, deal [damage] damage to it.</description>
+        <spells>
+            <entity>
+                <targetOptional/>
+                <targetPrefilter>BOARD</targetPrefilter>
+                <condition>source.isInHand</condition>
+                <manaCost>7</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <heal>[heal]</heal>
+                            </entity>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <condition>(target != null) &amp;&amp; !target.isDamaged</condition>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

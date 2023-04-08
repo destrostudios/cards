@@ -1,0 +1,34 @@
+<template>
+    <entity id="card">
+        <name>Plague Hunter</name>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>2</health>
+        <description>Cast: If your hand is empty, draw a card.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <condition>!source.owner.exists("HAND", "target.owner == source")</condition>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <draw>1</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

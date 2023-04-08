@@ -56,6 +56,7 @@ public class Expressions {
             return (T) JEXL_ENGINE.createExpression(expression).evaluate(context);
         } catch (JexlException ex) {
             System.err.println("Error while evaluating expression: " + expression);
+            ex.printStackTrace();
             throw ex;
         }
     }

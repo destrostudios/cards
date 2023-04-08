@@ -1,0 +1,5 @@
+<template>
+    <entity>
+        <target>source.defaultCastFromHandSpell</target>
+    </entity>
+</template>

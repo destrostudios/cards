@@ -1,0 +1,21 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Leader of the Sceleratis,manaCost=3,attack=2,health=2)">
+        <description>After you play a card, deal [damage] damage to your opponent.</description>
+        <postCastSpellTriggers>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source)</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source_owner_opponent"/>
+                        </targets>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </postCastSpellTriggers>
+    </entity>
+</template>

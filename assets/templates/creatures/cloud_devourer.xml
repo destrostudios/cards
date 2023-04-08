@@ -1,0 +1,21 @@
+<template>
+    <values>
+        <heal>2</heal>
+    </values>
+    <entity template="./templates/vanilla(name=Cloud Devourer,manaCost=6,attack=5,health=6)">
+        <description>End of turn: Heal [heal] health of this creature.</description>
+        <preEndTurnTriggers>
+            <entity>
+                <condition>source.isOnBoard</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source"/>
+                        </targets>
+                        <heal>[heal]</heal>
+                    </entity>
+                </effects>
+            </entity>
+        </preEndTurnTriggers>
+    </entity>
+</template>

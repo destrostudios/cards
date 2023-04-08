@@ -1,20 +1,25 @@
 template,name,manaCost,attack,health,taunt,divine_shield
 creatures/ancient_tree,Ancient Tree,7,4,7,true,false
+creatures/angelic_gate,Angelic Gate,1,0,2,false,false
 creatures/arandir,Arandir,5,3,3,false,false
 creatures/army_commander,Army Commander,4,1,1,false,false
 creatures/artificial_guardian,Artificial Guardian,2,1,0,false,false
+creatures/astral_lich,Astral Lich,4,1,6,false,false
 creatures/awakened_succubus,Awakened Succubus,4,6,4,false,false
 creatures/baby_turtle,Baby Turtle,4,0,5,false,false
 creatures/battle_cleric,Battle Cleric,3,2,3,false,false
 creatures/blademaster,Blademaster,2,3,1,false,false
 creatures/blessed_barbarian,Blessed Barbarian,2,1,2,false,true
 creatures/bloodhawk,Bloodhawk,6,5,5,false,false
+creatures/bonespirit_fenrir,Bonespirit Fenrir,2,4,0,false,false
 creatures/brave_soldier,Brave Soldier,1,1,1,false,true
 creatures/bronze_golem,Bronze Golem,1,1,2,false,false
+creatures/cloud_devourer,Cloud Devourer,6,5,6,false,false
 creatures/copperfang_tribesman,Copperfang Tribesman,3,3,2,false,false
 creatures/crazed_doctor,Crazed Doctor,5,2,2,false,false
 creatures/dam,Dam,1,0,4,false,false
 creatures/dark_rider,Dark Rider,2,2,1,false,false
+creatures/demon_samurai,Demon Samurai,3,3,2,false,false
 creatures/divine_justicar,Divine Justicar,9,6,6,false,false
 creatures/dragon,Dragon,4,4,4,false,false
 creatures/dragon_egg,Dragon Egg,2,0,3,false,false
@@ -28,6 +33,8 @@ creatures/exiled_druid,Exiled Druid,7,5,5,false,false
 creatures/fairy,Fairy,2,2,1,false,false
 creatures/fire_dragon,Fire Dragon,7,5,5,false,false
 creatures/fiulo,Fiulo,1,1,1,false,false
+creatures/forwen_tribe_mage,Forwen Tribe Mage,4,3,5,false,false
+creatures/furious_berserk,Furious Berserk,3,1,6,false,false
 creatures/gideas,Gideas,7,4,4,false,false
 creatures/goblin,Goblin,1,1,1,false,false
 creatures/goblin_alchemist,Goblin Alchemist,3,2,2,false,false
@@ -46,13 +53,18 @@ creatures/golden_emperor,Golden Emperor,8,7,7,false,true
 creatures/good_boy,Good Boy,1,2,1,false,false
 creatures/grumpy_captain,Grumpy Captain,2,2,2,true,false
 creatures/guardian_dragon,Guardian Dragon,6,6,6,false,false
+creatures/haranna_udagan,Haranna Udagan,2,2,1,false,false
+creatures/high_priestess_llyncis,High Priestess Llyncis,7,7,7,false,false
 creatures/hobgoblin_cannoneer,Hobgoblin Cannoneer,4,3,3,false,false
+creatures/holy_legion_leader,Holy Legion Leader,5,4,4,false,false
 creatures/injured_legend,Injured Legend,3,3,6,false,false
 creatures/inspiring_angel,Inspiring Angel,6,4,4,false,false
 creatures/ixius,Ixius,5,3,4,false,false
 creatures/jungle_tiger,Jungle Tiger,5,5,5,false,false
 creatures/khazar_merchant,Khazar Merchant,3,2,2,false,false
 creatures/kings_soldier,King's Soldier,2,2,2,false,false
+creatures/landed_elemental_orb,Landed Elemental Orb,4,4,4,false,false
+creatures/leader_of_the_sceleratis,Leader of the Sceleratis,3,2,2,false,false
 creatures/legion_angel,Legion Angel,6,4,5,true,true
 creatures/leviathan,Leviathan,8,6,6,false,false
 creatures/mahabit_shaman,Mahabit Shaman,5,5,4,false,false
@@ -65,10 +77,13 @@ creatures/old_archer,Old Archer,1,1,1,false,false
 creatures/old_rhino,Old Rhino,2,1,3,true,false
 creatures/ox_warhero,Ox Warhero,2,3,1,false,false
 creatures/pebble,Pebble,0,1,1,false,false
+creatures/plague_hunter,Plague Hunter,2,2,2,false,false
 creatures/plated_aradon,Plated Aradon,4,3,5,true,false
 creatures/priestess_of_valdas,Priestess of Valdas,2,1,3,false,false
+creatures/relic_guardian,Relic Guardian,1,1,2,true,false
 creatures/river_racoon,River Racoon,2,2,2,false,false
 creatures/shieldmaster,Shieldmaster,2,1,3,false,false
+creatures/shrine_specter,Shrine Specter,2,2,2,false,false
 creatures/sir_theodor_the_third,Sir Theodor the Third,1,1,1,true,false
 creatures/siren,Siren,3,2,2,false,false
 creatures/spiked_greyhump,Spiked Greyhump,5,2,5,true,false
@@ -76,14 +91,18 @@ creatures/sun_ornament_dragon,Sun Ornament Dragon,4,3,5,false,false
 creatures/tarasque,Tarasque,5,5,5,false,false
 creatures/terror_from_above,Terror from Above,10,8,8,false,false
 creatures/the_ether_dragon,The Ether Dragon,10,10,10,false,false
+creatures/the_wizard_king,The Wizard King,9,6,9,false,false
 creatures/tiny_dragon,Tiny Dragon,2,2,2,false,false
 creatures/two_headed_chimera,Two-headed Chimera,3,2,4,false,false
+creatures/ultriia_the_flower_of_corruption,"Ultriia, the Flower of Corruption",8,5,3,false,false
 creatures/undead_general,Undead General,3,2,8,false,false
+creatures/undead_priest,Undead Priest,4,3,5,false,false
 creatures/undead_soldier,Undead Soldier,1,1,1,false,false
 creatures/underground_knave,Underground Knave,1,2,1,false,false
 creatures/unremembered_griffin,Unremembered Griffin,4,3,3,false,false
 creatures/valkyrie,Valkyrie,3,3,1,false,true
 creatures/walking_mortuary,Walking Mortuary,9,9,9,false,false
+creatures/wandering_wizard,Wandering Wizard,5,4,4,false,false
 creatures/war_angel,War Angel,6,4,4,false,false
 creatures/wooded_chimera,Wooded Chimera,8,8,8,false,false
 creatures/wooded_chimeras_firstborn,Wooded Chimera's Firstborn,4,4,4,false,false

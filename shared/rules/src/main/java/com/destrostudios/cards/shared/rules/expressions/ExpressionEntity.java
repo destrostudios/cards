@@ -7,7 +7,9 @@ import com.destrostudios.cards.shared.rules.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -111,12 +113,23 @@ public class ExpressionEntity {
         return wrap(data.getComponent(entity, Components.NEXT_PLAYER));
     }
 
+    public ExpressionEntity getTopLibraryCard() {
+        return wrap(ZoneUtil.getTopLibraryCard(data, entity));
+    }
+
+    public ExpressionEntity getDefaultCastFromHandSpell() {
+        return wrap(SpellUtil.getDefaultCastFromHandSpell(data, entity));
+    }
+
     public ExpressionEntity getCaster() {
         return wrap(SpellUtil.getCaster(data, entity));
     }
 
-    public ExpressionEntity getTopLibraryCard() {
-        return wrap(ZoneUtil.getTopLibraryCard(data, entity));
+    public ExpressionEntity[] map(ExpressionEntity[] expressionEntities, String expression) {
+        return Arrays.stream(expressionEntities)
+                .map(expressionEntity -> (ExpressionEntity) Expressions.evaluate(data, expression, entity, expressionEntity.entity))
+                .filter(Objects::nonNull)
+                .toArray(ExpressionEntity[]::new);
     }
 
     private ExpressionEntity wrap(Integer otherEntity) {

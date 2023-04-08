@@ -1,0 +1,28 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity template="./templates/vanilla(name=Holy Legion Leader,manaCost=5,attack=4,health=4)">
+        <description>After a character is healed, this creature gains +[bonusAttack]/+[bonusHealth].</description>
+        <postHealTriggers>
+            <entity>
+                <condition>source.isOnBoard</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source"/>
+                        </targets>
+                        <addBuff>
+                            <entity>
+                                <source>#card</source>
+                                <bonusAttack>[bonusAttack]</bonusAttack>
+                                <bonusHealth>[bonusHealth]</bonusHealth>
+                            </entity>
+                        </addBuff>
+                    </entity>
+                </effects>
+            </entity>
+        </postHealTriggers>
+    </entity>
+</template>

@@ -1,7 +1,4 @@
 <template>
-    <values>
-        <bonusManaCost>-1</bonusManaCost>
-    </values>
     <entity id="card" template="./templates/vanilla(name=War Angel,manaCost=6,attack=4,health=4)">
         <description>Your creatures cost (1) less.</description>
         <auras>
@@ -10,7 +7,7 @@
                 <auraBuff>
                     <entity>
                         <source>#card</source>
-                        <bonusManaCost>[bonusManaCost]</bonusManaCost>
+                        <bonusManaCost>-1</bonusManaCost>
                     </entity>
                 </auraBuff>
             </entity>

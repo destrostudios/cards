@@ -1,0 +1,39 @@
+<template>
+    <values>
+        <setManaCost>0</setManaCost>
+    </values>
+    <entity>
+        <name>The Wizard King</name>
+        <creatureCard/>
+        <attack>6</attack>
+        <health>9</health>
+        <description>Cast: Set the cost of target spell in your hand to ([setManaCost]).</description>
+        <spells>
+            <entity>
+                <targetOptional/>
+                <targetPrefilter>HAND</targetPrefilter>
+                <condition>source.isInHand &amp;&amp; target.isAlly(source) &amp;&amp; target.isSpellCard</condition>
+                <manaCost>9</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets_default_cast_from_hand_spell"/>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <setManaCost>[setManaCost]</setManaCost>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

@@ -1,0 +1,22 @@
+<template>
+    <entity>
+        <name>Relic Guardians</name>
+        <spellCard/>
+        <description>Summon 2 1/2 Relic Guardians.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/relic_guardian)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/relic_guardian)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

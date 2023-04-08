@@ -27,6 +27,16 @@ public class SpellUtil {
 
     // TODO: Maybe just mark the default spells (cast from hand + attack) as such, saves this whole logic and also performance, especially on conditions
 
+    public static Integer getDefaultCastFromHandSpell(EntityData data, int card) {
+        int[] spells = data.getComponent(card, Components.SPELLS);
+        for (int spell : spells) {
+            if (isDefaultCastFromHandSpell(data, spell)) {
+                return spell;
+            }
+        }
+        return null;
+    }
+
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
         String conditionExpression = data.getComponent(spell, Components.CONDITION);
         if (conditionExpression != null) {

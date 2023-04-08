@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
@@ -20,6 +21,7 @@ public class ComponentsTriggers {
     private static HashMap<Class<? extends Event>, HashMap<Boolean, TriggerDefinition>> TRIGGERS = new HashMap<>();
     static {
         TriggerRegistration<?>[] triggers = new TriggerRegistration[] {
+            new TriggerRegistration<>(new boolean[] { true }, BattleEvent.class, event -> new int[] { event.source }),
             new TriggerRegistration<>(new boolean[] { true }, CastSpellEvent.class, event -> new int[] { event.spell }),
             new TriggerRegistration<>(new boolean[] { true }, DamageEvent.class, event -> new int[] { event.target }),
             new TriggerRegistration<>(new boolean[] { true }, DestructionEvent.class, event -> new int[] { event.target }),

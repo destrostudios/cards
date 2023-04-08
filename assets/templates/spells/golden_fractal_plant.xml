@@ -1,0 +1,37 @@
+<template>
+    <values>
+        <bonusAttack>3</bonusAttack>
+        <bonusHealth>3</bonusHealth>
+    </values>
+    <entity>
+        <name>Golden Fractal Plant</name>
+        <spellCard/>
+        <description>Target undamaged creature on board gains +[bonusAttack]/+[bonusHealth].</description>
+        <spells>
+            <entity>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isInHand &amp;&amp; !target.isDamaged</condition>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

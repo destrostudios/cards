@@ -1,0 +1,33 @@
+<template>
+    <values>
+        <heal>1</heal>
+    </values>
+    <entity>
+        <name>Angelic Gate</name>
+        <creatureCard/>
+        <attack>0</attack>
+        <health>2</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(manaCost=1)"/>
+            <entity template="../spells/templates/simple_attack"/>
+            <entity>
+                <description>Heal [heal] health of target creature.</description>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isOnBoard</condition>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <heal>[heal]</heal>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

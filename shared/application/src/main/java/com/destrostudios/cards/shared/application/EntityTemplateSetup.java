@@ -8,6 +8,7 @@ import com.destrostudios.cards.shared.entities.templates.formats.*;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.ComponentsTriggers;
+import com.destrostudios.cards.shared.rules.CreateLocation;
 import com.destrostudios.cards.shared.rules.TargetPrefilter;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
@@ -84,7 +85,15 @@ public class EntityTemplateSetup {
                 return new Components.AddBuff(buff, constant);
             }
         });
-        templateManager.registerComponent(new ComponentParser_Templates(Components.Effect.SUMMON));
+        templateManager.registerComponent(new ComponentParser<>(Components.Effect.CREATE) {
+
+            @Override
+            public Components.Create parseValue(TemplateParser parser, TemplateFormat format, EntityData entityData, Object node) {
+                String template = parser.parseTemplateText(entityData, format.getText(node));
+                CreateLocation location = CreateLocation.valueOf(parser.parseValue(entityData, format.getAttribute(node, "location")));
+                return new Components.Create(template, location);
+            }
+        });
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.END_TURN));
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_HAND));

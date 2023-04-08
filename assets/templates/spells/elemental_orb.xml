@@ -1,0 +1,31 @@
+<template>
+    <values>
+        <damage>4</damage>
+    </values>
+    <entity>
+        <name>Elemental Orb</name>
+        <spellCard/>
+        <description>Deal [damage] damage to target creature and summon a 4/4 Landed Elemental Orb.</description>
+        <spells>
+            <entity>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>source.isInHand</condition>
+                <manaCost>6</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                            <entity template="../effects/spawn_for_owner(template=creatures/landed_elemental_orb)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

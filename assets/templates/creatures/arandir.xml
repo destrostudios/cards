@@ -8,17 +8,7 @@
         <attack>3</attack>
         <health>3</health>
         <spells>
-            <entity>
-                <condition>source.isInHand</condition>
-                <manaCost>5</manaCost>
-                <castTriggers>
-                    <entity>
-                        <effects>
-                            <entity template="../effects/add_source_to_board"/>
-                        </effects>
-                    </entity>
-                </castTriggers>
-            </entity>
+            <entity template="../spells/templates/simple_summon(manaCost=5)"/>
             <entity template="../spells/templates/simple_attack"/>
             <entity>
                 <description>Deal [damage] damage to target opponent creature.</description>

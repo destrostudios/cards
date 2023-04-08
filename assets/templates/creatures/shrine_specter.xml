@@ -1,0 +1,26 @@
+<template>
+    <values>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity template="./templates/vanilla(name=Shrine Specter,manaCost=2,attack=2,health=2)">
+        <description>After you play a spell, this creature gains +[bonusHealth] health.</description>
+        <postCastSpellTriggers>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source) &amp;&amp; target.caster.isSpellCard</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source"/>
+                        </targets>
+                        <addBuff>
+                            <entity>
+                                <source>#card</source>
+                                <bonusHealth>[bonusHealth]</bonusHealth>
+                            </entity>
+                        </addBuff>
+                    </entity>
+                </effects>
+            </entity>
+        </postCastSpellTriggers>
+    </entity>
+</template>

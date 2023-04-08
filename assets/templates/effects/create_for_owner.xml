@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/source_owner"/>
+        </targets>
+        <create location="[location]">[template]</create>
+    </entity>
+</template>

@@ -1,0 +1,21 @@
+<template>
+    <values>
+        <damage>4</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Undead Priest,manaCost=4,attack=3,health=5)">
+        <description>After a creature is healed, deal [damage] to it.</description>
+        <postHealTriggers>
+            <entity>
+                <condition>source.isOnBoard &amp;&amp; target.isCreatureCard</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/targets"/>
+                        </targets>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </postHealTriggers>
+    </entity>
+</template>

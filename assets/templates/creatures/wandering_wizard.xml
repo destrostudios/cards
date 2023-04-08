@@ -1,0 +1,33 @@
+<template>
+    <entity>
+        <name>Wandering Wizard</name>
+        <creatureCard/>
+        <attack>4</attack>
+        <health>4</health>
+        <description>Cast: Draw a random spell from your library.</description>
+        <spells>
+            <entity>
+                <condition>source.isInHand</condition>
+                <manaCost>5</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/add_source_to_board"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
+                                        <targetRandom>1</targetRandom>
+                                    </entity>
+                                </targets>
+                                <addToHand/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack"/>
+        </spells>
+    </entity>
+</template>

@@ -22,6 +22,9 @@ public class RemoveCardFromZoneHandler extends GameEventHandler<RemoveCardFromZo
             data.setComponent(libraryCard, event.zone, data.getComponent(libraryCard, event.zone) - 1);
         }
         data.removeComponent(event.card, event.zone);
+        if (event.zone == Components.CREATURE_ZONE) {
+            data.removeComponent(event.card, Components.BOARD);
+        }
         events.fire(new ConditionsAffectedEvent(), random);
     }
 }

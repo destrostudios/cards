@@ -5,7 +5,7 @@
     </values>
     <entity template="./templates/vanilla(name=Hobgoblin Cannoneer,attack=3,health=3)">
         <goblin/>
-        <description>When this creature attacks, deal [damage] damage to [amount] random opponents.</description>
+        <description>Before this creature attacks, deal [damage] damage to [amount] random opponents.</description>
         <spells>
             <entity template="../spells/templates/simple_summon(manaCost=4)"/>
             <entity template="../spells/templates/simple_attack">

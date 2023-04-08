@@ -1,0 +1,18 @@
+<template>
+    <entity template="./templates/vanilla(name=Haranna Udagan,manaCost=2,attack=2,health=1)">
+        <description>Death: Draw a card.</description>
+        <postDestructionTriggers>
+            <entity>
+                <condition>target == source</condition>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source_owner"/>
+                        </targets>
+                        <draw>1</draw>
+                    </entity>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

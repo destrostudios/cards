@@ -80,7 +80,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         Components.Create create = data.getComponent(event.effect, Components.Effect.CREATE);
         if (create != null) {
-            events.fire(new CreateEvent(event.target, create.getTemplate(), create.getLocation()), random);
+            events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation()), random);
         }
 
         if (data.hasComponent(event.effect, Components.Effect.END_TURN)) {

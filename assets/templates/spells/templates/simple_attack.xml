@@ -5,8 +5,8 @@
     <entity>
         <maximumCastsPerTurn>[timesPerTurn]</maximumCastsPerTurn>
         <tauntable/>
-        <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
-        <targetPrefilter>BOARD</targetPrefilter>
+        <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+        <targetPrefilters>BOARD</targetPrefilters>
         <condition>!target.isAlly(source) &amp;&amp; (target.isCreatureCard || !target.exists(["CREATURE_ZONE"], "target.owner == source"))</condition>
         <castTriggers>
             <entity>

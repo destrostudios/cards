@@ -105,8 +105,8 @@ public class Components {
     }
 
     public static class Target {
-        public static final ComponentDefinition<Prefilter[]> SOURCE_PREFILTERS = create("sourcePrefilter");
-        public static final ComponentDefinition<Prefilter[]> TARGET_PREFILTERS = create("targetPrefilter");
+        public static final ComponentDefinition<Prefilter[]> SOURCE_PREFILTERS = create("sourcePrefilters");
+        public static final ComponentDefinition<Prefilter[]> TARGET_PREFILTERS = create("targetPrefilters");
         public static final ComponentDefinition<int[]> TARGETS = create("targets");
         public static final ComponentDefinition<String> TARGET = create("target");
         public static final ComponentDefinition<String> TARGET_ALL = create("targetAll");

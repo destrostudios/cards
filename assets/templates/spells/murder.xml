@@ -5,8 +5,8 @@
         <description>Destroy target creature.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

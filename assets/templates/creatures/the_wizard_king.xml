@@ -12,8 +12,8 @@
         <spells>
             <entity>
                 <targetOptional/>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>HAND</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>HAND</targetPrefilters>
                 <condition>(target == null) || (target.isAlly(source) &amp;&amp; target.isSpellCard)</condition>
                 <manaCost>9</manaCost>
                 <castTriggers>

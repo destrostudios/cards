@@ -8,7 +8,7 @@
         <description>Draw [draw] random beasts from your library.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>
@@ -17,7 +17,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetPrefilters>LIBRARY</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
                                         <targetRandom>[draw]</targetRandom>
                                     </entity>

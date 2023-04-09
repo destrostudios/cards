@@ -9,8 +9,8 @@
         <description>Target undamaged creature on board gains +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <condition>!target.isDamaged</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>

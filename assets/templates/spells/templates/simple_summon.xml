@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <sourcePrefilter>HAND</sourcePrefilter>
+        <sourcePrefilters>HAND</sourcePrefilters>
         <manaCost>[manaCost]</manaCost>
         <castTriggers>
             <entity>

@@ -5,8 +5,8 @@
         <description>Destroy target dragon.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <condition>target.isDragon</condition>
                 <manaCost>4</manaCost>
                 <castTriggers>

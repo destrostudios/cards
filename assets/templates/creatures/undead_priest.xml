@@ -6,8 +6,8 @@
         <description>After a creature is healed, deal [damage] to it.</description>
         <postHealTriggers>
             <entity>
-                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

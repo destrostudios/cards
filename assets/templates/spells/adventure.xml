@@ -8,7 +8,7 @@
         <description>Draw a random creature from your library that costs ([minimumManaCost]) or more.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
@@ -17,7 +17,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetPrefilters>LIBRARY</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>

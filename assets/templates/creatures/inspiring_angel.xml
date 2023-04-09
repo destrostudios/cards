@@ -11,7 +11,7 @@
         <description>Cast: Your creatures on board gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>6</manaCost>
                 <castTriggers>
                     <entity>

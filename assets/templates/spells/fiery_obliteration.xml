@@ -8,7 +8,7 @@
         <description>Deal [damage] damage to all opponent creatures.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>

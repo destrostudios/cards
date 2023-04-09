@@ -8,8 +8,8 @@
         <description>Deal [damage] damage to target creature.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

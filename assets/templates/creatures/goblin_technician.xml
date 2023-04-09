@@ -12,7 +12,7 @@
                     <entity>
                         <targets>
                             <entity>
-                                <targetPrefilter>BOARD</targetPrefilter>
+                                <targetPrefilters>BOARD</targetPrefilters>
                                 <targetAll>!target.isAlly(source)</targetAll>
                                 <targetRandom>1</targetRandom>
                             </entity>

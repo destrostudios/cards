@@ -10,7 +10,7 @@
         <description>Cast: Your beasts on board gain +[bonusHealth] health.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
@@ -18,7 +18,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                                        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
                                     </entity>
                                 </targets>

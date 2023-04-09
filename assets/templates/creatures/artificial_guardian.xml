@@ -8,8 +8,8 @@
         <description>Your "[name]"s on board have +[bonusAttack]/+[bonusHealth].</description>
         <auras>
             <entity>
-                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <condition>target.isAlly(source) &amp;&amp; (target.name == "[name]")</condition>
                 <auraBuff>
                     <entity>

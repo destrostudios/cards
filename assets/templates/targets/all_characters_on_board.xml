@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilter>BOARD</targetPrefilter>
+        <targetPrefilters>BOARD</targetPrefilters>
         <targetAll/>
     </entity>
 </template>

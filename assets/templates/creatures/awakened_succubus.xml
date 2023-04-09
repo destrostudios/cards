@@ -7,7 +7,7 @@
         <description>Cast: Discard a random card.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>
@@ -16,7 +16,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>HAND</targetPrefilter>
+                                        <targetPrefilters>HAND</targetPrefilters>
                                         <targetAll>target.owner == source.owner</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>

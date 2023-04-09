@@ -8,7 +8,7 @@
         <description>Put [amount] random Dragons from your graveyard to your hand.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <condition>source.count(["GRAVEYARD"], "target.isAlly(source) &amp;&amp; target.isDragon") >= [amount]</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
@@ -18,7 +18,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetPrefilters>GRAVEYARD</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isDragon</targetAll>
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>

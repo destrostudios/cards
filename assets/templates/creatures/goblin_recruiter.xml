@@ -10,7 +10,7 @@
             <entity template="../spells/templates/simple_attack"/>
             <entity>
                 <description>Summon a 1/1 Goblin.</description>
-                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
+                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

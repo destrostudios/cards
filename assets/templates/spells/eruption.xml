@@ -5,7 +5,7 @@
         <description>Summon 10 1/1 Pebbles.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>10</manaCost>
                 <castTriggers>
                     <entity>

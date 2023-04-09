@@ -7,7 +7,7 @@
         <description>Draw [draw] card/s.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

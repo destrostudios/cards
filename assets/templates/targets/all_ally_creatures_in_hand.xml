@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilter>HAND</targetPrefilter>
+        <targetPrefilters>HAND</targetPrefilters>
         <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard</targetAll>
     </entity>
 </template>

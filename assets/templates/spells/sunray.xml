@@ -8,7 +8,7 @@
         <description>Heal [heal] health of all creatures.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>0</manaCost>
                 <castTriggers>
                     <entity>

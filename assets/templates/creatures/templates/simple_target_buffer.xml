@@ -6,9 +6,9 @@
         <health>[health]</health>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <targetOptional/>
-                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

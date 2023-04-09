@@ -3,7 +3,7 @@
         <description>After an ally Dragon is destroyed, destroy this creature and revive the Dragon.</description>
         <postDestructionTriggers>
             <entity>
-                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
+                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <condition>target.isAlly(source) &amp;&amp; target.isDragon</condition>
                 <effects>
                     <entity template="../effects/add_source_to_graveyard"/>

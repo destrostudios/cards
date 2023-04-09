@@ -10,7 +10,7 @@
         <description>Cast: Deal [damage] damage to this creature.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>

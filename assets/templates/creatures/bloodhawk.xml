@@ -8,7 +8,7 @@
         <description>After an ally Beast dies, gain +[bonusAttack]/+[bonusHealth].</description>
         <postDestructionTriggers>
             <entity>
-                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
+                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <condition>target.isAlly(source) &amp;&amp; target.isBeast</condition>
                 <effects>
                     <entity>

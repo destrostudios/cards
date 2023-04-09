@@ -10,7 +10,7 @@
         <description>Cast: Draw a spell from your library that costs ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
@@ -19,7 +19,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetPrefilters>LIBRARY</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard &amp;&amp; target.manaCost &lt;= [maximumManaCost]</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>

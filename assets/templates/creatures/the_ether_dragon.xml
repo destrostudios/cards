@@ -9,7 +9,7 @@
         <description>Cast: Summon all Dragons from your hand and end your turn.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>10</manaCost>
                 <castTriggers>
                     <entity>
@@ -18,7 +18,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>HAND</targetPrefilter>
+                                        <targetPrefilters>HAND</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isDragon</targetAll>
                                     </entity>
                                 </targets>

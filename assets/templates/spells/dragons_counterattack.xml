@@ -8,8 +8,8 @@
         <description>Discard target Dragon and deal [damage] damage to all opponent creatures.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>HAND</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>HAND</targetPrefilters>
                 <condition>target.isDragon</condition>
                 <manaCost>5</manaCost>
                 <castTriggers>

@@ -10,7 +10,7 @@
         <description>Cast: Add a random spell from your graveyard to your hand.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>6</manaCost>
                 <castTriggers>
                     <entity>
@@ -19,7 +19,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetPrefilters>GRAVEYARD</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>

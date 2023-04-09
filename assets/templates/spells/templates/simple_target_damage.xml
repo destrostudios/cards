@@ -5,8 +5,8 @@
         <description>Deal [damage] damage to target character.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
-                <targetPrefilter>BOARD</targetPrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
+                <targetPrefilters>BOARD</targetPrefilters>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

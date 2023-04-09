@@ -9,7 +9,7 @@
         <description>Draw [draw] random goblins from your library that cost ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
@@ -18,7 +18,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>LIBRARY</targetPrefilter>
+                                        <targetPrefilters>LIBRARY</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isGoblin</targetAll>
                                         <targetRandom>[draw]</targetRandom>
                                     </entity>

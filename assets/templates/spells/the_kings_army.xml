@@ -5,7 +5,7 @@
         <description>Summon 2 2/2 King's Soldiers.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

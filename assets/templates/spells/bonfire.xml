@@ -8,7 +8,7 @@
         <description>Heal [heal] health of yourself.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

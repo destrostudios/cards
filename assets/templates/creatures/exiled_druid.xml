@@ -7,7 +7,7 @@
         <description>Cast: Revive a random ally Beast.</description>
         <spells>
             <entity>
-                <sourcePrefilter>HAND</sourcePrefilter>
+                <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>
@@ -16,7 +16,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilter>GRAVEYARD</targetPrefilter>
+                                        <targetPrefilters>GRAVEYARD</targetPrefilters>
                                         <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>

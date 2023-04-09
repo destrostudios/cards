@@ -3,7 +3,6 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
-import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TriggerUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
@@ -17,14 +16,12 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
     public void handle(CastSpellEvent event, NetworkRandom random) {
         LOG.debug("Casting spell " + inspect(event.spell) + " on " + inspect(event.targets));
 
-        int caster = SpellUtil.getCaster(data, event.spell);
-
         Integer manaCost = CostUtil.getEffectiveManaCost(data, event.spell);
         if (manaCost != null) {
-            int owner = data.getComponent(caster, Components.OWNED_BY);
+            int owner = data.getComponent(event.source, Components.OWNED_BY);
             events.fire(new PayManaEvent(owner, manaCost), random);
         }
 
-        TriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), caster, event.targets, events, random);
+        TriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, events, random);
     }
 }

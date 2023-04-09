@@ -181,7 +181,8 @@ public class TestGame {
     }
 
     protected void cast(int spell, int... targets) {
-        fire(new CastSpellEvent(spell, targets));
+        int source = SpellUtil.getCaster(data, spell);
+        fire(new CastSpellEvent(source, spell, targets));
     }
 
     protected void damage(int[] entities, int damage) {

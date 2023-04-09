@@ -12,5 +12,7 @@ public class TestOxWarhero extends TestGame {
         data.setComponent(beast, Components.Tribe.BEAST);
         int card = create("creatures/ox_warhero", player, Components.CREATURE_ZONE);
         assertHealth(card, 3);
+        destroy(beast);
+        assertHealth(card, 1);
     }
 }

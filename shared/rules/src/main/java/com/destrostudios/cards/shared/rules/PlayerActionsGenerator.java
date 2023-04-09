@@ -58,7 +58,7 @@ public class PlayerActionsGenerator {
             }
             if (validTargets.size() > 0) {
                 for (int target : validTargets) {
-                    out.accept(new CastSpellEvent(spell, new int[] { target }));
+                    out.accept(new CastSpellEvent(card, spell, new int[] { target }));
                 }
                 return;
             }
@@ -68,7 +68,7 @@ public class PlayerActionsGenerator {
             }
         }
         if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, NO_TARGETS)) {
-            out.accept(new CastSpellEvent(spell, NO_TARGETS));
+            out.accept(new CastSpellEvent(card, spell, NO_TARGETS));
         }
     }
 

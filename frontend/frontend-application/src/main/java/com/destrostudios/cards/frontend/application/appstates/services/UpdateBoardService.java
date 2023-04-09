@@ -113,9 +113,10 @@ public class UpdateBoardService {
                             }
 
                             @Override
-                            public void trigger(BoardObject boardObject, BoardObject target) {
+                            public void trigger(BoardObject source, BoardObject target) {
+                                int sourceEntity = getEntity(source);
                                 int targetEntity = getEntity(target);
-                                gameService.sendAction(new CastSpellEvent(castSpellEvent.spell, new int[] { targetEntity }));
+                                gameService.sendAction(new CastSpellEvent(sourceEntity, castSpellEvent.spell, new int[] { targetEntity }));
                             }
 
                             private Integer getEntity(BoardObject<?> boardObject) {

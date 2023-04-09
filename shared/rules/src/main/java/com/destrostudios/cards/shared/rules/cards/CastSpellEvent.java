@@ -7,22 +7,24 @@ import java.util.Objects;
 
 public class CastSpellEvent extends Event {
 
+    public int source;
     public int spell;
     public int[] targets;
 
     // Used by serializer
     private CastSpellEvent() {
-        this(0, null);
+        this(0, 0, null);
     }
 
-    public CastSpellEvent(int spell, int[] targets) {
+    public CastSpellEvent(int source, int spell, int[] targets) {
+        this.source = source;
         this.spell = spell;
         this.targets = targets;
     }
 
     @Override
     public String toString() {
-        return "CastSpellEvent{" + "spell=" + spell + ", targets=" + targets + '}';
+        return "CastSpellEvent{" + "source=" + source + ", spell=" + spell + ", targets=" + targets + '}';
     }
 
     // Used by game-tools bot
@@ -32,12 +34,12 @@ public class CastSpellEvent extends Event {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CastSpellEvent that = (CastSpellEvent) o;
-        return spell == that.spell && Arrays.equals(targets, that.targets);
+        return source == that.source && spell == that.spell && Arrays.equals(targets, that.targets);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(spell);
+        int result = Objects.hash(source, spell);
         result = 31 * result + Arrays.hashCode(targets);
         return result;
     }

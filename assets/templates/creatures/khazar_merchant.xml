@@ -19,8 +19,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard &amp;&amp; target.manaCost &lt;= [maximumManaCost]</targetAll>
+                                        <targetPrefilters>LIBRARY,ALLY</targetPrefilters>
+                                        <targetAll>target.isSpellCard &amp;&amp; target.manaCost &lt;= [maximumManaCost]</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

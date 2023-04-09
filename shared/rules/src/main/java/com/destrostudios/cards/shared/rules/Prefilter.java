@@ -8,5 +8,8 @@ public enum Prefilter {
     HAND,
     LIBRARY,
     // Advanced
-    SOURCE
+    SOURCE,
+    NOT_SOURCE,
+    ALLY,
+    NOT_ALLY,
 }

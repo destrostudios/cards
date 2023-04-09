@@ -8,7 +8,7 @@
         <auras>
             <entity>
                 <sourcePrefilters>SOURCE,CREATURE_ZONE</sourcePrefilters>
-                <condition>source.exists(["CREATURE_ZONE"], "target.isAlly(source) &amp;&amp; (target != source)")</condition>
+                <condition>source.exists(["CREATURE_ZONE","ALLY","NOT_SOURCE"], "")</condition>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

@@ -9,8 +9,8 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND</targetPrefilters>
-                <condition>target.isAlly(source) &amp;&amp; target.isDragon &amp;&amp; source.count(["CREATURE_ZONE"], "target.isAlly(source)") >= [sacrifices]</condition>
+                <targetPrefilters>HAND,ALLY</targetPrefilters>
+                <condition>target.isDragon &amp;&amp; source.count(["CREATURE_ZONE","ALLY"], "") >= [sacrifices]</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>
@@ -19,8 +19,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                                        <targetAll>target.isAlly(source)</targetAll>
+                                        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                                        <targetAll/>
                                         <targetRandom>[sacrifices]</targetRandom>
                                     </entity>
                                 </targets>

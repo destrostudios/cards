@@ -11,8 +11,8 @@
                     <entity>
                         <targets>
                             <entity>
-                                <targetPrefilters>BOARD</targetPrefilters>
-                                <targetAll>!target.isAlly(source)</targetAll>
+                                <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
+                                <targetAll/>
                                 <targetRandom>1</targetRandom>
                             </entity>
                         </targets>

@@ -16,8 +16,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
+                                        <targetPrefilters>LIBRARY,ALLY</targetPrefilters>
+                                        <targetAll>target.isSpellCard</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

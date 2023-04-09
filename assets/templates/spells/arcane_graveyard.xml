@@ -9,7 +9,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <condition>source.count(["GRAVEYARD"], "target.isAlly(source) &amp;&amp; target.isSpellCard") >= [amount]</condition>
+                <condition>source.count(["GRAVEYARD","ALLY"], "target.isSpellCard") >= [amount]</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
@@ -17,8 +17,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>GRAVEYARD</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isSpellCard</targetAll>
+                                        <targetPrefilters>GRAVEYARD,ALLY</targetPrefilters>
+                                        <targetAll>target.isSpellCard</targetAll>
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>
                                 </targets>

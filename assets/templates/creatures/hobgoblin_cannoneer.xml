@@ -16,8 +16,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>BOARD</targetPrefilters>
-                                        <targetAll>!target.isAlly(source) &amp;&amp; target.health > 0</targetAll>
+                                        <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
+                                        <targetAll>target.health > 0</targetAll>
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>
                                 </targets>

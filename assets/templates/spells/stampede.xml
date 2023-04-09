@@ -6,7 +6,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <condition>source.count(["CREATURE_ZONE"], "target.isAlly(source) &amp;&amp; target.isBeast") > 0</condition>
+                <condition>source.count(["CREATURE_ZONE","ALLY"], "target.isBeast") > 0</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
@@ -15,9 +15,9 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                                        <targetAll>!target.isAlly(source)</targetAll>
-                                        <targetRandom>source.count(["CREATURE_ZONE"], "target.isAlly(source) &amp;&amp; target.isBeast")</targetRandom>
+                                        <targetPrefilters>CREATURE_ZONE,NOT_ALLY</targetPrefilters>
+                                        <targetAll/>
+                                        <targetRandom>source.count(["CREATURE_ZONE","ALLY"], "target.isBeast")</targetRandom>
                                     </entity>
                                 </targets>
                                 <destroy/>
@@ -25,8 +25,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                                        <targetAll>target.isBeast</targetAll>
                                     </entity>
                                 </targets>
                                 <destroy/>

@@ -6,8 +6,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND</targetPrefilters>
-                <condition>target.isAlly(source)</condition>
+                <targetPrefilters>HAND,ALLY</targetPrefilters>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

@@ -17,8 +17,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
+                                        <targetPrefilters>LIBRARY,ALLY</targetPrefilters>
+                                        <targetAll>target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

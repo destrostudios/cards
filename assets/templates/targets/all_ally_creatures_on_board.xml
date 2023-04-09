@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-        <targetAll>target.isAlly(source)</targetAll>
+        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+        <targetAll/>
     </entity>
 </template>

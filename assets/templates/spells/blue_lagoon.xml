@@ -17,8 +17,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                        <targetPrefilters>LIBRARY,ALLY</targetPrefilters>
+                                        <targetAll>target.isBeast</targetAll>
                                         <targetRandom>[draw]</targetRandom>
                                     </entity>
                                 </targets>

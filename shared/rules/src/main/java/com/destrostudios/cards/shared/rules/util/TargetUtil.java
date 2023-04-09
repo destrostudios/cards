@@ -88,6 +88,9 @@ public class TargetUtil {
     private static boolean isFulfillingPrefilter(EntityData data, int entity, int source, Prefilter prefilter) {
         switch (prefilter) {
             case SOURCE -> { return entity == source; }
+            case NOT_SOURCE -> { return entity != source; }
+            case ALLY -> { return ConditionUtil.isAlly(data, entity, source); }
+            case NOT_ALLY -> { return !ConditionUtil.isAlly(data, entity, source); }
             default -> { return data.hasComponent(entity, getBasicPrefilterComponent(prefilter)); }
         }
     }

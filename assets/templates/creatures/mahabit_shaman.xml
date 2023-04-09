@@ -13,8 +13,8 @@
             <entity>
                 <targetOptional/>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                <condition>(target == null) || (target.isAlly(source) &amp;&amp; target.isBeast)</condition>
+                <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                <condition>(target == null) || target.isBeast</condition>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

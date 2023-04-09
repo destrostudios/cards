@@ -10,8 +10,8 @@
         <auras>
             <entity>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
-                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                <condition>target.isAlly(source) &amp;&amp; target.isGoblin</condition>
+                <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                <condition>target.isGoblin</condition>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

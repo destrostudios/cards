@@ -17,8 +17,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isGoblin</targetAll>
+                                        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                                        <targetAll>target.isGoblin</targetAll>
                                     </entity>
                                 </targets>
                                 <addBuff>

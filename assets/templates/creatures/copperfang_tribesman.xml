@@ -18,8 +18,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                                        <targetAll>target.isAlly(source) &amp;&amp; target.isBeast</targetAll>
+                                        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                                        <targetAll>target.isBeast</targetAll>
                                     </entity>
                                 </targets>
                                 <addBuff>

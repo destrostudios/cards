@@ -4,7 +4,7 @@
         <description>Death: Summon 9 1/1 Zombies.</description>
         <postDestructionTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>

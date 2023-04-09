@@ -6,7 +6,7 @@
         <description>After this creature takes damage, it gains +[bonusAttack] attack.</description>
         <postDamageTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

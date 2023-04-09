@@ -8,8 +8,8 @@
         <description>Has +[bonusHealth] health if you have another Beast on board.</description>
         <auras>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
-                <condition>(target == source) &amp;&amp; source.exists(["CREATURE_ZONE"], "target.isAlly(source) &amp;&amp; target.isBeast &amp;&amp; (target != source)")</condition>
+                <sourcePrefilters>SOURCE,CREATURE_ZONE</sourcePrefilters>
+                <condition>source.exists(["CREATURE_ZONE"], "target.isAlly(source) &amp;&amp; target.isBeast &amp;&amp; (target != source)")</condition>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

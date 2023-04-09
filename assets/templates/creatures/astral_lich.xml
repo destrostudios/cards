@@ -6,7 +6,7 @@
         <description>After this creature is healed, deal [damage] to a random opponent.</description>
         <postHealTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

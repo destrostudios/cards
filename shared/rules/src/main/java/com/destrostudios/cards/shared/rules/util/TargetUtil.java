@@ -25,7 +25,7 @@ public class TargetUtil {
 
     private static LinkedList<Integer> getAffectedTargets(EntityData data, int targetDefinition, int source, Event event, NetworkRandom random) {
         LinkedList<Integer> affectedTargets = new LinkedList<>();
-        if (isFulfillingPrefilter_Source(data, targetDefinition, source)) {
+        if (isFulfillingPrefilters_Source(data, source, targetDefinition)) {
             String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
             if (targetExpression != null) {
                 int[] evaluatedTargets = Expressions.evaluateEntities(targetExpression, Expressions.getContext_Event(data, event));
@@ -55,7 +55,7 @@ public class TargetUtil {
             return prefilteredTargets;
         }
         return prefilteredTargets.stream()
-                .filter(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, null, condition))
+                .filter(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, condition))
                 .collect(Collectors.toList());
     }
 
@@ -63,8 +63,12 @@ public class TargetUtil {
         return data.query(getBasicPrefilterComponent(prefilters[0])).list(entity -> isFulfillingPrefilters(data, entity, source, prefilters));
     }
 
-    public static boolean isFulfillingPrefilter_Source(EntityData data, int entity, int source) {
-        return isFulfillingPrefilter(data, source, source, entity, Components.Target.SOURCE_PREFILTERS);
+    public static boolean isFulfillingPrefilters_Source(EntityData data, int source, int entityWithPrefilters) {
+        return isFulfillingPrefilter(data, source, source, entityWithPrefilters, Components.Target.SOURCE_PREFILTERS);
+    }
+
+    public static boolean isFulfillingPrefilters_Target(EntityData data, int target, int source, int entityWithPrefilters) {
+        return isFulfillingPrefilter(data, target, source, entityWithPrefilters, Components.Target.TARGET_PREFILTERS);
     }
 
     private static boolean isFulfillingPrefilter(EntityData data, int entity, int source, int entityWithPrefilters, ComponentDefinition<Prefilter[]> prefiltersComponent) {
@@ -72,7 +76,7 @@ public class TargetUtil {
         return ((prefilters == null) || isFulfillingPrefilters(data, entity, source, prefilters));
     }
 
-    public static boolean isFulfillingPrefilters(EntityData data, int entity, int source, Prefilter[] prefilters) {
+    private static boolean isFulfillingPrefilters(EntityData data, int entity, int source, Prefilter[] prefilters) {
         for (Prefilter prefilter : prefilters) {
             if (!isFulfillingPrefilter(data, entity, source, prefilter)) {
                 return false;

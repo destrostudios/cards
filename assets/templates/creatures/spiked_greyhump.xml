@@ -8,7 +8,7 @@
         <description>After this creature takes damage, deal [damage] damage to all opponent creatures.</description>
         <postDamageTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

@@ -3,7 +3,7 @@
         <description>Death: Draw a card.</description>
         <postDestructionTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

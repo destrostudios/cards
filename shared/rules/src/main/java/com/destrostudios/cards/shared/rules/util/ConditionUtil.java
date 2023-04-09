@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.Prefilter;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 
 import java.util.Objects;
@@ -10,23 +9,24 @@ import java.util.Objects;
 public class ConditionUtil {
 
     public static boolean isConditionFulfilled(EntityData data, int entity, int source, int[] targets) {
-        if (!TargetUtil.isFulfillingPrefilter_Source(data, entity, source)) {
+        if (!TargetUtil.isFulfillingPrefilters_Source(data, source, entity)) {
             return false;
+        }
+        for (int target : targets) {
+            if (!TargetUtil.isFulfillingPrefilters_Target(data, target, source, entity)) {
+                return false;
+            }
         }
         String condition = data.getComponent(entity, Components.CONDITION);
         if (condition != null) {
-            Prefilter[] targetPrefilters = data.getComponent(entity, Components.Target.TARGET_PREFILTERS);
-            return isConditionFulfilled(data, source, targets, targetPrefilters, condition);
+            return isConditionFulfilled(data, source, targets, condition);
         }
         return true;
     }
 
-    public static boolean isConditionFulfilled(EntityData data, int source, int[] targets, Prefilter[] targetPrefilters, String condition) {
+    public static boolean isConditionFulfilled(EntityData data, int source, int[] targets, String condition) {
         if (targets.length > 0) {
             for (int target : targets) {
-                if ((targetPrefilters != null) && !TargetUtil.isFulfillingPrefilters(data, target, source, targetPrefilters)) {
-                    return false;
-                }
                 if (!evaluateCondition(data, condition, source, target)) {
                     return false;
                 }

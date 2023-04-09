@@ -7,7 +7,7 @@
         <description>Death: Deal [damage] damage to a random opponent.</description>
         <postDestructionTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

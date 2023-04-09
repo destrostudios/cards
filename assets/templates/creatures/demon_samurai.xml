@@ -6,7 +6,7 @@
         <description>After this creature attacks, deal [damage] damage to your opponent.</description>
         <postBattleTriggers>
             <entity>
-                <condition>target == source</condition>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

@@ -8,7 +8,7 @@
         <postCastSpellTriggers>
             <entity>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
-                <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source) &amp;&amp; target.caster.isSpellCard</condition>
+                <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.source.isAlly(source) &amp;&amp; target.source.isSpellCard</condition>
                 <effects>
                     <entity>
                         <targets>

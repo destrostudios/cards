@@ -137,7 +137,7 @@ public class ExpressionEntity {
         return wrap(SpellUtil.getDefaultCastFromHandSpell(data, entity));
     }
 
-    public ExpressionEntity getCaster() {
+    public ExpressionEntity getSource() {
         return wrap(data.getComponent(entity, Components.SOURCE));
     }
 

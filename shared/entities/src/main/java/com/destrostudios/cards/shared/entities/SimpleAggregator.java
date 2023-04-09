@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
-public class SimpleAggregator<T> implements Aggregator<T> {
+public class SimpleAggregator implements Aggregator {
 
     public SimpleAggregator(Set<Integer> set) {
         this.set = set;

@@ -20,7 +20,7 @@ public class SimpleEntityData implements EntityData {
         }
         nextEntity = new AtomicInteger(0);
     }
-    private HashMap<Integer, Object>[] components;
+    private Map<Integer, Map>[] components;
     private AtomicInteger nextEntity;
 
     @Override
@@ -49,16 +49,24 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
-    public <T> Aggregator<T> query(ComponentDefinition<T> component) {
-        return new SimpleAggregator<>(getComponentMap(component).keySet());
+    public Aggregator query(ComponentDefinition<?> component) {
+        return new SimpleAggregator(getComponentMap(component).keySet());
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+    public Aggregator queryAll(ComponentDefinition<?>... components) {
+        HashSet<Integer> entities = new HashSet<>(getComponentMap(components[0]).keySet());
+        for (int i = 1; i < components.length; i++) {
+            entities.retainAll(getComponentMap(components[i]).keySet());
+        }
+        return new SimpleAggregator(entities);
+    }
+
     private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
         return (Map<Integer, T>) components[component.getId()];
     }
 
-    public Map<Integer, Object>[] getComponents() {
+    public Map<Integer, Map>[] getComponents() {
         return components;
     }
 

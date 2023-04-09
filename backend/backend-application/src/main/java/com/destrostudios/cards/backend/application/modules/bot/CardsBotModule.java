@@ -47,7 +47,7 @@ public class CardsBotModule extends NetworkModule {
         ServerGameData<GameContext> game = gameModule.getGame(gameId);
         SimpleEntityData data = game.state.getData();
         while (true) {
-            Integer activePlayer = data.query(Components.Game.ACTIVE_PLAYER).list().get(0);
+            int activePlayer = data.query(Components.Game.ACTIVE_PLAYER).unique();
             // Yeah... good enough for now
             if (!data.getComponent(activePlayer, Components.NAME).equals(QueueServerModule.BOT_USER_NAME) || game.state.isGameOver()) {
                 break;
@@ -84,7 +84,7 @@ public class CardsBotModule extends NetworkModule {
     public static float[] eval(CardsBotState botState) {
         SimpleEntityData data = botState.getGameContext().getData();
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
-        List<Integer> cardsOnBoard = data.query(Components.BOARD).list(entity -> data.hasComponent(entity, Components.CREATURE_CARD));
+        List<Integer> cardsOnBoard = data.query(Components.CREATURE_ZONE).list();
         List<Integer> cardsInHand = data.query(Components.HAND).list();
         float[] scores = new float[players.size()];
         int i = 0;

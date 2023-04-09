@@ -28,9 +28,9 @@ public class PlayerActionsGenerator {
 
     private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
         List<Integer> ownedCardEntities = new LinkedList<>();
-        // Currently, only cards in hand and on board have castable spells (so only checking those speeds up the process a lot)
+        // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
         ownedCardEntities.addAll(data.query(Components.HAND).list(ownedBy(data, player)));
-        ownedCardEntities.addAll(data.query(Components.BOARD).list(ownedBy(data, player)));
+        ownedCardEntities.addAll(data.query(Components.CREATURE_ZONE).list(ownedBy(data, player)));
         for (int card : ownedCardEntities) {
             int[] spells = data.getComponent(card, Components.SPELLS);
             if (spells != null) {

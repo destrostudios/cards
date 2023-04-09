@@ -53,9 +53,9 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
             @Override
             public void write(Kryo kryo, Output output, SimpleEntityData simpleEntityData) {
                 for (int i = 0; i < Components.ALL.size(); i++) {
-                    Map<Integer, Object> componentMap = simpleEntityData.getComponents()[i];
+                    Map<Integer, Map> componentMap = simpleEntityData.getComponents()[i];
                     output.writeInt(componentMap.size());
-                    for (Map.Entry<Integer, Object> entry : componentMap.entrySet()) {
+                    for (Map.Entry<Integer, Map> entry : componentMap.entrySet()) {
                         output.writeInt(entry.getKey());
                         kryo.writeClassAndObject(output, entry.getValue());
                     }

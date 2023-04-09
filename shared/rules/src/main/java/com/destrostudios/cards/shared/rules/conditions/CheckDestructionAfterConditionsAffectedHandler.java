@@ -11,6 +11,6 @@ public class CheckDestructionAfterConditionsAffectedHandler extends DestroyOnZer
 
     @Override
     protected List<Integer> getAffectedTargets(EntityData data, ConditionsAffectedEvent event) {
-        return data.query(Components.AURAS).list(card -> data.hasComponent(card, Components.BOARD));
+        return data.queryAll(Components.AURAS, Components.BOARD).list();
     }
 }

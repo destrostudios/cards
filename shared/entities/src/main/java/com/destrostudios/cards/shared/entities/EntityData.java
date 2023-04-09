@@ -31,5 +31,7 @@ public interface EntityData {
         return hasComponent(entity, component) && Objects.equals(getComponent(entity, component), value);
     }
 
-    <T> Aggregator<T> query(ComponentDefinition<T> component);
+    Aggregator query(ComponentDefinition<?> component);
+
+    Aggregator queryAll(ComponentDefinition<?>... component);
 }

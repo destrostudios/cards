@@ -3,7 +3,7 @@ package com.destrostudios.cards.shared.entities;
 import java.util.List;
 import java.util.function.IntPredicate;
 
-public interface Aggregator<T> {
+public interface Aggregator {
 
     List<Integer> list();
 

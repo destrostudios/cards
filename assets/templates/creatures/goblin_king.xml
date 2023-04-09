@@ -21,7 +21,7 @@
                                 <addBuff constant="true">
                                     <entity>
                                         <source>#card</source>
-                                        <bonusAttack>source.owner.count("CREATURE_ZONE", "target.owner == source &amp;&amp; target.isGoblin")</bonusAttack>
+                                        <bonusAttack>source.owner.count(["CREATURE_ZONE"], "target.owner == source &amp;&amp; target.isGoblin")</bonusAttack>
                                     </entity>
                                 </addBuff>
                             </entity>

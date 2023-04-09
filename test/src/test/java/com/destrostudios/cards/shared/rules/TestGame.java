@@ -119,7 +119,7 @@ public class TestGame {
         data.setComponent(spellCard, Components.NAME, "Dummy Spell");
         data.setComponent(spellCard, Components.SPELL_CARD);
         int spell = data.createEntity();
-        data.setComponent(spell, Components.Target.SOURCE_PREFILTER, ZonePrefilter.HAND);
+        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Prefilter[] { Prefilter.HAND });
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);

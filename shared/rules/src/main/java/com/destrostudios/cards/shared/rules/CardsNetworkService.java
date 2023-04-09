@@ -44,7 +44,8 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
         kryo.register(StartGameInfo.class);
         kryo.register(String[].class);
         kryo.register(Foil.class, new EnumSerializer<>(Foil.class));
-        kryo.register(ZonePrefilter.class, new EnumSerializer<>(ZonePrefilter.class));
+        kryo.register(Prefilter.class, new EnumSerializer<>(Prefilter.class));
+        kryo.register(Prefilter[].class);
         kryo.register(Components.AddBuff.class);
         kryo.register(Components.Create.class);
         kryo.register(SimpleEntityData.class, new Serializer<SimpleEntityData>() {

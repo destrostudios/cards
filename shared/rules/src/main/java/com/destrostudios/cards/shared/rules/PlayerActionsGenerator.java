@@ -46,8 +46,8 @@ public class PlayerActionsGenerator {
             return;
         }
         if (SpellUtil.isTargeted(data, spell)) {
-            ZonePrefilter targetPrefilter = data.getComponent(spell, Components.Target.TARGET_PREFILTER);
-            List<Integer> prefilteredTargets = TargetUtil.getPrefilteredEntities(data, targetPrefilter);
+            Prefilter[] targetPrefilters = data.getComponent(spell, Components.Target.TARGET_PREFILTERS);
+            List<Integer> prefilteredTargets = TargetUtil.getPrefilteredEntities(data, card, targetPrefilters);
             List<Integer> validTargets = prefilteredTargets.stream()
                     .filter(target -> SpellUtil.isCastable_OnlySpellCondition(data, card, spell, new int[] { target }))
                     .collect(Collectors.toList());

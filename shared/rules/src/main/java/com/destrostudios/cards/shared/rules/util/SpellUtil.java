@@ -2,12 +2,12 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.ZonePrefilter;
+import com.destrostudios.cards.shared.rules.Prefilter;
 
 public class SpellUtil {
 
     public static boolean isTargeted(EntityData data, int entity) {
-        return data.hasComponent(entity, Components.Target.TARGET_PREFILTER);
+        return data.hasComponent(entity, Components.Target.TARGET_PREFILTERS);
     }
 
     public static boolean isCastable_WithoutSpellCondition(EntityData data, int card, int spell) {
@@ -40,7 +40,8 @@ public class SpellUtil {
 
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
         // Currently, all spells with a hand prefilter are defaultCastFromHandSpells
-        return (data.getComponent(spell, Components.Target.SOURCE_PREFILTER) == ZonePrefilter.HAND);
+        Prefilter[] prefilters = data.getComponent(spell, Components.Target.SOURCE_PREFILTERS);
+        return ((prefilters != null) && (prefilters[0] == Prefilter.HAND));
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {

@@ -20,7 +20,7 @@
                         </effects>
                     </entity>
                     <entity>
-                        <condition>source.exists("HAND", "target.isAlly(source) &amp;&amp; target.isDragon")</condition>
+                        <condition>source.exists(["HAND"], "target.isAlly(source) &amp;&amp; target.isDragon")</condition>
                         <effects>
                             <entity>
                                 <targets>

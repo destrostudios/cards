@@ -9,7 +9,7 @@
         <spells>
             <entity>
                 <sourcePrefilter>HAND</sourcePrefilter>
-                <condition>source.count("GRAVEYARD", "target.isAlly(source) &amp;&amp; target.isDragon") >= [amount]</condition>
+                <condition>source.count(["GRAVEYARD"], "target.isAlly(source) &amp;&amp; target.isDragon") >= [amount]</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

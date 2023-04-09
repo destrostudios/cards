@@ -10,7 +10,7 @@
             <entity>
                 <sourcePrefilter>HAND</sourcePrefilter>
                 <targetPrefilter>HAND</targetPrefilter>
-                <condition>target.isAlly(source) &amp;&amp; target.isDragon &amp;&amp; source.count("CREATURE_ZONE", "target.isAlly(source)") >= [sacrifices]</condition>
+                <condition>target.isAlly(source) &amp;&amp; target.isDragon &amp;&amp; source.count(["CREATURE_ZONE"], "target.isAlly(source)") >= [sacrifices]</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

@@ -4,10 +4,9 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.ZonePrefilter;
+import com.destrostudios.cards.shared.rules.Prefilter;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
-import org.apache.commons.jexl3.JexlContext;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,8 +35,8 @@ public class TargetUtil {
             }
             String targetAllCondition = data.getComponent(targetDefinition, Components.Target.TARGET_ALL);
             if (targetAllCondition != null) {
-                ZonePrefilter targetPrefilter = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTER);
-                affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilter, targetAllCondition));
+                Prefilter[] targetPrefilters = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTERS);
+                affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilters, targetAllCondition));
             }
             String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
             if (maxRandomTargetsExpression != null) {
@@ -50,35 +49,47 @@ public class TargetUtil {
         return affectedTargets;
     }
 
-    public static List<Integer> getAllConditionTargets(EntityData data, int source, ZonePrefilter targetPrefilter, String condition) {
-        List<Integer> prefilteredTargets = getPrefilteredEntities(data, targetPrefilter);
+    public static List<Integer> getAllConditionTargets(EntityData data, int source, Prefilter[] targetPrefilters, String condition) {
+        List<Integer> prefilteredTargets = getPrefilteredEntities(data, source, targetPrefilters);
         if (condition.isEmpty()) {
             return prefilteredTargets;
         }
         return prefilteredTargets.stream()
-                .filter(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, targetPrefilter, condition))
+                .filter(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, null, condition))
                 .collect(Collectors.toList());
     }
 
-    public static List<Integer> getPrefilteredEntities(EntityData data, ZonePrefilter zonePrefilter) {
-        return data.query(getPrefilterComponent(zonePrefilter)).list();
+    public static List<Integer> getPrefilteredEntities(EntityData data, int source, Prefilter[] prefilters) {
+        return data.query(getBasicPrefilterComponent(prefilters[0])).list(entity -> isFulfillingPrefilters(data, entity, source, prefilters));
     }
 
     public static boolean isFulfillingPrefilter_Source(EntityData data, int entity, int source) {
-        return isFulfillingPrefilter(data, entity, Components.Target.SOURCE_PREFILTER, source);
+        return isFulfillingPrefilter(data, source, source, entity, Components.Target.SOURCE_PREFILTERS);
     }
 
-    private static boolean isFulfillingPrefilter(EntityData data, int entity, ComponentDefinition<ZonePrefilter> prefilterComponent, int prefilteredEntity) {
-        ZonePrefilter zonePrefilter = data.getComponent(entity, prefilterComponent);
-        return ((zonePrefilter == null) || isFulfillingPrefilter(data, prefilteredEntity, zonePrefilter));
+    private static boolean isFulfillingPrefilter(EntityData data, int entity, int source, int entityWithPrefilters, ComponentDefinition<Prefilter[]> prefiltersComponent) {
+        Prefilter[] prefilters = data.getComponent(entityWithPrefilters, prefiltersComponent);
+        return ((prefilters == null) || isFulfillingPrefilters(data, entity, source, prefilters));
     }
 
-    public static boolean isFulfillingPrefilter(EntityData data, int entity, ZonePrefilter zonePrefilter) {
-        return data.hasComponent(entity, getPrefilterComponent(zonePrefilter));
+    public static boolean isFulfillingPrefilters(EntityData data, int entity, int source, Prefilter[] prefilters) {
+        for (Prefilter prefilter : prefilters) {
+            if (!isFulfillingPrefilter(data, entity, source, prefilter)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private static ComponentDefinition<?> getPrefilterComponent(ZonePrefilter zonePrefilter) {
-        switch (zonePrefilter) {
+    private static boolean isFulfillingPrefilter(EntityData data, int entity, int source, Prefilter prefilter) {
+        switch (prefilter) {
+            case SOURCE -> { return entity == source; }
+            default -> { return data.hasComponent(entity, getBasicPrefilterComponent(prefilter)); }
+        }
+    }
+
+    private static ComponentDefinition<?> getBasicPrefilterComponent(Prefilter prefilter) {
+        switch (prefilter) {
             case BOARD -> { return Components.BOARD; }
             case CREATURE_ZONE -> { return Components.CREATURE_ZONE; }
             case GRAVEYARD -> { return Components.GRAVEYARD; }

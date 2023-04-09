@@ -7,7 +7,7 @@
         <tauntable/>
         <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
         <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
-        <condition>target.isCreatureCard || !target.exists(["CREATURE_ZONE"], "target.owner == source")</condition>
+        <condition>target.isCreatureCard || !target.exists(["CREATURE_ZONE","ALLY"])</condition>
         <castTriggers>
             <entity>
                 <effects>

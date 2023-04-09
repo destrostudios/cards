@@ -9,8 +9,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND</targetPrefilters>
-                <condition>target.isDragon</condition>
+                <targetPrefilters>HAND,ALLY,DRAGON</targetPrefilters>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

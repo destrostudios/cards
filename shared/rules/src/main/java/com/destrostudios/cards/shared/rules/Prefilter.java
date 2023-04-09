@@ -7,9 +7,18 @@ public enum Prefilter {
     GRAVEYARD,
     HAND,
     LIBRARY,
+    CREATURE_CARD,
+    SPELL_CARD,
+    BEAST,
+    DRAGON,
+    GOBLIN,
     // Advanced
     SOURCE,
     NOT_SOURCE,
     ALLY,
     NOT_ALLY,
+    DAMAGED,
+    NOT_DAMAGED,
+    OWNER,
+    OPPONENT
 }

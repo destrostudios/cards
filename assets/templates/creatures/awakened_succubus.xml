@@ -16,8 +16,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>HAND</targetPrefilters>
-                                        <targetAll>target.owner == source.owner</targetAll>
+                                        <targetPrefilters>HAND,ALLY</targetPrefilters>
+                                        <targetAll/>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

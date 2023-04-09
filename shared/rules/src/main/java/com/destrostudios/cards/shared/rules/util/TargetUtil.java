@@ -91,6 +91,14 @@ public class TargetUtil {
             case NOT_SOURCE -> { return entity != source; }
             case ALLY -> { return ConditionUtil.isAlly(data, entity, source); }
             case NOT_ALLY -> { return !ConditionUtil.isAlly(data, entity, source); }
+            case DAMAGED -> { return StatsUtil.isDamaged(data, entity); }
+            case NOT_DAMAGED -> { return !StatsUtil.isDamaged(data, entity); }
+            case OWNER -> { return entity == data.getComponent(source, Components.OWNED_BY); }
+            case OPPONENT -> {
+                int sourceOwner = data.getComponent(source, Components.OWNED_BY);
+                int sourceOpponent = data.getComponent(sourceOwner, Components.NEXT_PLAYER);
+                return (entity == sourceOpponent);
+            }
             default -> { return data.hasComponent(entity, getBasicPrefilterComponent(prefilter)); }
         }
     }
@@ -102,6 +110,11 @@ public class TargetUtil {
             case GRAVEYARD -> { return Components.GRAVEYARD; }
             case HAND -> { return Components.HAND; }
             case LIBRARY -> { return Components.LIBRARY; }
+            case CREATURE_CARD -> { return Components.CREATURE_CARD; }
+            case SPELL_CARD -> { return Components.SPELL_CARD; }
+            case BEAST -> { return Components.Tribe.BEAST; }
+            case DRAGON -> { return Components.Tribe.DRAGON; }
+            case GOBLIN -> { return Components.Tribe.GOBLIN; }
         }
         throw new IllegalArgumentException();
     }

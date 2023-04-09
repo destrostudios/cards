@@ -33,7 +33,7 @@
                         </effects>
                     </entity>
                     <entity>
-                        <condition>(target != null) &amp;&amp; !target.isDamaged</condition>
+                        <targetPrefilters>NOT_DAMAGED</targetPrefilters>
                         <effects>
                             <entity>
                                 <targets>

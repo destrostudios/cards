@@ -9,8 +9,8 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND,ALLY</targetPrefilters>
-                <condition>target.isDragon &amp;&amp; source.count(["CREATURE_ZONE","ALLY"], "") >= [sacrifices]</condition>
+                <targetPrefilters>HAND,ALLY,DRAGON</targetPrefilters>
+                <condition>source.count(["CREATURE_ZONE","ALLY"]) >= [sacrifices]</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

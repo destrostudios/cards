@@ -13,8 +13,7 @@
             <entity>
                 <targetOptional/>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND,ALLY</targetPrefilters>
-                <condition>(target == null) || target.isSpellCard</condition>
+                <targetPrefilters>HAND,ALLY,SPELL_CARD</targetPrefilters>
                 <manaCost>9</manaCost>
                 <castTriggers>
                     <entity>

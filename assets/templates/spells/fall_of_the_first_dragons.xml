@@ -9,7 +9,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <condition>source.count(["GRAVEYARD","ALLY"], "target.isDragon") >= [amount]</condition>
+                <condition>source.count(["GRAVEYARD","ALLY","DRAGON"]) >= [amount]</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
@@ -18,8 +18,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>GRAVEYARD,ALLY</targetPrefilters>
-                                        <targetAll>target.isDragon</targetAll>
+                                        <targetPrefilters>GRAVEYARD,ALLY,DRAGON</targetPrefilters>
+                                        <targetAll/>
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>
                                 </targets>

@@ -9,7 +9,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <condition>source.count(["GRAVEYARD","ALLY"], "target.isSpellCard") >= [amount]</condition>
+                <condition>source.count(["GRAVEYARD","ALLY","SPELL_CARD"]) >= [amount]</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

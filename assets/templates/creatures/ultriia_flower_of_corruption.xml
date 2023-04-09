@@ -6,7 +6,7 @@
         <postDamageTriggers>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <condition>target == source.owner.opponent</condition>
+                <targetPrefilters>OPPONENT</targetPrefilters>
                 <effects>
                     <entity>
                         <targets>

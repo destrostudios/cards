@@ -21,7 +21,7 @@
                                 <targets>
                                     <entity template="../targets/source_owner"/>
                                 </targets>
-                                <heal>[heal] * source.owner.count(["HAND"], "target.owner == source &amp;&amp; target.isDragon")</heal>
+                                <heal>[heal] * source.owner.count(["HAND","ALLY","DRAGON"])</heal>
                             </entity>
                         </effects>
                     </entity>

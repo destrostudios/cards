@@ -18,8 +18,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY,ALLY</targetPrefilters>
-                                        <targetAll>target.isGoblin</targetAll>
+                                        <targetPrefilters>LIBRARY,ALLY,GOBLIN</targetPrefilters>
+                                        <targetAll>target.manaCost &lt;= [maximumManaCost]</targetAll>
                                         <targetRandom>[draw]</targetRandom>
                                     </entity>
                                 </targets>

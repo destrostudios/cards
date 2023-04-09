@@ -6,8 +6,7 @@
         <spells>
             <entity>
                 <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
-                <condition>!target.isDamaged</condition>
+                <targetPrefilters>CREATURE_ZONE,NOT_DAMAGED</targetPrefilters>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

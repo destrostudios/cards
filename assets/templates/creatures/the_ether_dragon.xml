@@ -18,8 +18,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>HAND,ALLY</targetPrefilters>
-                                        <targetAll>target.isDragon</targetAll>
+                                        <targetPrefilters>HAND,ALLY,DRAGON</targetPrefilters>
+                                        <targetAll/>
                                     </entity>
                                 </targets>
                                 <addToBoard/>

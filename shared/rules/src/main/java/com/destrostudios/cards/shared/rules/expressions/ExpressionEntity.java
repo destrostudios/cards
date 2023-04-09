@@ -91,12 +91,24 @@ public class ExpressionEntity {
         return SpellUtil.isDefaultCastFromHandSpell(data, entity);
     }
 
+    public boolean exists(String[] targetPrefilterNames) {
+        return exists(targetPrefilterNames, "");
+    }
+
     public boolean exists(String[] targetPrefilterNames, String expression) {
         return count(targetPrefilterNames, expression) > 0;
     }
 
+    public int count(String[] targetPrefilterNames) {
+        return count(targetPrefilterNames, "");
+    }
+
     public int count(String[] targetPrefilterNames, String expression) {
         return all(targetPrefilterNames, expression).size();
+    }
+
+    public List<ExpressionEntity> all(String[] targetPrefilterNames) {
+        return all(targetPrefilterNames, "");
     }
 
     public List<ExpressionEntity> all(String[] targetPrefilterNames, String expression) {

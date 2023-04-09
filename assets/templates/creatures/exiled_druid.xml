@@ -16,8 +16,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>GRAVEYARD,ALLY</targetPrefilters>
-                                        <targetAll>target.isBeast</targetAll>
+                                        <targetPrefilters>GRAVEYARD,ALLY,BEAST</targetPrefilters>
+                                        <targetAll/>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

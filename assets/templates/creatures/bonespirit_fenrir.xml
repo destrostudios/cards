@@ -7,7 +7,8 @@
         <description>Has +[bonusHealth] health if you have another creature on board.</description>
         <auras>
             <entity>
-                <sourcePrefilters>SOURCE,CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <targetPrefilters>SOURCE</targetPrefilters>
                 <condition>source.exists(["CREATURE_ZONE","ALLY","NOT_SOURCE"])</condition>
                 <auraBuff>
                     <entity>

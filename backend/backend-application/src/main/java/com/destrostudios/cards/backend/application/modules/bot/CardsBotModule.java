@@ -54,7 +54,6 @@ public class CardsBotModule extends NetworkModule {
             }
             MctsBot bot = bots.computeIfAbsent(gameId, gid -> {
                 MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
-                botSettings.verbose = true;
                 botSettings.maxThreads = 3;
                 botSettings.termination = TerminationType.MILLIS_ELAPSED;
                 botSettings.strength = 3000;

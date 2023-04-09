@@ -51,7 +51,6 @@ public class BotTest {
         applyAction(gameContext, new GameStartEvent(), random);
 
         MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
-        botSettings.verbose = true;
         botSettings.maxThreads = 3;
         botSettings.termination = TerminationType.NODE_COUNT;
         botSettings.strength = 1000;

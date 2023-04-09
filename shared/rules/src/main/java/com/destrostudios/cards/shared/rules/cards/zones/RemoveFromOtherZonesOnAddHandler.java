@@ -12,7 +12,7 @@ public class RemoveFromOtherZonesOnAddHandler extends GameEventHandler<AddCardTo
 
     @Override
     public void handle(AddCardToZoneEvent event, NetworkRandom random) {
-        LOG.info("Removing " + inspect(event.card) + " from other zones");
+        LOG.debug("Removing " + inspect(event.card) + " from other zones");
         if ((event.zone != Components.LIBRARY) && data.hasComponent(event.card, Components.LIBRARY)) {
             events.fire(new RemoveCardFromLibraryEvent(event.card), random);
         } else if ((event.zone != Components.HAND) && data.hasComponent(event.card, Components.HAND)) {

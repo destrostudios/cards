@@ -15,7 +15,7 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
 
     @Override
     public void handle(CastSpellEvent event, NetworkRandom random) {
-        LOG.info("Casting spell " + inspect(event.spell) + " on " + inspect(event.targets));
+        LOG.debug("Casting spell " + inspect(event.spell) + " on " + inspect(event.targets));
 
         int caster = SpellUtil.getCaster(data, event.spell);
 

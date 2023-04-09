@@ -12,7 +12,7 @@ public class AddBuffHandler extends GameEventHandler<AddBuffEvent> {
 
     @Override
     public void handle(AddBuffEvent event, NetworkRandom random) {
-        LOG.info("Adding buff " + inspect(event.buff) + " to " + inspect(event.target));
+        LOG.debug("Adding buff " + inspect(event.buff) + " to " + inspect(event.target));
         BuffUtil.add(data, event.target, event.buff);
     }
 }

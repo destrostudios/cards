@@ -12,7 +12,7 @@ public class AddCardToBoardHandler extends GameEventHandler<AddCardToBoardEvent>
 
     @Override
     public void handle(AddCardToBoardEvent event, NetworkRandom random) {
-        LOG.info("Adding " + inspect(event.card) + " to board");
+        LOG.debug("Adding " + inspect(event.card) + " to board");
         if (data.hasComponent(event.card, Components.CREATURE_CARD)) {
             events.fire(new AddCardToCreatureZoneEvent(event.card), random);
         } else {

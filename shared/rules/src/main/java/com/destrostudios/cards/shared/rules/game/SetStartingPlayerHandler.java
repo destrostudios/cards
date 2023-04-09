@@ -17,7 +17,7 @@ public class SetStartingPlayerHandler extends GameEventHandler<GameStartEvent> {
     public void handle(GameStartEvent event, NetworkRandom random) {
         List<Integer> players = data.query(Components.NEXT_PLAYER).list();
         int player = players.get(random.nextInt(players.size()));
-        LOG.info("Starting player is " + inspect(player));
+        LOG.debug("Starting player is " + inspect(player));
         events.fire(new StartTurnEvent(player), random);
     }
 }

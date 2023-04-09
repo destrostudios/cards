@@ -12,7 +12,7 @@ public class RemoveCardFromHandHandler extends GameEventHandler<RemoveCardFromHa
 
     @Override
     public void handle(RemoveCardFromHandEvent event, NetworkRandom random) {
-        LOG.info("Removing " + inspect(event.card) + " from hand");
+        LOG.debug("Removing " + inspect(event.card) + " from hand");
         events.fire(new RemoveCardFromZoneEvent(event.card, Components.HAND), random);
     }
 }

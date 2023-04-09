@@ -14,7 +14,7 @@ public class DrawCardsOnGameStartHandler extends GameEventHandler<GameStartEvent
 
     @Override
     public void handle(GameStartEvent event, NetworkRandom random) {
-        LOG.info("Drawing initial hands");
+        LOG.debug("Drawing initial hands");
         for (int player : data.query(Components.NEXT_PLAYER).list()) {
             for (int i = 0; i < GameConstants.INITIAL_HAND_SIZE; i++) {
                 events.fire(new DrawCardEvent(player), random);

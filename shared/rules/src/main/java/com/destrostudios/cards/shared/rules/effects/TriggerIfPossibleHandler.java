@@ -14,7 +14,7 @@ public class TriggerIfPossibleHandler extends GameEventHandler<TriggerIfPossible
 
     @Override
     public void handle(TriggerIfPossibleEvent event, NetworkRandom random) {
-        LOG.info("Trying to trigger trigger (source = " + inspect(event.source) + ", targets = " + inspect(event.targets) + ", trigger = " + inspect(event.trigger) + ")");
+        LOG.debug("Trying to trigger trigger (source = " + inspect(event.source) + ", targets = " + inspect(event.targets) + ", trigger = " + inspect(event.trigger) + ")");
 
         if (ConditionUtil.isConditionFulfilled(data, event.trigger, event.source, event.targets)) {
             String repeatExpression = data.getComponent(event.trigger, Components.Effect.REPEAT);

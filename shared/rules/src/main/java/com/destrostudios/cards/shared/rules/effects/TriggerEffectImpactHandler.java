@@ -24,7 +24,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
     @Override
     public void handle(TriggerEffectImpactEvent event, NetworkRandom random) {
-        LOG.info("Triggering effect impact (source = " + inspect(event.source) + ", target = " + inspect(event.target) + ", effect = " + inspect(event.effect) + ")");
+        LOG.debug("Triggering effect impact (source = " + inspect(event.source) + ", target = " + inspect(event.target) + ", effect = " + inspect(event.effect) + ")");
 
         if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_HAND)) {
             events.fire(new AddCardToHandEvent(event.target), random);

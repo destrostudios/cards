@@ -16,7 +16,7 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
 
     @Override
     public void handle(DestructionEvent event, NetworkRandom random) {
-        LOG.info("Destroying " + inspect(event.target));
+        LOG.debug("Destroying " + inspect(event.target));
         Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
         if (nextPlayer.isPresent()) {
             int winner = nextPlayer.get();

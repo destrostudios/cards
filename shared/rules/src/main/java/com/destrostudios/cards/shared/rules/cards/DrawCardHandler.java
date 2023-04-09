@@ -16,12 +16,12 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
     public void handle(DrawCardEvent event, NetworkRandom random) {
         Integer drawnCard = ZoneUtil.getTopLibraryCard(data, event.player);
         if (drawnCard != null) {
-            LOG.info("Player " + inspect(event.player) + " is drawing card " + inspect(drawnCard));
+            LOG.debug("Player " + inspect(event.player) + " is drawing card " + inspect(drawnCard));
             events.fire(new RemoveCardFromLibraryEvent(drawnCard), random);
             events.fire(new AddCardToHandEvent(drawnCard), random);
         } else {
             // TODO: Fatigue?
-            LOG.info("Player " + inspect(event.player) + " tried to draw a card but has none left");
+            LOG.debug("Player " + inspect(event.player) + " tried to draw a card but has none left");
             event.cancel();
         }
     }

@@ -62,10 +62,10 @@ public class CardsBotModule extends NetworkModule {
                 return new MctsBot<>(new CardsBotService(), botSettings);
             });
             CardsBotState botState = new CardsBotState(game.state, new MasterRandom(new Random()));
-            LOG.info("Bot started calculating...");
+            LOG.debug("Bot started calculating... (gameId = " + game.id + ")");
             long startNanos = System.nanoTime();
             List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
-            LOG.info("Bot finished calculating after {}", (System.nanoTime() - startNanos));
+            LOG.debug("Bot finished calculating after " + (System.nanoTime() - startNanos) + " ns. (gameId = " + game.id + ")");
             Event action = actions.get(0);
             gameModule.applyAction(game.id, action);
             onAction(gameId, action);

@@ -15,7 +15,7 @@ public class CreateHandler extends GameEventHandler<CreateEvent> {
 
     @Override
     public void handle(CreateEvent event, NetworkRandom random) {
-        LOG.info("Creating \"" + event.template + "\" in " + event.location + " for " + inspect(event.player) + " (source = " + inspect(event.source) + ")");
+        LOG.debug("Creating \"" + event.template + "\" in " + event.location + " for " + inspect(event.player) + " (source = " + inspect(event.source) + ")");
         int card = EntityTemplate.createFromTemplate(data, event.template);
         data.setComponent(card, Components.FOIL, data.getComponent(event.source, Components.FOIL));
         data.setComponent(card, Components.OWNED_BY, event.player);

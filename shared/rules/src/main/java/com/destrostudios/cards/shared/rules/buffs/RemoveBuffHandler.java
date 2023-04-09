@@ -13,7 +13,7 @@ public class RemoveBuffHandler extends GameEventHandler<RemoveBuffEvent> {
 
     @Override
     public void handle(RemoveBuffEvent event, NetworkRandom random) {
-        LOG.info("Removing buff " + inspect(event.buff) + " from " + inspect(event.target));
+        LOG.debug("Removing buff " + inspect(event.buff) + " from " + inspect(event.target));
         ArrayUtil.remove(data, event.target, Components.BUFFS, event.buff);
         // TODO: Remove buff entity if it was an evaluated copy? Overkill for now?
     }

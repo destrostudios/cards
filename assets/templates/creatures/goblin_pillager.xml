@@ -8,7 +8,7 @@
         <description>Cast: If the top card of your library is a Goblin, draw it.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

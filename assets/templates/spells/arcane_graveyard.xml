@@ -8,7 +8,8 @@
         <description>Put [amount] random spells from your graveyard to your hand.</description>
         <spells>
             <entity>
-                <condition>source.isInHand &amp;&amp; source.count("GRAVEYARD", "target.isAlly(source) &amp;&amp; target.isSpellCard") >= [amount]</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
+                <condition>source.count("GRAVEYARD", "target.isAlly(source) &amp;&amp; target.isSpellCard") >= [amount]</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

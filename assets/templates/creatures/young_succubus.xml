@@ -10,7 +10,7 @@
         <description>Cast: Deal [damage] damage to yourself.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

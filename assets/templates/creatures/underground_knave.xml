@@ -5,8 +5,9 @@
             <entity template="../spells/templates/simple_summon(manaCost=1)"/>
             <entity>
                 <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <condition>source.isOnBoard &amp;&amp; !target.isAlly(source)</condition>
+                <condition>!target.isAlly(source)</condition>
                 <castTriggers>
                     <entity>
                         <effects>

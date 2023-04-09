@@ -5,8 +5,9 @@
         <description>Reduce cost of target card in your hand by (1).</description>
         <spells>
             <entity>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <targetPrefilter>HAND</targetPrefilter>
-                <condition>source.isInHand &amp;&amp; target.isAlly(source)</condition>
+                <condition>target.isAlly(source)</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

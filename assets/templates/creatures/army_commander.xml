@@ -7,7 +7,9 @@
         <description>Your creatures on board have +[bonusAttack]/+[bonusHealth].</description>
         <auras>
             <entity>
-                <condition>source.isOnBoard &amp;&amp; target.isAlly(source) &amp;&amp; target.isCreatureCard &amp;&amp; target.isOnBoard</condition>
+                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
+                <targetPrefilter>CREATURE_ZONE</targetPrefilter>
+                <condition>target.isAlly(source)</condition>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

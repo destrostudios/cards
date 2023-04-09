@@ -9,7 +9,7 @@ import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.ComponentsTriggers;
 import com.destrostudios.cards.shared.rules.CreateLocation;
-import com.destrostudios.cards.shared.rules.TargetPrefilter;
+import com.destrostudios.cards.shared.rules.ZonePrefilter;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
 public class EntityTemplateSetup {
@@ -101,7 +101,8 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
-        templateManager.registerComponent(new ComponentParser_Enum<>(Components.Target.TARGET_PREFILTER, TargetPrefilter::valueOf));
+        templateManager.registerComponent(new ComponentParser_Enum<>(Components.Target.SOURCE_PREFILTER, ZonePrefilter::valueOf));
+        templateManager.registerComponent(new ComponentParser_Enum<>(Components.Target.TARGET_PREFILTER, ZonePrefilter::valueOf));
         templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGETS));
         templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET));
         templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_ALL));

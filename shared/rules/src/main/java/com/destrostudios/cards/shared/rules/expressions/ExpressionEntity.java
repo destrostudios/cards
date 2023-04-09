@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.rules.expressions;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.TargetPrefilter;
+import com.destrostudios.cards.shared.rules.ZonePrefilter;
 import com.destrostudios.cards.shared.rules.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -100,7 +100,7 @@ public class ExpressionEntity {
     }
 
     public List<ExpressionEntity> all(String targetPrefilterName, String expression) {
-        return TargetUtil.getAllConditionTargets(data, entity, TargetPrefilter.valueOf(targetPrefilterName), expression).stream()
+        return TargetUtil.getAllConditionTargets(data, entity, ZonePrefilter.valueOf(targetPrefilterName), expression).stream()
                 .map(this::wrap)
                 .collect(Collectors.toList());
     }

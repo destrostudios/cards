@@ -9,7 +9,7 @@
         <description>Cast: Summon all Dragons from your hand and end your turn.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>10</manaCost>
                 <castTriggers>
                     <entity>

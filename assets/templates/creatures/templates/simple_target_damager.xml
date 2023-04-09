@@ -7,9 +7,9 @@
         <description>Cast: Deal [damage] damage to target character.</description>
         <spells>
             <entity>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <targetOptional/>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <condition>source.isInHand</condition>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

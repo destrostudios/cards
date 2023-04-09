@@ -13,8 +13,8 @@
             <entity template="../spells/templates/simple_attack"/>
             <entity>
                 <description>Heal [heal] health of target creature.</description>
+                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
                 <targetPrefilter>CREATURE_ZONE</targetPrefilter>
-                <condition>source.isOnBoard</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

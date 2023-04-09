@@ -11,7 +11,7 @@
         <description>Cast: Heal [heal] health of yourself for each dragon in your hand.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

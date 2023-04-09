@@ -6,7 +6,7 @@
         <flavourText>"Doo doo doo doo doo."</flavourText>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>

@@ -5,8 +5,9 @@
         <description>Destroy target undamaged creature.</description>
         <spells>
             <entity>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <targetPrefilter>CREATURE_ZONE</targetPrefilter>
-                <condition>source.isInHand &amp;&amp; !target.isDamaged</condition>
+                <condition>!target.isDamaged</condition>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

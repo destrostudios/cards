@@ -8,7 +8,7 @@
         <description>Draw [draw] cards.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>

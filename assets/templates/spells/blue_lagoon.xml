@@ -8,7 +8,7 @@
         <description>Draw [draw] random beasts from your library.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

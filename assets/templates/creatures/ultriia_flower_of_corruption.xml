@@ -5,7 +5,8 @@
         <description>After your opponent takes damage, reduce this card's cost by (1).</description>
         <postDamageTriggers>
             <entity>
-                <condition>source.isInHand &amp;&amp; (target == source.owner.opponent)</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
+                <condition>target == source.owner.opponent</condition>
                 <effects>
                     <entity>
                         <targets>

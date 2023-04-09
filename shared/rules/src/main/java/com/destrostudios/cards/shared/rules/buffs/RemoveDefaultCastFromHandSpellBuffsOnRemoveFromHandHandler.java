@@ -17,7 +17,7 @@ public class RemoveDefaultCastFromHandSpellBuffsOnRemoveFromHandHandler extends 
         int defaultCastFromHandSpell = SpellUtil.getDefaultCastFromHandSpell(data, event.card);
         int[] buffs = data.getComponent(defaultCastFromHandSpell, Components.BUFFS);
         if (buffs != null) {
-            LOG.debug("Removing all {} buffs from default cast from hand spell {} of {}", buffs.length, inspect(defaultCastFromHandSpell), inspect(event.card));
+            LOG.debug("Removing all {} buffs from defaultCastFromHandSpell {} of {}", buffs.length, inspect(defaultCastFromHandSpell), inspect(event.card));
             for (int buff : buffs) {
                 events.fire(new RemoveBuffEvent(defaultCastFromHandSpell, buff), random);
             }

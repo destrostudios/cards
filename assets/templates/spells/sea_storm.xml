@@ -8,7 +8,7 @@
         <description>Deal [damage] damage to all characters.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

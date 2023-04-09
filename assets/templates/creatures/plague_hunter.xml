@@ -7,7 +7,7 @@
         <description>Cast: If your hand is empty, draw a card.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

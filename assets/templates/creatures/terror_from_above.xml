@@ -9,7 +9,7 @@
         <description>Cast: Destroy all creatures on board.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>10</manaCost>
                 <castTriggers>
                     <entity>

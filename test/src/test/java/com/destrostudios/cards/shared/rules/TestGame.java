@@ -114,12 +114,12 @@ public class TestGame {
     }
 
     protected int createSpell(int manaCost, int owner, ComponentDefinition<Integer> zone) {
-        // TODO: Split this out in a template? Should however not be bundled with the app
+        // TODO: Split this out in a template? Should however not be bundled with the app ideally
         int spellCard = data.createEntity();
         data.setComponent(spellCard, Components.NAME, "Dummy Spell");
         data.setComponent(spellCard, Components.SPELL_CARD);
         int spell = data.createEntity();
-        data.setComponent(spell, Components.CONDITION, "source.isInHand");
+        data.setComponent(spell, Components.Target.SOURCE_PREFILTER, ZonePrefilter.HAND);
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);

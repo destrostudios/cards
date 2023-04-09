@@ -54,22 +54,22 @@ public class BuffUtil {
         return null;
     }
 
-    public static List<Integer> getAffectingBuffs(EntityData data, int entity) {
+    public static List<Integer> getAffectingBuffs(EntityData data, int target) {
         LinkedList<Integer> affectingBuffs = new LinkedList<>();
         // Direct buffs
-        int[] buffs = data.getComponent(entity, Components.BUFFS);
+        int[] buffs = data.getComponent(target, Components.BUFFS);
         if (buffs != null) {
             for (int buff : buffs) {
                 affectingBuffs.add(buff);
             }
         }
         // Auras
-        int[] targets = new int[] { entity };
+        int[] targets = new int[] { target };
         for (int source : data.query(Components.AURAS).list()) {
             int[] auras = data.getComponent(source, Components.AURAS);
             for (int aura : auras) {
-                int buff = data.getComponent(aura, Components.Aura.AURA_BUFF);
                 if (ConditionUtil.isConditionFulfilled(data, aura, source, targets)) {
+                    int buff = data.getComponent(aura, Components.Aura.AURA_BUFF);
                     affectingBuffs.add(buff);
                 }
             }

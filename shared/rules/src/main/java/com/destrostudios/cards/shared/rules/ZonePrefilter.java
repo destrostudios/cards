@@ -1,6 +1,6 @@
 package com.destrostudios.cards.shared.rules;
 
-public enum TargetPrefilter {
+public enum ZonePrefilter {
     BOARD,
     CREATURE_ZONE,
     GRAVEYARD,

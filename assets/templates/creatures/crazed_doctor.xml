@@ -11,7 +11,7 @@
         <description>Cast: Deal [damage] damage to yourself, then heal [heal] health.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

@@ -8,7 +8,7 @@
         <description>Deal [damage] damage to your opponent.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

@@ -5,7 +5,7 @@
         <description>Summon 3 1/1 Goblins.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>

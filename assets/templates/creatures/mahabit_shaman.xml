@@ -12,8 +12,9 @@
         <spells>
             <entity>
                 <targetOptional/>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <targetPrefilter>CREATURE_ZONE</targetPrefilter>
-                <condition>source.isInHand &amp;&amp; ((target == null) || (target.isAlly(source) &amp;&amp; target.isBeast))</condition>
+                <condition>(target == null) || (target.isAlly(source) &amp;&amp; target.isBeast)</condition>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

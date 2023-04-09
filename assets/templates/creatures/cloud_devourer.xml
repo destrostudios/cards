@@ -6,7 +6,7 @@
         <description>End of turn: Heal [heal] health of this creature.</description>
         <preEndTurnTriggers>
             <entity>
-                <condition>source.isOnBoard</condition>
+                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
                 <effects>
                     <entity>
                         <targets>

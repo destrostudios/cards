@@ -8,7 +8,7 @@
         <description>Draw a random creature from your library that costs ([minimumManaCost]) or more.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

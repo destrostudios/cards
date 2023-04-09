@@ -7,7 +7,7 @@
         <description>Cast: Revive a random ally Beast.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>

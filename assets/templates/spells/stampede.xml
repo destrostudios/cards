@@ -5,7 +5,8 @@
         <description>Destroy all ally Beasts and as many random opponent creatures.</description>
         <spells>
             <entity>
-                <condition>source.isInHand &amp;&amp; source.count("CREATURE_ZONE", "target.isAlly(source) &amp;&amp; target.isBeast") > 0</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
+                <condition>source.count("CREATURE_ZONE", "target.isAlly(source) &amp;&amp; target.isBeast") > 0</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

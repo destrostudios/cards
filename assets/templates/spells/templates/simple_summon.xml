@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <condition>source.isInHand</condition>
+        <sourcePrefilter>HAND</sourcePrefilter>
         <manaCost>[manaCost]</manaCost>
         <castTriggers>
             <entity>

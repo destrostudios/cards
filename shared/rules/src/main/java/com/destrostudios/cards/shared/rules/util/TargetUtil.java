@@ -3,7 +3,7 @@ package com.destrostudios.cards.shared.rules.util;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.TargetPrefilter;
+import com.destrostudios.cards.shared.rules.ZonePrefilter;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
@@ -24,47 +24,65 @@ public class TargetUtil {
 
     private static LinkedList<Integer> getAffectedTargets(EntityData data, int targetDefinition, int source, int[] targets, NetworkRandom random) {
         LinkedList<Integer> affectedTargets = new LinkedList<>();
-        String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
-        if (targetExpression != null) {
-            int[] evaluatedTargets = Expressions.evaluateEntities(data, targetExpression, source, targets);
-            for (int target : evaluatedTargets) {
-                affectedTargets.add(target);
+        if (isFulfillingPrefilter_Source(data, targetDefinition, source)) {
+            String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
+            if (targetExpression != null) {
+                int[] evaluatedTargets = Expressions.evaluateEntities(data, targetExpression, source, targets);
+                for (int target : evaluatedTargets) {
+                    affectedTargets.add(target);
+                }
             }
-        }
-        String targetAllCondition = data.getComponent(targetDefinition, Components.Target.TARGET_ALL);
-        if (targetAllCondition != null) {
-            TargetPrefilter targetPrefilter = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTER);
-            affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilter, targetAllCondition));
-        }
-        String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
-        if (maxRandomTargetsExpression != null) {
-            int maxRandomTargets = Expressions.evaluate(data, maxRandomTargetsExpression, source, targets);
-            while (affectedTargets.size() > maxRandomTargets) {
-                affectedTargets.remove(random.nextInt(affectedTargets.size() - 1));
+            String targetAllCondition = data.getComponent(targetDefinition, Components.Target.TARGET_ALL);
+            if (targetAllCondition != null) {
+                ZonePrefilter targetPrefilter = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTER);
+                affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilter, targetAllCondition));
+            }
+            String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
+            if (maxRandomTargetsExpression != null) {
+                int maxRandomTargets = Expressions.evaluate(data, maxRandomTargetsExpression, source, targets);
+                while (affectedTargets.size() > maxRandomTargets) {
+                    affectedTargets.remove(random.nextInt(affectedTargets.size() - 1));
+                }
             }
         }
         return affectedTargets;
     }
 
-    public static List<Integer> getAllConditionTargets(EntityData data, int source, TargetPrefilter targetPrefilter, String condition) {
-        List<Integer> prefilteredTargets = getPrefilteredTargets(data, targetPrefilter);
+    public static List<Integer> getAllConditionTargets(EntityData data, int source, ZonePrefilter targetPrefilter, String condition) {
+        List<Integer> prefilteredTargets = getPrefilteredEntities(data, targetPrefilter);
         if (condition.isEmpty()) {
             return prefilteredTargets;
         }
         return prefilteredTargets.stream()
-                .filter(target -> ConditionUtil.isConditionFulfilled(data, condition, source, new int[] { target }))
+                .filter(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, targetPrefilter, condition))
                 .collect(Collectors.toList());
     }
 
-    public static List<Integer> getPrefilteredTargets(EntityData data, TargetPrefilter targetPrefilter) {
-        ComponentDefinition<?> prefilterComponent = null;
-        switch (targetPrefilter) {
-            case BOARD -> prefilterComponent = Components.BOARD;
-            case CREATURE_ZONE -> prefilterComponent = Components.CREATURE_ZONE;
-            case GRAVEYARD -> prefilterComponent = Components.GRAVEYARD;
-            case HAND -> prefilterComponent = Components.HAND;
-            case LIBRARY -> prefilterComponent = Components.LIBRARY;
+    public static List<Integer> getPrefilteredEntities(EntityData data, ZonePrefilter zonePrefilter) {
+        return data.query(getPrefilterComponent(zonePrefilter)).list();
+    }
+
+    public static boolean isFulfillingPrefilter_Source(EntityData data, int entity, int source) {
+        return isFulfillingPrefilter(data, entity, Components.Target.SOURCE_PREFILTER, source);
+    }
+
+    private static boolean isFulfillingPrefilter(EntityData data, int entity, ComponentDefinition<ZonePrefilter> prefilterComponent, int prefilteredEntity) {
+        ZonePrefilter zonePrefilter = data.getComponent(entity, prefilterComponent);
+        return ((zonePrefilter == null) || isFulfillingPrefilter(data, prefilteredEntity, zonePrefilter));
+    }
+
+    public static boolean isFulfillingPrefilter(EntityData data, int entity, ZonePrefilter zonePrefilter) {
+        return data.hasComponent(entity, getPrefilterComponent(zonePrefilter));
+    }
+
+    private static ComponentDefinition<?> getPrefilterComponent(ZonePrefilter zonePrefilter) {
+        switch (zonePrefilter) {
+            case BOARD -> { return Components.BOARD; }
+            case CREATURE_ZONE -> { return Components.CREATURE_ZONE; }
+            case GRAVEYARD -> { return Components.GRAVEYARD; }
+            case HAND -> { return Components.HAND; }
+            case LIBRARY -> { return Components.LIBRARY; }
         }
-        return data.query(prefilterComponent).list();
+        throw new IllegalArgumentException();
     }
 }

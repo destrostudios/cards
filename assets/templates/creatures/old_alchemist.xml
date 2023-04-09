@@ -10,7 +10,7 @@
         <description>Cast: Add a random spell from your graveyard to your hand.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>6</manaCost>
                 <castTriggers>
                     <entity>

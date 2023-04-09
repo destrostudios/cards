@@ -9,7 +9,7 @@
         <description>Cast: Gain +1 attack for each ally Goblin on board.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

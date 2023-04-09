@@ -13,8 +13,8 @@
         <spells>
             <entity>
                 <targetOptional/>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <targetPrefilter>BOARD</targetPrefilter>
-                <condition>source.isInHand</condition>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>

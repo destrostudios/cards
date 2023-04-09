@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.ZonePrefilter;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 
 import java.util.Objects;
@@ -9,16 +10,23 @@ import java.util.Objects;
 public class ConditionUtil {
 
     public static boolean isConditionFulfilled(EntityData data, int entity, int source, int[] targets) {
+        if (!TargetUtil.isFulfillingPrefilter_Source(data, entity, source)) {
+            return false;
+        }
         String condition = data.getComponent(entity, Components.CONDITION);
         if (condition != null) {
-            return isConditionFulfilled(data, condition, source, targets);
+            ZonePrefilter targetPrefilter = data.getComponent(entity, Components.Target.TARGET_PREFILTER);
+            return isConditionFulfilled(data, source, targets, targetPrefilter, condition);
         }
         return true;
     }
 
-    public static boolean isConditionFulfilled(EntityData data, String condition, int source, int[] targets) {
+    public static boolean isConditionFulfilled(EntityData data, int source, int[] targets, ZonePrefilter targetPrefilter, String condition) {
         if (targets.length > 0) {
             for (int target : targets) {
+                if ((targetPrefilter != null) && !TargetUtil.isFulfillingPrefilter(data, target, targetPrefilter)) {
+                    return false;
+                }
                 if (!evaluateCondition(data, condition, source, target)) {
                     return false;
                 }

@@ -6,7 +6,8 @@
         <description>After you play a spell, this creature gains +[bonusHealth] health.</description>
         <postCastSpellTriggers>
             <entity>
-                <condition>source.isOnBoard &amp;&amp; target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source) &amp;&amp; target.caster.isSpellCard</condition>
+                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
+                <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.caster.isAlly(source) &amp;&amp; target.caster.isSpellCard</condition>
                 <effects>
                     <entity>
                         <targets>

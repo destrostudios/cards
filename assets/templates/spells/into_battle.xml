@@ -9,7 +9,7 @@
         <description>Your creatures in hand gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>6</manaCost>
                 <castTriggers>
                     <entity>

@@ -8,7 +8,7 @@
         <description>Your Goblins gain +[bonusAttack] attack until end of turn.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

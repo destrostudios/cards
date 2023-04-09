@@ -10,7 +10,7 @@
         <description>Cast: Draw a spell from your library that costs ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>

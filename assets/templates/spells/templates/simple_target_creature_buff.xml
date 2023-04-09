@@ -5,8 +5,8 @@
         <description>[description]</description>
         <spells>
             <entity>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <targetPrefilter>CREATURE_ZONE</targetPrefilter>
-                <condition>source.isInHand</condition>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

@@ -9,7 +9,7 @@
         <description>Cast: Summon its children!</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>8</manaCost>
                 <castTriggers>
                     <entity>

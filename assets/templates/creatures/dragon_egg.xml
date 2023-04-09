@@ -9,7 +9,7 @@
             <entity template="../spells/templates/simple_attack"/>
             <entity>
                 <description>Hatch into a 4/4 Dragon.</description>
-                <condition>source.isOnBoard</condition>
+                <sourcePrefilter>CREATURE_ZONE</sourcePrefilter>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>

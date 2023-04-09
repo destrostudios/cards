@@ -9,7 +9,7 @@
         <description>Deal [damage] damage to all opponent creatures and heal [heal] health of all ally creatures.</description>
         <spells>
             <entity>
-                <condition>source.isInHand</condition>
+                <sourcePrefilter>HAND</sourcePrefilter>
                 <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>

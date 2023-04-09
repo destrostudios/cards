@@ -2,12 +2,13 @@
     <values>
         <damage>4</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Fiery Obliteration</name>
         <spellCard/>
         <description>Deal [damage] damage to all opponent creatures.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>7</manaCost>
                 <castTriggers>

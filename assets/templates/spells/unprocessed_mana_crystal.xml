@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Unprocessed Mana Crystal</name>
         <spellCard/>
         <description>Reduce cost of target card in your hand by (1).</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>HAND,ALLY</targetPrefilters>
                 <manaCost>1</manaCost>

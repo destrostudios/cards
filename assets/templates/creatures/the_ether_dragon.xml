@@ -1,5 +1,5 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>The Ether Dragon</name>
         <legendary/>
         <creatureCard/>
@@ -9,6 +9,7 @@
         <description>Cast: Summon all Dragons from your hand and end your turn.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>10</manaCost>
                 <castTriggers>
@@ -29,7 +30,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Eruption</name>
         <spellCard/>
         <description>Summon 10 1/1 Pebbles.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>10</manaCost>
                 <castTriggers>

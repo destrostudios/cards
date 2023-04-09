@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>The King's Army</name>
         <spellCard/>
         <description>Summon 2 2/2 King's Soldiers.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>4</manaCost>
                 <castTriggers>

@@ -2,14 +2,14 @@
     <values>
         <manaCost>0</manaCost>
     </values>
-    <entity>
+    <entity id="card">
         <name>[name]</name>
         <creatureCard/>
         <attack>[attack]</attack>
         <health>[health]</health>
         <spells>
-            <entity template="../../spells/templates/simple_summon([manaCost])"/>
-            <entity template="../../spells/templates/simple_attack"/>
+            <entity template="../../spells/templates/simple_summon(source=#card,[manaCost])"/>
+            <entity template="../../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

@@ -2,12 +2,13 @@
     <values>
         <damage>6</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Dragon's Counterattack</name>
         <spellCard/>
         <description>Discard target Dragon and deal [damage] damage to all opponent creatures.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>HAND,ALLY,DRAGON</targetPrefilters>
                 <manaCost>5</manaCost>

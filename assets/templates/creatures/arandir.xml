@@ -2,19 +2,20 @@
     <values>
         <damage>1</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Arandir</name>
         <creatureCard/>
         <attack>3</attack>
         <health>3</health>
         <spells>
-            <entity template="../spells/templates/simple_summon(manaCost=5)"/>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=5)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
             <entity>
+                <source>#card</source>
                 <description>Deal [damage] damage to target opponent creature.</description>
-                <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE,NOT_ALLY</targetPrefilters>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

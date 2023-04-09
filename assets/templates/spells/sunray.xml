@@ -2,12 +2,13 @@
     <values>
         <heal>3</heal>
     </values>
-    <entity>
+    <entity id="card">
         <name>Sunray</name>
         <spellCard/>
         <description>Heal [heal] health of all creatures.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>0</manaCost>
                 <castTriggers>

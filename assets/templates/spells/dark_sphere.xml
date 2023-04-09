@@ -2,12 +2,13 @@
     <values>
         <damage>4</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Dark Sphere</name>
         <spellCard/>
         <description>Deal [damage] damage to your opponent.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>

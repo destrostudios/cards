@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Stampede</name>
         <spellCard/>
         <description>Destroy all ally Beasts and as many random opponent creatures.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <condition>source.count(["CREATURE_ZONE","ALLY","BEAST"]) > 0</condition>
                 <manaCost>2</manaCost>

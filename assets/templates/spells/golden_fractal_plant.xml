@@ -3,12 +3,13 @@
         <bonusAttack>3</bonusAttack>
         <bonusHealth>3</bonusHealth>
     </values>
-    <entity>
+    <entity id="card">
         <name>Golden Fractal Plant</name>
         <spellCard/>
         <description>Target undamaged creature on board gains +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE,NOT_DAMAGED</targetPrefilters>
                 <manaCost>2</manaCost>

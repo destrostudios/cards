@@ -1,11 +1,12 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Sandstorm</name>
         <spellCard/>
         <description>Return all creatures on the board to their owner's hand.</description>
         <flavourText>"Doo doo doo doo doo."</flavourText>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>7</manaCost>
                 <castTriggers>

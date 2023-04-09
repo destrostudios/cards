@@ -3,7 +3,7 @@
         <bonusAttack>2</bonusAttack>
         <bonusHealth>2</bonusHealth>
     </values>
-    <entity>
+    <entity id="card">
         <name>Mahabit Shaman</name>
         <creatureCard/>
         <attack>5</attack>
@@ -11,6 +11,7 @@
         <description>Cast: Target ally Beast gains +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <targetOptional/>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE,ALLY,BEAST</targetPrefilters>
@@ -35,7 +36,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Peaceful Death</name>
         <spellCard/>
         <description>Destroy target undamaged creature.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE,NOT_DAMAGED</targetPrefilters>
                 <manaCost>4</manaCost>

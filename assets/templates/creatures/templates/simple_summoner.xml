@@ -1,5 +1,5 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>[name]</name>
         <creatureCard/>
         <attack>[attack]</attack>
@@ -7,6 +7,7 @@
         <description>Cast: Summon a [summonDescription].</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
@@ -18,7 +19,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../../spells/templates/simple_attack"/>
+            <entity template="../../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

@@ -2,12 +2,13 @@
     <values>
         <minimumManaCost>5</minimumManaCost>
     </values>
-    <entity>
+    <entity id="card">
         <name>Adventure</name>
         <spellCard/>
         <description>Draw a random creature from your library that costs ([minimumManaCost]) or more.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>

@@ -2,7 +2,7 @@
     <values>
         <maximumManaCost>3</maximumManaCost>
     </values>
-    <entity>
+    <entity id="card">
         <name>Khazar Merchant</name>
         <creatureCard/>
         <attack>2</attack>
@@ -10,6 +10,7 @@
         <description>Cast: Draw a spell from your library that costs ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>
@@ -30,7 +31,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

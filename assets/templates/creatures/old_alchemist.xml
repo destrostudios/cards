@@ -2,7 +2,7 @@
     <values>
         <maximumManaCost>6</maximumManaCost>
     </values>
-    <entity>
+    <entity id="card">
         <name>Old Alchemist</name>
         <creatureCard/>
         <attack>5</attack>
@@ -10,6 +10,7 @@
         <description>Cast: Add a random spell from your graveyard to your hand.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>6</manaCost>
                 <castTriggers>
@@ -30,7 +31,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

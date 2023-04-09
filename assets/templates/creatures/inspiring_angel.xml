@@ -11,6 +11,7 @@
         <description>Cast: Your creatures on board gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>6</manaCost>
                 <castTriggers>
@@ -33,7 +34,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

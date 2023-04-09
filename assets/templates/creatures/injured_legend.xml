@@ -2,7 +2,7 @@
     <values>
         <damage>4</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Injured Legend</name>
         <creatureCard/>
         <attack>3</attack>
@@ -10,6 +10,7 @@
         <description>Cast: Deal [damage] damage to this creature.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>
@@ -26,7 +27,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

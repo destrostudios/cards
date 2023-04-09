@@ -2,12 +2,13 @@
     <values>
         <heal>6</heal>
     </values>
-    <entity>
+    <entity id="card">
         <name>Bonfire</name>
         <spellCard/>
         <description>Heal [heal] health of yourself.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>

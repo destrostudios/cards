@@ -2,12 +2,13 @@
     <values>
         <sacrifices>2</sacrifices>
     </values>
-    <entity>
+    <entity id="card">
         <name>Fire Altar</name>
         <spellCard/>
         <description>Destroy [sacrifices] random ally creatures to summon target Dragon from your hand.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>HAND,ALLY,DRAGON</targetPrefilters>
                 <condition>source.count(["CREATURE_ZONE","ALLY"]) >= [sacrifices]</condition>

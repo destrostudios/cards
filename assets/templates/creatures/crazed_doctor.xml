@@ -3,7 +3,7 @@
         <damage>10</damage>
         <heal>20</heal>
     </values>
-    <entity>
+    <entity id="card">
         <name>Crazed Doctor</name>
         <creatureCard/>
         <attack>2</attack>
@@ -11,6 +11,7 @@
         <description>Cast: Deal [damage] damage to yourself, then heal [heal] health.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>5</manaCost>
                 <castTriggers>
@@ -33,7 +34,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

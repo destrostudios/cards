@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>[name]</name>
         <spellCard/>
         <description>[description]</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>[manaCost]</manaCost>

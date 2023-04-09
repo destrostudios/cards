@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Goblin Assault Squad</name>
         <spellCard/>
         <description>Summon 3 1/1 Goblins.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>

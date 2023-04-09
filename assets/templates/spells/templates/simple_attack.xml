@@ -3,11 +3,12 @@
         <timesPerTurn>1</timesPerTurn>
     </values>
     <entity>
-        <maximumCastsPerTurn>[timesPerTurn]</maximumCastsPerTurn>
-        <tauntable/>
+        <source>[source]</source>
         <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
         <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
         <condition>target.isCreatureCard || !target.exists(["CREATURE_ZONE","ALLY"])</condition>
+        <maximumCastsPerTurn>[timesPerTurn]</maximumCastsPerTurn>
+        <tauntable/>
         <castTriggers>
             <entity>
                 <effects>

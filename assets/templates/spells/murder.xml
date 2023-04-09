@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Murder</name>
         <spellCard/>
         <description>Destroy target creature.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>5</manaCost>

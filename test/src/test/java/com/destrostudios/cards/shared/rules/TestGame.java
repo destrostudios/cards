@@ -119,6 +119,7 @@ public class TestGame {
         data.setComponent(spellCard, Components.NAME, "Dummy Spell");
         data.setComponent(spellCard, Components.SPELL_CARD);
         int spell = data.createEntity();
+        data.setComponent(spell, Components.SOURCE, spellCard);
         data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Prefilter[] { Prefilter.HAND });
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
@@ -181,7 +182,7 @@ public class TestGame {
     }
 
     protected void cast(int spell, int... targets) {
-        int source = SpellUtil.getCaster(data, spell);
+        int source = data.getComponent(spell, Components.SOURCE);
         fire(new CastSpellEvent(source, spell, targets));
     }
 

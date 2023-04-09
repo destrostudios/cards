@@ -1,10 +1,10 @@
 <template>
-    <entity template="./templates/vanilla(name=Two-headed Chimera,attack=2,health=4)">
+    <entity id="card" template="./templates/vanilla(name=Two-headed Chimera,attack=2,health=4)">
         <beast/>
         <description>Can attack twice per turn.</description>
         <spells>
-            <entity template="../spells/templates/simple_summon(manaCost=3)"/>
-            <entity template="../spells/templates/simple_attack(timesPerTurn=2)"/>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=3)"/>
+            <entity template="../spells/templates/simple_attack(source=#card,timesPerTurn=2)"/>
         </spells>
     </entity>
 </template>

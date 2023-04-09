@@ -2,12 +2,13 @@
     <values>
         <damage>3</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Sea Storm</name>
         <spellCard/>
         <description>Deal [damage] damage to all characters.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>4</manaCost>
                 <castTriggers>

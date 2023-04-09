@@ -3,12 +3,13 @@
         <damage>2</damage>
         <heal>2</heal>
     </values>
-    <entity>
+    <entity id="card">
         <name>Conjured Lightning</name>
         <spellCard/>
         <description>Deal [damage] damage to all opponent creatures and heal [heal] health of all ally creatures.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>5</manaCost>
                 <castTriggers>

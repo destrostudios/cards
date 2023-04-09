@@ -1,5 +1,5 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Terror from Above</name>
         <legendary/>
         <creatureCard/>
@@ -9,6 +9,7 @@
         <description>Cast: Destroy all creatures on board.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>10</manaCost>
                 <castTriggers>
@@ -25,7 +26,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

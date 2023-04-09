@@ -138,7 +138,7 @@ public class ExpressionEntity {
     }
 
     public ExpressionEntity getCaster() {
-        return wrap(SpellUtil.getCaster(data, entity));
+        return wrap(data.getComponent(entity, Components.SOURCE));
     }
 
     public ExpressionEntity[] map(ExpressionEntity[] expressionEntities, String expression) {

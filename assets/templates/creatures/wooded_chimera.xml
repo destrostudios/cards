@@ -1,5 +1,5 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Wooded Chimera</name>
         <legendary/>
         <creatureCard/>
@@ -9,6 +9,7 @@
         <description>Cast: Summon its children!</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>8</manaCost>
                 <castTriggers>
@@ -22,7 +23,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

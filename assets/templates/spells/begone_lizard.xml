@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Begone, Lizard!</name>
         <spellCard/>
         <description>Destroy target dragon.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE,DRAGON</targetPrefilters>
                 <manaCost>4</manaCost>

@@ -1,5 +1,5 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Exiled Druid</name>
         <creatureCard/>
         <attack>5</attack>
@@ -7,6 +7,7 @@
         <description>Cast: Revive a random ally Beast.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>7</manaCost>
                 <castTriggers>
@@ -27,7 +28,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

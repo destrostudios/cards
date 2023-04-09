@@ -2,7 +2,7 @@
     <values>
         <heal>2</heal>
     </values>
-    <entity>
+    <entity id="card">
         <name>Sun Ornament Dragon</name>
         <creatureCard/>
         <attack>3</attack>
@@ -11,6 +11,7 @@
         <description>Cast: Heal [heal] health of yourself for each dragon in your hand.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>4</manaCost>
                 <castTriggers>
@@ -27,7 +28,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

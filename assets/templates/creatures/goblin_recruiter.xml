@@ -1,14 +1,15 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Goblin Recruiter</name>
         <creatureCard/>
         <attack>1</attack>
         <health>1</health>
         <goblin/>
         <spells>
-            <entity template="../spells/templates/simple_summon(manaCost=2)"/>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=2)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
             <entity>
+                <source>#card</source>
                 <description>Summon a 1/1 Goblin.</description>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <manaCost>2</manaCost>

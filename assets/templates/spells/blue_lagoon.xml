@@ -2,12 +2,13 @@
     <values>
         <draw>3</draw>
     </values>
-    <entity>
+    <entity id="card">
         <name>Blue Lagoon</name>
         <spellCard/>
         <description>Draw [draw] random beasts from your library.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>5</manaCost>
                 <castTriggers>

@@ -3,7 +3,7 @@
         <heal>4</heal>
         <damage>7</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>High Priestess Llyncis</name>
         <legendary/>
         <creatureCard/>
@@ -12,6 +12,7 @@
         <description>Cast: Heal [heal] health of target character. Then, if it's undamaged, deal [damage] damage to it.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <targetOptional/>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>BOARD</targetPrefilters>
@@ -45,7 +46,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

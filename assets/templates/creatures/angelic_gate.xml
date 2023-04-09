@@ -2,16 +2,17 @@
     <values>
         <heal>1</heal>
     </values>
-    <entity>
+    <entity id="card">
         <name>Angelic Gate</name>
         <legendary/>
         <creatureCard/>
         <attack>0</attack>
         <health>2</health>
         <spells>
-            <entity template="../spells/templates/simple_summon(manaCost=1)"/>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=1)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
             <entity>
+                <source>#card</source>
                 <description>Heal [heal] health of target creature.</description>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE</targetPrefilters>

@@ -2,12 +2,13 @@
     <values>
         <damage>4</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Elemental Orb</name>
         <spellCard/>
         <description>Deal [damage] damage to target creature and summon a 4/4 Landed Elemental Orb.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>6</manaCost>

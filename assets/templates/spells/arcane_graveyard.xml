@@ -2,12 +2,13 @@
     <values>
         <amount>2</amount>
     </values>
-    <entity>
+    <entity id="card">
         <name>Arcane Graveyard</name>
         <spellCard/>
         <description>Put [amount] random spells from your graveyard to your hand.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <condition>source.count(["GRAVEYARD","ALLY","SPELL_CARD"]) >= [amount]</condition>
                 <manaCost>2</manaCost>

@@ -2,7 +2,7 @@
     <values>
         <setManaCost>0</setManaCost>
     </values>
-    <entity>
+    <entity id="card">
         <name>The Wizard King</name>
         <legendary/>
         <creatureCard/>
@@ -11,6 +11,7 @@
         <description>Cast: Set the cost of target spell in your hand to ([setManaCost]).</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <targetOptional/>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>HAND,ALLY,SPELL_CARD</targetPrefilters>
@@ -34,7 +35,7 @@
                     </entity>
                 </castTriggers>
             </entity>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
 </template>

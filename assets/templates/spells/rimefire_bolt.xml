@@ -2,12 +2,13 @@
     <values>
         <damage>4</damage>
     </values>
-    <entity>
+    <entity id="card">
         <name>Rimefire Bolt</name>
         <spellCard/>
         <description>Deal [damage] damage to target creature.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <targetPrefilters>CREATURE_ZONE</targetPrefilters>
                 <manaCost>2</manaCost>

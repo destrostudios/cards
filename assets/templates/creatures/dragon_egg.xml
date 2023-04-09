@@ -1,13 +1,14 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Dragon Egg</name>
         <creatureCard/>
         <attack>0</attack>
         <health>3</health>
         <spells>
-            <entity template="../spells/templates/simple_summon(manaCost=2)"/>
-            <entity template="../spells/templates/simple_attack"/>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=2)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
             <entity>
+                <source>#card</source>
                 <description>Hatch into a 4/4 Dragon.</description>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <manaCost>3</manaCost>

@@ -3,12 +3,13 @@
         <draw>3</draw>
         <maximumManaCost>2</maximumManaCost>
     </values>
-    <entity>
+    <entity id="card">
         <name>A Long Trip</name>
         <spellCard/>
         <description>Draw [draw] random goblins from your library that cost ([maximumManaCost]) or less.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>3</manaCost>
                 <castTriggers>

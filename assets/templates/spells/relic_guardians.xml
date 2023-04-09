@@ -1,10 +1,11 @@
 <template>
-    <entity>
+    <entity id="card">
         <name>Relic Guardians</name>
         <spellCard/>
         <description>Summon 2 1/2 Relic Guardians.</description>
         <spells>
             <entity>
+                <source>#card</source>
                 <sourcePrefilters>HAND</sourcePrefilters>
                 <manaCost>2</manaCost>
                 <castTriggers>

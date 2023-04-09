@@ -64,14 +64,4 @@ public class SpellUtil {
         }
         return false;
     }
-
-    public static Integer getCaster(EntityData data, int spell) {
-        // TODO: Performance would of course be better with a direct link
-        for (int caster : data.query(Components.SPELLS).list()) {
-            if (ArrayUtil.contains(data, caster, Components.SPELLS, spell)) {
-                return caster;
-            }
-        }
-        return null;
-    }
 }

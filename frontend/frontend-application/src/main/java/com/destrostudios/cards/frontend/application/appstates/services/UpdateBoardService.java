@@ -99,7 +99,7 @@ public class UpdateBoardService {
                     // TODO: Improve?
                     int cardEntity = data.query(Components.SPELLS)
                             .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))
-                                    .anyMatch(entity -> entity == castSpellEvent.spell)).getAsInt();
+                                    .anyMatch(entity -> entity == castSpellEvent.spell));
                     Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
 
                     Interactivity interactivity;

@@ -47,14 +47,17 @@ public class BotTest {
         gameSetup.apply();
         GameContext gameContext = new GameContext(startGameInfo, data);
 
-        MasterRandom random = new MasterRandom(new Random());
+        Random _random = new Random(123);
+        MasterRandom random = new MasterRandom(_random);
+
         applyAction(gameContext, new GameStartEvent(), random);
 
         MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
-        botSettings.maxThreads = 3;
+        botSettings.maxThreads = 1;
         botSettings.termination = TerminationType.NODE_COUNT;
-        botSettings.strength = 1000;
+        botSettings.strength = 100;
         botSettings.evaluation = CardsBotModule::eval;
+        botSettings.random = _random;
         MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
         CardsBotState botState = new CardsBotState(gameContext, random);
 

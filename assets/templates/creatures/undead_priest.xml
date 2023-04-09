@@ -3,7 +3,7 @@
         <damage>4</damage>
     </values>
     <entity template="./templates/vanilla(name=Undead Priest,manaCost=4,attack=3,health=5)">
-        <description>After a creature is healed, deal [damage] to it.</description>
+        <description>After a creature is healed, deal [damage] damage to it.</description>
         <postHealTriggers>
             <entity>
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>

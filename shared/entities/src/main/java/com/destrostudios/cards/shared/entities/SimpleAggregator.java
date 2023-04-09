@@ -1,70 +1,44 @@
 package com.destrostudios.cards.shared.entities;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BinaryOperator;
+import java.util.Set;
 import java.util.function.IntPredicate;
+import java.util.stream.Collectors;
 
 public class SimpleAggregator<T> implements Aggregator<T> {
 
-    private final Map<Integer, T> map;
-
-    public SimpleAggregator(Map<Integer, T> map) {
-        this.map = map;
+    public SimpleAggregator(Set<Integer> set) {
+        this.set = set;
     }
+    private Set<Integer> set;
 
     @Override
-    public int count(IntPredicate predicate) {
-        return Math.toIntExact(map.keySet().stream().mapToInt(x -> x).filter(predicate).count());
-    }
-
-    @Override
-    public Optional<T> compute(BinaryOperator<T> operator, IntPredicate predicate) {
-        AtomicReference<T> state = new AtomicReference<>();
-        AtomicBoolean first = new AtomicBoolean();
-        map.entrySet().forEach(entry -> {
-            int entity = entry.getKey();
-            if (predicate.test(entity)) {
-                T value = entry.getValue();
-                if (first.get()) {
-                    state.set(value);
-                    first.set(false);
-                } else {
-                    state.accumulateAndGet(value, operator);
-                }
-            }
-        });
-        return first.get() ? Optional.empty() : Optional.of(state.get());
+    public List<Integer> list() {
+        return set.stream().sorted().collect(Collectors.toList());
     }
 
     @Override
     public List<Integer> list(IntPredicate predicate) {
-        List<Integer> result = new ArrayList<>();
-        list(result, predicate);
-        return result;
-    }
-
-    public void list(List<Integer> out, IntPredicate predicate) {
-        map.keySet().stream().mapToInt(x -> x).filter(predicate).sorted().boxed().forEach(out::add);
+        return set.stream().filter(predicate::test).sorted().collect(Collectors.toList());
     }
 
     @Override
-    public OptionalInt unique(IntPredicate predicate) {
-        Integer result = null;
-        for (Integer entity : map.keySet()) {
-            if (predicate.test(entity)) {
-                if (result != null) {
-                    throw new IllegalStateException("multiple results for unique query");
-                }
-                result = entity;
-            }
-        }
-        return result != null ? OptionalInt.of(result) : OptionalInt.empty();
+    public int count() {
+        return set.size();
     }
 
+    @Override
+    public int count(IntPredicate predicate) {
+        return (int) set.stream().filter(predicate::test).count();
+    }
+
+    @Override
+    public int unique() {
+        return set.iterator().next();
+    }
+
+    @Override
+    public int unique(IntPredicate predicate) {
+        return set.stream().filter(predicate::test).findAny().get();
+    }
 }

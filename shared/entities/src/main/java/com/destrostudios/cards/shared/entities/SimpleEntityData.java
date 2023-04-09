@@ -50,7 +50,7 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public <T> Aggregator<T> query(ComponentDefinition<T> component) {
-        return new SimpleAggregator<>(getComponentMap(component));
+        return new SimpleAggregator<>(getComponentMap(component).keySet());
     }
 
     @SuppressWarnings("unchecked")

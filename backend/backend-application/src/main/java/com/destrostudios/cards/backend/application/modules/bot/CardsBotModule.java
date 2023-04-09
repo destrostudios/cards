@@ -151,6 +151,6 @@ public class CardsBotModule extends NetworkModule {
     }
 
     private static float getWeightedScore(float weight, float value, float sum) {
-        return ((sum != 0) ? weight * (value / sum) : 0.5f);
+        return weight * ((sum != 0) ? (value / sum) : 0.5f);
     }
 }

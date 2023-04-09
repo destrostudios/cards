@@ -19,9 +19,9 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         LOG.debug("Triggering effect (source = {}, targets = {}, effect = {})", inspect(event.source), inspect(event.targets), inspect(event.effect));
 
         String repeatExpression = data.getComponent(event.effect, Components.Effect.REPEAT);
-        int repetitions = ((repeatExpression != null) ? Expressions.evaluate(data, repeatExpression, event.source, event.targets) : 1);
+        int repetitions = ((repeatExpression != null) ? Expressions.evaluate(repeatExpression, Expressions.getContext_Event(data, event)) : 1);
         int[] targetDefinitions = data.getComponent(event.effect, Components.Target.TARGETS);
-        List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event.targets, random);
+        List<Integer> affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event, random);
         for (int i = 0; i < repetitions; i++) {
             for (int target : affectedTargets) {
                 events.fire(new TriggerEffectImpactEvent(event.source, target, event.effect), random);

@@ -37,7 +37,7 @@ public class ConditionUtil {
     }
 
     private static boolean evaluateCondition(EntityData data, String condition, int source, Integer target) {
-        return Expressions.evaluate(data, condition, source, target);
+        return Expressions.evaluate(condition, Expressions.getContext_Source_Target(data, source, target));
     }
 
     public static boolean isAlly(EntityData data, int entity1, int entity2) {

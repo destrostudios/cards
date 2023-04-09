@@ -33,7 +33,7 @@ public class BuffUtil {
                  || (component == Components.Stats.BONUS_HEALTH)
                  || (component == Components.Stats.SET_HEALTH)
                 ) {
-                    value = Expressions.evaluate(data, value.toString(), source, target).toString();
+                    value = Expressions.evaluate(value.toString(), Expressions.getContext_Source_Target(data, source, target)).toString();
                 }
                 data.setComponent(buffCopy, component, value);
             }
@@ -100,7 +100,7 @@ public class BuffUtil {
             String expression = data.getComponent(buff, component);
             if (expression != null) {
                 int source = data.getComponent(buff, Components.SOURCE);
-                return Expressions.evaluate(data, expression, source, target);
+                return Expressions.evaluate(expression, Expressions.getContext_Source_Target(data, source, target));
             }
             return null;
         }

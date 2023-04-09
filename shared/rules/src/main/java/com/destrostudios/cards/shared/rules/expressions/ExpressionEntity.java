@@ -127,13 +127,21 @@ public class ExpressionEntity {
 
     public ExpressionEntity[] map(ExpressionEntity[] expressionEntities, String expression) {
         return Arrays.stream(expressionEntities)
-                .map(expressionEntity -> (ExpressionEntity) Expressions.evaluate(data, expression, entity, expressionEntity.entity))
+                .map(expressionEntity -> (ExpressionEntity) Expressions.evaluate(expression, Expressions.getContext_Source_Target(data, entity, expressionEntity.entity)))
                 .filter(Objects::nonNull)
                 .toArray(ExpressionEntity[]::new);
     }
 
     private ExpressionEntity wrap(Integer otherEntity) {
         return wrap(data, otherEntity);
+    }
+
+    public static ExpressionEntity[] wrap(EntityData data, int[] entities) {
+        ExpressionEntity[] expressionEntities = new ExpressionEntity[entities.length];
+        for (int i = 0; i < expressionEntities.length; i++) {
+            expressionEntities[i] = wrap(data, entities[i]);
+        }
+        return expressionEntities;
     }
 
     public static ExpressionEntity wrap(EntityData data, Integer otherEntity) {

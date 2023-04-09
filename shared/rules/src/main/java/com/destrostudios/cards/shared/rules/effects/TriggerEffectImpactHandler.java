@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.rules.effects;
 
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
@@ -40,19 +41,19 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);
         if (damageExpression != null) {
-            int damage = Expressions.evaluate(data, damageExpression, event.source, event.target);
+            int damage = evaluate(data, damageExpression, event);
             events.fire(new DamageEvent(event.target, damage), random);
         }
 
         String healExpression = data.getComponent(event.effect, Components.Effect.HEAL);
         if (healExpression != null) {
-            int heal = Expressions.evaluate(data, healExpression, event.source, event.target);
+            int heal = evaluate(data, healExpression, event);
             events.fire(new HealEvent(event.target, heal), random);
         }
 
         String drawExpression = data.getComponent(event.effect, Components.Effect.DRAW);
         if (drawExpression != null) {
-            int drawnCards = Expressions.evaluate(data, drawExpression, event.source, event.target);
+            int drawnCards = evaluate(data, drawExpression, event);
             for (int r = 0; r < drawnCards; r++) {
                 events.fire(new DrawCardEvent(event.target), random);
             }
@@ -60,7 +61,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         String gainManaExpression = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
         if (gainManaExpression != null) {
-            int gainedMana = Expressions.evaluate(data, gainManaExpression, event.source, event.target);
+            int gainedMana = evaluate(data, gainManaExpression, event);
             events.fire(new AddManaEvent(event.target, gainedMana), random);
         }
 
@@ -87,5 +88,9 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             int activePlayer = data.query(Components.Game.ACTIVE_PLAYER).unique().getAsInt();
             events.fire(new EndTurnEvent(activePlayer), random);
         }
+    }
+
+    private <T> T evaluate(EntityData data, String expression, TriggerEffectImpactEvent event) {
+        return Expressions.evaluate(expression, Expressions.getContext_Event(data, event));
     }
 }

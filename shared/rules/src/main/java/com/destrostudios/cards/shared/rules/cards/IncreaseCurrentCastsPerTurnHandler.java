@@ -13,7 +13,7 @@ public class IncreaseCurrentCastsPerTurnHandler extends GameEventHandler<CastSpe
     @Override
     public void handle(CastSpellEvent event, NetworkRandom random) {
         int currentCasts = data.getOptionalComponent(event.spell, Components.Spell.CURRENT_CASTS_PER_TURN).orElse(0) + 1;
-        LOG.debug("Increasing current spell casts per turn of " + inspect(event.spell) + " to " + currentCasts);
+        LOG.debug("Increasing current spell casts per turn of {} to {}", inspect(event.spell), currentCasts);
         data.setComponent(event.spell, Components.Spell.CURRENT_CASTS_PER_TURN, currentCasts);
     }
 }

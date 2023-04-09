@@ -18,7 +18,7 @@ public abstract class DestroyOnZeroHealthHandler<T extends Event> extends GameEv
     public void handle(T event, NetworkRandom random) {
         for (int target : getAffectedTargets(data, event)) {
             if (StatsUtil.getEffectiveHealth(data, target) <= 0) {
-                LOG.debug(inspect(target) + " has zero or less health (event = " + event + ")");
+                LOG.debug("{} has zero or less health (event = {})", inspect(target), event);
                 events.fire(new DestructionEvent(target), random);
             }
         }

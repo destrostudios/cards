@@ -18,7 +18,7 @@ public class CheckBonusDamageHandler extends GameEventHandler<ConditionsAffected
             int bonusDamage = data.getComponent(entity, Components.Stats.BONUS_DAMAGED);
             int bonusHealth = StatsUtil.getBonusHealth(data, entity);
             if (bonusHealth < bonusDamage) {
-                LOG.debug("Changing bonus damaged of " + inspect(entity) + " to " + bonusHealth);
+                LOG.debug("Changing bonus damaged of {} to {}", inspect(entity), bonusHealth);
                 if (bonusHealth > 0) {
                     data.setComponent(entity, Components.Stats.BONUS_DAMAGED, bonusHealth);
                 } else {

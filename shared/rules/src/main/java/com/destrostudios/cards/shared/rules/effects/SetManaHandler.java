@@ -12,7 +12,7 @@ public class SetManaHandler extends GameEventHandler<SetManaEvent> {
 
     @Override
     public void handle(SetManaEvent event, NetworkRandom random) {
-        LOG.debug("Setting mana of player " + inspect(event.player) + " to " + event.manaAmount);
+        LOG.debug("Setting mana of player {} to {}", inspect(event.player), event.manaAmount);
         data.setComponent(event.player, Components.MANA, event.manaAmount);
     }
 }

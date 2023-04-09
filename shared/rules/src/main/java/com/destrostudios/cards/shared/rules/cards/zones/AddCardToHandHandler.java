@@ -12,7 +12,7 @@ public class AddCardToHandHandler extends GameEventHandler<AddCardToHandEvent> {
 
     @Override
     public void handle(AddCardToHandEvent event, NetworkRandom random) {
-        LOG.debug("Adding " + inspect(event.card) + " to hand");
+        LOG.debug("Adding {} to hand", inspect(event.card));
         events.fire(new AddCardToZoneEvent(event.card, Components.HAND), random);
     }
 }

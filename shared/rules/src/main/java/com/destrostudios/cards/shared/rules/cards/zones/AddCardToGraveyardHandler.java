@@ -12,7 +12,7 @@ public class AddCardToGraveyardHandler extends GameEventHandler<AddCardToGraveya
 
     @Override
     public void handle(AddCardToGraveyardEvent event, NetworkRandom random) {
-        LOG.debug("Adding card " + inspect(event.card) + " to graveyard");
+        LOG.debug("Adding {} to graveyard", inspect(event.card));
         events.fire(new AddCardToZoneEvent(event.card, Components.GRAVEYARD), random);
     }
 }

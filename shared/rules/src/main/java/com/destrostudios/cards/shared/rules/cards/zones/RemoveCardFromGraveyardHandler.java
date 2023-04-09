@@ -12,7 +12,7 @@ public class RemoveCardFromGraveyardHandler extends GameEventHandler<RemoveCardF
 
     @Override
     public void handle(RemoveCardFromGraveyardEvent event, NetworkRandom random) {
-        LOG.debug("Removing " + inspect(event.card) + " from graveyard");
+        LOG.debug("Removing {} from graveyard", inspect(event.card));
         events.fire(new RemoveCardFromZoneEvent(event.card, Components.GRAVEYARD), random);
     }
 }

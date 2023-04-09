@@ -12,7 +12,7 @@ public class AddCardToLibraryHandler extends GameEventHandler<AddCardToLibraryEv
 
     @Override
     public void handle(AddCardToLibraryEvent event, NetworkRandom random) {
-        LOG.debug("Adding " + inspect(event.card) + " to library");
+        LOG.debug("Adding {} to library", inspect(event.card));
         events.fire(new AddCardToZoneEvent(event.card, Components.LIBRARY), random);
     }
 }

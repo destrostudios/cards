@@ -21,7 +21,7 @@ public class RemoveTemporaryBuffsOnEndTurnHandler extends GameEventHandler<EndTu
         for (int buff : buffs) {
             for (int target : targets) {
                 if (ArrayUtil.contains(data, target, Components.BUFFS, buff)) {
-                    LOG.debug("Removing temporary buff " + inspect(buff) + " from " + inspect(target) + " at end of turn");
+                    LOG.debug("Removing temporary buff {} from {} at end of turn", inspect(buff), inspect(target));
                     events.fire(new RemoveBuffEvent(target, buff), random);
                 }
             }

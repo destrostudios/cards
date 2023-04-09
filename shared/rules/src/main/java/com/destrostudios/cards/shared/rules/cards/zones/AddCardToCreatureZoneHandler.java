@@ -12,7 +12,7 @@ public class AddCardToCreatureZoneHandler extends GameEventHandler<AddCardToCrea
 
     @Override
     public void handle(AddCardToCreatureZoneEvent event, NetworkRandom random) {
-        LOG.debug("Adding card " + inspect(event.card) + " to creature zone");
+        LOG.debug("Adding {} to creature zone", inspect(event.card));
         events.fire(new AddCardToZoneEvent(event.card, Components.CREATURE_ZONE), random);
     }
 }

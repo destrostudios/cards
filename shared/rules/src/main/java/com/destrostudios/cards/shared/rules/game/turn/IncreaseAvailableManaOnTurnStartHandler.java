@@ -17,7 +17,7 @@ public class IncreaseAvailableManaOnTurnStartHandler extends GameEventHandler<St
         int currentAvailableMana = data.getOptionalComponent(event.player, Components.AVAILABLE_MANA).orElse(0);
         if (currentAvailableMana < GameConstants.MAXIMUM_AVAILABLE_MANA) {
             int newAvailableMana = currentAvailableMana + 1;
-            LOG.debug("Increasing available mana of player " + inspect(event.player) + " at start of turn (current available mana = " + currentAvailableMana + ", new available mana = " + newAvailableMana + ")");
+            LOG.debug("Increasing available mana of player {} at start of turn (current available mana = {}, new available mana = {})", inspect(event.player), currentAvailableMana, newAvailableMana);
             events.fire(new SetAvailableManaEvent(event.player, newAvailableMana), random);
         }
     }

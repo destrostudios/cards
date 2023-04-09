@@ -12,7 +12,7 @@ public class RemoveCardFromCreatureZoneHandler extends GameEventHandler<RemoveCa
 
     @Override
     public void handle(RemoveCardFromCreatureZoneEvent event, NetworkRandom random) {
-        LOG.debug("Removing " + inspect(event.card) + " from creature zone");
+        LOG.debug("Removing {} from creature zone", inspect(event.card));
         events.fire(new RemoveCardFromZoneEvent(event.card, Components.CREATURE_ZONE), random);
     }
 }

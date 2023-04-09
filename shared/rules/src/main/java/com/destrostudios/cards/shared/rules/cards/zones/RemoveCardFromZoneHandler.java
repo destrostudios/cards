@@ -13,7 +13,7 @@ public class RemoveCardFromZoneHandler extends GameEventHandler<RemoveCardFromZo
 
     @Override
     public void handle(RemoveCardFromZoneEvent event, NetworkRandom random) {
-        LOG.debug("Removing " + inspect(event.card) + " from zone " + event.zone.getName());
+        LOG.debug("Removing {} from zone {}", inspect(event.card), event.zone.getName());
         int player = data.getComponent(event.card, Components.OWNED_BY);
         int cardZoneIndex = data.getComponent(event.card, event.zone);
         for (int libraryCard : data.query(event.zone).list(

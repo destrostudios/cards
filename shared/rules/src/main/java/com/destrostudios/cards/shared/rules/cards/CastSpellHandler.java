@@ -14,7 +14,7 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
 
     @Override
     public void handle(CastSpellEvent event, NetworkRandom random) {
-        LOG.debug("Casting spell " + inspect(event.spell) + " on " + inspect(event.targets));
+        LOG.debug("Casting spell {} on {}", inspect(event.spell), inspect(event.targets));
 
         Integer manaCost = CostUtil.getEffectiveManaCost(data, event.spell);
         if (manaCost != null) {

@@ -13,7 +13,7 @@ public class RemoveDamageOnRemoveFromBoardHandler extends GameEventHandler<Remov
 
     @Override
     public void handle(RemoveCardFromBoardEvent event, NetworkRandom random) {
-        LOG.debug("Removing damage from " + inspect(event.card));
+        LOG.debug("Removing damage from {}", inspect(event.card));
         data.removeComponent(event.card, Components.Stats.DAMAGED);
         data.removeComponent(event.card, Components.Stats.BONUS_DAMAGED);
     }

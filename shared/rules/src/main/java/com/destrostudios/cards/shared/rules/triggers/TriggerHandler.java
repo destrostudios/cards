@@ -18,7 +18,7 @@ public class TriggerHandler<T extends Event> extends GameEventHandler<T> {
 
     @Override
     public void handle(T event, NetworkRandom random) {
-        LOG.debug("Checking triggers of type " + trigger + " for " + event);
+        LOG.debug("Checking triggers of type {} for {}", trigger, event);
         for (int entity : data.query(trigger.component()).list()) {
             TriggerUtil.trigger(data.getComponent(entity, trigger.component()), entity, trigger.getTargets().apply(event), events, random);
         }

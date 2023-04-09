@@ -14,7 +14,7 @@ public class ActivateDivineShieldOnAddToBoardHandler extends GameEventHandler<Ad
     @Override
     public void handle(AddCardToBoardEvent event, NetworkRandom random) {
         if (data.hasComponent(event.card, Components.Ability.DIVINE_SHIELD)) {
-            LOG.debug("Activating divine shield for " + inspect(event.card));
+            LOG.debug("Activating divine shield for {}", inspect(event.card));
             data.setComponent(event.card, Components.Ability.DIVINE_SHIELD, true);
         }
     }

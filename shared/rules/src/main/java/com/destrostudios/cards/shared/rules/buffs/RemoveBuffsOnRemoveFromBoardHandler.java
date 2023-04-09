@@ -15,7 +15,7 @@ public class RemoveBuffsOnRemoveFromBoardHandler extends GameEventHandler<Remove
     public void handle(RemoveCardFromBoardEvent event, NetworkRandom random) {
         int[] buffs = data.getComponent(event.card, Components.BUFFS);
         if (buffs != null) {
-            LOG.debug("Removing all " + buffs.length + " buffs from " + inspect(event.card));
+            LOG.debug("Removing all {} buffs from {}", buffs.length, inspect(event.card));
             for (int buff : buffs) {
                 events.fire(new RemoveBuffEvent(event.card, buff), random);
             }

@@ -12,7 +12,7 @@ public class DrawCardOnTurnStartHandler extends GameEventHandler<StartTurnEvent>
 
     @Override
     public void handle(StartTurnEvent event, NetworkRandom random) {
-        LOG.debug("Player " + inspect(event.player) + " is drawing card at start of turn");
+        LOG.debug("Player {} is drawing card at start of turn", inspect(event.player));
         events.fire(new DrawCardEvent(event.player), random);
     }
 }

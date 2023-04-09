@@ -13,11 +13,11 @@ public abstract class GameEventHandler<T extends Event> {
 
     public abstract void handle(T event, NetworkRandom random);
 
-    protected String inspect(Iterable<Integer> entities) {
-        return DebugUtil.getDebugText(data, entities);
+    protected DebugUtil.EntityDebugText inspect(Iterable<Integer> entities) {
+        return new DebugUtil.EntityDebugText(data, entities);
     }
 
-    protected String inspect(int... entities) {
-        return DebugUtil.getDebugText(data, entities);
+    protected DebugUtil.EntityDebugText inspect(int... entities) {
+        return new DebugUtil.EntityDebugText(data, entities);
     }
 }

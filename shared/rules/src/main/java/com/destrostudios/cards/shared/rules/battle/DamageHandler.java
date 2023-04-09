@@ -14,9 +14,9 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
     @Override
     public void handle(DamageEvent event, NetworkRandom random) {
         boolean damaged = false;
-        LOG.debug("Dealing " + event.damage + " damage to " + inspect(event.target));
+        LOG.debug("Dealing {} damage to {}", event.damage, inspect(event.target));
         if (data.getOptionalComponent(event.target, Components.Ability.DIVINE_SHIELD).orElse(false)) {
-            LOG.debug("Removing divine shield from " + inspect(event.target));
+            LOG.debug("Removing divine shield from {}", inspect(event.target));
             data.setComponent(event.target, Components.Ability.DIVINE_SHIELD, false);
         } else {
             int remainingDamage = event.damage;
@@ -27,7 +27,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
                 if (bonusDamageDealt > 0) {
                     int newBonusDamaged = oldBonusDamaged + bonusDamageDealt;
                     data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
-                    LOG.debug("Changing bonus damaged of " + inspect(event.target) + " from " + oldBonusDamaged + " to " + newBonusDamaged);
+                    LOG.debug("Changing bonus damaged of {} from {} to {}", inspect(event.target), oldBonusDamaged, newBonusDamaged);
                     remainingDamage -= bonusDamageDealt;
                     damaged = true;
                 }
@@ -35,7 +35,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
             if (remainingDamage > 0) {
                 int oldDamaged = data.getOptionalComponent(event.target, Components.Stats.DAMAGED).orElse(0);
                 int newDamaged = oldDamaged + remainingDamage;
-                LOG.debug("Changing damaged of " + inspect(event.target) + " from " + oldDamaged + " to " + newDamaged);
+                LOG.debug("Changing damaged of {} from {} to {}", inspect(event.target), oldDamaged, newDamaged);
                 data.setComponent(event.target, Components.Stats.DAMAGED, newDamaged);
                 damaged = true;
             }

@@ -16,7 +16,7 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
 
     @Override
     public void handle(TriggerEffectEvent event, NetworkRandom random) {
-        LOG.debug("Triggering effect (source = " + inspect(event.source) + ", targets = " + inspect(event.targets) + ", effect = " + inspect(event.effect) + ")");
+        LOG.debug("Triggering effect (source = {}, targets = {}, effect = {})", inspect(event.source), inspect(event.targets), inspect(event.effect));
 
         String repeatExpression = data.getComponent(event.effect, Components.Effect.REPEAT);
         int repetitions = ((repeatExpression != null) ? Expressions.evaluate(data, repeatExpression, event.source, event.targets) : 1);

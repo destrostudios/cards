@@ -17,7 +17,7 @@ public class GameOverHandler extends GameEventHandler<GameOverEvent> {
 
     @Override
     public void handle(GameOverEvent event, NetworkRandom random) {
-        LOG.debug("Game over, winner = " + inspect(event.winner));
+        LOG.debug("Game over, winner = {}", inspect(event.winner));
         gameContext.onGameOver(event.winner);
     }
 }

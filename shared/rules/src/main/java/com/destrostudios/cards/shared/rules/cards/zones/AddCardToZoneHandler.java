@@ -13,7 +13,7 @@ public class AddCardToZoneHandler extends GameEventHandler<AddCardToZoneEvent> {
 
     @Override
     public void handle(AddCardToZoneEvent event, NetworkRandom random) {
-        LOG.debug("Adding " + inspect(event.card) + " to zone " + event.zone.getName());
+        LOG.debug("Adding {} to zone {}", inspect(event.card), event.zone.getName());
         ZoneUtil.addCardToZone(data, event.card, event.zone);
         events.fire(new ConditionsAffectedEvent(), random);
     }

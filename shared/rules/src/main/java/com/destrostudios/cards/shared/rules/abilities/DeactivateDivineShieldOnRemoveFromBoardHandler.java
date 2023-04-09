@@ -14,7 +14,7 @@ public class DeactivateDivineShieldOnRemoveFromBoardHandler extends GameEventHan
     @Override
     public void handle(RemoveCardFromBoardEvent event, NetworkRandom random) {
         if (data.hasComponent(event.card, Components.Ability.DIVINE_SHIELD)) {
-            LOG.debug("Deactivating divine shield for " + inspect(event.card));
+            LOG.debug("Deactivating divine shield for {}", inspect(event.card));
             data.setComponent(event.card, Components.Ability.DIVINE_SHIELD, false);
         }
     }

@@ -15,7 +15,7 @@ public class PayManaHandler extends GameEventHandler<PayManaEvent> {
         if (event.manaAmount != 0) {
             int currentMana = data.getOptionalComponent(event.player, Components.MANA).orElse(0);
             int newMana = currentMana - event.manaAmount;
-            LOG.debug("Player " + inspect(event.player) + " is paying " + event.manaAmount + " mana (current mana = " + currentMana + ", new mana = " + newMana + ")");
+            LOG.debug("Player {} is paying {} mana (current mana = {}, new mana = {})", inspect(event.player), event.manaAmount, currentMana, newMana);
             data.setComponent(event.player, Components.MANA, newMana);
         }
     }

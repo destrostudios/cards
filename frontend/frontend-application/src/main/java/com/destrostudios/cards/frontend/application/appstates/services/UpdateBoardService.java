@@ -100,78 +100,80 @@ public class UpdateBoardService {
         EntityData data = gameService.getGameContext().getData();
         validSpellTargets.clear();
         int player = gameService.getPlayerEntity();
-        if (data.hasComponent(player, Components.Game.MULLIGAN)) {
-            List<Integer> handCards = data.query(Components.HAND).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
-            for (int cardEntity : handCards) {
-                Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
-                card.setInteractivity(InteractivitySource.MOUSE_LEFT, new ClickInteractivity() {
+        if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
+            if (data.hasComponent(player, Components.Game.MULLIGAN)) {
+                List<Integer> handCards = data.query(Components.HAND).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+                for (int cardEntity : handCards) {
+                    Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
+                    card.setInteractivity(InteractivitySource.MOUSE_LEFT, new ClickInteractivity() {
 
-                    @Override
-                    public void trigger(BoardObject source, BoardObject target) {
-                        boolean mulliganed = gameService.toggleMulliganCard(cardEntity);
-                        card.getModel().setCrossed(mulliganed);
-                    }
-                });
-                card.getModel().setPlayable(true);
-            }
-        } else {
-            for (Event event : possibleEvents) {
-                if (event instanceof CastSpellEvent castSpellEvent) {
-                    LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(castSpellEvent.spell, s -> new LinkedList<>());
-                    if (validTargets.isEmpty()) {
-                        // TODO: Improve?
-                        int cardEntity = data.query(Components.SPELLS)
-                                .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))
-                                        .anyMatch(entity -> entity == castSpellEvent.spell));
-                        Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
-
-                        Interactivity interactivity;
-                        if (SpellUtil.isTargeted(data, castSpellEvent.spell) && (castSpellEvent.targets.length > 0)) {
-                            interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
-
-                                @Override
-                                public boolean isValid(BoardObject boardObject) {
-                                    Integer target = getEntity(boardObject);
-                                    return ((target != null) && validTargets.contains(target));
-                                }
-
-                                @Override
-                                public void trigger(BoardObject source, BoardObject target) {
-                                    int targetEntity = getEntity(target);
-                                    gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, new int[]{targetEntity}));
-                                }
-
-                                private Integer getEntity(BoardObject<?> boardObject) {
-                                    if (boardObject instanceof TransformedBoardObject transformedBoardObject) {
-                                        return entityBoardMap.getEntity(transformedBoardObject);
-                                    }
-                                    return null;
-                                }
-                            };
-                        } else if (data.hasComponent(cardEntity, Components.HAND)) {
-                            interactivity = new DragToPlayInteractivity() {
-
-                                @Override
-                                public void trigger(BoardObject boardObject, BoardObject target) {
-                                    gameService.sendAction(castSpellEvent);
-                                }
-                            };
-                        } else {
-                            interactivity = new ClickInteractivity() {
-
-                                @Override
-                                public void trigger(BoardObject boardObject, BoardObject target) {
-                                    gameService.sendAction(castSpellEvent);
-                                }
-                            };
+                        @Override
+                        public void trigger(BoardObject source, BoardObject target) {
+                            boolean mulliganed = gameService.toggleMulliganCard(cardEntity);
+                            card.getModel().setCrossed(mulliganed);
                         }
-                        boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, castSpellEvent.spell) || SpellUtil.isDefaultAttackSpell(data, castSpellEvent.spell));
-                        InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
-                        card.setInteractivity(interactivitySource, interactivity);
-                        card.getModel().setPlayable(true);
-                    }
-                    for (int target : castSpellEvent.targets) {
-                        validTargets.add(target);
+                    });
+                    card.getModel().setPlayable(true);
+                }
+            } else {
+                for (Event event : possibleEvents) {
+                    if (event instanceof CastSpellEvent castSpellEvent) {
+                        LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(castSpellEvent.spell, s -> new LinkedList<>());
+                        if (validTargets.isEmpty()) {
+                            // TODO: Improve?
+                            int cardEntity = data.query(Components.SPELLS)
+                                    .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))
+                                            .anyMatch(entity -> entity == castSpellEvent.spell));
+                            Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
+
+                            Interactivity interactivity;
+                            if (SpellUtil.isTargeted(data, castSpellEvent.spell) && (castSpellEvent.targets.length > 0)) {
+                                interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
+
+                                    @Override
+                                    public boolean isValid(BoardObject boardObject) {
+                                        Integer target = getEntity(boardObject);
+                                        return ((target != null) && validTargets.contains(target));
+                                    }
+
+                                    @Override
+                                    public void trigger(BoardObject source, BoardObject target) {
+                                        int targetEntity = getEntity(target);
+                                        gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, new int[]{targetEntity}));
+                                    }
+
+                                    private Integer getEntity(BoardObject<?> boardObject) {
+                                        if (boardObject instanceof TransformedBoardObject transformedBoardObject) {
+                                            return entityBoardMap.getEntity(transformedBoardObject);
+                                        }
+                                        return null;
+                                    }
+                                };
+                            } else if (data.hasComponent(cardEntity, Components.HAND)) {
+                                interactivity = new DragToPlayInteractivity() {
+
+                                    @Override
+                                    public void trigger(BoardObject boardObject, BoardObject target) {
+                                        gameService.sendAction(castSpellEvent);
+                                    }
+                                };
+                            } else {
+                                interactivity = new ClickInteractivity() {
+
+                                    @Override
+                                    public void trigger(BoardObject boardObject, BoardObject target) {
+                                        gameService.sendAction(castSpellEvent);
+                                    }
+                                };
+                            }
+                            boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, castSpellEvent.spell) || SpellUtil.isDefaultAttackSpell(data, castSpellEvent.spell));
+                            InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
+                            card.setInteractivity(interactivitySource, interactivity);
+                            card.getModel().setPlayable(true);
+                        }
+                        for (int target : castSpellEvent.targets) {
+                            validTargets.add(target);
+                        }
                     }
                 }
             }

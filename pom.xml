@@ -132,7 +132,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <workingDirectory>${session.executionRootDirectory}/test/workspace</workingDirectory>
+                    <workingDirectory>${session.executionRootDirectory}/backend/backend-application/workspace</workingDirectory>
                 </configuration>
             </plugin>
             <plugin>

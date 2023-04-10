@@ -11,12 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
-            <artifactId>application</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>rules</artifactId>
+            <artifactId>backend-application</artifactId>
             <version>0.0.1</version>
         </dependency>
         <dependency>

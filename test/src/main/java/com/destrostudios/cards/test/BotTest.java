@@ -1,6 +1,9 @@
-package com.destrostudios.cards.backend.application.modules.bot;
+package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.backend.application.BackendApplication;
+import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
+import com.destrostudios.cards.backend.application.modules.bot.CardsBotService;
+import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
 import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.shared.application.ApplicationSetup;

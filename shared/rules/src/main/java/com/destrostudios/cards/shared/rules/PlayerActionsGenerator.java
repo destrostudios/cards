@@ -3,7 +3,9 @@ package com.destrostudios.cards.shared.rules;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
 
@@ -20,10 +22,22 @@ public class PlayerActionsGenerator {
     public List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new LinkedList<>();
         if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
-            generateSpellCasts(data, player, possibleEvents::add);
-            possibleEvents.add(new EndTurnEvent(player));
+            if (data.hasComponent(player, Components.Game.MULLIGAN)) {
+                generateMulligans(data, player, possibleEvents::add);
+            } else {
+                generateSpellCasts(data, player, possibleEvents::add);
+                possibleEvents.add(new EndTurnEvent(player));
+            }
         }
         return possibleEvents;
+    }
+
+    private void generateMulligans(EntityData data, int player, Consumer<Event> out) {
+        List<Integer> handCards = data.query(Components.HAND).list(ownedBy(data, player));
+        List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
+        for (int[] handCardsSubset : handCardsSubsets) {
+            out.accept(new MulliganEvent(handCardsSubset));
+        }
     }
 
     private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {

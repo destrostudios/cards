@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.RemoveCardFromLibraryEvent;
 import com.destrostudios.cards.shared.rules.util.ZoneUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
@@ -14,11 +13,10 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
 
     @Override
     public void handle(DrawCardEvent event, NetworkRandom random) {
-        Integer drawnCard = ZoneUtil.getTopLibraryCard(data, event.player);
-        if (drawnCard != null) {
-            LOG.debug("Player {} is drawing card {}", inspect(event.player), inspect(drawnCard));
-            events.fire(new RemoveCardFromLibraryEvent(drawnCard), random);
-            events.fire(new AddCardToHandEvent(drawnCard), random);
+        Integer card = ZoneUtil.getTopLibraryCard(data, event.player);
+        if (card != null) {
+            LOG.debug("Player {} is drawing card {}", inspect(event.player), inspect(card));
+            events.fire(new AddCardToHandEvent(card), random);
         } else {
             // TODO: Fatigue?
             LOG.debug("Player {} tried to draw a card but has none left", inspect(event.player));

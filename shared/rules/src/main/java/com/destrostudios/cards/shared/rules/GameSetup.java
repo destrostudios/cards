@@ -68,6 +68,7 @@ public class GameSetup {
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
         data.setComponent(player, Components.Stats.HEALTH, GameConstants.PLAYER_HEALTH);
         data.setComponent(player, Components.BOARD);
+        data.setComponent(player, Components.Game.MULLIGAN);
         int i = 0;
         for (int card : library) {
             data.setComponent(card, Components.OWNED_BY, player);

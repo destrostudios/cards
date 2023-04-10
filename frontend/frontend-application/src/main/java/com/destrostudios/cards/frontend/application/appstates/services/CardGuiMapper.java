@@ -37,6 +37,7 @@ public class CardGuiMapper {
 
         // Will be set when applying the possibleActions
         cardModel.setPlayable(false);
+        cardModel.setCrossed(false);
 
         String type = (data.hasComponent(card, Components.CREATURE_CARD) ? "creature" : "spell");
         cardModel.setType(type);

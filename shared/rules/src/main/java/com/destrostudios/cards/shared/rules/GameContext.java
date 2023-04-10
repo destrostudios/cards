@@ -82,9 +82,10 @@ public class GameContext {
                 new ResetCurrentCastsPerTurnOnEndTurnHandler()
         );
         addEventHandlers(events.instant(), GameStartEvent.class,
+                new SetStartingPlayerHandler(),
                 new ShuffleAllLibrariesOnGameStartHandler(),
-                new DrawCardsOnGameStartHandler(),
-                new SetStartingPlayerHandler());
+                new AddInitialCardsHandOnGameStartHandler());
+        addEventHandlers(events.instant(), MulliganEvent.class, new MulliganHandler());
         addEventHandler(events.instant(), PayManaEvent.class, new PayManaHandler());
         addEventHandlers(events.instant(), CastSpellEvent.class,
                 new CastSpellHandler(),

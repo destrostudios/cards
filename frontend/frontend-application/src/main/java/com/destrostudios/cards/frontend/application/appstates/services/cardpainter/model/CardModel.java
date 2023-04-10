@@ -11,6 +11,7 @@ public class CardModel extends BoardObjectModel {
 
     private boolean front;
     private boolean playable;
+    private boolean crossed;
 
     private String type;
     private String title;
@@ -35,6 +36,7 @@ public class CardModel extends BoardObjectModel {
     public void set(CardModel cardModel) {
         setFront(cardModel.front);
         setPlayable(cardModel.playable);
+        setCrossed(cardModel.crossed);
         setType(cardModel.type);
         setTitle(cardModel.title);
         setManaCostFullArt(cardModel.manaCostFullArt);
@@ -60,6 +62,10 @@ public class CardModel extends BoardObjectModel {
 
     public void setPlayable(boolean playable) {
         updateIfNotEquals(this.playable, playable, () -> this.playable = playable);
+    }
+
+    public void setCrossed(boolean crossed) {
+        updateIfNotEquals(this.crossed, crossed, () -> this.crossed = crossed);
     }
 
     public void setType(String type) {

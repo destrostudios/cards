@@ -3,6 +3,10 @@ package com.destrostudios.cards.shared.rules.util;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 public class ArrayUtil {
 
     public static void add(EntityData data, int entity, ComponentDefinition<int[]> component, int value) {
@@ -48,5 +52,26 @@ public class ArrayUtil {
             }
         }
         return false;
+    }
+
+    public static List<int[]> getAllSubsets(List<Integer> list) {
+        List<int[]> subsets = new LinkedList<>();
+        addAllSubsets(list, -1, null, subsets);
+        return subsets;
+    }
+
+    private static void addAllSubsets(List<Integer> list, int offset, int[] offsetSubset, List<int[]> subsets) {
+        int[] subset;
+        if (offset == -1) {
+            subset = new int[0];
+        } else {
+            subset = new int[offsetSubset.length + 1];
+            System.arraycopy(offsetSubset, 0, subset, 0, offsetSubset.length);
+            subset[subset.length - 1] = list.get(offset);
+        }
+        subsets.add(subset);
+        for (int i = offset + 1; i < list.size(); i++) {
+            addAllSubsets(list, i, subset, subsets);
+        }
     }
 }

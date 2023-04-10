@@ -12,6 +12,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
@@ -60,6 +61,8 @@ public class TestGame {
         random = mock(NetworkRandom.class);
         setupGame();
         fire(new GameStartEvent());
+        fire(new MulliganEvent(new int[0]));
+        fire(new MulliganEvent(new int[0]));
     }
 
     protected void setupGame() {

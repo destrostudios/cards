@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.entities;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
@@ -33,12 +34,32 @@ public class SimpleAggregator implements Aggregator {
     }
 
     @Override
+    public boolean exists() {
+        return !set.isEmpty();
+    }
+
+    @Override
+    public boolean exists(IntPredicate predicate) {
+        return set.stream().anyMatch(predicate::test);
+    }
+
+    @Override
+    public Optional<Integer> find() {
+        return set.stream().findAny();
+    }
+
+    @Override
+    public Optional<Integer> find(IntPredicate predicate) {
+        return set.stream().filter(predicate::test).findAny();
+    }
+
+    @Override
     public int unique() {
         return set.iterator().next();
     }
 
     @Override
     public int unique(IntPredicate predicate) {
-        return set.stream().filter(predicate::test).findAny().get();
+        return find(predicate).get();
     }
 }

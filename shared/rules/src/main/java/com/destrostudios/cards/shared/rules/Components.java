@@ -59,6 +59,7 @@ public class Components {
     }
 
     public static class Game {
+        public static final ComponentDefinition<Void> MULLIGAN = create("mulligan");
         public static final ComponentDefinition<Void> ACTIVE_PLAYER = create("activePlayer");
     }
 

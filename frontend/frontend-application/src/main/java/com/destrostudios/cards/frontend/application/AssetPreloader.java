@@ -20,7 +20,8 @@ public class AssetPreloader {
         assetManager.loadTexture("card-gui/samples/textures/card_glow.png");
         assetManager.loadTexture("card-gui/samples/textures/target_arrow.png");
         // Pre-generate a few textures, a few ones like mana cost and stats to some degree could also be preloaded with reasonable effort
-        CardPainter.getFoil_None();
+        CardPainter.getEmpty();
+        CardPainter.getCross();
         CardPainter.getFoil_FullArt();
         for (Foil foil : Foil.values()) {
             CardPainter.getFoil_NonFullArt(foil);

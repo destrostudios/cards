@@ -49,6 +49,11 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
+    public boolean exists(ComponentDefinition<?> component) {
+        return !getComponentMap(component).isEmpty();
+    }
+
+    @Override
     public Aggregator query(ComponentDefinition<?> component) {
         return new SimpleAggregator(getComponentMap(component).keySet());
     }

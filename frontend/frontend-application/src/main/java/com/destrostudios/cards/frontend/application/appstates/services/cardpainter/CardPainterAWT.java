@@ -181,6 +181,12 @@ public class CardPainterAWT {
         drawStringMultiLine(graphics, text, lineWidth, startX, followingX, y, -2);
     }
 
+    public static void drawCross(Graphics2D graphics) {
+        graphics = (Graphics2D) graphics.create();
+        graphics.drawImage(CardImages.getCachedImage("images/cross.png"), 40, 118, null);
+        graphics.dispose();
+    }
+
     // http://stackoverflow.com/questions/4413132/problems-with-newline-in-graphics2d-drawstring
     public static void drawStringMultiLine(Graphics2D graphics, String text, int lineWidth, int startX, int followingX, int y, int linesGap){
         FontMetrics fontMetrics = graphics.getFontMetrics();

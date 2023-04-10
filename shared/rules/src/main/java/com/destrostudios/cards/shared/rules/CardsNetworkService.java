@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.gametools.network.shared.modules.game.GameService;
@@ -95,6 +96,7 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
             }
         });
         kryo.register(GameStartEvent.class, new FieldSerializer<>(kryo, GameStartEvent.class));
+        kryo.register(MulliganEvent.class, new FieldSerializer<>(kryo, MulliganEvent.class));
         kryo.register(CastSpellEvent.class, new FieldSerializer<>(kryo, CastSpellEvent.class));
         kryo.register(EndTurnEvent.class, new FieldSerializer<>(kryo, EndTurnEvent.class));
     }

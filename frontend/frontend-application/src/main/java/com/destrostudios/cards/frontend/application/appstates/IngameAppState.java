@@ -18,6 +18,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.players.P
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
@@ -48,6 +49,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private GameService gameService;
     private int initState;
     private Board board;
+    private CenteredIntervalZone selectionZone;
     private SimpleIntervalZone inspectionZone;
     private Card<CardModel> inspectionCard;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
@@ -114,6 +116,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 .build());
 
         // Zones & BoardObjects
+
+        selectionZone = new CenteredIntervalZone(new Vector3f(0, 3.8f, 1.32f), Quaternion.IDENTITY, new Vector3f(0.83f, 1, 1));
+        board.addZone(selectionZone);
 
         inspectionZone = new SimpleIntervalZone(new Vector3f(-1.29f, 5, 1.672f), Quaternion.IDENTITY, Vector3f.UNIT_XYZ);
         board.addZone(inspectionZone);
@@ -220,7 +225,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             return false;
         }, new IngameCardVisualizer(true, false));
         board.registerVisualizer_ZonePosition(
-            zonePosition -> zonePosition.getZone() == inspectionZone,
+            zonePosition -> (zonePosition.getZone() == selectionZone) || (zonePosition.getZone() == inspectionZone),
             new IngameCardVisualizer(false, false, 1, false)
         );
         board.registerVisualizer_Class(Card.class, new IngameCardVisualizer(false, false));
@@ -233,7 +238,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Services
 
-        updateBoardService = new UpdateBoardService(gameService, board, playerZonesMap, entityBoardMap);
+        updateBoardService = new UpdateBoardService(gameService, board, selectionZone, playerZonesMap, entityBoardMap);
         entryAnimationService = new EntryAnimationService(mainApplication);
 
         // Events
@@ -258,9 +263,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private boolean isInspectable(TransformedBoardObject<?> transformedBoardObject) {
-        if (transformedBoardObject instanceof Card) {
-            Card<CardModel> card = (Card<CardModel>) transformedBoardObject;
-            return card.getModel().isFront();
+        if (transformedBoardObject instanceof Card card) {
+            CardModel cardModel = (CardModel) card.getModel();
+            return cardModel.isFront() && (card.getZonePosition().getZone() != selectionZone);
         }
         return false;
     }
@@ -337,7 +342,9 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if (!gameService.getGameContext().isGameOver()) {
             if ("space".equals(name) && isPressed) {
-                if (sendableEndTurnEvent != null) {
+                if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Game.MULLIGAN)) {
+                    gameService.sendMulliganAction();
+                } else if (sendableEndTurnEvent != null) {
                     gameService.sendAction(sendableEndTurnEvent);
                 }
             }

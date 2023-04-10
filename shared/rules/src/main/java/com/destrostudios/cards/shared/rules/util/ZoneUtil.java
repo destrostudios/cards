@@ -17,16 +17,18 @@ public class ZoneUtil {
     }
 
     public static Integer getTopLibraryCard(EntityData data, int player) {
-        List<Integer> libraryCards = data.query(Components.LIBRARY).list();
+        List<Integer> libraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+        return getTopMostCard(data, libraryCards, Components.LIBRARY);
+    }
+
+    public static Integer getTopMostCard(EntityData data, List<Integer> cards, ComponentDefinition<Integer> zoneComponent) {
         Integer topCard = null;
         int topCardIndex = -1;
-        for (int card : libraryCards) {
-            if (data.getComponent(card, Components.OWNED_BY) == player) {
-                int cardIndex = data.getComponent(card, Components.LIBRARY);
-                if (cardIndex > topCardIndex) {
-                    topCard = card;
-                    topCardIndex = cardIndex;
-                }
+        for (int card : cards) {
+            int cardIndex = data.getComponent(card, zoneComponent);
+            if (cardIndex > topCardIndex) {
+                topCard = card;
+                topCardIndex = cardIndex;
             }
         }
         return topCard;

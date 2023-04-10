@@ -21,7 +21,8 @@ public class CardPainter {
         Texture2D textureContent;
         Texture2D textureStats = null;
         Texture2D textureCost = null;
-        Texture2D textureFoil = getFoil_None();
+        Texture2D textureCross = null;
+        Texture2D textureFoil = getEmpty();
         if (cardModel.isFront()) {
             textureContent = getContent(cardModel, fullArt);
             textureCost = getCost(cardModel, fullArt);
@@ -38,7 +39,14 @@ public class CardPainter {
         } else {
             textureContent = getBack();
         }
-        return new Texture2D[] { textureContent, textureCost, textureStats, textureFoil };
+        if (cardModel.isCrossed()) {
+            textureCross = getCross();
+        }
+        return new Texture2D[] { textureContent, textureCost, textureStats, textureCross, textureFoil };
+    }
+
+    public static Texture2D getEmpty() {
+        return get("empty", graphics -> {});
     }
 
     public static Texture2D getContent(CardModel cardModel, boolean fullArt) {
@@ -73,8 +81,8 @@ public class CardPainter {
         );
     }
 
-    public static Texture2D getFoil_None() {
-        return get("foil_none", graphics -> {});
+    public static Texture2D getCross() {
+        return get("cross", t -> t.draw(CardPainterAWT::drawCross));
     }
 
     public static Texture2D getFoil_FullArt() {

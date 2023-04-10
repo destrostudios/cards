@@ -12,6 +12,6 @@ public class SimpleRandom implements NetworkRandom {
 
     @Override
     public int nextInt(int maxExclusive) {
-        return random.nextInt();
+        return random.nextInt(maxExclusive);
     }
 }

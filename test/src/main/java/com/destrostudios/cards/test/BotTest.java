@@ -1,24 +1,16 @@
 package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.backend.application.BackendApplication;
-import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
-import com.destrostudios.cards.backend.application.modules.bot.CardsBotService;
-import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
 import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.*;
-import com.destrostudios.cards.shared.rules.game.GameStartEvent;
-import com.destrostudios.gametools.bot.BotActionReplay;
-import com.destrostudios.gametools.bot.mcts.MctsBot;
-import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
-import com.destrostudios.gametools.bot.mcts.TerminationType;
-import com.destrostudios.gametools.network.server.modules.game.MasterRandom;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
+import com.destrostudios.cards.shared.model.Card;
+import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.Queue;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import org.slf4j.impl.SimpleLogger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -36,54 +28,27 @@ public class BotTest {
         ModeService modeService = new ModeService(database, cardListService);
         QueueService queueService = new QueueService(database);
 
-        StartGameInfo startGameInfo = new StartGameInfo(
-            modeService.getMode(GameConstants.MODE_NAME_CLASSIC),
-            queueService.getQueue(GameConstants.QUEUE_NAME_BOT),
-            "forest",
-            new PlayerInfo[] {
-                new PlayerInfo(1, "Bot1", null),
-                new PlayerInfo(2, "Bot2", null)
-            }
-        );
-        SimpleEntityData data = new SimpleEntityData(Components.ALL);
-        GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo);
-        gameSetup.apply();
-        GameContext gameContext = new GameContext(startGameInfo, data);
+        List<Card> cards = cardService.getCards();
+        Mode mode = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
+        Queue queue = queueService.getQueue(GameConstants.QUEUE_NAME_BOT);
 
-        Random _random = new Random(123);
-        MasterRandom random = new MasterRandom(_random);
-
-        applyAction(gameContext, new GameStartEvent(), random);
-
-        MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
-        botSettings.maxThreads = 1;
-        botSettings.termination = TerminationType.NODE_COUNT;
-        botSettings.strength = 100;
-        botSettings.evaluation = CardsBotModule::eval;
-        botSettings.random = _random;
-        MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
-        CardsBotState botState = new CardsBotState(gameContext, random);
-
-        long gameStartNanos = System.nanoTime();
-        int actionIndex = 0;
-        while (!gameContext.isGameOver()) {
-            long actionStartNanos = System.nanoTime();
-            List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
-            long actionDurationNanos = (System.nanoTime() - actionStartNanos);
-            Event action = actions.get(0);
-            System.out.println("Action #" + (actionIndex + 1) + " => " + action + "\t(from " + actions.size() + " possible actions, node count " + botSettings.strength + ", in " + (actionDurationNanos / 1_000_000) + "ms)");
-            applyAction(gameContext, action, random);
-            bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
-            actionIndex++;
-        }
-        long gameDurationNanos = (System.nanoTime() - gameStartNanos);
-        System.out.println("Game over, total duration = " + (gameDurationNanos / 1_000_000) + "ms.");
-    }
-
-    private static void applyAction(GameContext gameContext, Event action, NetworkRandom random) {
-        gameContext.getEvents().fire(action, random);
-        while (gameContext.getEvents().hasPendingEventHandler()) {
-            gameContext.getEvents().triggerNextEventHandler();
+        int games = 0;
+        HashMap<String, Integer> playerWins = new HashMap<>();
+        Random actualRandom = new Random();
+        while (true) {
+            long seed = actualRandom.nextLong();
+            System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
+            BotGame botGame = new BotGame(cards, mode, queue, seed);
+            botGame.play();
+            String winnerName = botGame.getWinnerName();
+            playerWins.put(winnerName, playerWins.computeIfAbsent(winnerName, wn -> 0) + 1);
+            games++;
+            System.out.println("---Stats---");
+            int _games = games;
+            playerWins.forEach((name, wins) -> {
+                System.out.println(name + ": " + wins + "/" + _games + " games won (" + Math.round((((float) wins) / _games) * 100) + "%)");
+            });
+            System.out.println("-----------");
         }
     }
 }

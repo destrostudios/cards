@@ -1,6 +1,7 @@
 package com.destrostudios.cards.backend.application.modules.bot;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -9,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.function.Function;
 
 public class CardsBotEval {
@@ -37,7 +37,7 @@ public class CardsBotEval {
     }
 
     private static float[] eval(EntityData data, Integer winner) {
-        List<Integer> players = data.query(Components.NEXT_PLAYER).list();
+        IntList players = data.query(Components.NEXT_PLAYER).list();
         EvalPlayerInfo[] playerInfos = collectPlayerInfos(data, players);
         float[] scores = new float[players.size()];
         int i = 0;
@@ -65,7 +65,7 @@ public class CardsBotEval {
         return (sumScores / SUM_WEIGHTS);
     }
 
-    private static EvalPlayerInfo[] collectPlayerInfos(EntityData data, List<Integer> players) {
+    private static EvalPlayerInfo[] collectPlayerInfos(EntityData data, IntList players) {
         EvalPlayerInfo[] playerInfos = new EvalPlayerInfo[players.size()];
         int i = 0;
         for (int player : players) {
@@ -74,7 +74,7 @@ public class CardsBotEval {
             playerInfos[i] = playerInfo;
             i++;
         }
-        List<Integer> cardsOnBoard = data.query(Components.CREATURE_ZONE).list();
+        IntList cardsOnBoard = data.query(Components.CREATURE_ZONE).list();
         for (int card : cardsOnBoard) {
             int owner = data.getComponent(card, Components.OWNED_BY);
             Integer attack = StatsUtil.getEffectiveAttack(data, card);
@@ -86,7 +86,7 @@ public class CardsBotEval {
                 playerInfos[owner].creaturesHealth += health;
             }
         }
-        List<Integer> cardsInHand = data.query(Components.HAND).list();
+        IntList cardsInHand = data.query(Components.HAND).list();
         for (int card : cardsInHand) {
             int owner = data.getComponent(card, Components.OWNED_BY);
             playerInfos[owner].cardsInHand++;

@@ -1,6 +1,5 @@
 package com.destrostudios.cards.shared.entities;
 
-import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntPredicate;
 
@@ -12,22 +11,22 @@ public class SimpleAggregator implements Aggregator {
     private IntMap<?> intMap;
 
     @Override
-    public List<Integer> list() {
-        LinkedList<Integer> list = new LinkedList<>();
+    public IntList list() {
+        IntList list = new IntList(intMap.size());
         intMap.foreachKey(list::add);
-        list.sort(Comparator.naturalOrder());
+        list.sort();
         return list;
     }
 
     @Override
-    public List<Integer> list(IntPredicate predicate) {
-        LinkedList<Integer> list = new LinkedList<>();
+    public IntList list(IntPredicate predicate) {
+        IntList list = new IntList(intMap.size());
         intMap.foreachKey(value -> {
             if (predicate.test(value)) {
                 list.add(value);
             }
         });
-        list.sort(Comparator.naturalOrder());
+        list.sort();
         return list;
     }
 

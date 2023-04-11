@@ -117,6 +117,7 @@ public class ExpressionEntity {
             targetPrefilters[i] = Prefilter.valueOf(targetPrefilterNames[i]);
         }
         return TargetUtil.getAllConditionTargets(data, entity, targetPrefilters, expression).stream()
+                .boxed()
                 .map(this::wrap)
                 .collect(Collectors.toList());
     }

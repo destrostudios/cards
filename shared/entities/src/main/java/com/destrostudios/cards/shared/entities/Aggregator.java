@@ -1,14 +1,12 @@
 package com.destrostudios.cards.shared.entities;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.function.IntPredicate;
 
 public interface Aggregator {
 
-    List<Integer> list();
+    IntList list();
 
-    List<Integer> list(IntPredicate predicate);
+    IntList list(IntPredicate predicate);
 
     int count();
 

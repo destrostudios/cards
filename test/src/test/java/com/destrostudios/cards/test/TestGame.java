@@ -2,6 +2,7 @@ package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.events.Event;
@@ -23,7 +24,6 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -266,14 +266,14 @@ public class TestGame {
     }
 
     protected int getCard(int player, ComponentDefinition<Integer> zone, String name) {
-        List<Integer> cards = getCards(player, zone, name);
+        IntList cards = getCards(player, zone, name);
         if (cards.size() != 1) {
             fail("More than one matching card found.");
         }
         return cards.get(0);
     }
 
-    protected List<Integer> getCards(int player, ComponentDefinition<Integer> zone, String name) {
+    protected IntList getCards(int player, ComponentDefinition<Integer> zone, String name) {
         return data.query(zone).list(entity -> (data.getComponent(entity, Components.OWNED_BY) == player) && (data.getComponent(entity, Components.NAME).equals(name)));
     }
 

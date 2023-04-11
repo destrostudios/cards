@@ -8,6 +8,7 @@ import com.destrostudios.cards.frontend.application.PlayerZones;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
@@ -37,7 +38,7 @@ public class UpdateBoardService {
 
     public void update(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
-        List<Integer> players = data.query(Components.NEXT_PLAYER).list();
+        IntList players = data.query(Components.NEXT_PLAYER).list();
         for (int player : players) {
             PlayerBoardObject playerBoardObject = entityBoardMap.getOrCreatePlayer(player);
             playerBoardObject.getModel().setActivePlayer(data.hasComponent(player, Components.Game.ACTIVE_PLAYER));
@@ -47,7 +48,7 @@ public class UpdateBoardService {
             playerBoardObject.getModel().setCurrentMana(data.getOptionalComponent(player, Components.MANA).orElse(0));
             playerBoardObject.getModel().setMaxMana(data.getOptionalComponent(player, Components.AVAILABLE_MANA).orElse(0));
         }
-        List<Integer> cardEntities = data.query(Components.OWNED_BY).list();
+        IntList cardEntities = data.query(Components.OWNED_BY).list();
         for (int cardEntity : cardEntities) {
             CardZone cardZone = null;
             Integer cardZoneIndex;
@@ -102,7 +103,7 @@ public class UpdateBoardService {
         int player = gameService.getPlayerEntity();
         if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
             if (data.hasComponent(player, Components.Game.MULLIGAN)) {
-                List<Integer> handCards = data.query(Components.HAND).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+                IntList handCards = data.query(Components.HAND).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
                 for (int cardEntity : handCards) {
                     Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
                     card.setInteractivity(InteractivitySource.MOUSE_LEFT, new ClickInteractivity() {

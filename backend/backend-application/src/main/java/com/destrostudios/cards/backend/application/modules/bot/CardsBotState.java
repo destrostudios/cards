@@ -22,7 +22,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     public CardsBotState(GameContext gameContext, NetworkRandom random) {
         this.gameContext = gameContext;
-        players = gameContext.getData().query(Components.NEXT_PLAYER).list();
+        players = gameContext.getData().query(Components.NEXT_PLAYER).list().boxed();
         playerActionsGenerator = new PlayerActionsGenerator();
         this.random = random;
     }

@@ -2,9 +2,8 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
-
-import java.util.List;
 
 public class ZoneUtil {
 
@@ -17,11 +16,11 @@ public class ZoneUtil {
     }
 
     public static Integer getTopLibraryCard(EntityData data, int player) {
-        List<Integer> libraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+        IntList libraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
         return getTopMostCard(data, libraryCards, Components.LIBRARY);
     }
 
-    public static Integer getTopMostCard(EntityData data, List<Integer> cards, ComponentDefinition<Integer> zoneComponent) {
+    public static Integer getTopMostCard(EntityData data, IntList cards, ComponentDefinition<Integer> zoneComponent) {
         Integer topCard = null;
         int topCardIndex = -1;
         for (int card : cards) {

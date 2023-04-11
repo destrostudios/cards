@@ -1,8 +1,8 @@
 package com.destrostudios.cards.shared.rules.util;
 
+import com.destrostudios.cards.shared.entities.IntList;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -12,7 +12,7 @@ public class TestArrayUtil {
 
     @Test
     public void testGetAllSubsets() {
-        List<Integer> list = new LinkedList<>();
+        IntList list = new IntList();
         list.add(1);
         list.add(2);
         list.add(3);

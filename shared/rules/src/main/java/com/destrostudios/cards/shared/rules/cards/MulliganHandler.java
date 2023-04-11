@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.rules.cards;
 
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
@@ -8,9 +9,6 @@ import com.destrostudios.cards.shared.rules.game.turn.StartTurnEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class MulliganHandler extends GameEventHandler<MulliganEvent> {
 
@@ -21,10 +19,10 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
         int player = data.query(Components.Game.ACTIVE_PLAYER).unique();
         LOG.debug("Player {} is mulliganing away cards {}", inspect(player), inspect(event.cards));
         if (event.cards.length > 0) {
-            List<Integer> remainingLibraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
-            LinkedList<Integer> newCards = new LinkedList<>();
+            IntList remainingLibraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+            IntList newCards = new IntList(event.cards.length);
             for (int i = 0; i < event.cards.length; i++) {
-                int newCard = remainingLibraryCards.remove(random.nextInt(remainingLibraryCards.size()));
+                int newCard = remainingLibraryCards.removeAt(random.nextInt(remainingLibraryCards.size()));
                 newCards.add(newCard);
             }
             LOG.debug("Player {} is getting mulliganed new cards {}", inspect(player), inspect(newCards));

@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.battle;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -24,5 +25,5 @@ public abstract class DestroyOnZeroHealthHandler<T extends Event> extends GameEv
         }
     }
 
-    protected abstract List<Integer> getAffectedTargets(EntityData data, T event);
+    protected abstract IntList getAffectedTargets(EntityData data, T event);
 }

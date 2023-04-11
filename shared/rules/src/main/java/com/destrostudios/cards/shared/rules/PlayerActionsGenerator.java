@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
@@ -13,7 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
-import java.util.stream.Collectors;
 
 public class PlayerActionsGenerator {
 
@@ -33,7 +33,7 @@ public class PlayerActionsGenerator {
     }
 
     private void generateMulligans(EntityData data, int player, Consumer<Event> out) {
-        List<Integer> handCards = data.query(Components.HAND).list(ownedBy(data, player));
+        IntList handCards = data.query(Components.HAND).list(ownedBy(data, player));
         List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
         for (int[] handCardsSubset : handCardsSubsets) {
             out.accept(new MulliganEvent(handCardsSubset));
@@ -41,7 +41,7 @@ public class PlayerActionsGenerator {
     }
 
     private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
-        List<Integer> ownedCardEntities = new LinkedList<>();
+        IntList ownedCardEntities = new IntList();
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
         ownedCardEntities.addAll(data.query(Components.HAND).list(ownedBy(data, player)));
         ownedCardEntities.addAll(data.query(Components.CREATURE_ZONE).list(ownedBy(data, player)));
@@ -61,14 +61,10 @@ public class PlayerActionsGenerator {
         }
         if (SpellUtil.isTargeted(data, spell)) {
             Prefilter[] targetPrefilters = data.getComponent(spell, Components.Target.TARGET_PREFILTERS);
-            List<Integer> prefilteredTargets = TargetUtil.getPrefilteredEntities(data, card, targetPrefilters);
-            List<Integer> validTargets = prefilteredTargets.stream()
-                    .filter(target -> SpellUtil.isCastable_OnlySpellCondition(data, card, spell, new int[] { target }))
-                    .collect(Collectors.toList());
-            if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.stream().anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
-                validTargets = validTargets.stream()
-                        .filter(target -> data.hasComponent(target, Components.Ability.TAUNT))
-                        .collect(Collectors.toList());
+            IntList validTargets = TargetUtil.getPrefilteredEntities(data, card, targetPrefilters);
+            validTargets.retain(target -> SpellUtil.isCastable_OnlySpellCondition(data, card, spell, new int[] { target }));
+            if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
+                validTargets.retain(target -> data.hasComponent(target, Components.Ability.TAUNT));
             }
             if (validTargets.size() > 0) {
                 for (int target : validTargets) {

@@ -2,8 +2,8 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -54,13 +54,13 @@ public class ArrayUtil {
         return false;
     }
 
-    public static List<int[]> getAllSubsets(List<Integer> list) {
+    public static List<int[]> getAllSubsets(IntList list) {
         List<int[]> subsets = new LinkedList<>();
         addAllSubsets(list, -1, null, subsets);
         return subsets;
     }
 
-    private static void addAllSubsets(List<Integer> list, int offset, int[] offsetSubset, List<int[]> subsets) {
+    private static void addAllSubsets(IntList list, int offset, int[] offsetSubset, List<int[]> subsets) {
         int[] subset;
         if (offset == -1) {
             subset = new int[0];

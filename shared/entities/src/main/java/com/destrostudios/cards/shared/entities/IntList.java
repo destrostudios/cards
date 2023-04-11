@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.PrimitiveIterator;
 import java.util.function.IntConsumer;
+import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -118,9 +119,14 @@ public class IntList implements Iterable<Integer> {
     }
 
     private void grow() {
-        int[] nextData = new int[Math.max(data.length * 2, DEFAULT_CAPACITY)];
-        System.arraycopy(data, 0, nextData, 0, data.length);
-        data = nextData;
+        grow(Math.max(data.length * 2, DEFAULT_CAPACITY));
+    }
+
+    private void grow(int targetCapacity) {
+        if (targetCapacity <= data.length) {
+            return;
+        }
+        data = Arrays.copyOf(data, targetCapacity);
     }
 
     public int size() {
@@ -192,5 +198,37 @@ public class IntList implements Iterable<Integer> {
 
     private boolean inRange(int index) {
         return 0 <= index && index < size;
+    }
+
+    public void addAll(IntList intList) {
+        int oldSize = size;
+        grow(size + intList.size);
+        size += intList.size;
+        System.arraycopy(intList.data, 0, data, oldSize, intList.size);
+    }
+
+    public void retain(IntPredicate predicate) {
+        int newSize = 0;
+        for (int i = 0; i < size; i++) {
+            if (predicate.test(data[i])) {
+                data[newSize++] = data[i];
+            }
+        }
+        size = newSize;
+    }
+
+    public boolean anyMatch(IntPredicate predicate) {
+        for (int value : data) {
+            if (predicate.test(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static IntList singletonList(int value) {
+        IntList intList = new IntList(1);
+        intList.add(value);
+        return intList;
     }
 }

@@ -2,29 +2,26 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.Prefilter;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class TargetUtil {
 
-    public static List<Integer> getAffectedTargets(EntityData data, int[] targetDefinitions, int source, Event event, NetworkRandom random) {
+    public static IntList getAffectedTargets(EntityData data, int[] targetDefinitions, int source, Event event, NetworkRandom random) {
         // TODO: Use Set so entities are not affected multiple times? Dependent on effect/context? (here and in the methods below)
-        LinkedList<Integer> affectedTargets = new LinkedList<>();
+        IntList affectedTargets = new IntList();
         for (int targetDefinition : targetDefinitions) {
             affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, event, random));
         }
         return affectedTargets;
     }
 
-    private static LinkedList<Integer> getAffectedTargets(EntityData data, int targetDefinition, int source, Event event, NetworkRandom random) {
-        LinkedList<Integer> affectedTargets = new LinkedList<>();
+    private static IntList getAffectedTargets(EntityData data, int targetDefinition, int source, Event event, NetworkRandom random) {
+        IntList affectedTargets = new IntList();
         if (isFulfillingPrefilters_Source(data, source, targetDefinition)) {
             String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
             if (targetExpression != null) {
@@ -42,24 +39,23 @@ public class TargetUtil {
             if (maxRandomTargetsExpression != null) {
                 int maxRandomTargets = Expressions.evaluate(maxRandomTargetsExpression, Expressions.getContext_Event(data, event));
                 while (affectedTargets.size() > maxRandomTargets) {
-                    affectedTargets.remove(random.nextInt(affectedTargets.size() - 1));
+                    affectedTargets.removeAt(random.nextInt(affectedTargets.size() - 1));
                 }
             }
         }
         return affectedTargets;
     }
 
-    public static List<Integer> getAllConditionTargets(EntityData data, int source, Prefilter[] targetPrefilters, String condition) {
-        List<Integer> prefilteredTargets = getPrefilteredEntities(data, source, targetPrefilters);
+    public static IntList getAllConditionTargets(EntityData data, int source, Prefilter[] targetPrefilters, String condition) {
+        IntList prefilteredTargets = getPrefilteredEntities(data, source, targetPrefilters);
         if (condition.isEmpty()) {
             return prefilteredTargets;
         }
-        return prefilteredTargets.stream()
-                .filter(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, condition))
-                .collect(Collectors.toList());
+        prefilteredTargets.retain(target -> ConditionUtil.isConditionFulfilled(data, source, new int[] { target }, condition));
+        return prefilteredTargets;
     }
 
-    public static List<Integer> getPrefilteredEntities(EntityData data, int source, Prefilter[] prefilters) {
+    public static IntList getPrefilteredEntities(EntityData data, int source, Prefilter[] prefilters) {
         return data.query(getBasicPrefilterComponent(prefilters[0])).list(entity -> isFulfillingPrefilters(data, entity, source, prefilters));
     }
 

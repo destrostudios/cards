@@ -11,6 +11,7 @@ public class CheckDestructionAfterConditionsAffectedHandler extends DestroyOnZer
 
     @Override
     protected List<Integer> getAffectedTargets(EntityData data, ConditionsAffectedEvent event) {
-        return data.queryAll(Components.AURAS, Components.BOARD).list();
+        // At the moment, the only cases here are creatures on board that have an own health aura
+        return data.query(Components.CREATURE_ZONE).list(card -> data.hasComponent(card, Components.AURAS));
     }
 }

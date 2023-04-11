@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.entities.IntMap;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.cards.Foil;
@@ -18,7 +19,6 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.FieldSerializer;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class CardsNetworkService implements GameService<GameContext, Event> {
 
@@ -54,12 +54,12 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
             @Override
             public void write(Kryo kryo, Output output, SimpleEntityData simpleEntityData) {
                 for (int i = 0; i < Components.ALL.size(); i++) {
-                    Map<Integer, Map> componentMap = simpleEntityData.getComponents()[i];
+                    IntMap<?> componentMap = simpleEntityData.getComponents()[i];
                     output.writeInt(componentMap.size());
-                    for (Map.Entry<Integer, Map> entry : componentMap.entrySet()) {
-                        output.writeInt(entry.getKey());
-                        kryo.writeClassAndObject(output, entry.getValue());
-                    }
+                    componentMap.foreachKey(entity -> {
+                        output.writeInt(entity);
+                        kryo.writeClassAndObject(output, componentMap.get(entity));
+                    });
                 }
                 output.writeInt(simpleEntityData.getNextEntity());
             }

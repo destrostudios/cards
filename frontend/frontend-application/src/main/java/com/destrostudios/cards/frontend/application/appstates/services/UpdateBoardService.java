@@ -10,13 +10,13 @@ import com.destrostudios.cards.frontend.application.appstates.services.players.P
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.jme3.math.Vector3f;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class UpdateBoardService {
 
@@ -122,8 +122,8 @@ public class UpdateBoardService {
                         if (validTargets.isEmpty()) {
                             // TODO: Improve?
                             int cardEntity = data.query(Components.SPELLS)
-                                    .unique(currentCardEntity -> IntStream.of(data.getComponent(currentCardEntity, Components.SPELLS))
-                                            .anyMatch(entity -> entity == castSpellEvent.spell));
+                                    .list(currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), castSpellEvent.spell))
+                                    .get(0);
                             Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
 
                             Interactivity interactivity;

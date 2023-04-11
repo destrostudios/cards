@@ -1,65 +1,54 @@
 package com.destrostudios.cards.shared.entities;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntPredicate;
-import java.util.stream.Collectors;
 
 public class SimpleAggregator implements Aggregator {
 
-    public SimpleAggregator(Set<Integer> set) {
-        this.set = set;
+    public SimpleAggregator(IntMap<?> intMap) {
+        this.intMap = intMap;
     }
-    private Set<Integer> set;
+    private IntMap<?> intMap;
 
     @Override
     public List<Integer> list() {
-        return set.stream().sorted().collect(Collectors.toList());
+        LinkedList<Integer> list = new LinkedList<>();
+        intMap.foreachKey(list::add);
+        list.sort(Comparator.naturalOrder());
+        return list;
     }
 
     @Override
     public List<Integer> list(IntPredicate predicate) {
-        return set.stream().filter(predicate::test).sorted().collect(Collectors.toList());
+        LinkedList<Integer> list = new LinkedList<>();
+        intMap.foreachKey(value -> {
+            if (predicate.test(value)) {
+                list.add(value);
+            }
+        });
+        list.sort(Comparator.naturalOrder());
+        return list;
     }
 
     @Override
     public int count() {
-        return set.size();
+        return intMap.size();
     }
 
     @Override
     public int count(IntPredicate predicate) {
-        return (int) set.stream().filter(predicate::test).count();
-    }
-
-    @Override
-    public boolean exists() {
-        return !set.isEmpty();
-    }
-
-    @Override
-    public boolean exists(IntPredicate predicate) {
-        return set.stream().anyMatch(predicate::test);
-    }
-
-    @Override
-    public Optional<Integer> find() {
-        return set.stream().findAny();
-    }
-
-    @Override
-    public Optional<Integer> find(IntPredicate predicate) {
-        return set.stream().filter(predicate::test).findAny();
+        AtomicInteger count = new AtomicInteger();
+        intMap.foreachKey(value -> {
+            if (predicate.test(value)) {
+                count.getAndIncrement();
+            }
+        });
+        return count.get();
     }
 
     @Override
     public int unique() {
-        return set.iterator().next();
-    }
-
-    @Override
-    public int unique(IntPredicate predicate) {
-        return find(predicate).get();
+        return intMap.iterator().next();
     }
 }

@@ -6,21 +6,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SimpleEntityData implements EntityData {
 
     public SimpleEntityData(SimpleEntityData data) {
-        components = new HashMap[data.components.length];
+        components = new IntMap[data.components.length];
         for (int i = 0; i < components.length; i++) {
-            components[i] = new HashMap<>(data.components[i]);
+            components[i] = new IntMap(data.components[i]);
         }
         nextEntity = new AtomicInteger(data.getNextEntity());
     }
 
     public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
-        components = new HashMap[componentDefinitions.size()];
+        components = new IntMap[componentDefinitions.size()];
         for (int i = 0; i < components.length; i++) {
-            components[i] = new HashMap<>();
+            components[i] = new IntMap();
         }
         nextEntity = new AtomicInteger(0);
     }
-    private Map<Integer, Map>[] components;
+    private IntMap[] components;
     private AtomicInteger nextEntity;
 
     @Override
@@ -30,7 +30,7 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public boolean hasComponent(int entity, ComponentDefinition<?> component) {
-        return getComponentMap(component).containsKey(entity);
+        return getComponentMap(component).hasKey(entity);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public <T> void setComponent(int entity, ComponentDefinition<T> component, T value) {
-        getComponentMap(component).put(entity, value);
+        getComponentMap(component).set(entity, value);
     }
 
     @Override
@@ -49,29 +49,15 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
-    public boolean exists(ComponentDefinition<?> component) {
-        return !getComponentMap(component).isEmpty();
-    }
-
-    @Override
     public Aggregator query(ComponentDefinition<?> component) {
-        return new SimpleAggregator(getComponentMap(component).keySet());
+        return new SimpleAggregator(getComponentMap(component));
     }
 
-    @Override
-    public Aggregator queryAll(ComponentDefinition<?>... components) {
-        HashSet<Integer> entities = new HashSet<>(getComponentMap(components[0]).keySet());
-        for (int i = 1; i < components.length; i++) {
-            entities.retainAll(getComponentMap(components[i]).keySet());
-        }
-        return new SimpleAggregator(entities);
+    private <T> IntMap<T> getComponentMap(ComponentDefinition<T> component) {
+        return (IntMap<T>) components[component.getId()];
     }
 
-    private <T> Map<Integer, T> getComponentMap(ComponentDefinition<T> component) {
-        return (Map<Integer, T>) components[component.getId()];
-    }
-
-    public Map<Integer, Map>[] getComponents() {
+    public IntMap[] getComponents() {
         return components;
     }
 

@@ -14,15 +14,5 @@ public interface Aggregator {
 
     int count(IntPredicate predicate);
 
-    boolean exists();
-
-    boolean exists(IntPredicate predicate);
-
-    Optional<Integer> find();
-
-    Optional<Integer> find(IntPredicate predicate);
-
     int unique();
-
-    int unique(IntPredicate predicate);
 }

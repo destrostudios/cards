@@ -21,6 +21,7 @@ import static com.destrostudios.cards.shared.rules.ComponentsTriggers.*;
 public class GameContext {
 
     public GameContext(GameContext gameContext) {
+        // TODO: Reuse the same GameEventHandler instances (after making them completely stateless (they still reference data+events))
         this(gameContext.startGameInfo, new SimpleEntityData(gameContext.data));
     }
 

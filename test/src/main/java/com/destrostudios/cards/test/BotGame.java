@@ -19,22 +19,26 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class BotGame {
 
-    public BotGame(List<Card> cards, Mode mode, Queue queue, long seed, boolean verbose) {
+    public BotGame(List<Card> cards, Mode mode, Queue queue, long seed, boolean verbose, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
         this.cards = cards;
         this.mode = mode;
         this.queue = queue;
         this.seed = seed;
         this.verbose = verbose;
+        this.modifyBotSettings = modifyBotSettings;
     }
     private List<Card> cards;
     private Mode mode;
     private Queue queue;
     private long seed;
     private boolean verbose;
+    private BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings;
     private GameContext gameContext;
+    private MctsBot[] bots;
 
     public void play() {
         StartGameInfo startGameInfo = new StartGameInfo(
@@ -56,27 +60,36 @@ public class BotGame {
 
         applyAction(new GameStartEvent(), random);
 
-        MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
-        botSettings.maxThreads = 1;
-        botSettings.termination = TerminationType.NODE_COUNT;
-        botSettings.strength = 100;
-        botSettings.evaluation = CardsBotEval::eval;
-        botSettings.random = _random;
-        MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
+        bots = new MctsBot[2];
+        for (int i = 0; i < bots.length; i++) {
+            MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
+            botSettings.maxThreads = 1;
+            botSettings.termination = TerminationType.NODE_COUNT;
+            botSettings.strength = 100;
+            botSettings.evaluation = CardsBotEval::eval;
+            botSettings.random = _random;
+            modifyBotSettings.accept(botSettings, i);
+            MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
+            bots[i] = bot;
+        }
         CardsBotState botState = new CardsBotState(gameContext, random);
 
         long gameStartNanos = System.nanoTime();
         int actionIndex = 0;
         while (!gameContext.isGameOver()) {
+            int activePlayer = botState.activeTeam();
             long actionStartNanos = System.nanoTime();
-            List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
+            MctsBot activeBot = bots[activePlayer];
+            List<Event> actions = activeBot.sortedActions(botState, activePlayer);
             long actionDurationNanos = (System.nanoTime() - actionStartNanos);
             Event action = actions.get(0);
             if (verbose) {
-                System.out.println("Action #" + (actionIndex + 1) + " => " + action + "\t(from " + actions.size() + " possible actions, node count " + botSettings.strength + ", in " + (actionDurationNanos / 1_000_000) + "ms)");
+                System.out.println("Player #" + activePlayer + " Action #" + (actionIndex + 1) + " => " + action + "\t(from " + actions.size() + " possible actions, in " + (actionDurationNanos / 1_000_000) + "ms)");
             }
             applyAction(action, random);
-            bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
+            for (MctsBot bot : bots) {
+                bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
+            }
             actionIndex++;
         }
         if (verbose) {

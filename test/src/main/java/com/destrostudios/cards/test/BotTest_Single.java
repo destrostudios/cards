@@ -9,6 +9,6 @@ public class BotTest_Single extends BotTest {
     @Override
     public void run() {
         super.run();
-        new BotGame(allCards, mode, queue, 123, true).play();
+        new BotGame(allCards, mode, queue, 123, true, (botSettings, player) -> {}).play();
     }
 }

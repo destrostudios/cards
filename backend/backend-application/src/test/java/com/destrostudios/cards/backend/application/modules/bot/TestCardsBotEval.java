@@ -4,15 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.function.Consumer;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestCardsBotEval {
-
-    @Test
-    public void testExactlyEqual() {
-        assertEquals(0.5f, getScore(getPlayer(), getPlayer()));
-    }
 
     @Test
     public void testOwnHealth_Higher() {
@@ -30,23 +24,21 @@ public class TestCardsBotEval {
     }
 
     @Test
-    // TODO: Currently has to be >= until eval is fixed
     public void testCreaturesOnBoard_HigherAttack() {
         assertTrue(getScore(getPlayer(p -> {
             p.setCreaturesAttack(2);
             p.setCreaturesHealth(1);
-        }), getPlayer()) >= getScore(getPlayer(p -> {
+        }), getPlayer()) > getScore(getPlayer(p -> {
             p.setCreaturesAttack(1);
             p.setCreaturesHealth(1);
         }), getPlayer()));
     }
 
     @Test
-    // TODO: Currently has to be >= until eval is fixed
     public void testCreaturesOnBoard_HigherHealth() {
         assertTrue(getScore(getPlayer(p -> {
             p.setCreaturesHealth(2);
-        }), getPlayer()) >= getScore(getPlayer(p -> {
+        }), getPlayer()) > getScore(getPlayer(p -> {
             p.setCreaturesHealth(1);
         }), getPlayer()));
     }
@@ -62,7 +54,7 @@ public class TestCardsBotEval {
     }
 
     private static float getScore(CardsBotEval.EvalPlayerInfo ownPlayerInfo, CardsBotEval.EvalPlayerInfo opponentPlayerInfo) {
-        return CardsBotEval.getPlayerScore(ownPlayerInfo, opponentPlayerInfo);
+        return CardsBotEval.getPlayerScore(ownPlayerInfo, opponentPlayerInfo, CardsBotEval.getDefaultWeights());
     }
 
     private static CardsBotEval.EvalPlayerInfo getPlayer(Consumer<CardsBotEval.EvalPlayerInfo> modify) {

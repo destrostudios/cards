@@ -1,7 +1,6 @@
 package com.destrostudios.cards.shared.entities;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SimpleEntityData implements EntityData {
 
@@ -10,7 +9,7 @@ public class SimpleEntityData implements EntityData {
         for (int i = 0; i < components.length; i++) {
             components[i] = new IntMap(data.components[i]);
         }
-        nextEntity = new AtomicInteger(data.getNextEntity());
+        nextEntity = data.getNextEntity();
     }
 
     public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
@@ -18,14 +17,14 @@ public class SimpleEntityData implements EntityData {
         for (int i = 0; i < components.length; i++) {
             components[i] = new IntMap();
         }
-        nextEntity = new AtomicInteger(0);
+        nextEntity = 0;
     }
     private IntMap[] components;
-    private AtomicInteger nextEntity;
+    private int nextEntity;
 
     @Override
     public int createEntity() {
-        return nextEntity.getAndIncrement();
+        return nextEntity++;
     }
 
     @Override
@@ -61,11 +60,11 @@ public class SimpleEntityData implements EntityData {
         return components;
     }
 
-    public void setNextEntity(int value) {
-        nextEntity.set(value);
+    public void setNextEntity(int nextEntity) {
+        this.nextEntity = nextEntity;
     }
 
     public int getNextEntity() {
-        return nextEntity.get();
+        return nextEntity;
     }
 }

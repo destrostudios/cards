@@ -9,7 +9,12 @@ import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.*;
+import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.util.DebugUtil;
+import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
@@ -37,7 +42,7 @@ public class BotGame {
     private long seed;
     private boolean verbose;
     private BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings;
-    private GameContext gameContext;
+    protected GameContext gameContext;
     private MctsBot[] bots;
 
     public void play() {
@@ -84,7 +89,7 @@ public class BotGame {
             long actionDurationNanos = (System.nanoTime() - actionStartNanos);
             Event action = actions.get(0);
             if (verbose) {
-                System.out.println("Player #" + activePlayer + " Action #" + (actionIndex + 1) + " => " + action + "\t(from " + actions.size() + " possible actions, in " + (actionDurationNanos / 1_000_000) + "ms)");
+                System.out.println("Player #" + activePlayer + " Action #" + (actionIndex + 1) + " => " + getActionDebugText(action) + "\t(from " + actions.size() + " possible actions, in " + (actionDurationNanos / 1_000_000) + "ms)");
             }
             applyAction(action, random);
             for (MctsBot bot : bots) {
@@ -98,7 +103,31 @@ public class BotGame {
         }
     }
 
-    private void applyAction(Event action, NetworkRandom random) {
+    private String getActionDebugText(Event action) {
+        if (action instanceof CastSpellEvent castSpellEvent) {
+            return "CastSpellEvent { source = " + getEntityDebugText(castSpellEvent.source) + ", spell = " + getEntityDebugText_Spell(castSpellEvent.spell) + ", targets = " + getEntityDebugText(castSpellEvent.targets) + " }";
+        } else if (action instanceof EndTurnEvent) {
+            return "EndTurnEvent";
+        } else if (action instanceof MulliganEvent mulliganEvent){
+            return "MulliganEvent { cards = " + getEntityDebugText(mulliganEvent.cards) + " }";
+        }
+        return action.toString();
+    }
+
+    private String getEntityDebugText_Spell(int spell) {
+        if (SpellUtil.isDefaultCastFromHandSpell(gameContext.getData(), spell)) {
+            return "[PlayFromHand]";
+        } else if (SpellUtil.isDefaultAttackSpell(gameContext.getData(), spell)) {
+            return "[Attack]";
+        }
+        return getEntityDebugText(spell);
+    }
+
+    private String getEntityDebugText(int... entities) {
+        return new DebugUtil.EntityDebugText(gameContext.getData(), entities).toString();
+    }
+
+    protected void applyAction(Event action, NetworkRandom random) {
         gameContext.getEvents().fire(action, random);
         while (gameContext.getEvents().hasPendingEventHandler()) {
             gameContext.getEvents().triggerNextEventHandler();

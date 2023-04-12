@@ -25,11 +25,16 @@ public class DebugUtil {
 
     private static String getDebugText(EntityData data, Iterable<Integer> entities) {
         String text = "";
+        int length = 0;
         for (int entity : entities) {
-            if (!text.isEmpty()) {
+            if (length > 0) {
                 text += ", ";
             }
             text += getDebugText(data, entity);
+            length++;
+        }
+        if ((length == 0) || (length > 1)) {
+            text = "[" + text + "]";
         }
         return text;
     }

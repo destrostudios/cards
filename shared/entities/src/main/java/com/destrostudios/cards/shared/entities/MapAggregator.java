@@ -3,9 +3,9 @@ package com.destrostudios.cards.shared.entities;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntPredicate;
 
-public class SimpleAggregator implements Aggregator {
+public class MapAggregator implements Aggregator {
 
-    public SimpleAggregator(IntMap<?> intMap) {
+    public MapAggregator(IntMap<?> intMap) {
         this.intMap = intMap;
     }
     private IntMap<?> intMap;

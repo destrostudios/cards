@@ -49,7 +49,16 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public Aggregator query(ComponentDefinition<?> component) {
-        return new SimpleAggregator(getComponentMap(component));
+        return new MapAggregator(getComponentMap(component));
+    }
+
+    @Override
+    public Aggregator queryAll(ComponentDefinition<?>... components) {
+        IntMap<?>[] componentMaps = new IntMap[components.length];
+        for (int i = 0; i < components.length; i++) {
+            componentMaps[i] = getComponentMap(components[i]);
+        }
+        return new MultiMapAggregator(componentMaps);
     }
 
     private <T> IntMap<T> getComponentMap(ComponentDefinition<T> component) {

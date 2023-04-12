@@ -32,4 +32,6 @@ public interface EntityData {
     }
 
     Aggregator query(ComponentDefinition<?> component);
+
+    Aggregator queryAll(ComponentDefinition<?>... component);
 }

@@ -3,6 +3,7 @@ package com.destrostudios.cards.test;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
@@ -105,15 +106,15 @@ public class BotTest_CardStats extends BotTest {
             };
             botGame.play();
             games++;
-            System.out.println("---Stats---");
-            List<Map.Entry<String, CardStats>> sortedStatsEntries = cardStats.entrySet().stream()
-                    .sorted(Comparator.comparing(entry -> -1 * entry.getValue().getWinrateWhenDrawn()))
-                    .toList();
-            for (Map.Entry<String, CardStats> entry : sortedStatsEntries) {
+            String csv = "card,wr-when-drawn,games-when-drawn,wr-when-played,games-when-played,avg-end-of-turns-in-hand";
+            for (Map.Entry<String, CardStats> entry : cardStats.entrySet()) {
                 CardStats stats = entry.getValue();
-                System.out.println(entry.getKey() + "\t\t\t" + stats.getWinrateWhenDrawn() + "% wr-drawn (" + stats.gamesWhereInHand + " games)\t\t\t" + stats.getWinrateWhenPlayed() + "% wr-played (" + stats.gamesWherePlayed + " games)\t\t\t" + stats.getAverageEndOfTurnsInHand() + " avg-eot-hands (" + stats.gamesWhereInHand + " games)");
+                csv += "\n\"" + entry.getKey() + "\"," + stats.getWinrateWhenDrawn() + "," + stats.gamesWhereInHand + "," + stats.getWinrateWhenPlayed() + "," + stats.gamesWherePlayed + "," + stats.getAverageEndOfTurnsInHand();
             }
-            System.out.println("-----------");
+            System.out.println("---Stats---\n" + csv + "\n-----------");
+            if ((games % 10) == 0) {
+                FileManager.putFileContent("./stats.csv", csv);
+            }
         }
     }
 

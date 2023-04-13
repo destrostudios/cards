@@ -3,20 +3,16 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.EventType;
 
-/**
- *
- * @author Philipp
- */
-public class AddCardToLibraryEvent extends Event {
+public class MoveToCreatureZoneEvent extends Event {
     public final int card;
 
-    public AddCardToLibraryEvent(int card) {
-        super(EventType.ADD_CARD_TO_LIBRARY);
+    public MoveToCreatureZoneEvent(int card) {
+        super(EventType.MOVE_TO_CREATURE_ZONE);
         this.card = card;
     }
 
     @Override
     public String toString() {
-        return "AddCardToLibraryEvent{" + "card=" + card + '}';
+        return "MoveToCreatureZoneEvent{" + "card=" + card + '}';
     }
 }

@@ -14,7 +14,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/move_source_to_graveyard"/>
                             <entity>
                                 <targets>
                                     <entity template="../targets/source_owner"/>

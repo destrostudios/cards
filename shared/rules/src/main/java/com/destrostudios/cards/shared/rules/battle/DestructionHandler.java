@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.rules.battle;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.game.GameOverEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
             int winner = nextPlayer.get();
             events.fire(new GameOverEvent(winner), random);
         } else {
-            events.fire(new AddCardToGraveyardEvent(event.target), random);
+            events.fire(new MoveToGraveyardEvent(event.target), random);
         }
     }
 }

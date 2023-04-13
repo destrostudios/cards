@@ -42,15 +42,15 @@ public class GameContext {
     private Integer winner;
 
     private void initListeners() {
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_CREATURE_ZONE,
-                new AddCardToCreatureZoneHandler(),
-                new ActivateDivineShieldOnAddToCreatureZoneHandler());
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_GRAVEYARD, new AddCardToGraveyardHandler());
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_HAND, new AddCardToHandHandler());
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_LIBRARY, new AddCardToLibraryHandler());
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_ZONE,
+        setEventHandlers(events.instant(), EventType.MOVE_TO_CREATURE_ZONE,
+                new MoveToCreatureZoneHandler(),
+                new ActivateDivineShieldOnMoveToCreatureZoneHandler());
+        setEventHandlers(events.instant(), EventType.MOVE_TO_GRAVEYARD, new MoveToGraveyardHandler());
+        setEventHandlers(events.instant(), EventType.MOVE_TO_HAND, new MoveToHandHandler());
+        setEventHandlers(events.instant(), EventType.MOVE_TO_LIBRARY, new MoveToLibraryHandler());
+        setEventHandlers(events.instant(), EventType.MOVE_TO_ZONE,
                 new RemoveFromOtherZonesOnAddHandler(),
-                new AddCardToZoneHandler()
+                new MoveToZoneHandler()
         );
         setEventHandlers(events.instant(), EventType.ADD_MANA, new AddManaHandler());
         setEventHandlers(events.instant(), EventType.SET_AVAILABLE_MANA, new SetAvailableManaHandler());

@@ -15,8 +15,8 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_graveyard"/>
-                            <entity template="../effects/add_target_to_graveyard"/>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/move_target_to_graveyard"/>
                             <entity>
                                 <targets>
                                     <entity template="../targets/all_opponent_creatures_on_board"/>

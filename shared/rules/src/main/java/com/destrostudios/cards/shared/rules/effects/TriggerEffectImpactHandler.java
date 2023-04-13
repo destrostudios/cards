@@ -9,9 +9,9 @@ import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToCreatureZoneEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.BuffUtil;
@@ -27,16 +27,16 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
     public void handle(TriggerEffectImpactEvent event, NetworkRandom random) {
         LOG.debug("Triggering effect impact (source = {}, target = {}, effect = {})", inspect(event.source), inspect(event.target), inspect(event.effect));
 
-        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_HAND)) {
-            events.fire(new AddCardToHandEvent(event.target), random);
+        if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_HAND)) {
+            events.fire(new MoveToHandEvent(event.target), random);
         }
 
-        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_CREATURE_ZONE)) {
-            events.fire(new AddCardToCreatureZoneEvent(event.target), random);
+        if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_CREATURE_ZONE)) {
+            events.fire(new MoveToCreatureZoneEvent(event.target), random);
         }
 
-        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_GRAVEYARD)) {
-            events.fire(new AddCardToGraveyardEvent(event.target), random);
+        if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_GRAVEYARD)) {
+            events.fire(new MoveToGraveyardEvent(event.target), random);
         }
 
         String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);

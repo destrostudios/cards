@@ -7,7 +7,7 @@
             <entity>
                 <sourcePrefilters>GRAVEYARD</sourcePrefilters>
                 <effects>
-                    <entity template="../effects/add_source_to_hand"/>
+                    <entity template="../effects/move_source_to_hand"/>
                 </effects>
             </entity>
         </preEndTurnTriggers>

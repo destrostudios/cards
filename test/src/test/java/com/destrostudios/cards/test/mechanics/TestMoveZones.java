@@ -1,10 +1,10 @@
 package com.destrostudios.cards.test.mechanics;
 
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToCreatureZoneEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
 import com.destrostudios.cards.test.TestGame;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import org.junit.jupiter.api.Test;
 
 public class TestMoveZones extends TestGame {
@@ -12,7 +12,7 @@ public class TestMoveZones extends TestGame {
     @Test
     public void testHandToCreatureZone() {
         int creature = createCreature(player, Components.HAND);
-        fire(new AddCardToCreatureZoneEvent(creature));
+        fire(new MoveToCreatureZoneEvent(creature));
         assertHasNoComponent(creature, Components.LIBRARY);
         assertHasNoComponent(creature, Components.HAND);
         assertHasComponent(creature, Components.BOARD);
@@ -23,7 +23,7 @@ public class TestMoveZones extends TestGame {
     @Test
     public void testBoardToGraveyard() {
         int creature = createCreature(player, Components.CREATURE_ZONE);
-        fire(new AddCardToGraveyardEvent(creature));
+        fire(new MoveToGraveyardEvent(creature));
         assertHasNoComponent(creature, Components.LIBRARY);
         assertHasNoComponent(creature, Components.HAND);
         assertHasNoComponent(creature, Components.BOARD);
@@ -34,7 +34,7 @@ public class TestMoveZones extends TestGame {
     @Test
     public void testGraveyardToHand() {
         int creature = createCreature(player, Components.GRAVEYARD);
-        fire(new AddCardToHandEvent(creature));
+        fire(new MoveToHandEvent(creature));
         assertHasNoComponent(creature, Components.LIBRARY);
         assertHasComponent(creature, Components.HAND);
         assertHasNoComponent(creature, Components.BOARD);

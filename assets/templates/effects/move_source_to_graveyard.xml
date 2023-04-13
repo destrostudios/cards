@@ -3,6 +3,6 @@
         <targets>
             <entity template="../targets/source"/>
         </targets>
-        <addToHand/>
+        <moveToGraveyard/>
     </entity>
 </template>

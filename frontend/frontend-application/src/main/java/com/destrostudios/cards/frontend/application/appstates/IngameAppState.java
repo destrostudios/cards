@@ -245,7 +245,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Events
 
-        gameService.getGameContext().getEvents().resolved().add(EventType.ADD_CARD_TO_CREATURE_ZONE, (AddCardToCreatureZoneEvent event, NetworkRandom random) -> {
+        gameService.getGameContext().getEvents().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (MoveToCreatureZoneEvent event, NetworkRandom random) -> {
             tryPlayEntryAnimation(event.card);
         });
         gameService.getGameContext().getEvents().pre().add(EventType.BATTLE, (BattleEvent event, NetworkRandom random) -> {

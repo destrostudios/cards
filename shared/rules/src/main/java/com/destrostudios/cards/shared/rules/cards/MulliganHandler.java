@@ -3,8 +3,8 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToLibraryEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
 import com.destrostudios.cards.shared.rules.game.turn.StartTurnEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
@@ -27,11 +27,11 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
             }
             LOG.debug("Player {} is getting mulliganed new cards {}", inspect(player), inspect(newCards));
             for (int card : event.cards) {
-                events.fire(new AddCardToLibraryEvent(card), random);
+                events.fire(new MoveToLibraryEvent(card), random);
             }
             events.fire(new ShuffleLibraryEvent(player), random);
             for (int card : newCards) {
-                events.fire(new AddCardToHandEvent(card), random);
+                events.fire(new MoveToHandEvent(card), random);
             }
         }
         data.removeComponent(player, Components.Game.MULLIGAN);

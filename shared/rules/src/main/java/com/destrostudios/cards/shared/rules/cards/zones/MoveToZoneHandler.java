@@ -7,13 +7,13 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AddCardToZoneHandler extends GameEventHandler<AddCardToZoneEvent> {
+public class MoveToZoneHandler extends GameEventHandler<MoveToZoneEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AddCardToZoneHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MoveToZoneHandler.class);
 
     @Override
-    public void handle(AddCardToZoneEvent event, NetworkRandom random) {
-        LOG.debug("Adding {} to zone {}", inspect(event.card), event.zone.getName());
+    public void handle(MoveToZoneEvent event, NetworkRandom random) {
+        LOG.debug("Moving {} to zone {}", inspect(event.card), event.zone.getName());
         ZoneUtil.addCardToZone(data, event.card, event.zone);
         events.fire(new ConditionsAffectedEvent(), random);
     }

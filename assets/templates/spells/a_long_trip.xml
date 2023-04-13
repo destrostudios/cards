@@ -15,7 +15,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/move_source_to_graveyard"/>
                             <entity>
                                 <targets>
                                     <entity>
@@ -24,7 +24,7 @@
                                         <targetRandom>[draw]</targetRandom>
                                     </entity>
                                 </targets>
-                                <addToHand/>
+                                <moveToHand/>
                             </entity>
                         </effects>
                     </entity>

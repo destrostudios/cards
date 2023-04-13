@@ -14,7 +14,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/spawn_for_owner(template=creatures/elven_guard)"/>
-                            <entity template="../effects/add_source_to_creature_zone"/>
+                            <entity template="../effects/move_source_to_creature_zone"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/elven_guard)"/>
                         </effects>
                     </entity>

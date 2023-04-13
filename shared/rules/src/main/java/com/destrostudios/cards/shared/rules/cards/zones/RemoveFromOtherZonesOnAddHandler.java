@@ -6,12 +6,12 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RemoveFromOtherZonesOnAddHandler extends GameEventHandler<AddCardToZoneEvent> {
+public class RemoveFromOtherZonesOnAddHandler extends GameEventHandler<MoveToZoneEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RemoveFromOtherZonesOnAddHandler.class);
 
     @Override
-    public void handle(AddCardToZoneEvent event, NetworkRandom random) {
+    public void handle(MoveToZoneEvent event, NetworkRandom random) {
         LOG.debug("Removing {} from other zones", inspect(event.card));
         if ((event.zone != Components.LIBRARY) && data.hasComponent(event.card, Components.LIBRARY)) {
             events.fire(new RemoveCardFromLibraryEvent(event.card), random);

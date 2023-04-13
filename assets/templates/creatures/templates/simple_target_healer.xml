@@ -21,7 +21,7 @@
                                 </targets>
                                 <heal>[heal]</heal>
                             </entity>
-                            <entity template="../../effects/add_source_to_creature_zone"/>
+                            <entity template="../../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>
                 </castTriggers>

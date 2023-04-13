@@ -23,9 +23,9 @@
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>
                                 </targets>
-                                <addToHand/>
+                                <moveToHand/>
                             </entity>
-                            <entity template="../effects/add_source_to_graveyard"/>
+                            <entity template="../effects/move_source_to_graveyard"/>
                         </effects>
                     </entity>
                 </castTriggers>

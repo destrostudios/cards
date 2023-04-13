@@ -6,8 +6,8 @@
                 <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
                 <targetPrefilters>ALLY,DRAGON</targetPrefilters>
                 <effects>
-                    <entity template="../effects/add_source_to_graveyard"/>
-                    <entity template="../effects/add_target_to_creature_zone"/>
+                    <entity template="../effects/move_source_to_graveyard"/>
+                    <entity template="../effects/move_target_to_creature_zone"/>
                 </effects>
             </entity>
         </postDestructionTriggers>

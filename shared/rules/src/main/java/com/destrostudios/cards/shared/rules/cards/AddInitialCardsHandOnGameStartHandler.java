@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.util.ZoneUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
@@ -25,7 +25,7 @@ public class AddInitialCardsHandOnGameStartHandler extends GameEventHandler<Game
                 Integer card = ZoneUtil.getTopMostCard(data, remainingLibraryCards, Components.LIBRARY);
                 if (card != null) {
                     remainingLibraryCards.swapRemove(card);
-                    events.fire(new AddCardToHandEvent(card), random);
+                    events.fire(new MoveToHandEvent(card), random);
                 }
             }
         }

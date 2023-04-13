@@ -13,7 +13,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_creature_zone"/>
+                            <entity template="../effects/move_source_to_creature_zone"/>
                             <entity>
                                 <targets>
                                     <entity>
@@ -22,7 +22,7 @@
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>
-                                <addToCreatureZone/>
+                                <moveToCreatureZone/>
                             </entity>
                         </effects>
                     </entity>

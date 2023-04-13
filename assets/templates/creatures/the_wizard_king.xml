@@ -19,7 +19,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_creature_zone"/>
+                            <entity template="../effects/move_source_to_creature_zone"/>
                             <entity>
                                 <targets>
                                     <entity template="../targets/targets_default_cast_from_hand_spell"/>

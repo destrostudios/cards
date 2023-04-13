@@ -99,9 +99,9 @@ public class Components {
         public static final ComponentDefinition<Void> END_TURN = create("endTurn");
 
         public static class Zones {
-            public static final ComponentDefinition<Void> ADD_TO_HAND = create("addToHand");
-            public static final ComponentDefinition<Void> ADD_TO_CREATURE_ZONE = create("addToCreatureZone");
-            public static final ComponentDefinition<Void> ADD_TO_GRAVEYARD = create("addToGraveyard");
+            public static final ComponentDefinition<Void> MOVE_TO_HAND = create("moveToHand");
+            public static final ComponentDefinition<Void> MOVE_TO_CREATURE_ZONE = create("moveToCreatureZone");
+            public static final ComponentDefinition<Void> MOVE_TO_GRAVEYARD = create("moveToGraveyard");
         }
     }
 

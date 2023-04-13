@@ -1,18 +1,22 @@
 package com.destrostudios.cards.shared.rules.cards.zones;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class MoveToCreatureZoneHandler extends GameEventHandler<MoveToCreatureZoneEvent> {
+public class MoveToCreatureZoneHandler extends BaseMoveToZoneHandler<MoveToCreatureZoneEvent> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MoveToCreatureZoneHandler.class);
+    public MoveToCreatureZoneHandler() {
+        super(Components.CREATURE_ZONE, OTHER_COMPONENTS);
+    }
+    private static ComponentDefinition[] OTHER_COMPONENTS = new ComponentDefinition[] {
+        Components.LIBRARY,
+        Components.HAND,
+        Components.GRAVEYARD
+    };
 
     @Override
     public void handle(MoveToCreatureZoneEvent event, NetworkRandom random) {
-        LOG.debug("Moving {} to creature zone", inspect(event.card));
-        events.fire(new MoveToZoneEvent(event.card, Components.CREATURE_ZONE), random);
+        handle(event.card, random);
     }
 }

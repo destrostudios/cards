@@ -9,11 +9,9 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+public abstract class BaseDestroyOnZeroHealthHandler<T extends Event> extends GameEventHandler<T> {
 
-public abstract class DestroyOnZeroHealthHandler<T extends Event> extends GameEventHandler<T> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DestroyOnZeroHealthHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BaseDestroyOnZeroHealthHandler.class);
 
     @Override
     public void handle(T event, NetworkRandom random) {

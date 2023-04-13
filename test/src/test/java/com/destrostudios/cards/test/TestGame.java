@@ -128,13 +128,13 @@ public class TestGame {
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);
-        addCardToZone(spellCard, zone);
+        addToZone(spellCard, zone);
         return spellCard;
     }
 
     protected int create(String template, int owner, ComponentDefinition<Integer> zone) {
         int card = create(template, owner);
-        addCardToZone(card, zone);
+        addToZone(card, zone);
         return card;
     }
 
@@ -165,11 +165,9 @@ public class TestGame {
         return entities;
     }
 
-    private void addCardToZone(int card, ComponentDefinition<Integer> zone) {
-        ZoneUtil.addCardToZone(data, card, zone);
-        if (zone == Components.CREATURE_ZONE) {
-            data.setComponent(card, Components.BOARD);
-        }
+    private void addToZone(int card, ComponentDefinition<Integer> zone) {
+        int owner = data.getComponent(card, Components.OWNED_BY);
+        ZoneUtil.addToZone(data, card, owner, zone);
     }
 
     protected void setFullMana(int entity, int mana) {

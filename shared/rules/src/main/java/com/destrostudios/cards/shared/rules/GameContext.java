@@ -48,10 +48,6 @@ public class GameContext {
         setEventHandlers(events.instant(), EventType.MOVE_TO_GRAVEYARD, new MoveToGraveyardHandler());
         setEventHandlers(events.instant(), EventType.MOVE_TO_HAND, new MoveToHandHandler());
         setEventHandlers(events.instant(), EventType.MOVE_TO_LIBRARY, new MoveToLibraryHandler());
-        setEventHandlers(events.instant(), EventType.MOVE_TO_ZONE,
-                new RemoveFromOtherZonesOnAddHandler(),
-                new MoveToZoneHandler()
-        );
         setEventHandlers(events.instant(), EventType.ADD_MANA, new AddManaHandler());
         setEventHandlers(events.instant(), EventType.SET_AVAILABLE_MANA, new SetAvailableManaHandler());
         setEventHandlers(events.instant(), EventType.SET_MANA, new SetManaHandler());
@@ -93,19 +89,14 @@ public class GameContext {
         setEventHandlers(events.resolved(), EventType.CAST_SPELL,
                 new TriggerHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
         );
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_CREATURE_ZONE,
-                new RemoveCardFromCreatureZoneHandler(),
-                new RemoveDamageOnRemoveFromCreatureZoneHandler(),
-                new DeactivateDivineShieldOnRemoveFromCreatureZoneHandler(),
-                new RemoveBuffsOnRemoveFromCreatureZoneHandler()
+        setEventHandlers(events.instant(), EventType.REMOVED_FROM_CREATURE_ZONE,
+                new RemoveDamageOnRemovedFromCreatureZoneHandler(),
+                new DeactivateDivineShieldOnRemovedFromCreatureZoneHandler(),
+                new RemoveBuffsOnRemovedFromCreatureZoneHandler()
         );
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_GRAVEYARD, new RemoveCardFromGraveyardHandler());
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_HAND,
-                new RemoveCardFromHandHandler(),
-                new RemoveDefaultCastFromHandSpellBuffsOnRemoveFromHandHandler()
+        setEventHandlers(events.instant(), EventType.REMOVED_FROM_HAND,
+                new RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler()
         );
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_LIBRARY, new RemoveCardFromLibraryHandler());
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_ZONE, new RemoveCardFromZoneHandler());
         setEventHandlers(events.instant(), EventType.SHUFFLE_LIBRARY, new ShuffleLibraryHandler());
         setEventHandlers(events.instant(), EventType.START_TURN,
                 new StartTurnHandler(),

@@ -7,8 +7,11 @@ import com.destrostudios.cards.shared.rules.Components;
 
 public class ZoneUtil {
 
-    public static void addCardToZone(EntityData data, int card, ComponentDefinition<Integer> zone) {
-        int owner = data.getComponent(card, Components.OWNED_BY);
+    public static void addToZone(EntityData data, int card, int owner, ComponentDefinition<Integer> zone) {
+        // Enable check to catch any refactoring issues
+        /*if (data.hasComponent(card, zone)) {
+            throw new RuntimeException("Card " + card + " is already in zone " + zone.getName());
+        }*/
         data.setComponent(card, zone, data.query(zone).count(c -> data.getComponent(c, Components.OWNED_BY) == owner));
         if (zone == Components.CREATURE_ZONE) {
             data.setComponent(card, Components.BOARD);

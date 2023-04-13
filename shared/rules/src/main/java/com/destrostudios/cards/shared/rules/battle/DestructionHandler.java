@@ -16,13 +16,18 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
 
     @Override
     public void handle(DestructionEvent event, NetworkRandom random) {
-        LOG.debug("Destroying {}", inspect(event.target));
-        Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
-        if (nextPlayer.isPresent()) {
-            int winner = nextPlayer.get();
-            events.fire(new GameOverEvent(winner), random);
+        if (data.hasComponent(event.target, Components.BOARD)) {
+            LOG.debug("Destroying {}", inspect(event.target));
+            Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
+            if (nextPlayer.isPresent()) {
+                int winner = nextPlayer.get();
+                events.fire(new GameOverEvent(winner), random);
+            } else {
+                events.fire(new MoveToGraveyardEvent(event.target), random);
+            }
         } else {
-            events.fire(new MoveToGraveyardEvent(event.target), random);
+            LOG.debug("{} is not on board, preventing destruction.", inspect(event.target));
+            event.cancel();
         }
     }
 }

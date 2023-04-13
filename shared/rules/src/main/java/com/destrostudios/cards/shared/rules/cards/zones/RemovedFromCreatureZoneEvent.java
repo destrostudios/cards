@@ -3,16 +3,16 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.EventType;
 
-public class RemoveCardFromHandEvent extends Event {
+public class RemovedFromCreatureZoneEvent extends Event {
     public final int card;
 
-    public RemoveCardFromHandEvent(int card) {
-        super(EventType.REMOVE_CARD_FROM_HAND);
+    public RemovedFromCreatureZoneEvent(int card) {
+        super(EventType.REMOVED_FROM_CREATURE_ZONE);
         this.card = card;
     }
 
     @Override
     public String toString() {
-        return "RemoveCardFromHandEvent{" + "card=" + card + '}';
+        return "RemovedFromCreatureZoneEvent{" + "card=" + card + '}';
     }
 }

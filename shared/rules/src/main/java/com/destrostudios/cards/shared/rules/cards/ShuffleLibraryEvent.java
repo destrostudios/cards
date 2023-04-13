@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.EventType;
 
 /**
  *
@@ -11,6 +12,7 @@ public class ShuffleLibraryEvent extends Event {
     public final int player;
 
     public ShuffleLibraryEvent(int player) {
+        super(EventType.SHUFFLE_LIBRARY);
         this.player = player;
     }
 

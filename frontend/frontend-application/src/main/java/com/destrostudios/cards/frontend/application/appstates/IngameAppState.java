@@ -19,11 +19,13 @@ import com.destrostudios.cards.frontend.application.appstates.services.players.P
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.EventType;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -243,19 +245,23 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Events
 
-        gameService.getGameContext().getEvents().resolved().add(AddCardToCreatureZoneEvent.class, (event, random) -> tryPlayEntryAnimation(event.card));
-        gameService.getGameContext().getEvents().pre().add(BattleEvent.class, (event, random) -> {
+        gameService.getGameContext().getEvents().resolved().add(EventType.ADD_CARD_TO_CREATURE_ZONE, (AddCardToCreatureZoneEvent event, NetworkRandom random) -> {
+            tryPlayEntryAnimation(event.card);
+        });
+        gameService.getGameContext().getEvents().pre().add(EventType.BATTLE, (BattleEvent event, NetworkRandom random) -> {
             TransformedBoardObject<?> attacker = entityBoardMap.getBoardObject(event.source);
             TransformedBoardObject<?> defender = entityBoardMap.getBoardObject(event.target);
             board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
         });
-        gameService.getGameContext().getEvents().resolved().add(BattleEvent.class, (event, random) -> board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f)));
-        /*gameService.getGameContext().getEvents().pre().add(ShuffleLibraryEvent.class, (event, random) -> {
+        gameService.getGameContext().getEvents().resolved().add(EventType.BATTLE, (event, random) -> {
+            board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f));
+        });
+        /*gameService.getGameContext().getEvents().pre().add(EventType.SHUFFLE_LIBRARY, (ShuffleLibraryEvent event, NetworkRandom random) -> {
             LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
         });*/
 
-        gameService.getGameContext().getEvents().instant().add(GameOverEvent.class, (event, random) -> {
+        gameService.getGameContext().getEvents().instant().add(EventType.GAME_OVER, (GameOverEvent event, NetworkRandom random) -> {
             gameService.onGameOver();
             boolean isWinner = (gameService.getPlayerEntity() == event.winner);
             mainApplication.getStateManager().attach(new GameOverAppState(isWinner));

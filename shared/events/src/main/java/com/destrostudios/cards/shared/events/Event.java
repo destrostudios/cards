@@ -6,6 +6,11 @@ import lombok.Setter;
 
 public abstract class Event {
 
+    public Event(Enum<?> eventType) {
+        this.eventType = eventType;
+    }
+    @Getter
+    private Enum<?> eventType;
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
     private Event parent;

@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.EventType;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -17,6 +18,7 @@ public class CastSpellEvent extends Event {
     }
 
     public CastSpellEvent(int source, int spell, int[] targets) {
+        super(EventType.CAST_SPELL);
         this.source = source;
         this.spell = spell;
         this.targets = targets;

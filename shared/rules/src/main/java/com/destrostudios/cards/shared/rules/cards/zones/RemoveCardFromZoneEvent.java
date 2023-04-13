@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.EventType;
 
 public class RemoveCardFromZoneEvent extends Event {
 
@@ -9,6 +10,7 @@ public class RemoveCardFromZoneEvent extends Event {
     public final ComponentDefinition<Integer> zone;
 
     public RemoveCardFromZoneEvent(int card, ComponentDefinition<Integer> zone) {
+        super(EventType.REMOVE_CARD_FROM_ZONE);
         this.card = card;
         this.zone = zone;
     }

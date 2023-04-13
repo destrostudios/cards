@@ -95,6 +95,7 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
                 return new GameContext(startGameInfo, data);
             }
         });
+        kryo.register(EventType.class);
         kryo.register(GameStartEvent.class, new FieldSerializer<>(kryo, GameStartEvent.class));
         kryo.register(MulliganEvent.class, new FieldSerializer<>(kryo, MulliganEvent.class));
         kryo.register(CastSpellEvent.class, new FieldSerializer<>(kryo, CastSpellEvent.class));

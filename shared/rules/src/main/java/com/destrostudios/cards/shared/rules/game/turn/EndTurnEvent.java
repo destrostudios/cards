@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.game.turn;
 
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.EventType;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ public class EndTurnEvent extends Event {
     }
 
     public EndTurnEvent(int player) {
+        super(EventType.END_TURN);
         this.player = player;
     }
 

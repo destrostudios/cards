@@ -1,28 +1,33 @@
 package com.destrostudios.cards.shared.events;
 
-import java.util.*;
-import java.util.function.Predicate;
+import com.esotericsoftware.kryo.util.IntMap;
 
 public class EventHandlers {
 
-    private Map<Predicate, List<EventHandler>> handlers = new LinkedHashMap<>();
+    private IntMap<EventHandler[]> eventHandlers = new IntMap<>();
 
-    public <T extends Event> void add(Class<T> eventClass, EventHandler<T> handler) {
-        add(eventClass::isAssignableFrom, handler);
-    }
-
-    public <T extends Event> void add(Predicate<Class<T>> eventClassPredicate, EventHandler<T> handler) {
-        List<EventHandler> registeredHandlers = this.handlers.computeIfAbsent(eventClassPredicate, x -> new ArrayList<>());
-        registeredHandlers.add(handler);
-    }
-
-    public <T extends Event> Iterable<EventHandler> get(Class<T> eventClass) {
-        LinkedList<EventHandler> matchingHandlers = new LinkedList<>();
-        for (Map.Entry<Predicate, List<EventHandler>> entry : handlers.entrySet()) {
-            if (entry.getKey().test(eventClass)) {
-                matchingHandlers.addAll(entry.getValue());
-            }
+    public <T extends Event> void add(Enum<?> eventType, EventHandler<T> handler) {
+        EventHandler[] oldEventHandlers = get(eventType);
+        EventHandler[] newEventHandlers;
+        if (oldEventHandlers == null) {
+            newEventHandlers = new EventHandler[] { handler };
+        } else {
+            newEventHandlers = new EventHandler[oldEventHandlers.length + 1];
+            System.arraycopy(oldEventHandlers, 0, newEventHandlers, 0, oldEventHandlers.length);
+            newEventHandlers[oldEventHandlers.length] = handler;
         }
-        return matchingHandlers;
+        put(eventType, newEventHandlers);
+    }
+
+    public <T extends Event> void put(Enum<?> eventType, EventHandler<T>[] handlers) {
+        eventHandlers.put(eventType.ordinal(), handlers);
+    }
+
+    public EventHandler[] get(Event event) {
+        return get(event.getEventType());
+    }
+
+    private EventHandler[] get(Enum<?> eventType) {
+        return eventHandlers.get(eventType.ordinal());
     }
 }

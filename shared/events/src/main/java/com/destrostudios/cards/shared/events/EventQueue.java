@@ -25,19 +25,18 @@ public class EventQueue {
     }
 
     private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event, NetworkRandom random, BiPredicate<Event, Event> stopAndInsertEventHandlers) {
-        Iterator<EventHandler> eventHandlersIterator = eventHandlers.get(event.getClass()).iterator();
-        int startingIndex = 0;
-        for (PendingEventHandler pendingEventHandler : pendingEventHandlers) {
-            if (stopAndInsertEventHandlers.test(pendingEventHandler.getEvent(), event)) {
-                break;
+        EventHandler[] handlers = eventHandlers.get(event);
+        if (handlers != null) {
+            int startingIndex = 0;
+            for (PendingEventHandler pendingEventHandler : pendingEventHandlers) {
+                if (stopAndInsertEventHandlers.test(pendingEventHandler.getEvent(), event)) {
+                    break;
+                }
+                startingIndex++;
             }
-            startingIndex++;
-        }
-        int i = startingIndex;
-        while (eventHandlersIterator.hasNext()) {
-            EventHandler eventHandler = eventHandlersIterator.next();
-            pendingEventHandlers.add(i, new PendingEventHandler(event, eventHandler, random));
-            i++;
+            for (int i = 0; i < handlers.length; i++) {
+                pendingEventHandlers.add(startingIndex + i, new PendingEventHandler(event, handlers[i], random));
+            }
         }
     }
 
@@ -49,7 +48,7 @@ public class EventQueue {
         PendingEventHandler pendingEventHandler = pendingEventHandlers.poll();
         Event event = pendingEventHandler.getEvent();
         parentEvent = event;
-        LOG.debug("Handling {}", event);
+        LOG.trace("Handling {}", event);
         pendingEventHandler.handleEvent();
         parentEvent = null;
         removeCancelledHandlers();
@@ -59,7 +58,7 @@ public class EventQueue {
         for (int i = 0; i < pendingEventHandlers.size(); i++) {
             PendingEventHandler pendingPendingEventHandler = pendingEventHandlers.get(i);
             if (pendingPendingEventHandler.getEvent().isCancelled()) {
-                LOG.debug("{} was cancelled", pendingPendingEventHandler);
+                LOG.trace("{} was cancelled", pendingPendingEventHandler);
                 pendingEventHandlers.remove(i);
                 i--;
             }

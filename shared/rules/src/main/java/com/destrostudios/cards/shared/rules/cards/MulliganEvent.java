@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.EventType;
 
 import java.util.Arrays;
 
@@ -14,6 +15,7 @@ public class MulliganEvent extends Event {
     }
 
     public MulliganEvent(int[] cards) {
+        super(EventType.MULLIGAN);
         this.cards = cards;
     }
 

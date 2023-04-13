@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.events.EventHandler;
 import com.destrostudios.cards.shared.events.EventHandlers;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.abilities.*;
@@ -41,103 +42,101 @@ public class GameContext {
     private Integer winner;
 
     private void initListeners() {
-        addEventHandlers(events.instant(), AddCardToBoardEvent.class,
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_BOARD,
                 new AddCardToBoardHandler(),
                 new ActivateDivineShieldOnAddToBoardHandler()
         );
-        addEventHandler(events.instant(), AddCardToCreatureZoneEvent.class, new AddCardToCreatureZoneHandler());
-        addEventHandler(events.instant(), AddCardToGraveyardEvent.class, new AddCardToGraveyardHandler());
-        addEventHandler(events.instant(), AddCardToHandEvent.class, new AddCardToHandHandler());
-        addEventHandler(events.instant(), AddCardToLibraryEvent.class, new AddCardToLibraryHandler());
-        addEventHandlers(events.instant(), AddCardToZoneEvent.class,
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_CREATURE_ZONE, new AddCardToCreatureZoneHandler());
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_GRAVEYARD, new AddCardToGraveyardHandler());
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_HAND, new AddCardToHandHandler());
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_LIBRARY, new AddCardToLibraryHandler());
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_ZONE,
                 new RemoveFromOtherZonesOnAddHandler(),
                 new AddCardToZoneHandler()
         );
-        addEventHandler(events.instant(), AddManaEvent.class, new AddManaHandler());
-        addEventHandler(events.instant(), SetAvailableManaEvent.class, new SetAvailableManaHandler());
-        addEventHandler(events.instant(), SetManaEvent.class, new SetManaHandler());
-        addEventHandler(events.instant(), BattleEvent.class, new BattleHandler());
-        addEventHandler(events.resolved(), BattleEvent.class,
+        setEventHandlers(events.instant(), EventType.ADD_MANA, new AddManaHandler());
+        setEventHandlers(events.instant(), EventType.SET_AVAILABLE_MANA, new SetAvailableManaHandler());
+        setEventHandlers(events.instant(), EventType.SET_MANA, new SetManaHandler());
+        setEventHandlers(events.instant(), EventType.BATTLE, new BattleHandler());
+        setEventHandlers(events.resolved(), EventType.BATTLE,
                 new TriggerHandler<>(getTriggersComponent(POST, BattleEvent.class))
         );
-        addEventHandlers(events.instant(), DamageEvent.class, new DamageHandler());
-        addEventHandlers(events.resolved(), DamageEvent.class,
+        setEventHandlers(events.instant(), EventType.DAMAGE, new DamageHandler());
+        setEventHandlers(events.resolved(), EventType.DAMAGE,
                 new TriggerHandler<>(getTriggersComponent(POST, DamageEvent.class)),
                 new CheckDestructionAfterDamageHandler()
         );
-        addEventHandler(events.instant(), HealEvent.class,new HealHandler());
-        addEventHandlers(events.resolved(), HealEvent.class,
+        setEventHandlers(events.instant(), EventType.HEAL, new HealHandler());
+        setEventHandlers(events.resolved(), EventType.HEAL,
                 new TriggerHandler<>(getTriggersComponent(POST, HealEvent.class))
         );
-        addEventHandler(events.instant(), DestructionEvent.class, new DestructionHandler());
-        addEventHandler(events.resolved(), DestructionEvent.class,
+        setEventHandlers(events.instant(), EventType.DESTRUCTION, new DestructionHandler());
+        setEventHandlers(events.resolved(), EventType.DESTRUCTION,
                 new TriggerHandler<>(getTriggersComponent(POST, DestructionEvent.class))
         );
-        addEventHandler(events.instant(), DrawCardEvent.class, new DrawCardHandler());
-        addEventHandler(events.pre(), EndTurnEvent.class,
-                new TriggerHandler<>(getTriggersComponent(PRE, EndTurnEvent.class))
-        );
-        addEventHandlers(events.pre(), EndTurnEvent.class, new RemoveTemporaryBuffsOnEndTurnHandler());
-        addEventHandlers(events.instant(), EndTurnEvent.class,
+        setEventHandlers(events.instant(), EventType.DRAW_CARD, new DrawCardHandler());
+        setEventHandlers(events.pre(), EventType.END_TURN,
+                new TriggerHandler<>(getTriggersComponent(PRE, EndTurnEvent.class)),
+                new RemoveTemporaryBuffsOnEndTurnHandler());
+        setEventHandlers(events.instant(), EventType.END_TURN,
                 new EndTurnHandler(),
                 new ResetCurrentCastsPerTurnOnEndTurnHandler()
         );
-        addEventHandlers(events.instant(), GameStartEvent.class,
+        setEventHandlers(events.instant(), EventType.GAME_START,
                 new SetStartingPlayerHandler(),
                 new ShuffleAllLibrariesOnGameStartHandler(),
                 new AddInitialCardsHandOnGameStartHandler());
-        addEventHandlers(events.instant(), MulliganEvent.class, new MulliganHandler());
-        addEventHandler(events.instant(), PayManaEvent.class, new PayManaHandler());
-        addEventHandlers(events.instant(), CastSpellEvent.class,
+        setEventHandlers(events.instant(), EventType.MULLIGAN, new MulliganHandler());
+        setEventHandlers(events.instant(), EventType.PAY_MANA, new PayManaHandler());
+        setEventHandlers(events.instant(), EventType.CAST_SPELL,
                 new CastSpellHandler(),
                 new IncreaseCurrentCastsPerTurnHandler()
         );
-        addEventHandlers(events.resolved(), CastSpellEvent.class,
+        setEventHandlers(events.resolved(), EventType.CAST_SPELL,
                 new TriggerHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
         );
-        addEventHandlers(events.instant(), RemoveCardFromBoardEvent.class,
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_BOARD,
                 new RemoveDamageOnRemoveFromBoardHandler(),
                 new DeactivateDivineShieldOnRemoveFromBoardHandler(),
                 new RemoveBuffsOnRemoveFromBoardHandler()
         );
-        addEventHandler(events.instant(), RemoveCardFromCreatureZoneEvent.class, new RemoveCardFromCreatureZoneHandler());
-        addEventHandler(events.instant(), RemoveCardFromGraveyardEvent.class, new RemoveCardFromGraveyardHandler());
-        addEventHandlers(events.instant(), RemoveCardFromHandEvent.class,
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_CREATURE_ZONE, new RemoveCardFromCreatureZoneHandler());
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_GRAVEYARD, new RemoveCardFromGraveyardHandler());
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_HAND,
                 new RemoveCardFromHandHandler(),
                 new RemoveDefaultCastFromHandSpellBuffsOnRemoveFromHandHandler()
         );
-        addEventHandler(events.instant(), RemoveCardFromLibraryEvent.class, new RemoveCardFromLibraryHandler());
-        addEventHandler(events.instant(), RemoveCardFromZoneEvent.class, new RemoveCardFromZoneHandler());
-        addEventHandler(events.instant(), ShuffleLibraryEvent.class, new ShuffleLibraryHandler());
-        addEventHandlers(events.instant(), StartTurnEvent.class,
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_LIBRARY, new RemoveCardFromLibraryHandler());
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_ZONE, new RemoveCardFromZoneHandler());
+        setEventHandlers(events.instant(), EventType.SHUFFLE_LIBRARY, new ShuffleLibraryHandler());
+        setEventHandlers(events.instant(), EventType.START_TURN,
                 new StartTurnHandler(),
                 new IncreaseAvailableManaOnTurnStartHandler(),
                 new SetManaToAvailableManaOnTurnStartHandler(),
                 new DrawCardOnTurnStartHandler()
         );
-        addEventHandler(events.instant(), TriggerIfPossibleEvent.class, new TriggerIfPossibleHandler());
-        addEventHandler(events.instant(), TriggerEffectEvent.class, new TriggerEffectHandler());
-        addEventHandler(events.instant(), TriggerEffectImpactEvent.class, new TriggerEffectImpactHandler());
-        addEventHandler(events.instant(), AddBuffEvent.class, new AddBuffHandler());
-        addEventHandler(events.instant(), RemoveBuffEvent.class, new RemoveBuffHandler());
-        addEventHandler(events.instant(), CreateEvent.class, new CreateHandler());
-        addEventHandlers(events.instant(), ConditionsAffectedEvent.class,
+        setEventHandlers(events.instant(), EventType.TRIGGER_IF_POSSIBLE, new TriggerIfPossibleHandler());
+        setEventHandlers(events.instant(), EventType.TRIGGER_EFFECT, new TriggerEffectHandler());
+        setEventHandlers(events.instant(), EventType.TRIGGER_EFFECT_IMPACT, new TriggerEffectImpactHandler());
+        setEventHandlers(events.instant(), EventType.ADD_BUFF, new AddBuffHandler());
+        setEventHandlers(events.instant(), EventType.REMOVE_BUFF, new RemoveBuffHandler());
+        setEventHandlers(events.instant(), EventType.CREATE, new CreateHandler());
+        setEventHandlers(events.instant(), EventType.CONDITIONS_AFFECTED,
                 new CheckBonusDamageHandler(),
                 new CheckDestructionAfterConditionsAffectedHandler()
         );
-        addEventHandler(events.instant(), GameOverEvent.class, new GameOverHandler(this));
+        setEventHandlers(events.instant(), EventType.GAME_OVER, new GameOverHandler(this));
     }
 
-    private <T extends Event> void addEventHandlers(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T>... handlers) {
-        for (GameEventHandler<T> handler : handlers) {
-            addEventHandler(eventHandlers, eventClass, handler);
+    private <T extends Event> void setEventHandlers(EventHandlers eventHandlers, EventType eventType, GameEventHandler... handlers) {
+        EventHandler<T>[] rawHandlers = new EventHandler[handlers.length];
+        for (int i = 0; i < rawHandlers.length; i++) {
+            GameEventHandler<T> handler = handlers[i];
+            handler.data = data;
+            handler.events = events;
+            rawHandlers[i] = handler::handle;
         }
-    }
-
-    private <T extends Event> void addEventHandler(EventHandlers eventHandlers, Class<T> eventClass, GameEventHandler<T> handler) {
-        handler.data = data;
-        handler.events = events;
-        eventHandlers.add(eventClass, handler::handle);
+        eventHandlers.put(eventType, rawHandlers);
     }
 
     public void onGameOver(int winner) {

@@ -3,16 +3,15 @@ package com.destrostudios.cards.shared.rules.game;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@AllArgsConstructor
 public class GameOverHandler extends GameEventHandler<GameOverEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GameOverHandler.class);
 
-    public GameOverHandler(GameContext gameContext) {
-        this.gameContext = gameContext;
-    }
     private GameContext gameContext;
 
     @Override

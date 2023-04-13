@@ -47,11 +47,13 @@ public class EventQueue {
     public void triggerNextEventHandler() {
         PendingEventHandler pendingEventHandler = pendingEventHandlers.poll();
         Event event = pendingEventHandler.getEvent();
-        parentEvent = event;
         LOG.trace("Handling {}", event);
+        parentEvent = event;
         pendingEventHandler.handleEvent();
         parentEvent = null;
-        removeCancelledHandlers();
+        if (event.isCancelled()) {
+            removeCancelledHandlers();
+        }
     }
 
     private void removeCancelledHandlers() {

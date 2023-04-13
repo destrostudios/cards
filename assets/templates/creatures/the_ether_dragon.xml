@@ -15,7 +15,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_board"/>
+                            <entity template="../effects/add_source_to_creature_zone"/>
                             <entity>
                                 <targets>
                                     <entity>
@@ -23,7 +23,7 @@
                                         <targetAll/>
                                     </entity>
                                 </targets>
-                                <addToBoard/>
+                                <addToCreatureZone/>
                             </entity>
                             <entity template="../effects/end_turn"/>
                         </effects>

@@ -9,7 +9,7 @@ import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.AddCardToBoardEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.AddCardToCreatureZoneEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.AddCardToHandEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
@@ -31,8 +31,8 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             events.fire(new AddCardToHandEvent(event.target), random);
         }
 
-        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_BOARD)) {
-            events.fire(new AddCardToBoardEvent(event.target), random);
+        if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_CREATURE_ZONE)) {
+            events.fire(new AddCardToCreatureZoneEvent(event.target), random);
         }
 
         if (data.hasComponent(event.effect, Components.Effect.Zones.ADD_TO_GRAVEYARD)) {

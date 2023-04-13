@@ -99,7 +99,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.END_TURN));
 
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_HAND));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_BOARD));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_CREATURE_ZONE));
         templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.ADD_TO_GRAVEYARD));
 
         templateManager.registerComponent(new ComponentParser_EnumArray<>(Components.Target.SOURCE_PREFILTERS, Prefilter[]::new, Prefilter::valueOf));

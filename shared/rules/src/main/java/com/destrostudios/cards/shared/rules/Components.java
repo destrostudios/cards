@@ -100,7 +100,7 @@ public class Components {
 
         public static class Zones {
             public static final ComponentDefinition<Void> ADD_TO_HAND = create("addToHand");
-            public static final ComponentDefinition<Void> ADD_TO_BOARD = create("addToBoard");
+            public static final ComponentDefinition<Void> ADD_TO_CREATURE_ZONE = create("addToCreatureZone");
             public static final ComponentDefinition<Void> ADD_TO_GRAVEYARD = create("addToGraveyard");
         }
     }

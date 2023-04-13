@@ -1,8 +1,8 @@
 <template>
     <entity>
         <targets>
-            <entity template="../targets/source"/>
+            <entity template="../targets/targets"/>
         </targets>
-        <addToBoard/>
+        <addToCreatureZone/>
     </entity>
 </template>

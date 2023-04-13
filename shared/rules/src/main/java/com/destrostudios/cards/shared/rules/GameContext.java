@@ -42,11 +42,9 @@ public class GameContext {
     private Integer winner;
 
     private void initListeners() {
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_BOARD,
-                new AddCardToBoardHandler(),
-                new ActivateDivineShieldOnAddToBoardHandler()
-        );
-        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_CREATURE_ZONE, new AddCardToCreatureZoneHandler());
+        setEventHandlers(events.instant(), EventType.ADD_CARD_TO_CREATURE_ZONE,
+                new AddCardToCreatureZoneHandler(),
+                new ActivateDivineShieldOnAddToCreatureZoneHandler());
         setEventHandlers(events.instant(), EventType.ADD_CARD_TO_GRAVEYARD, new AddCardToGraveyardHandler());
         setEventHandlers(events.instant(), EventType.ADD_CARD_TO_HAND, new AddCardToHandHandler());
         setEventHandlers(events.instant(), EventType.ADD_CARD_TO_LIBRARY, new AddCardToLibraryHandler());
@@ -95,12 +93,12 @@ public class GameContext {
         setEventHandlers(events.resolved(), EventType.CAST_SPELL,
                 new TriggerHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
         );
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_BOARD,
-                new RemoveDamageOnRemoveFromBoardHandler(),
-                new DeactivateDivineShieldOnRemoveFromBoardHandler(),
-                new RemoveBuffsOnRemoveFromBoardHandler()
+        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_CREATURE_ZONE,
+                new RemoveCardFromCreatureZoneHandler(),
+                new RemoveDamageOnRemoveFromCreatureZoneHandler(),
+                new DeactivateDivineShieldOnRemoveFromCreatureZoneHandler(),
+                new RemoveBuffsOnRemoveFromCreatureZoneHandler()
         );
-        setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_CREATURE_ZONE, new RemoveCardFromCreatureZoneHandler());
         setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_GRAVEYARD, new RemoveCardFromGraveyardHandler());
         setEventHandlers(events.instant(), EventType.REMOVE_CARD_FROM_HAND,
                 new RemoveCardFromHandHandler(),

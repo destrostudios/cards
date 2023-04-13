@@ -27,7 +27,7 @@
                                 </targets>
                                 <destroy/>
                             </entity>
-                            <entity template="../effects/add_target_to_board"/>
+                            <entity template="../effects/add_target_to_creature_zone"/>
                         </effects>
                     </entity>
                 </castTriggers>

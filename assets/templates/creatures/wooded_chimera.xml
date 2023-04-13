@@ -15,7 +15,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/add_source_to_board"/>
+                            <entity template="../effects/add_source_to_creature_zone"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_firstborn)"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_secondborn)"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_thirdborn)"/>

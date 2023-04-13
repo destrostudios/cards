@@ -19,7 +19,7 @@
                                 </targets>
                                 <draw>[draw]</draw>
                             </entity>
-                            <entity template="../../effects/add_source_to_board"/>
+                            <entity template="../../effects/add_source_to_creature_zone"/>
                         </effects>
                     </entity>
                 </castTriggers>

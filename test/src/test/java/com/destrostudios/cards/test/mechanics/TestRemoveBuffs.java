@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class TestRemoveBuffs extends TestGame {
 
     @Test
-    public void testRemoveCardBuffsOnRemoveFromBoard() {
+    public void testRemoveCardBuffsOnRemoveFromCreatureZone() {
         int creature = createCreature(player, Components.CREATURE_ZONE);
         int buff = data.createEntity();
         fire(new AddBuffEvent(creature, buff));

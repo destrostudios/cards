@@ -45,7 +45,7 @@ public class CardsBotModule extends NetworkModule {
         ServerGameData<GameContext> game = gameModule.getGame(gameId);
         SimpleEntityData data = game.state.getData();
         while (true) {
-            int activePlayer = data.query(Components.Game.ACTIVE_PLAYER).unique();
+            int activePlayer = data.query(Components.Player.ACTIVE_PLAYER).unique();
             // Yeah... good enough for now
             if (!data.getComponent(activePlayer, Components.NAME).equals(QueueServerModule.BOT_USER_NAME) || game.state.isGameOver()) {
                 break;

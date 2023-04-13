@@ -348,7 +348,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if (!gameService.getGameContext().isGameOver()) {
             if ("space".equals(name) && isPressed) {
-                if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Game.MULLIGAN)) {
+                if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
                     gameService.sendMulliganAction();
                 } else if (sendableEndTurnEvent != null) {
                     gameService.sendAction(sendableEndTurnEvent);

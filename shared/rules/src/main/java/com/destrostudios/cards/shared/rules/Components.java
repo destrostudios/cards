@@ -58,7 +58,7 @@ public class Components {
         public static final ComponentDefinition<Integer> BONUS_DAMAGED = create("bonusDamaged");
     }
 
-    public static class Game {
+    public static class Player {
         public static final ComponentDefinition<Void> MULLIGAN = create("mulligan");
         public static final ComponentDefinition<Void> ACTIVE_PLAYER = create("activePlayer");
     }

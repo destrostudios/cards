@@ -21,8 +21,8 @@ public class PlayerActionsGenerator {
 
     public List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new LinkedList<>();
-        if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
-            if (data.hasComponent(player, Components.Game.MULLIGAN)) {
+        if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
+            if (data.hasComponent(player, Components.Player.MULLIGAN)) {
                 generateMulligans(data, player, possibleEvents::add);
             } else {
                 generateSpellCasts(data, player, possibleEvents::add);

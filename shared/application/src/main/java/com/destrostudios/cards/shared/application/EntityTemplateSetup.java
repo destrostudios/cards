@@ -55,8 +55,8 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.DAMAGED));
         templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.BONUS_DAMAGED));
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Game.MULLIGAN));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Game.ACTIVE_PLAYER));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Player.MULLIGAN));
+        templateManager.registerComponent(new ComponentParser_Void(Components.Player.ACTIVE_PLAYER));
 
         templateManager.registerComponent(new ComponentParser_Boolean(Components.Ability.DIVINE_SHIELD));
         templateManager.registerComponent(new ComponentParser_Void(Components.Ability.TAUNT));

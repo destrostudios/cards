@@ -16,7 +16,7 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
 
     @Override
     public void handle(MulliganEvent event, NetworkRandom random) {
-        int player = data.query(Components.Game.ACTIVE_PLAYER).unique();
+        int player = data.query(Components.Player.ACTIVE_PLAYER).unique();
         LOG.debug("Player {} is mulliganing away cards {}", inspect(player), inspect(event.cards));
         if (event.cards.length > 0) {
             IntList remainingLibraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
@@ -34,12 +34,12 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
                 events.fire(new MoveToHandEvent(card), random);
             }
         }
-        data.removeComponent(player, Components.Game.MULLIGAN);
-        data.removeComponent(player, Components.Game.ACTIVE_PLAYER);
+        data.removeComponent(player, Components.Player.MULLIGAN);
+        data.removeComponent(player, Components.Player.ACTIVE_PLAYER);
         int nextPlayer = data.getComponent(player, Components.NEXT_PLAYER);
-        if (data.hasComponent(nextPlayer, Components.Game.MULLIGAN)) {
+        if (data.hasComponent(nextPlayer, Components.Player.MULLIGAN)) {
             LOG.debug("Setting next player {} ready for mulligan", inspect(nextPlayer));
-            data.setComponent(nextPlayer, Components.Game.ACTIVE_PLAYER);
+            data.setComponent(nextPlayer, Components.Player.ACTIVE_PLAYER);
         } else {
             LOG.debug("Mulligan phase finished");
             events.fire(new StartTurnEvent(nextPlayer), random);

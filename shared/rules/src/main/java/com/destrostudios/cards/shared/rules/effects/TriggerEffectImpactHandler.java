@@ -85,7 +85,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
         }
 
         if (data.hasComponent(event.effect, Components.Effect.END_TURN)) {
-            int activePlayer = data.query(Components.Game.ACTIVE_PLAYER).unique();
+            int activePlayer = data.query(Components.Player.ACTIVE_PLAYER).unique();
             events.fire(new EndTurnEvent(activePlayer), random);
         }
     }

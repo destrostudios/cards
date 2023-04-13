@@ -13,6 +13,6 @@ public class TestTheEtherDragon extends TestGame {
         int card = create("creatures/the_ether_dragon", player, Components.HAND);
         castFromHand(card);
         assertHasComponent(dragons, Components.CREATURE_ZONE);
-        assertHasComponent(opponent, Components.Game.ACTIVE_PLAYER);
+        assertHasComponent(opponent, Components.Player.ACTIVE_PLAYER);
     }
 }

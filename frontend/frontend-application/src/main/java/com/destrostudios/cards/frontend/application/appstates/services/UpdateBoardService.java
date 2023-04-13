@@ -41,7 +41,7 @@ public class UpdateBoardService {
         IntList players = data.query(Components.NEXT_PLAYER).list();
         for (int player : players) {
             PlayerBoardObject playerBoardObject = entityBoardMap.getOrCreatePlayer(player);
-            playerBoardObject.getModel().setActivePlayer(data.hasComponent(player, Components.Game.ACTIVE_PLAYER));
+            playerBoardObject.getModel().setActivePlayer(data.hasComponent(player, Components.Player.ACTIVE_PLAYER));
             playerBoardObject.getModel().setName(data.getComponent(player, Components.NAME));
             playerBoardObject.getModel().setCurrentHealth(StatsUtil.getEffectiveHealth(data, player));
             playerBoardObject.getModel().setMaxHealth(data.getComponent(player, Components.Stats.HEALTH));
@@ -65,7 +65,7 @@ public class UpdateBoardService {
             } else {
                 cardZoneIndex = data.getComponent(cardEntity, Components.HAND);
                 if (cardZoneIndex != null) {
-                    if ((owner == gameService.getPlayerEntity()) && data.hasComponent(owner, Components.Game.MULLIGAN)) {
+                    if ((owner == gameService.getPlayerEntity()) && data.hasComponent(owner, Components.Player.MULLIGAN)) {
                         cardZone = selectionZone;
                     } else {
                         cardZone = playerZones.getHandZone();
@@ -101,8 +101,8 @@ public class UpdateBoardService {
         EntityData data = gameService.getGameContext().getData();
         validSpellTargets.clear();
         int player = gameService.getPlayerEntity();
-        if (data.hasComponent(player, Components.Game.ACTIVE_PLAYER)) {
-            if (data.hasComponent(player, Components.Game.MULLIGAN)) {
+        if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
+            if (data.hasComponent(player, Components.Player.MULLIGAN)) {
                 IntList handCards = data.query(Components.HAND).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
                 for (int cardEntity : handCards) {
                     Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);

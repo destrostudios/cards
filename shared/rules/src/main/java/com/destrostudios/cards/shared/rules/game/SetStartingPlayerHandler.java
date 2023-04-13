@@ -16,6 +16,6 @@ public class SetStartingPlayerHandler extends GameEventHandler<GameStartEvent> {
         IntList players = data.query(Components.NEXT_PLAYER).list();
         int player = players.get(random.nextInt(players.size()));
         LOG.debug("Starting player is {}", inspect(player));
-        data.setComponent(player, Components.Game.ACTIVE_PLAYER);
+        data.setComponent(player, Components.Player.ACTIVE_PLAYER);
     }
 }

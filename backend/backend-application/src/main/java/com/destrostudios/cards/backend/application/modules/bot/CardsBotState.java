@@ -43,7 +43,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     @Override
     public Integer activeTeam() {
-        return gameContext.getData().query(Components.Game.ACTIVE_PLAYER).unique();
+        return gameContext.getData().query(Components.Player.ACTIVE_PLAYER).unique();
     }
 
     @Override

@@ -41,16 +41,16 @@ public class PlayerActionsGenerator {
     }
 
     private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
-        IntList ownedCardEntities = new IntList();
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
-        ownedCardEntities.addAll(data.query(Components.HAND).list(ownedBy(data, player)));
-        ownedCardEntities.addAll(data.query(Components.CREATURE_ZONE).list(ownedBy(data, player)));
-        for (int card : ownedCardEntities) {
+        generateSpellCasts(data, data.query(Components.HAND).list(ownedBy(data, player)), out);
+        generateSpellCasts(data, data.query(Components.CREATURE_ZONE).list(ownedBy(data, player)), out);
+    }
+
+    private void generateSpellCasts(EntityData data, IntList ownedCards, Consumer<Event> out) {
+        for (int card : ownedCards) {
             int[] spells = data.getComponent(card, Components.SPELLS);
-            if (spells != null) {
-                for (int spell : spells) {
-                    generateCastSpellEvents(data, card, spell, out);
-                }
+            for (int spell : spells) {
+                generateCastSpellEvents(data, card, spell, out);
             }
         }
     }
@@ -83,6 +83,6 @@ public class PlayerActionsGenerator {
     }
 
     private IntPredicate ownedBy(EntityData data, int player) {
-        return x -> data.hasComponentValue(x, Components.OWNED_BY, player);
+        return card -> data.getComponent(card, Components.OWNED_BY) == player;
     }
 }

@@ -49,11 +49,9 @@ public class ExpressionEntity {
 
     public Integer getManaCost() {
         int[] spells = data.getComponent(entity, Components.SPELLS);
-        if (spells != null) {
-            for (int spell : spells) {
-                if (SpellUtil.isDefaultCastFromHandSpell(data, spell)) {
-                    return CostUtil.getEffectiveManaCost(data, spell);
-                }
+        for (int spell : spells) {
+            if (SpellUtil.isDefaultCastFromHandSpell(data, spell)) {
+                return CostUtil.getEffectiveManaCost(data, spell);
             }
         }
         return null;

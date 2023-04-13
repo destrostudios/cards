@@ -52,23 +52,21 @@ public class CardGuiMapper {
         Integer manaCostDetails = null;
         List<Spell> spells = new LinkedList<>();
         int[] spellEntities = data.getComponent(card, Components.SPELLS);
-        if (spellEntities != null) {
-            for (int spellEntity : spellEntities) {
-                Integer manaCost = CostUtil.getEffectiveManaCost(data, spellEntity);
-                if ((!checkedDefaultCastFromHandSpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
-                    baseManaCost = data.getComponent(spellEntity, Components.Cost.MANA_COST);
-                    manaCostDetails = manaCost;
-                    if (data.hasComponent(card, Components.HAND)) {
-                        manaCostFullArt = manaCostDetails;
-                    }
-                    checkedDefaultCastFromHandSpell = true;
-                } else if (!SpellUtil.isDefaultAttackSpell(data, spellEntity)) {
-                    String spellDescription = SpellDescriptionGenerator.generateDescription(data, spellEntity);
-                    Spell spell = new Spell();
-                    spell.setCost(createCost(manaCost));
-                    spell.setDescription(spellDescription);
-                    spells.add(spell);
+        for (int spellEntity : spellEntities) {
+            Integer manaCost = CostUtil.getEffectiveManaCost(data, spellEntity);
+            if ((!checkedDefaultCastFromHandSpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
+                baseManaCost = data.getComponent(spellEntity, Components.Cost.MANA_COST);
+                manaCostDetails = manaCost;
+                if (data.hasComponent(card, Components.HAND)) {
+                    manaCostFullArt = manaCostDetails;
                 }
+                checkedDefaultCastFromHandSpell = true;
+            } else if (!SpellUtil.isDefaultAttackSpell(data, spellEntity)) {
+                String spellDescription = SpellDescriptionGenerator.generateDescription(data, spellEntity);
+                Spell spell = new Spell();
+                spell.setCost(createCost(manaCost));
+                spell.setDescription(spellDescription);
+                spells.add(spell);
             }
         }
         cardModel.setManaCostFullArt(manaCostFullArt);

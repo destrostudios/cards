@@ -16,10 +16,10 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
 
     @Override
     public void handle(MulliganEvent event, NetworkRandom random) {
-        int player = data.query(Components.Player.ACTIVE_PLAYER).unique();
+        int player = data.unique(Components.Player.ACTIVE_PLAYER);
         LOG.debug("Player {} is mulliganing away cards {}", inspect(player), inspect(event.cards));
         if (event.cards.length > 0) {
-            IntList remainingLibraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+            IntList remainingLibraryCards = data.list(Components.LIBRARY, card -> data.getComponent(card, Components.OWNED_BY) == player);
             IntList newCards = new IntList(event.cards.length);
             for (int i = 0; i < event.cards.length; i++) {
                 int newCard = remainingLibraryCards.removeAt(random.nextInt(remainingLibraryCards.size()));

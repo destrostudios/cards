@@ -13,8 +13,8 @@ public class SpellUtil {
     public static boolean isCastable_WithoutSpellCondition(EntityData data, int card, int spell) {
         Integer maximumCastsPerTurn = data.getComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN);
         if (maximumCastsPerTurn != null) {
-            int currentCastsPerTurn = data.getOptionalComponent(spell, Components.Spell.CURRENT_CASTS_PER_TURN).orElse(0);
-            if (currentCastsPerTurn >= maximumCastsPerTurn) {
+            Integer currentCastsPerTurn = data.getComponent(spell, Components.Spell.CURRENT_CASTS_PER_TURN);
+            if ((currentCastsPerTurn != null) && (currentCastsPerTurn >= maximumCastsPerTurn)) {
                 return false;
             }
         }

@@ -28,9 +28,7 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
             Integer cardZoneIndex = data.getComponent(card, otherZone);
             if (cardZoneIndex != null) {
                 data.removeComponent(card, otherZone);
-                for (int otherCard : data.query(otherZone).list(
-                    c -> ((data.getComponent(c, Components.OWNED_BY) == owner) && (data.getComponent(c, otherZone) > cardZoneIndex))
-                )) {
+                for (int otherCard : data.list(otherZone, c -> ((data.getComponent(c, Components.OWNED_BY) == owner) && (data.getComponent(c, otherZone) > cardZoneIndex)))) {
                     data.setComponent(otherCard, otherZone, data.getComponent(otherCard, otherZone) - 1);
                 }
                 if (otherZone == Components.CREATURE_ZONE) {

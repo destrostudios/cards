@@ -38,7 +38,7 @@ public class UpdateBoardService {
 
     public void update(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
-        IntList players = data.query(Components.NEXT_PLAYER).list();
+        IntList players = data.list(Components.NEXT_PLAYER);
         for (int player : players) {
             PlayerBoardObject playerBoardObject = entityBoardMap.getOrCreatePlayer(player);
             playerBoardObject.getModel().setActivePlayer(data.hasComponent(player, Components.Player.ACTIVE_PLAYER));
@@ -48,7 +48,7 @@ public class UpdateBoardService {
             playerBoardObject.getModel().setCurrentMana(data.getOptionalComponent(player, Components.MANA).orElse(0));
             playerBoardObject.getModel().setMaxMana(data.getOptionalComponent(player, Components.AVAILABLE_MANA).orElse(0));
         }
-        IntList cardEntities = data.query(Components.OWNED_BY).list();
+        IntList cardEntities = data.list(Components.OWNED_BY);
         for (int cardEntity : cardEntities) {
             CardZone cardZone = null;
             Integer cardZoneIndex;
@@ -103,7 +103,7 @@ public class UpdateBoardService {
         int player = gameService.getPlayerEntity();
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
-                IntList handCards = data.query(Components.HAND).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+                IntList handCards = data.list(Components.HAND, card -> data.getComponent(card, Components.OWNED_BY) == player);
                 for (int cardEntity : handCards) {
                     Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
                     card.setInteractivity(InteractivitySource.MOUSE_LEFT, new ClickInteractivity() {
@@ -122,9 +122,7 @@ public class UpdateBoardService {
                         LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(castSpellEvent.spell, s -> new LinkedList<>());
                         if (validTargets.isEmpty()) {
                             // TODO: Improve?
-                            int cardEntity = data.query(Components.SPELLS)
-                                    .list(currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), castSpellEvent.spell))
-                                    .get(0);
+                            int cardEntity = data.list(Components.SPELLS, currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), castSpellEvent.spell)).get(0);
                             Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
 
                             Interactivity interactivity;

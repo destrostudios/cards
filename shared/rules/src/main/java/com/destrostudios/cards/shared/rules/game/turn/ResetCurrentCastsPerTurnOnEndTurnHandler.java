@@ -13,7 +13,7 @@ public class ResetCurrentCastsPerTurnOnEndTurnHandler extends GameEventHandler<E
     @Override
     public void handle(EndTurnEvent event, NetworkRandom random) {
         LOG.debug("Resetting current casts per turn at end of turn");
-        for (int entity : data.query(Components.Spell.CURRENT_CASTS_PER_TURN).list()) {
+        for (int entity : data.list(Components.Spell.CURRENT_CASTS_PER_TURN)) {
             data.removeComponent(entity, Components.Spell.CURRENT_CASTS_PER_TURN);
         }
     }

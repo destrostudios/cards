@@ -1,25 +1,30 @@
 package com.destrostudios.cards.shared.entities;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntPredicate;
 
 public class SimpleEntityData implements EntityData {
 
     public SimpleEntityData(SimpleEntityData data) {
         components = new IntMap[data.components.length];
+        cacheList = new IntList[data.components.length];
         for (int i = 0; i < components.length; i++) {
             components[i] = new IntMap(data.components[i]);
         }
-        nextEntity = data.getNextEntity();
+        nextEntity = data.nextEntity;
     }
 
     public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
         components = new IntMap[componentDefinitions.size()];
+        cacheList = new IntList[components.length];
         for (int i = 0; i < components.length; i++) {
             components[i] = new IntMap();
         }
         nextEntity = 0;
     }
     private IntMap[] components;
+    private IntList[] cacheList;
     private int nextEntity;
 
     @Override
@@ -40,25 +45,74 @@ public class SimpleEntityData implements EntityData {
     @Override
     public <T> void setComponent(int entity, ComponentDefinition<T> component, T value) {
         getComponentMap(component).set(entity, value);
+        cacheList[component.getId()] = null;
     }
 
     @Override
     public <T> void removeComponent(int entity, ComponentDefinition<T> component) {
         getComponentMap(component).remove(entity);
+        cacheList[component.getId()] = null;
     }
 
     @Override
-    public Aggregator query(ComponentDefinition<?> component) {
-        return new MapAggregator(getComponentMap(component));
+    public IntList list(ComponentDefinition<?> component) {
+        IntList result = cacheList[component.getId()];
+        if (result == null) {
+            IntMap<?> componentMap = components[component.getId()];
+            result = new IntList(componentMap.size());
+            componentMap.foreachKey(result::add);
+            result.sort();
+            cacheList[component.getId()] = result;
+        }
+        return result;
     }
 
     @Override
-    public Aggregator queryAll(ComponentDefinition<?>... components) {
+    public IntList list(ComponentDefinition<?> component, IntPredicate predicate) {
+        IntMap<?> componentMap = components[component.getId()];
+        IntList result = new IntList(componentMap.size());
+        componentMap.foreachKey(value -> {
+            if (predicate.test(value)) {
+                result.add(value);
+            }
+        });
+        result.sort();
+        return result;
+    }
+
+    @Override
+    public IntList listAll(ComponentDefinition<?>... components) {
         IntMap<?>[] componentMaps = new IntMap[components.length];
         for (int i = 0; i < components.length; i++) {
             componentMaps[i] = getComponentMap(components[i]);
         }
-        return new MultiMapAggregator(componentMaps);
+        IntList result = new IntList(componentMaps[0].size());
+        componentMaps[0].foreachKey(key -> {
+            for (int i = 1; i < componentMaps.length; i++) {
+                if (!componentMaps[i].hasKey(key)) {
+                    return;
+                }
+            }
+            result.add(key);
+        });
+        result.sort();
+        return result;
+    }
+
+    @Override
+    public int unique(ComponentDefinition<?> component) {
+        return getComponentMap(component).iterator().next();
+    }
+
+    @Override
+    public int count(ComponentDefinition<?> component, IntPredicate predicate) {
+        AtomicInteger count = new AtomicInteger();
+        getComponentMap(component).foreachKey(value -> {
+            if (predicate.test(value)) {
+                count.getAndIncrement();
+            }
+        });
+        return count.get();
     }
 
     private <T> IntMap<T> getComponentMap(ComponentDefinition<T> component) {

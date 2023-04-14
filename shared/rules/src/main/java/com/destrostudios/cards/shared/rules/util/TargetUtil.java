@@ -56,7 +56,7 @@ public class TargetUtil {
     }
 
     public static IntList getPrefilteredEntities(EntityData data, int source, Prefilter[] prefilters) {
-        return data.query(getBasicPrefilterComponent(prefilters[0])).list(entity -> isFulfillingPrefilters(data, entity, source, prefilters));
+        return data.list(getBasicPrefilterComponent(prefilters[0]), entity -> isFulfillingPrefilters(data, entity, source, prefilters));
     }
 
     public static boolean isFulfillingPrefilters_Source(EntityData data, int source, int entityWithPrefilters) {

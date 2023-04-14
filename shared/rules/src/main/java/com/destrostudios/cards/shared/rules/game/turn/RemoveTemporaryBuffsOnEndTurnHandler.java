@@ -15,8 +15,8 @@ public class RemoveTemporaryBuffsOnEndTurnHandler extends GameEventHandler<EndTu
 
     @Override
     public void handle(EndTurnEvent event, NetworkRandom random) {
-        IntList buffs = data.query(Components.Buff.UNTIL_END_OF_TURN).list();
-        IntList targets = data.query(Components.BUFFS).list();
+        IntList buffs = data.list(Components.Buff.UNTIL_END_OF_TURN);
+        IntList targets = data.list(Components.BUFFS);
         for (int buff : buffs) {
             for (int target : targets) {
                 if (ArrayUtil.contains(data, target, Components.BUFFS, buff)) {

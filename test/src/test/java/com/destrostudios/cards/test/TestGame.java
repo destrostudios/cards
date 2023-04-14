@@ -252,7 +252,7 @@ public class TestGame {
     }
 
     protected int getCardsCount(int player, ComponentDefinition<Integer> zone) {
-        return data.query(zone).count(entity -> data.getComponent(entity, Components.OWNED_BY) == player);
+        return data.count(zone, card -> data.getComponent(card, Components.OWNED_BY) == player);
     }
 
     protected void assertOneCard(int player, ComponentDefinition<Integer> zone, String name) {
@@ -272,7 +272,7 @@ public class TestGame {
     }
 
     protected IntList getCards(int player, ComponentDefinition<Integer> zone, String name) {
-        return data.query(zone).list(entity -> (data.getComponent(entity, Components.OWNED_BY) == player) && (data.getComponent(entity, Components.NAME).equals(name)));
+        return data.list(zone, card -> (data.getComponent(card, Components.OWNED_BY) == player) && (data.getComponent(card, Components.NAME).equals(name)));
     }
 
     protected void assertAttack(int[] entities, int value) {

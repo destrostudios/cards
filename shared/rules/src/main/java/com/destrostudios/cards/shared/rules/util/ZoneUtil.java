@@ -12,14 +12,14 @@ public class ZoneUtil {
         /*if (data.hasComponent(card, zone)) {
             throw new RuntimeException("Card " + card + " is already in zone " + zone.getName());
         }*/
-        data.setComponent(card, zone, data.query(zone).count(c -> data.getComponent(c, Components.OWNED_BY) == owner));
+        data.setComponent(card, zone, data.count(zone, c -> data.getComponent(c, Components.OWNED_BY) == owner));
         if (zone == Components.CREATURE_ZONE) {
             data.setComponent(card, Components.BOARD);
         }
     }
 
     public static Integer getTopLibraryCard(EntityData data, int player) {
-        IntList libraryCards = data.query(Components.LIBRARY).list(card -> data.getComponent(card, Components.OWNED_BY) == player);
+        IntList libraryCards = data.list(Components.LIBRARY, card -> data.getComponent(card, Components.OWNED_BY) == player);
         return getTopMostCard(data, libraryCards, Components.LIBRARY);
     }
 

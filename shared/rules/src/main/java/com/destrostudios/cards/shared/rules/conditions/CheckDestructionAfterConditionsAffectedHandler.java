@@ -10,6 +10,6 @@ public class CheckDestructionAfterConditionsAffectedHandler extends BaseDestroyO
 
     @Override
     protected IntList getAffectedTargets(EntityData data, ConditionsAffectedEvent event) {
-        return data.queryAll(Components.CREATURE_ZONE, Components.AURAS).list();
+        return data.listAll(Components.CREATURE_ZONE, Components.AURAS);
     }
 }

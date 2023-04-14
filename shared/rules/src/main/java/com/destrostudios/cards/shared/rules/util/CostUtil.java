@@ -10,8 +10,7 @@ public class CostUtil {
     public static boolean isPayable(EntityData data, int player, int spell) {
         Integer manaCost = getEffectiveManaCost(data, spell);
         if (manaCost != null) {
-            int availableMana = data.getOptionalComponent(player, Components.MANA).orElse(0);
-            return manaCost <= availableMana;
+            return manaCost <= data.getComponent(player, Components.MANA);
         }
         return true;
     }

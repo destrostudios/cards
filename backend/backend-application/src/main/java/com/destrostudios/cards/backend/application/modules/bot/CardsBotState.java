@@ -22,7 +22,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     public CardsBotState(GameContext gameContext, NetworkRandom random) {
         this.gameContext = gameContext;
-        players = gameContext.getData().query(Components.NEXT_PLAYER).list().boxed();
+        players = gameContext.getData().list(Components.NEXT_PLAYER).boxed();
         playerActionsGenerator = new PlayerActionsGenerator();
         this.random = random;
     }
@@ -43,7 +43,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     @Override
     public Integer activeTeam() {
-        return gameContext.getData().query(Components.Player.ACTIVE_PLAYER).unique();
+        return gameContext.getData().unique(Components.Player.ACTIVE_PLAYER);
     }
 
     @Override

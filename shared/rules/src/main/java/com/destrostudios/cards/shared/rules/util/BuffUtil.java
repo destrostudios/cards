@@ -2,13 +2,11 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class BuffUtil {
 
@@ -45,7 +43,7 @@ public class BuffUtil {
         Integer initialValue = data.getComponent(entity, initialValueComponent);
         if (initialValue != null) {
             BuffCalculationResult result = new BuffCalculationResult(initialValue, 0);
-            List<Integer> buffs = getAffectingBuffs(data, entity);
+            IntList buffs = getAffectingBuffs(data, entity);
             for (int buff : buffs) {
                 buffModifier.modifyValue(data, entity, buff, result);
             }
@@ -54,8 +52,8 @@ public class BuffUtil {
         return null;
     }
 
-    public static List<Integer> getAffectingBuffs(EntityData data, int target) {
-        LinkedList<Integer> affectingBuffs = new LinkedList<>();
+    public static IntList getAffectingBuffs(EntityData data, int target) {
+        IntList affectingBuffs = new IntList();
         // Direct buffs
         int[] buffs = data.getComponent(target, Components.BUFFS);
         if (buffs != null) {
@@ -65,7 +63,7 @@ public class BuffUtil {
         }
         // Auras
         int[] targets = new int[] { target };
-        for (int source : data.query(Components.AURAS).list()) {
+        for (int source : data.list(Components.AURAS)) {
             int[] auras = data.getComponent(source, Components.AURAS);
             for (int aura : auras) {
                 if (ConditionUtil.isConditionFulfilled(data, aura, source, targets)) {

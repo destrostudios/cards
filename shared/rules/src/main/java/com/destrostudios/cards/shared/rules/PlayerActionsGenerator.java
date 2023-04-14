@@ -34,7 +34,7 @@ public class PlayerActionsGenerator {
     }
 
     private void generateMulligans(EntityData data, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
-        IntList handCards = data.query(Components.HAND).list(isOwnedByPlayer);
+        IntList handCards = data.list(Components.HAND, isOwnedByPlayer);
         List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
         for (int[] handCardsSubset : handCardsSubsets) {
             out.accept(new MulliganEvent(handCardsSubset));
@@ -43,8 +43,8 @@ public class PlayerActionsGenerator {
 
     private void generateSpellCasts(EntityData data, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
-        generateSpellCasts(data, data.query(Components.HAND).list(isOwnedByPlayer), out);
-        generateSpellCasts(data, data.query(Components.CREATURE_ZONE).list(isOwnedByPlayer), out);
+        generateSpellCasts(data, data.list(Components.HAND, isOwnedByPlayer), out);
+        generateSpellCasts(data, data.list(Components.CREATURE_ZONE, isOwnedByPlayer), out);
     }
 
     private void generateSpellCasts(EntityData data, IntList ownedCards, Consumer<Event> out) {

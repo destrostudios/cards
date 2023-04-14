@@ -1,11 +1,8 @@
 package com.destrostudios.cards.shared.entities;
 
 import java.util.Optional;
+import java.util.function.IntPredicate;
 
-/**
- *
- * @author Philipp
- */
 public interface EntityData {
 
     int createEntity();
@@ -26,7 +23,13 @@ public interface EntityData {
         setComponent(entity, component, null);
     }
 
-    Aggregator query(ComponentDefinition<?> component);
+    IntList list(ComponentDefinition<?> component);
 
-    Aggregator queryAll(ComponentDefinition<?>... component);
+    IntList list(ComponentDefinition<?> component, IntPredicate predicate);
+
+    IntList listAll(ComponentDefinition<?>... component);
+
+    int count(ComponentDefinition<?> component, IntPredicate predicate);
+
+    int unique(ComponentDefinition<?> component);
 }

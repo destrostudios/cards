@@ -18,7 +18,7 @@ public class GameService {
         this.gameClientModule = gameClientModule;
         this.gameUUID = gameUUID;
         gameContext = gameClientModule.getJoinedGame(gameUUID).getState();
-        playerEntity = gameContext.getData().query(Components.NEXT_PLAYER).list(entity -> gameContext.getData().getComponent(entity, Components.NAME).equals(jwtClientModule.getOwnAuthentication().user.login)).get(0);
+        playerEntity = gameContext.getData().list(Components.NEXT_PLAYER, player -> gameContext.getData().getComponent(player, Components.NAME).equals(jwtClientModule.getOwnAuthentication().user.login)).get(0);
         mulliganCards = new HashSet<>();
     }
     private GameClientModule<GameContext, Event> gameClientModule;

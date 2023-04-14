@@ -14,7 +14,7 @@ public class CheckBonusDamageHandler extends GameEventHandler<ConditionsAffected
 
     @Override
     public void handle(ConditionsAffectedEvent event, NetworkRandom random) {
-        for (int entity : data.query(Components.Stats.BONUS_DAMAGED).list()) {
+        for (int entity : data.list(Components.Stats.BONUS_DAMAGED)) {
             int bonusDamage = data.getComponent(entity, Components.Stats.BONUS_DAMAGED);
             int bonusHealth = StatsUtil.getBonusHealth(data, entity);
             if (bonusHealth < bonusDamage) {

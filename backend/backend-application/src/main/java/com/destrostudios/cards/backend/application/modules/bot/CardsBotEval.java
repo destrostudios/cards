@@ -62,7 +62,7 @@ public class CardsBotEval {
     }
 
     private static float[] eval(EntityData data, Integer winner, Weights weights) {
-        IntList players = data.query(Components.NEXT_PLAYER).list();
+        IntList players = data.list(Components.NEXT_PLAYER);
         EvalPlayerInfo[] playerInfos = collectPlayerInfos(data, players);
         float[] scores = new float[players.size()];
         float scoreSum = 0;
@@ -95,7 +95,7 @@ public class CardsBotEval {
             playerInfos[i] = playerInfo;
             i++;
         }
-        IntList cardsOnBoard = data.query(Components.CREATURE_ZONE).list();
+        IntList cardsOnBoard = data.list(Components.CREATURE_ZONE);
         for (int card : cardsOnBoard) {
             int owner = data.getComponent(card, Components.OWNED_BY);
             Integer attack = StatsUtil.getEffectiveAttack(data, card);
@@ -107,7 +107,7 @@ public class CardsBotEval {
                 playerInfos[owner].creaturesHealth += health;
             }
         }
-        IntList cardsInHand = data.query(Components.HAND).list();
+        IntList cardsInHand = data.list(Components.HAND);
         for (int card : cardsInHand) {
             int owner = data.getComponent(card, Components.OWNED_BY);
             playerInfos[owner].cardsInHand++;

@@ -9,17 +9,26 @@ import java.util.Arrays;
 public class DebugUtil {
 
     @AllArgsConstructor
-    public static class EntityDebugText {
+    public static class EntityDebugText_Iterable {
 
-        public EntityDebugText(EntityData data, int[] entities) {
-            this(data, Arrays.stream(entities).boxed().toList());
-        }
         private EntityData data;
         private Iterable<Integer> entities;
 
         @Override
         public String toString() {
             return getDebugText(data, entities);
+        }
+    }
+
+    @AllArgsConstructor
+    public static class EntityDebugText_Array {
+
+        private EntityData data;
+        private int[] entities;
+
+        @Override
+        public String toString() {
+            return getDebugText(data, Arrays.stream(entities).boxed().toList());
         }
     }
 

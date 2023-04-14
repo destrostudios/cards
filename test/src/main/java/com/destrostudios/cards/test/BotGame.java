@@ -124,7 +124,7 @@ public class BotGame {
     }
 
     private String getEntityDebugText(int... entities) {
-        return new DebugUtil.EntityDebugText(gameContext.getData(), entities).toString();
+        return new DebugUtil.EntityDebugText_Array(gameContext.getData(), entities).toString();
     }
 
     protected void applyAction(Event action, NetworkRandom random) {

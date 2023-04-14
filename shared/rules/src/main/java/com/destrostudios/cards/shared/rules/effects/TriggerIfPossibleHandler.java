@@ -18,7 +18,7 @@ public class TriggerIfPossibleHandler extends GameEventHandler<TriggerIfPossible
 
         if (ConditionUtil.isConditionFulfilled(data, event.trigger, event.source, event.targets)) {
             String repeatExpression = data.getComponent(event.trigger, Components.Effect.REPEAT);
-            int repetitions = ((repeatExpression != null) ? Expressions.evaluate(repeatExpression, Expressions.getContext_Event(data, event)) : 1);
+            int repetitions = ((repeatExpression != null) ? Expressions.evaluate(repeatExpression, Expressions.getContext_Provider(data, event)) : 1);
             int[] effects = data.getComponent(event.trigger, Components.Trigger.EFFECTS);
             for (int effect : effects) {
                 for (int i = 0; i < repetitions; i++) {

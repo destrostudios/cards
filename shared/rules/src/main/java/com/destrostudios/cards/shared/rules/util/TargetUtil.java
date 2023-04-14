@@ -3,9 +3,9 @@ package com.destrostudios.cards.shared.rules.util;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.Prefilter;
+import com.destrostudios.cards.shared.rules.expressions.ExpressionContextProvider;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
@@ -15,17 +15,17 @@ public class TargetUtil {
         // TODO: Use Set so entities are not affected multiple times? Dependent on effect/context? (here and in the methods below)
         IntList affectedTargets = new IntList();
         for (int targetDefinition : targetDefinitions) {
-            affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, event, random));
+            affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, expressionContextProvider, random));
         }
         return affectedTargets;
     }
 
-    private static IntList getAffectedTargets(EntityData data, int targetDefinition, int source, Event event, NetworkRandom random) {
+    private static IntList getAffectedTargets(EntityData data, int targetDefinition, int source, ExpressionContextProvider expressionContextProvider, NetworkRandom random) {
         IntList affectedTargets = new IntList();
         if (isFulfillingPrefilters_Source(data, source, targetDefinition)) {
             String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
             if (targetExpression != null) {
-                int[] evaluatedTargets = Expressions.evaluateEntities(targetExpression, Expressions.getContext_Event(data, event));
+                int[] evaluatedTargets = Expressions.evaluateEntities(targetExpression, Expressions.getContext_Provider(data, expressionContextProvider));
                 for (int target : evaluatedTargets) {
                     affectedTargets.add(target);
                 }
@@ -37,7 +37,7 @@ public class TargetUtil {
             }
             String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
             if (maxRandomTargetsExpression != null) {
-                int maxRandomTargets = Expressions.evaluate(maxRandomTargetsExpression, Expressions.getContext_Event(data, event));
+                int maxRandomTargets = Expressions.evaluate(maxRandomTargetsExpression, Expressions.getContext_Provider(data, expressionContextProvider));
                 while (affectedTargets.size() > maxRandomTargets) {
                     affectedTargets.removeAt(random.nextInt(affectedTargets.size() - 1));
                 }

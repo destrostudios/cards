@@ -23,7 +23,7 @@ public class FrontendClient {
 
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
-            System.out.println("First argument must be a jwt (usually passed by the destrostudios launcher).");
+            System.out.println("First argument must be a JWT (usually passed by the destrostudios launcher).");
             return;
         }
         String hostUrl = (args.length > 1 ? args[1] : "destrostudios.com");

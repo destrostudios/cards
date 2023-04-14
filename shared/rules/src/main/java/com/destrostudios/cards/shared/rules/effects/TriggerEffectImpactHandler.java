@@ -91,6 +91,6 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
     }
 
     private <T> T evaluate(EntityData data, String expression, TriggerEffectImpactEvent event) {
-        return Expressions.evaluate(expression, Expressions.getContext_Event(data, event));
+        return Expressions.evaluate(expression, Expressions.getContext_Provider(data, event));
     }
 }

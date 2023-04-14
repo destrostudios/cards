@@ -1,22 +1,22 @@
 package com.destrostudios.cards.shared.rules.expressions;
 
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.events.Event;
 import org.apache.commons.jexl3.*;
-
-import java.lang.reflect.Field;
-import java.util.Collections;
 
 public class Expressions {
 
-    private static final JexlEngine JEXL_ENGINE = new JexlBuilder()
+    private static JexlEngine ENGINE;
+
+    public static void setup() {
+        ENGINE = new JexlBuilder()
             .silent(false)
             .strict(true)
             .debug(false)
             .cache(512)
             .cacheThreshold(Integer.MAX_VALUE)
-            .namespaces(Collections.singletonMap(null, ExpressionGlobals.class))
+            // .namespaces(Collections.singletonMap(null, ExpressionGlobals.class))
             .create();
+    }
 
     public static JexlContext getContext_Source_Target(EntityData data, int source, Integer target) {
         JexlContext context = new MapContext();
@@ -25,24 +25,9 @@ public class Expressions {
         return context;
     }
 
-    public static JexlContext getContext_Event(EntityData data, Event event) {
+    public static JexlContext getContext_Provider(EntityData data, ExpressionContextProvider provider) {
         JexlContext context = new MapContext();
-        if (event != null) {
-            for (Field field : event.getClass().getDeclaredFields()) {
-                String name = field.getName();
-                try {
-                    Object value = field.get(event);
-                    if (name.equals("source") || name.equals("target")) {
-                        value = ExpressionEntity.wrap(data, (Integer) value);
-                    } else if (name.equals("targets")) {
-                        value = ExpressionEntity.wrap(data, (int[]) value);
-                    }
-                    context.set(name, value);
-                } catch (IllegalAccessException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
+        provider.fillMinimalRequiredExpressionContext(data, context);
         return context;
     }
 
@@ -61,7 +46,7 @@ public class Expressions {
 
     public static <T> T evaluate(String expression, JexlContext context) {
         try {
-            return (T) JEXL_ENGINE.createExpression(expression).evaluate(context);
+            return (T) ENGINE.createExpression(expression).evaluate(context);
         } catch (JexlException ex) {
             System.err.println("Error while evaluating expression: " + expression);
             ex.printStackTrace();

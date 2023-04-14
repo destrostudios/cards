@@ -14,6 +14,7 @@ import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
+import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
@@ -36,6 +37,7 @@ public class TestGame {
 
     static {
         ApplicationSetup.setup();
+        Expressions.setup();
     }
     private StartGameInfo startGameInfo;
     protected SimpleEntityData data;

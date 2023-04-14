@@ -27,16 +27,12 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
     public void handle(TriggerEffectImpactEvent event, NetworkRandom random) {
         LOG.debug("Triggering effect impact (source = {}, target = {}, effect = {})", inspect(event.source), inspect(event.target), inspect(event.effect));
 
-        if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_HAND)) {
-            events.fire(new MoveToHandEvent(event.target), random);
-        }
-
         if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_CREATURE_ZONE)) {
             events.fire(new MoveToCreatureZoneEvent(event.target), random);
-        }
-
-        if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_GRAVEYARD)) {
+        } else if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_GRAVEYARD)) {
             events.fire(new MoveToGraveyardEvent(event.target), random);
+        } else if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_HAND)) {
+            events.fire(new MoveToHandEvent(event.target), random);
         }
 
         String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);

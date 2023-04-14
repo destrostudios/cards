@@ -11,7 +11,7 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 public class TargetUtil {
 
-    public static IntList getAffectedTargets(EntityData data, int[] targetDefinitions, int source, Event event, NetworkRandom random) {
+    public static IntList getAffectedTargets(EntityData data, int[] targetDefinitions, int source, ExpressionContextProvider expressionContextProvider, NetworkRandom random) {
         // TODO: Use Set so entities are not affected multiple times? Dependent on effect/context? (here and in the methods below)
         IntList affectedTargets = new IntList();
         for (int targetDefinition : targetDefinitions) {

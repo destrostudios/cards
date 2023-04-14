@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArrayUtil {
@@ -55,7 +55,7 @@ public class ArrayUtil {
     }
 
     public static List<int[]> getAllSubsets(IntList list) {
-        List<int[]> subsets = new LinkedList<>();
+        List<int[]> subsets = new ArrayList<>(1 << list.size());
         addAllSubsets(list, -1, null, subsets);
         return subsets;
     }

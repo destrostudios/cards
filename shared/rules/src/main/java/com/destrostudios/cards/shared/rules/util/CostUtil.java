@@ -7,8 +7,8 @@ public class CostUtil {
 
     private static final BuffUtil.BuffModifier MANA_COST_BUFF_MODIFIER = new BuffUtil.SimpleBuffModifier(Components.Cost.BONUS_MANA_COST, Components.Cost.SET_MANA_COST);
 
-    public static boolean isPayable(EntityData data, int player, int entity) {
-        Integer manaCost = getEffectiveManaCost(data, entity);
+    public static boolean isPayable(EntityData data, int player, int spell) {
+        Integer manaCost = getEffectiveManaCost(data, spell);
         if (manaCost != null) {
             int availableMana = data.getOptionalComponent(player, Components.MANA).orElse(0);
             return manaCost <= availableMana;
@@ -16,15 +16,15 @@ public class CostUtil {
         return true;
     }
 
-    public static Integer getEffectiveManaCost(EntityData data, int entity) {
-        BuffUtil.BuffCalculationResult result = calculateManaCost(data, entity);
+    public static Integer getEffectiveManaCost(EntityData data, int spell) {
+        BuffUtil.BuffCalculationResult result = calculateManaCost(data, spell);
         if (result != null) {
             return Math.max(0, result.getEffectiveValue());
         }
         return null;
     }
 
-    private static BuffUtil.BuffCalculationResult calculateManaCost(EntityData data, int entity) {
-        return BuffUtil.calculateWithBuffs(data, entity, Components.Cost.MANA_COST, MANA_COST_BUFF_MODIFIER);
+    private static BuffUtil.BuffCalculationResult calculateManaCost(EntityData data, int spell) {
+        return BuffUtil.calculateWithBuffs(data, spell, Components.Cost.MANA_COST, MANA_COST_BUFF_MODIFIER);
     }
 }

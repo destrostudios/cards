@@ -10,7 +10,7 @@ import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntPredicate;
@@ -20,30 +20,31 @@ public class PlayerActionsGenerator {
     private static final int[] NO_TARGETS = new int[0];
 
     public List<Event> generatePossibleActions(EntityData data, int player) {
-        List<Event> possibleEvents = new LinkedList<>();
+        List<Event> possibleEvents = new ArrayList<>(64);
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
+            IntPredicate isOwnedByPlayer = isOwnedBy(data, player);
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
-                generateMulligans(data, player, possibleEvents::add);
+                generateMulligans(data, isOwnedByPlayer, possibleEvents::add);
             } else {
-                generateSpellCasts(data, player, possibleEvents::add);
+                generateSpellCasts(data, isOwnedByPlayer, possibleEvents::add);
                 possibleEvents.add(new EndTurnEvent(player));
             }
         }
         return possibleEvents;
     }
 
-    private void generateMulligans(EntityData data, int player, Consumer<Event> out) {
-        IntList handCards = data.query(Components.HAND).list(ownedBy(data, player));
+    private void generateMulligans(EntityData data, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
+        IntList handCards = data.query(Components.HAND).list(isOwnedByPlayer);
         List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
         for (int[] handCardsSubset : handCardsSubsets) {
             out.accept(new MulliganEvent(handCardsSubset));
         }
     }
 
-    private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
+    private void generateSpellCasts(EntityData data, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
-        generateSpellCasts(data, data.query(Components.HAND).list(ownedBy(data, player)), out);
-        generateSpellCasts(data, data.query(Components.CREATURE_ZONE).list(ownedBy(data, player)), out);
+        generateSpellCasts(data, data.query(Components.HAND).list(isOwnedByPlayer), out);
+        generateSpellCasts(data, data.query(Components.CREATURE_ZONE).list(isOwnedByPlayer), out);
     }
 
     private void generateSpellCasts(EntityData data, IntList ownedCards, Consumer<Event> out) {
@@ -82,7 +83,7 @@ public class PlayerActionsGenerator {
         }
     }
 
-    private IntPredicate ownedBy(EntityData data, int player) {
+    private IntPredicate isOwnedBy(EntityData data, int player) {
         return card -> data.getComponent(card, Components.OWNED_BY) == player;
     }
 }

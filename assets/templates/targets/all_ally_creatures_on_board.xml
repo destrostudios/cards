@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+        <targetPrefilters basic="CREATURE_ZONE" advanced="ALLY"/>
         <targetAll/>
     </entity>
 </template>

@@ -7,12 +7,12 @@
         <description>Death: Deal [damage] damage to a random opponent.</description>
         <postDestructionTriggers>
             <entity>
-                <targetPrefilters>SOURCE</targetPrefilters>
+                <targetPrefilters advanced="SOURCE"/>
                 <effects>
                     <entity>
                         <targets>
                             <entity>
-                                <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
+                                <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
                                 <targetAll/>
                                 <targetRandom>1</targetRandom>
                             </entity>

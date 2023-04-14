@@ -6,7 +6,7 @@
         <description>After this creature takes damage, deal [damage] damage to your opponent.</description>
         <postDamageTriggers>
             <entity>
-                <targetPrefilters>SOURCE</targetPrefilters>
+                <targetPrefilters advanced="SOURCE"/>
                 <effects>
                     <entity>
                         <targets>

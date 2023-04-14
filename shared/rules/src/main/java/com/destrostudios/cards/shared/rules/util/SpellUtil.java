@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.Prefilter;
 
 public class SpellUtil {
 
@@ -40,8 +39,8 @@ public class SpellUtil {
 
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
         // Currently, all spells with a hand prefilter are defaultCastFromHandSpells
-        Prefilter[] prefilters = data.getComponent(spell, Components.Target.SOURCE_PREFILTERS);
-        return ((prefilters != null) && (prefilters[0] == Prefilter.HAND));
+        Components.Prefilters prefilters = data.getComponent(spell, Components.Target.SOURCE_PREFILTERS);
+        return ((prefilters != null) && (prefilters.getBasicComponents()[0] == Components.HAND));
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {

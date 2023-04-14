@@ -10,7 +10,7 @@
             <entity>
                 <source>#card</source>
                 <description>Hatch into a 4/4 Dragon.</description>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>

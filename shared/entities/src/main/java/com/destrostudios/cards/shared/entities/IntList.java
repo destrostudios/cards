@@ -218,8 +218,8 @@ public class IntList implements Iterable<Integer> {
     }
 
     public boolean anyMatch(IntPredicate predicate) {
-        for (int value : data) {
-            if (predicate.test(value)) {
+        for (int i = 0; i < size; i++) {
+            if (predicate.test(data[i])) {
                 return true;
             }
         }

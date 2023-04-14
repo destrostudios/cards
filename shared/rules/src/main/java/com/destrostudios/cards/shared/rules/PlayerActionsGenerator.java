@@ -61,13 +61,13 @@ public class PlayerActionsGenerator {
             return;
         }
         if (SpellUtil.isTargeted(data, spell)) {
-            Prefilter[] targetPrefilters = data.getComponent(spell, Components.Target.TARGET_PREFILTERS);
+            Components.Prefilters targetPrefilters = data.getComponent(spell, Components.Target.TARGET_PREFILTERS);
             IntList validTargets = TargetUtil.getPrefilteredEntities(data, card, targetPrefilters);
             validTargets.retain(target -> SpellUtil.isCastable_OnlySpellCondition(data, card, spell, new int[] { target }));
             if (data.hasComponent(spell, Components.Spell.TAUNTABLE) && validTargets.anyMatch(target -> data.hasComponent(target, Components.Ability.TAUNT))) {
                 validTargets.retain(target -> data.hasComponent(target, Components.Ability.TAUNT));
             }
-            if (validTargets.size() > 0) {
+            if (validTargets.nonEmpty()) {
                 for (int target : validTargets) {
                     out.accept(new CastSpellEvent(card, spell, new int[] { target }));
                 }

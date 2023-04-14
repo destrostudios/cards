@@ -8,9 +8,9 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <targetOptional/>
-                <targetPrefilters>BOARD</targetPrefilters>
+                <targetPrefilters basic="BOARD"/>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

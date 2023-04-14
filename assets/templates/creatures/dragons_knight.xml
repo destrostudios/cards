@@ -3,7 +3,7 @@
         <description>Your Dragons cost (2) less.</description>
         <auras>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.source.isAlly(source) &amp;&amp; target.source.isDragon &amp;&amp; target.source.isInHand</condition>
                 <auraBuff>
                     <entity>

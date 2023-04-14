@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilters>HAND,ALLY</targetPrefilters>
-        <targetAll>target.isCreatureCard</targetAll>
+        <targetPrefilters basic="HAND,CREATURE_CARD" advanced="ALLY"/>
+        <targetAll/>
     </entity>
 </template>

@@ -12,7 +12,7 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>
@@ -22,7 +22,7 @@
                                 <targets>
                                     <entity template="../targets/source_owner"/>
                                 </targets>
-                                <heal>[heal] * source.owner.count(["HAND","ALLY","DRAGON"])</heal>
+                                <heal>[heal] * source.owner.count(["HAND","DRAGON"], ["ALLY"])</heal>
                             </entity>
                         </effects>
                     </entity>

@@ -5,7 +5,7 @@
         <description>End of turn: Put this card from your graveyard to your hand.</description>
         <preEndTurnTriggers>
             <entity>
-                <sourcePrefilters>GRAVEYARD</sourcePrefilters>
+                <sourcePrefilters basic="GRAVEYARD"/>
                 <effects>
                     <entity template="../effects/move_source_to_hand"/>
                 </effects>

@@ -6,7 +6,7 @@
         <description>Your creatures cost ([bonusManaCost]) more.</description>
         <auras>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.source.isAlly(source) &amp;&amp; target.source.isCreatureCard &amp;&amp; target.source.isInHand</condition>
                 <auraBuff>
                     <entity>

@@ -9,8 +9,8 @@
         <description>Your Goblins on board have +[bonusAttack]/+[bonusHealth].</description>
         <auras>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
-                <targetPrefilters>CREATURE_ZONE,ALLY,GOBLIN</targetPrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="CREATURE_ZONE,GOBLIN" advanced="ALLY"/>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

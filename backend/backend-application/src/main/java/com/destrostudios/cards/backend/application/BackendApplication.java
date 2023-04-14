@@ -12,7 +12,6 @@ import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.network.NetworkUtil;
 import com.destrostudios.cards.shared.rules.CardsNetworkService;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.server.ToolsServer;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
@@ -27,7 +26,6 @@ public class BackendApplication {
 
     public static void main(String[] args) throws IOException {
         ApplicationSetup.setup();
-        Expressions.setup();
 
         Database database = getDatabase();
         CardService cardService = new CardService(database);

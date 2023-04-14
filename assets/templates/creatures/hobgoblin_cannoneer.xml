@@ -17,7 +17,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
+                                        <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
                                         <targetAll>target.health > 0</targetAll>
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>

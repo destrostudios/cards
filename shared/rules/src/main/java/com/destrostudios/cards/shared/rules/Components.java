@@ -106,8 +106,8 @@ public class Components {
     }
 
     public static class Target {
-        public static final ComponentDefinition<Prefilter[]> SOURCE_PREFILTERS = create("sourcePrefilters");
-        public static final ComponentDefinition<Prefilter[]> TARGET_PREFILTERS = create("targetPrefilters");
+        public static final ComponentDefinition<Prefilters> SOURCE_PREFILTERS = create("sourcePrefilters");
+        public static final ComponentDefinition<Prefilters> TARGET_PREFILTERS = create("targetPrefilters");
         public static final ComponentDefinition<int[]> TARGETS = create("targets");
         public static final ComponentDefinition<String> TARGET = create("target");
         public static final ComponentDefinition<String> TARGET_ALL = create("targetAll");
@@ -120,6 +120,14 @@ public class Components {
         public static final ComponentDefinition<Integer> MAXIMUM_CASTS_PER_TURN = create("maximumCastsPerTurn");
         public static final ComponentDefinition<Void> TAUNTABLE = create("tauntable");
         public static final ComponentDefinition<int[]> CAST_TRIGGERS = create("castTriggers");
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
+    @Getter
+    public static class Prefilters {
+        private ComponentDefinition<?>[] basicComponents;
+        private Prefilter_Advanced[] advanced;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

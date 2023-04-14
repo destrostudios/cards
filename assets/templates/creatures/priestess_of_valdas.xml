@@ -3,7 +3,7 @@
         <description>After this creature is healed, draw a card.</description>
         <postHealTriggers>
             <entity>
-                <targetPrefilters>SOURCE</targetPrefilters>
+                <targetPrefilters advanced="SOURCE"/>
                 <effects>
                     <entity>
                         <targets>

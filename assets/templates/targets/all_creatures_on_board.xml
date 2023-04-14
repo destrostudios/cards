@@ -1,6 +1,6 @@
 <template>
     <entity>
-        <targetPrefilters>CREATURE_ZONE</targetPrefilters>
+        <targetPrefilters basic="CREATURE_ZONE"/>
         <targetAll/>
     </entity>
 </template>

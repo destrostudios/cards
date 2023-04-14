@@ -11,7 +11,7 @@
             <entity>
                 <source>#card</source>
                 <description>Summon a 1/1 Goblin.</description>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

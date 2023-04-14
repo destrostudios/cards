@@ -3,7 +3,7 @@
         <description>Death: Add a Thunder to your hand.</description>
         <postDestructionTriggers>
             <entity>
-                <targetPrefilters>SOURCE</targetPrefilters>
+                <targetPrefilters advanced="SOURCE"/>
                 <effects>
                     <entity template="../effects/create_for_owner(template=spells/thunder,location=HAND)"/>
                 </effects>

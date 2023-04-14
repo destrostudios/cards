@@ -12,7 +12,7 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

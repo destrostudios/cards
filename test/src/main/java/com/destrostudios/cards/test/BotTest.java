@@ -8,7 +8,6 @@ import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
-import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import org.slf4j.impl.SimpleLogger;
 
 import java.util.List;
@@ -28,7 +27,6 @@ public class BotTest {
 
     public void run() {
         ApplicationSetup.setup();
-        Expressions.setup();
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
 
         database = BackendApplication.getDatabase();

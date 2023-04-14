@@ -10,7 +10,7 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
@@ -19,7 +19,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY,ALLY,GOBLIN</targetPrefilters>
+                                        <targetPrefilters basic="LIBRARY,GOBLIN" advanced="ALLY"/>
                                         <targetAll>target.manaCost &lt;= [maximumManaCost]</targetAll>
                                         <targetRandom>[draw]</targetRandom>
                                     </entity>

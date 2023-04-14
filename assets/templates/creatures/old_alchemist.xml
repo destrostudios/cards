@@ -11,7 +11,7 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <manaCost>6</manaCost>
                 <castTriggers>
                     <entity>
@@ -20,8 +20,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>GRAVEYARD,ALLY</targetPrefilters>
-                                        <targetAll>target.isSpellCard</targetAll>
+                                        <targetPrefilters basic="GRAVEYARD,SPELL_CARD" advanced="ALLY"/>
+                                        <targetAll/>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

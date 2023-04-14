@@ -14,7 +14,6 @@ import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
-import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
@@ -37,7 +36,6 @@ public class TestGame {
 
     static {
         ApplicationSetup.setup();
-        Expressions.setup();
     }
     private StartGameInfo startGameInfo;
     protected SimpleEntityData data;
@@ -126,7 +124,7 @@ public class TestGame {
         data.setComponent(spellCard, Components.SPELL_CARD);
         int spell = data.createEntity();
         data.setComponent(spell, Components.SOURCE, spellCard);
-        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Prefilter[] { Prefilter.HAND });
+        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Components.Prefilters(new ComponentDefinition[] { Components.HAND }, new Prefilter_Advanced[0]));
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);

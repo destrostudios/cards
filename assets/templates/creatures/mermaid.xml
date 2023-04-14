@@ -6,7 +6,7 @@
         <description>Your "[name]"s cost (1) less.</description>
         <auras>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.source.isAlly(source) &amp;&amp; (target.source.name == "[name]") &amp;&amp; target.source.isInHand</condition>
                 <auraBuff>
                     <entity>

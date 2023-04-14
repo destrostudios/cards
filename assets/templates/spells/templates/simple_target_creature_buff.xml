@@ -6,8 +6,8 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>CREATURE_ZONE</targetPrefilters>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="CREATURE_ZONE"/>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>

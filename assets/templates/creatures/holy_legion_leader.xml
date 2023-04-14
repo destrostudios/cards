@@ -7,7 +7,7 @@
         <description>After a character is healed, this creature gains +[bonusAttack]/+[bonusHealth].</description>
         <postHealTriggers>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <effects>
                     <entity>
                         <targets>

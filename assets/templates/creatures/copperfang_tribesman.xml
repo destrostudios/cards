@@ -11,7 +11,7 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
@@ -19,7 +19,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE,ALLY,BEAST</targetPrefilters>
+                                        <targetPrefilters basic="CREATURE_ZONE,BEAST" advanced="ALLY"/>
                                         <targetAll/>
                                     </entity>
                                 </targets>

@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.Prefilter;
+import com.destrostudios.cards.shared.rules.Prefilter_Advanced;
 import com.destrostudios.cards.shared.rules.expressions.ExpressionContextProvider;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
@@ -32,7 +32,7 @@ public class TargetUtil {
             }
             String targetAllCondition = data.getComponent(targetDefinition, Components.Target.TARGET_ALL);
             if (targetAllCondition != null) {
-                Prefilter[] targetPrefilters = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTERS);
+                Components.Prefilters targetPrefilters = data.getComponent(targetDefinition, Components.Target.TARGET_PREFILTERS);
                 affectedTargets.addAll(getAllConditionTargets(data, source, targetPrefilters, targetAllCondition));
             }
             String maxRandomTargetsExpression = data.getComponent(targetDefinition, Components.Target.TARGET_RANDOM);
@@ -46,7 +46,7 @@ public class TargetUtil {
         return affectedTargets;
     }
 
-    public static IntList getAllConditionTargets(EntityData data, int source, Prefilter[] targetPrefilters, String condition) {
+    public static IntList getAllConditionTargets(EntityData data, int source, Components.Prefilters targetPrefilters, String condition) {
         IntList prefilteredTargets = getPrefilteredEntities(data, source, targetPrefilters);
         if (condition.isEmpty()) {
             return prefilteredTargets;
@@ -55,34 +55,46 @@ public class TargetUtil {
         return prefilteredTargets;
     }
 
-    public static IntList getPrefilteredEntities(EntityData data, int source, Prefilter[] prefilters) {
-        return data.list(getBasicPrefilterComponent(prefilters[0]), entity -> isFulfillingPrefilters(data, entity, source, prefilters));
+    public static IntList getPrefilteredEntities(EntityData data, int source, Components.Prefilters prefilters) {
+        return data.listAll(prefilters.getBasicComponents(), entity -> isFulfillingPrefilters_Advanced(data, entity, source, prefilters.getAdvanced()));
     }
 
     public static boolean isFulfillingPrefilters_Source(EntityData data, int source, int entityWithPrefilters) {
-        return isFulfillingPrefilter(data, source, source, entityWithPrefilters, Components.Target.SOURCE_PREFILTERS);
+        return isFulfillingPrefilters(data, source, source, entityWithPrefilters, Components.Target.SOURCE_PREFILTERS);
     }
 
     public static boolean isFulfillingPrefilters_Target(EntityData data, int target, int source, int entityWithPrefilters) {
-        return isFulfillingPrefilter(data, target, source, entityWithPrefilters, Components.Target.TARGET_PREFILTERS);
+        return isFulfillingPrefilters(data, target, source, entityWithPrefilters, Components.Target.TARGET_PREFILTERS);
     }
 
-    private static boolean isFulfillingPrefilter(EntityData data, int entity, int source, int entityWithPrefilters, ComponentDefinition<Prefilter[]> prefiltersComponent) {
-        Prefilter[] prefilters = data.getComponent(entityWithPrefilters, prefiltersComponent);
-        return ((prefilters == null) || isFulfillingPrefilters(data, entity, source, prefilters));
+    private static boolean isFulfillingPrefilters(EntityData data, int entity, int source, int entityWithPrefilters, ComponentDefinition<Components.Prefilters> prefiltersComponent) {
+        Components.Prefilters prefilters = data.getComponent(entityWithPrefilters, prefiltersComponent);
+        if (prefilters != null) {
+            return isFulfillingPrefilters_Basic(data, entity, prefilters.getBasicComponents()) && isFulfillingPrefilters_Advanced(data, entity, source, prefilters.getAdvanced());
+        }
+        return true;
     }
 
-    private static boolean isFulfillingPrefilters(EntityData data, int entity, int source, Prefilter[] prefilters) {
-        for (Prefilter prefilter : prefilters) {
-            if (!isFulfillingPrefilter(data, entity, source, prefilter)) {
+    private static boolean isFulfillingPrefilters_Basic(EntityData data, int entity, ComponentDefinition<?>[] basicComponents) {
+        for (ComponentDefinition<?> basicComponent : basicComponents) {
+            if (!data.hasComponent(entity, basicComponent)) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean isFulfillingPrefilter(EntityData data, int entity, int source, Prefilter prefilter) {
-        switch (prefilter) {
+    private static boolean isFulfillingPrefilters_Advanced(EntityData data, int entity, int source, Prefilter_Advanced[] prefiltersAdvanced) {
+        for (Prefilter_Advanced prefilterAdvanced : prefiltersAdvanced) {
+            if (!isFulfillingPrefilter_Advanced(data, entity, source, prefilterAdvanced)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean isFulfillingPrefilter_Advanced(EntityData data, int entity, int source, Prefilter_Advanced prefilterAdvanced) {
+        switch (prefilterAdvanced) {
             case SOURCE -> { return entity == source; }
             case NOT_SOURCE -> { return entity != source; }
             case ALLY -> { return ConditionUtil.isAlly(data, entity, source); }
@@ -95,22 +107,6 @@ public class TargetUtil {
                 int sourceOpponent = data.getComponent(sourceOwner, Components.NEXT_PLAYER);
                 return (entity == sourceOpponent);
             }
-            default -> { return data.hasComponent(entity, getBasicPrefilterComponent(prefilter)); }
-        }
-    }
-
-    private static ComponentDefinition<?> getBasicPrefilterComponent(Prefilter prefilter) {
-        switch (prefilter) {
-            case BOARD -> { return Components.BOARD; }
-            case CREATURE_ZONE -> { return Components.CREATURE_ZONE; }
-            case GRAVEYARD -> { return Components.GRAVEYARD; }
-            case HAND -> { return Components.HAND; }
-            case LIBRARY -> { return Components.LIBRARY; }
-            case CREATURE_CARD -> { return Components.CREATURE_CARD; }
-            case SPELL_CARD -> { return Components.SPELL_CARD; }
-            case BEAST -> { return Components.Tribe.BEAST; }
-            case DRAGON -> { return Components.Tribe.DRAGON; }
-            case GOBLIN -> { return Components.Tribe.GOBLIN; }
         }
         throw new IllegalArgumentException();
     }

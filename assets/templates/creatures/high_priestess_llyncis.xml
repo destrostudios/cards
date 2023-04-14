@@ -14,8 +14,8 @@
             <entity>
                 <source>#card</source>
                 <targetOptional/>
-                <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>BOARD</targetPrefilters>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="BOARD"/>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>
@@ -34,7 +34,7 @@
                         </effects>
                     </entity>
                     <entity>
-                        <targetPrefilters>NOT_DAMAGED</targetPrefilters>
+                        <targetPrefilters advanced="NOT_DAMAGED"/>
                         <effects>
                             <entity>
                                 <targets>

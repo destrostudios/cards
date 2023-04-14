@@ -9,9 +9,9 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND,ALLY,DRAGON</targetPrefilters>
-                <condition>source.count(["CREATURE_ZONE","ALLY"]) >= [sacrifices]</condition>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="HAND,DRAGON" advanced="ALLY"/>
+                <condition>source.count(["CREATURE_ZONE"], ["ALLY"]) >= [sacrifices]</condition>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>
@@ -20,7 +20,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE,ALLY</targetPrefilters>
+                                        <targetPrefilters basic="CREATURE_ZONE" advanced="ALLY"/>
                                         <targetAll/>
                                         <targetRandom>[sacrifices]</targetRandom>
                                     </entity>

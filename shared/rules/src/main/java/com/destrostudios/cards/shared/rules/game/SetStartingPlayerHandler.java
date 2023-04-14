@@ -14,7 +14,7 @@ public class SetStartingPlayerHandler extends GameEventHandler<GameStartEvent> {
     @Override
     public void handle(GameStartEvent event, NetworkRandom random) {
         IntList players = data.list(Components.NEXT_PLAYER);
-        int player = players.get(random.nextInt(players.size()));
+        int player = players.getRandomItem(random::nextInt);
         LOG.debug("Starting player is {}", inspect(player));
         data.setComponent(player, Components.Player.ACTIVE_PLAYER);
     }

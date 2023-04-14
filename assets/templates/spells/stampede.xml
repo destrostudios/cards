@@ -6,8 +6,8 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
-                <condition>source.count(["CREATURE_ZONE","ALLY","BEAST"]) > 0</condition>
+                <sourcePrefilters basic="HAND"/>
+                <condition>source.count(["CREATURE_ZONE","BEAST"], ["ALLY"]) > 0</condition>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
@@ -16,9 +16,9 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE,NOT_ALLY</targetPrefilters>
+                                        <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
                                         <targetAll/>
-                                        <targetRandom>source.count(["CREATURE_ZONE","ALLY","BEAST"])</targetRandom>
+                                        <targetRandom>source.count(["CREATURE_ZONE","BEAST"], ["ALLY"])</targetRandom>
                                     </entity>
                                 </targets>
                                 <destroy/>
@@ -26,7 +26,7 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>CREATURE_ZONE,ALLY,BEAST</targetPrefilters>
+                                        <targetPrefilters basic="CREATURE_ZONE,BEAST" advanced="ALLY"/>
                                         <targetAll/>
                                     </entity>
                                 </targets>

@@ -13,8 +13,8 @@
             <entity>
                 <source>#card</source>
                 <targetOptional/>
-                <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>HAND,ALLY,SPELL_CARD</targetPrefilters>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="HAND,SPELL_CARD" advanced="ALLY"/>
                 <manaCost>9</manaCost>
                 <castTriggers>
                     <entity>

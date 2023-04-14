@@ -82,6 +82,20 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public IntList listAll(ComponentDefinition<?>... components) {
+        IntList result = listAllUnsorted(components);
+        result.sort();
+        return result;
+    }
+
+    @Override
+    public IntList listAll(ComponentDefinition<?>[] components, IntPredicate predicate) {
+        IntList result = listAllUnsorted(components);
+        result.retain(predicate);
+        result.sort();
+        return result;
+    }
+
+    private IntList listAllUnsorted(ComponentDefinition<?>... components) {
         IntMap<?>[] componentMaps = new IntMap[components.length];
         for (int i = 0; i < components.length; i++) {
             componentMaps[i] = getComponentMap(components[i]);
@@ -95,7 +109,6 @@ public class SimpleEntityData implements EntityData {
             }
             result.add(key);
         });
-        result.sort();
         return result;
     }
 

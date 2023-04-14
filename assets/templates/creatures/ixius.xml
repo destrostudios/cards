@@ -7,7 +7,7 @@
         <description>After you play a spell, deal [damage] damage to all opponents.</description>
         <postCastSpellTriggers>
             <entity>
-                <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
                 <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.source.isAlly(source) &amp;&amp; target.source.isSpellCard</condition>
                 <effects>
                     <entity>

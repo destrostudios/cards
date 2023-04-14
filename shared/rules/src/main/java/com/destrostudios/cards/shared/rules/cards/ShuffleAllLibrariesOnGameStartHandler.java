@@ -17,6 +17,8 @@ public class ShuffleAllLibrariesOnGameStartHandler extends GameEventHandler<Game
     public void handle(GameStartEvent event, NetworkRandom random) {
         IntList players = data.list(Components.NEXT_PLAYER);
         LOG.debug("Shuffling libraries of players {}", inspect(players));
-        players.forEach(player -> events.fire(new ShuffleLibraryEvent(player), random));
+        for (int player : players) {
+            events.fire(new ShuffleLibraryEvent(player), random);
+        }
     }
 }

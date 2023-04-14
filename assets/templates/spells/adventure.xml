@@ -9,7 +9,7 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
+                <sourcePrefilters basic="HAND"/>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
@@ -18,8 +18,8 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters>LIBRARY,ALLY</targetPrefilters>
-                                        <targetAll>target.isCreatureCard &amp;&amp; target.manaCost &gt;= [minimumManaCost]</targetAll>
+                                        <targetPrefilters basic="LIBRARY,CREATURE_CARD" advanced="ALLY"/>
+                                        <targetAll>target.manaCost &gt;= [minimumManaCost]</targetAll>
                                         <targetRandom>1</targetRandom>
                                     </entity>
                                 </targets>

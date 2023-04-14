@@ -27,7 +27,9 @@ public interface EntityData {
 
     IntList list(ComponentDefinition<?> component, IntPredicate predicate);
 
-    IntList listAll(ComponentDefinition<?>... component);
+    IntList listAll(ComponentDefinition<?>... components);
+
+    IntList listAll(ComponentDefinition<?>[] components, IntPredicate predicate);
 
     int count(ComponentDefinition<?> component, IntPredicate predicate);
 

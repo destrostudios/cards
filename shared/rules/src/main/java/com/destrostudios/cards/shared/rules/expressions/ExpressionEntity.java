@@ -2,7 +2,7 @@ package com.destrostudios.cards.shared.rules.expressions;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.Prefilter;
+import com.destrostudios.cards.shared.rules.ComponentsParsing;
 import com.destrostudios.cards.shared.rules.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -89,32 +89,29 @@ public class ExpressionEntity {
         return SpellUtil.isDefaultCastFromHandSpell(data, entity);
     }
 
-    public boolean exists(String[] targetPrefilterNames) {
-        return exists(targetPrefilterNames, "");
+    public boolean exists(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
+        return exists(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, "");
     }
 
-    public boolean exists(String[] targetPrefilterNames, String expression) {
-        return count(targetPrefilterNames, expression) > 0;
+    public boolean exists(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced, String expression) {
+        return count(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, expression) > 0;
     }
 
-    public int count(String[] targetPrefilterNames) {
-        return count(targetPrefilterNames, "");
+    public int count(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
+        return count(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, "");
     }
 
-    public int count(String[] targetPrefilterNames, String expression) {
-        return all(targetPrefilterNames, expression).size();
+    public int count(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced, String expression) {
+        return all(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, expression).size();
     }
 
-    public List<ExpressionEntity> all(String[] targetPrefilterNames) {
-        return all(targetPrefilterNames, "");
+    public List<ExpressionEntity> all(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
+        return all(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, "");
     }
 
-    public List<ExpressionEntity> all(String[] targetPrefilterNames, String expression) {
-        Prefilter[] targetPrefilters = new Prefilter[targetPrefilterNames.length];
-        for (int i = 0; i < targetPrefilters.length; i++) {
-            targetPrefilters[i] = Prefilter.valueOf(targetPrefilterNames[i]);
-        }
-        return TargetUtil.getAllConditionTargets(data, entity, targetPrefilters, expression).stream()
+    public List<ExpressionEntity> all(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced, String expression) {
+        Components.Prefilters prefilters = ComponentsParsing.parsePrefilters(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced);
+        return TargetUtil.getAllConditionTargets(data, entity, prefilters, expression).stream()
                 .boxed()
                 .map(this::wrap)
                 .collect(Collectors.toList());

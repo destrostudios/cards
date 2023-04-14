@@ -10,8 +10,8 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <sourcePrefilters>HAND</sourcePrefilters>
-                <targetPrefilters>CREATURE_ZONE,NOT_DAMAGED</targetPrefilters>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_DAMAGED"/>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

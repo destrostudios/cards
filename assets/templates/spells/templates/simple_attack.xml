@@ -4,9 +4,9 @@
     </values>
     <entity>
         <source>[source]</source>
-        <sourcePrefilters>CREATURE_ZONE</sourcePrefilters>
-        <targetPrefilters>BOARD,NOT_ALLY</targetPrefilters>
-        <condition>target.isCreatureCard || !target.exists(["CREATURE_ZONE","ALLY"])</condition>
+        <sourcePrefilters basic="CREATURE_ZONE"/>
+        <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
+        <condition>target.isCreatureCard || !target.exists(["CREATURE_ZONE"], ["ALLY"])</condition>
         <maximumCastsPerTurn>[timesPerTurn]</maximumCastsPerTurn>
         <tauntable/>
         <castTriggers>

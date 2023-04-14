@@ -59,7 +59,7 @@ public class EventQueue {
     private void removeCancelledHandlers() {
         for (int i = 0; i < pendingEventHandlers.size(); i++) {
             PendingEventHandler pendingPendingEventHandler = pendingEventHandlers.get(i);
-            if (pendingPendingEventHandler.getEvent().isCancelled()) {
+            if (pendingPendingEventHandler.getEvent().isSomeParentCancelled()) {
                 LOG.trace("{} was cancelled", pendingPendingEventHandler);
                 pendingEventHandlers.remove(i);
                 i--;

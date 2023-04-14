@@ -9,12 +9,13 @@ public abstract class Event {
     public Event(Enum<?> eventType) {
         this.eventType = eventType;
     }
-    @Getter
+    @Getter(AccessLevel.PACKAGE)
     private Enum<?> eventType;
     @Getter(AccessLevel.PACKAGE)
     @Setter(AccessLevel.PACKAGE)
     private Event parent;
     private boolean root;
+    @Getter(AccessLevel.PACKAGE)
     private boolean cancelled;
 
     public void markAsRoot() {
@@ -29,10 +30,7 @@ public abstract class Event {
         this.cancelled = true;
     }
 
-    boolean isCancelled() {
-        if ((parent != null) && parent.isCancelled()) {
-            return true;
-        }
-        return cancelled;
+    boolean isSomeParentCancelled() {
+        return ((parent != null) && parent.isSomeParentCancelled());
     }
 }

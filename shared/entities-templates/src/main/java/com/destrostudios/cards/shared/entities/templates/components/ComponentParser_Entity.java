@@ -1,20 +1,16 @@
 package com.destrostudios.cards.shared.entities.templates.components;
 
-import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.templates.ComponentParser;
-import com.destrostudios.cards.shared.entities.templates.TemplateFormat;
-import com.destrostudios.cards.shared.entities.templates.TemplateKeyword;
-import com.destrostudios.cards.shared.entities.templates.TemplateParser;
+import com.destrostudios.cards.shared.entities.templates.*;
 
-public class ComponentParser_Entity extends ComponentParser<Object, Integer> {
+public class ComponentParser_Entity extends ComponentParser<Object, Object, Integer> {
 
-    public ComponentParser_Entity(ComponentDefinition<Integer> component) {
-        super(component);
+    @Override
+    public Object parse(TemplateParser parser, TemplateFormat format, Object node) {
+        return parseOrCreateChildEntity(parser, format, node, 0, TemplateKeyword.ENTITY);
     }
 
     @Override
-    public Integer parseValue(TemplateParser parser, TemplateFormat format, EntityData entityData, Object node) {
-        return createChildEntity(parser, format, entityData, node, 0, TemplateKeyword.ENTITY);
+    public Integer resolve(int[] proxiedEntities, Object recordedValue) {
+        return resolveEntity(proxiedEntities, recordedValue);
     }
 }

@@ -50,7 +50,8 @@ public class GameSetup {
 
     private List<Integer> createTestLibrary() {
         return cards.stream().map(card -> {
-            int cardEntity = EntityTemplate.createFromTemplate(data, card.getPath());
+            int cardEntity = data.createEntity();
+            EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
             setRandomFoil(cardEntity);
             return cardEntity;
         }).collect(Collectors.toList());

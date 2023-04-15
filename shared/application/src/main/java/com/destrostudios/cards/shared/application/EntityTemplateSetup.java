@@ -1,11 +1,11 @@
 package com.destrostudios.cards.shared.application;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.templates.*;
 import com.destrostudios.cards.shared.entities.templates.components.*;
 import com.destrostudios.cards.shared.entities.templates.formats.*;
 import com.destrostudios.cards.shared.files.FileAssets;
+import com.destrostudios.cards.shared.rules.CardsComponentsInfo;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.ComponentsTriggers;
 import com.destrostudios.cards.shared.rules.CreateLocation;
@@ -16,108 +16,125 @@ public class EntityTemplateSetup {
     public static void setup() {
         TemplateManager templateManager = new TemplateManager(
             templateName -> FileAssets.getInputStream("templates/" + templateName + ".xml"),
-            new XmlTemplateFormat()
+            new XmlTemplateFormat(),
+            new CardsComponentsInfo()
         );
 
-        templateManager.registerComponent(new ComponentParser_String(Components.NAME));
-        templateManager.registerComponent(new ComponentParser_Entity(Components.SOURCE));
-        templateManager.registerComponent(new ComponentParser_Void(Components.BOARD));
-        templateManager.registerComponent(new ComponentParser_Void(Components.CREATURE_CARD));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.CREATURE_ZONE));
-        templateManager.registerComponent(new ComponentParser_String(Components.FLAVOUR_TEXT));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.GRAVEYARD));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.HAND));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.LIBRARY));
-        templateManager.registerComponent(new ComponentParser_Entity(Components.NEXT_PLAYER));
-        templateManager.registerComponent(new ComponentParser_Entity(Components.OWNED_BY));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.AURAS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.BUFFS));
-        templateManager.registerComponent(new ComponentParser_String(Components.CONDITION));
-        templateManager.registerComponent(new ComponentParser_Void(Components.SPELL_CARD));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.SPELLS));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.AVAILABLE_MANA));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.MANA));
-        templateManager.registerComponent(new ComponentParser_String(Components.DESCRIPTION));
-        templateManager.registerComponent(new ComponentParser_Void(Components.LEGENDARY));
-        templateManager.registerComponent(new ComponentParser_Enum<>(Components.FOIL, Foil::valueOf));
+        templateManager.registerComponent(Components.NAME, new ComponentParser_String());
+        templateManager.registerComponent(Components.SOURCE, new ComponentParser_Entity());
+        templateManager.registerComponent(Components.BOARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.CREATURE_CARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.CREATURE_ZONE, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.FLAVOUR_TEXT, new ComponentParser_String());
+        templateManager.registerComponent(Components.GRAVEYARD, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.HAND, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.LIBRARY, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.NEXT_PLAYER, new ComponentParser_Entity());
+        templateManager.registerComponent(Components.OWNED_BY, new ComponentParser_Entity());
+        templateManager.registerComponent(Components.AURAS, new ComponentParser_Entities());
+        templateManager.registerComponent(Components.BUFFS, new ComponentParser_Entities());
+        templateManager.registerComponent(Components.CONDITION, new ComponentParser_String());
+        templateManager.registerComponent(Components.SPELL_CARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.SPELLS, new ComponentParser_Entities());
+        templateManager.registerComponent(Components.AVAILABLE_MANA, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.MANA, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.DESCRIPTION, new ComponentParser_String());
+        templateManager.registerComponent(Components.LEGENDARY, new ComponentParser_Void());
+        templateManager.registerComponent(Components.FOIL, new ComponentParser_Enum<>(Foil::valueOf));
 
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Cost.MANA_COST));
-        templateManager.registerComponent(new ComponentParser_String(Components.Cost.BONUS_MANA_COST));
-        templateManager.registerComponent(new ComponentParser_String(Components.Cost.SET_MANA_COST));
+        templateManager.registerComponent(Components.Cost.MANA_COST, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Cost.BONUS_MANA_COST, new ComponentParser_String());
+        templateManager.registerComponent(Components.Cost.SET_MANA_COST, new ComponentParser_String());
 
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.ATTACK));
-        templateManager.registerComponent(new ComponentParser_String(Components.Stats.BONUS_ATTACK));
-        templateManager.registerComponent(new ComponentParser_String(Components.Stats.SET_ATTACK));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.HEALTH));
-        templateManager.registerComponent(new ComponentParser_String(Components.Stats.BONUS_HEALTH));
-        templateManager.registerComponent(new ComponentParser_String(Components.Stats.SET_HEALTH));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.DAMAGED));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Stats.BONUS_DAMAGED));
+        templateManager.registerComponent(Components.Stats.ATTACK, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Stats.BONUS_ATTACK, new ComponentParser_String());
+        templateManager.registerComponent(Components.Stats.SET_ATTACK, new ComponentParser_String());
+        templateManager.registerComponent(Components.Stats.HEALTH, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Stats.BONUS_HEALTH, new ComponentParser_String());
+        templateManager.registerComponent(Components.Stats.SET_HEALTH, new ComponentParser_String());
+        templateManager.registerComponent(Components.Stats.DAMAGED, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Stats.BONUS_DAMAGED, new ComponentParser_Integer());
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Player.MULLIGAN));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Player.ACTIVE_PLAYER));
+        templateManager.registerComponent(Components.Player.MULLIGAN, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Player.ACTIVE_PLAYER, new ComponentParser_Void());
 
-        templateManager.registerComponent(new ComponentParser_Boolean(Components.Ability.DIVINE_SHIELD));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Ability.TAUNT));
+        templateManager.registerComponent(Components.Ability.DIVINE_SHIELD, new ComponentParser_Boolean());
+        templateManager.registerComponent(Components.Ability.TAUNT, new ComponentParser_Void());
 
-        templateManager.registerComponent(new ComponentParser_Entity(Components.Aura.AURA_BUFF));
+        templateManager.registerComponent(Components.Aura.AURA_BUFF, new ComponentParser_Entity());
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Buff.UNTIL_END_OF_TURN));
+        templateManager.registerComponent(Components.Buff.UNTIL_END_OF_TURN, new ComponentParser_Void());
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.BEAST));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.DRAGON));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Tribe.GOBLIN));
+        templateManager.registerComponent(Components.Tribe.BEAST, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Tribe.DRAGON, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Tribe.GOBLIN, new ComponentParser_Void());
 
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Trigger.EFFECTS));
+        templateManager.registerComponent(Components.Trigger.EFFECTS, new ComponentParser_Entities());
 
-        templateManager.registerComponent(new ComponentParser_String(Components.Effect.REPEAT));
-        templateManager.registerComponent(new ComponentParser_String(Components.Effect.DAMAGE));
-        templateManager.registerComponent(new ComponentParser_String(Components.Effect.HEAL));
-        templateManager.registerComponent(new ComponentParser_String(Components.Effect.DRAW));
-        templateManager.registerComponent(new ComponentParser_String(Components.Effect.GAIN_MANA));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.DESTROY));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.BATTLE));
-        templateManager.registerComponent(new ComponentParser<>(Components.Effect.ADD_BUFF) {
+        templateManager.registerComponent(Components.Effect.REPEAT, new ComponentParser_String());
+        templateManager.registerComponent(Components.Effect.DAMAGE, new ComponentParser_String());
+        templateManager.registerComponent(Components.Effect.HEAL, new ComponentParser_String());
+        templateManager.registerComponent(Components.Effect.DRAW, new ComponentParser_String());
+        templateManager.registerComponent(Components.Effect.GAIN_MANA, new ComponentParser_String());
+        templateManager.registerComponent(Components.Effect.DESTROY, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.BATTLE, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.ADD_BUFF, new ComponentParser<>() {
+
+            record AddBuffProxy(Object buff, boolean constant) {}
 
             @Override
-            public Components.AddBuff parseValue(TemplateParser parser, TemplateFormat format, EntityData entityData, Object node) {
-                int buff = createChildEntity(parser, format, entityData, node, 0, "buff");
+            public AddBuffProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
+                Object buff = parseOrCreateChildEntity(parser, format, node, 0, "buff");
                 boolean constant = "true".equals(format.getAttribute(node, "constant"));
-                return new Components.AddBuff(buff, constant);
+                return new AddBuffProxy(buff, constant);
             }
-        });
-        templateManager.registerComponent(new ComponentParser<>(Components.Effect.CREATE) {
 
             @Override
-            public Components.Create parseValue(TemplateParser parser, TemplateFormat format, EntityData entityData, Object node) {
-                String template = parser.parseTemplateText(entityData, format.getText(node));
-                CreateLocation location = CreateLocation.valueOf(parser.parseValue(entityData, format.getAttribute(node, "location")));
-                return new Components.Create(template, location);
+            public Object resolve(int[] proxiedEntities, Object _recordedValue) {
+                AddBuffProxy recordedValue = (AddBuffProxy) _recordedValue;
+                return new Components.AddBuff(resolveEntity(proxiedEntities, recordedValue.buff), recordedValue.constant);
             }
         });
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.END_TURN));
+        templateManager.registerComponent(Components.Effect.CREATE, new ComponentParser<>() {
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.MOVE_TO_HAND));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.MOVE_TO_CREATURE_ZONE));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Effect.Zones.MOVE_TO_GRAVEYARD));
+            record CreateProxy(Template template, CreateLocation location) {}
 
-        templateManager.registerComponent(new ComponentParser_Prefilters(Components.Target.SOURCE_PREFILTERS));
-        templateManager.registerComponent(new ComponentParser_Prefilters(Components.Target.TARGET_PREFILTERS));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Target.TARGETS));
-        templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET));
-        templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_ALL));
-        templateManager.registerComponent(new ComponentParser_String(Components.Target.TARGET_RANDOM));
+            @Override
+            public CreateProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
+                Template template = parser.parseTemplate(format.getText(node));
+                CreateLocation location = CreateLocation.valueOf(parser.parseText(format.getAttribute(node, "location")));
+                return new CreateProxy(template, location);
+            }
 
-        templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TARGET_OPTIONAL));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.CURRENT_CASTS_PER_TURN));
-        templateManager.registerComponent(new ComponentParser_Integer(Components.Spell.MAXIMUM_CASTS_PER_TURN));
-        templateManager.registerComponent(new ComponentParser_Void(Components.Spell.TAUNTABLE));
-        templateManager.registerComponent(new ComponentParser_Entities(Components.Spell.CAST_TRIGGERS));
+            @Override
+            public Object resolve(int[] proxiedEntities, Object _recordedValue) {
+                CreateProxy recordedValue = (CreateProxy) _recordedValue;
+                return new Components.Create(resolveTemplate(proxiedEntities, recordedValue.template).getAsResolvedText(), recordedValue.location);
+            }
+        });
+        templateManager.registerComponent(Components.Effect.END_TURN, new ComponentParser_Void());
+
+        templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_HAND, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_CREATURE_ZONE, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_GRAVEYARD, new ComponentParser_Void());
+
+        templateManager.registerComponent(Components.Target.SOURCE_PREFILTERS, new ComponentParser_Prefilters());
+        templateManager.registerComponent(Components.Target.TARGET_PREFILTERS, new ComponentParser_Prefilters());
+        templateManager.registerComponent(Components.Target.TARGETS, new ComponentParser_Entities());
+        templateManager.registerComponent(Components.Target.TARGET, new ComponentParser_String());
+        templateManager.registerComponent(Components.Target.TARGET_ALL, new ComponentParser_String());
+        templateManager.registerComponent(Components.Target.TARGET_RANDOM, new ComponentParser_String());
+
+        templateManager.registerComponent(Components.Spell.TARGET_OPTIONAL, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Spell.CURRENT_CASTS_PER_TURN, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Spell.MAXIMUM_CASTS_PER_TURN, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Spell.TAUNTABLE, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Spell.CAST_TRIGGERS, new ComponentParser_Entities());
 
         for (ComponentDefinition<int[]> component : ComponentsTriggers.getAllComponents()) {
-            templateManager.registerComponent(new ComponentParser_Entities(component));
+            templateManager.registerComponent(component, new ComponentParser_Entities());
         }
 
-        EntityTemplate.addLoader(templateManager::loadTemplate);
+        EntityTemplate.addLoader(templateManager);
     }
 }

@@ -145,7 +145,9 @@ public class TestGame {
     }
 
     protected int create(String template) {
-        return EntityTemplate.createFromTemplate(data, template);
+        int card = data.createEntity();
+        EntityTemplate.loadTemplate(data, card, template);
+        return card;
     }
 
     protected int[] createForBothPlayers(int countPerPlayer, Function<Integer, Integer> createForPlayer) {

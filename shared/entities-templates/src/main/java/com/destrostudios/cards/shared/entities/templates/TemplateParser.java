@@ -1,33 +1,33 @@
 package com.destrostudios.cards.shared.entities.templates;
 
-import com.destrostudios.cards.shared.entities.EntityData;
-
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Stack;
 
 public class TemplateParser<NODE> {
 
-    public TemplateParser(TemplateManager templateManager, TemplateFormat<NODE> format) {
+    public TemplateParser(TemplateManager templateManager, TemplateFormat<NODE> format, TemplateRecording recording) {
         this.templateManager = templateManager;
         this.format = format;
+        this.recording = recording;
     }
     private TemplateManager templateManager;
     private TemplateFormat<NODE> format;
+    private TemplateRecording recording;
     private Stack<String> currentDirectories = new Stack<>();
-    private Stack<HashMap<String, Integer>> cachedEntities = new Stack<>();
-    private Stack<HashMap<String, String>> cachedValues = new Stack<>();
+    private Stack<HashMap<String, EntityProxy>> cachedEntities = new Stack<>();
+    private Stack<HashMap<String, Object>> cachedValues = new Stack<>();
 
-    public void loadTemplate(EntityData entityData, int entity, EntityTemplate template, NODE root) {
+    public void loadTemplate(EntityProxy entityProxy, Template template, NODE root) {
         String currentDirectory = "";
         String[] directories = template.getName().split("/");
         for (int i = 0; i < (directories.length - 1); i++) {
             currentDirectory += directories[i] + "/";
         }
         currentDirectories.push(currentDirectory);
-        HashMap<String, Integer> entities = new HashMap<>(10);
+        HashMap<String, EntityProxy> entities = new HashMap<>(10);
         cachedEntities.push(entities);
-        HashMap<String, String> values = new HashMap<>();
+        HashMap<String, Object> values = new HashMap<>();
         NODE valuesNode = format.getChild(root, TemplateKeyword.VALUES);
         if (valuesNode != null) {
             for (NODE valueNode : format.getChildren(valuesNode)) {
@@ -43,114 +43,133 @@ public class TemplateParser<NODE> {
             if (isFirstEntity) {
                 String id = format.getAttribute(entityNode, TemplateKeyword.ID);
                 if (id != null) {
-                    cachedEntities.lastElement().put(id, entity);
+                    cachedEntities.lastElement().put(id, entityProxy);
                 }
-                loadEntity(entityData, entity, entityNode);
+                loadEntity(entityProxy, entityNode);
             } else {
-                createAndLoadEntity(entityData, entityNode);
+                createAndLoadEntity(entityNode);
             }
             isFirstEntity = false;
         }
         // Export
         if (cachedValues.size() > 1) {
-            HashMap<String, String> parentTemplateValues = cachedValues.get(cachedValues.size() - 2);
-            for (Entry<String, String> output : template.getOutput().entrySet()) {
-                String name = output.getKey();
-                String value = parseValue(entityData, output.getValue());
-                parentTemplateValues.put(name, value);
-            }
+            HashMap<String, Object> parentTemplateValues = cachedValues.get(cachedValues.size() - 2);
+            parentTemplateValues.putAll(template.getOutput());
         }
         currentDirectories.pop();
         cachedEntities.pop();
         cachedValues.pop();
     }
 
-    public int createAndLoadEntity(EntityData entityData, NODE entityNode) {
-        if ((!isNodeEnabled(entityData, entityNode)) || format.getName(entityNode).equals(TemplateKeyword.EMPTY)) {
-            return -1;
+    public EntityProxy createAndLoadEntity(NODE entityNode) {
+        if ((!isNodeEnabled(entityNode)) || format.getName(entityNode).equals(TemplateKeyword.EMPTY)) {
+            return null;
         }
-        Integer entity = null;
+        EntityProxy entityProxy = null;
         String id = format.getAttribute(entityNode, TemplateKeyword.ID);
         if (id != null) {
-            entity = cachedEntities.lastElement().get(id);
+            entityProxy = cachedEntities.lastElement().get(id);
         }
-        if (entity == null) {
-            entity = createEntity(entityData, id);
+        if (entityProxy == null) {
+            entityProxy = createEntity(id);
         }
-        loadEntity(entityData, entity, entityNode);
-        return entity;
+        loadEntity(entityProxy, entityNode);
+        return entityProxy;
     }
 
-    private int createEntity(EntityData entityData, String id) {
-        int entity = entityData.createEntity();
+    private EntityProxy createEntity(String id) {
+        EntityProxy entityProxy = new EntityProxy(recording.createEntity());
         if (id != null) {
-            cachedEntities.lastElement().put(id, entity);
+            cachedEntities.lastElement().put(id, entityProxy);
         }
-        return entity;
+        return entityProxy;
     }
 
-    private void loadEntity(EntityData entityData, int entity, NODE entityNode) {
+    private void loadEntity(EntityProxy entityProxy, NODE entityNode) {
         String templateText = format.getAttribute(entityNode, TemplateKeyword.TEMPLATE);
         if (templateText != null) {
-            EntityTemplate.loadTemplate(entityData, entity, parseTemplate(entityData, templateText));
+            EntityTemplate.loadTemplate(recording, entityProxy.entity(), parseTemplate(templateText));
         }
         for (NODE componentNode : format.getChildren(entityNode)) {
-            if (isNodeEnabled(entityData, componentNode)) {
-                ComponentParser componentParser = templateManager.getComponentParser(componentNode);
-                Object value = componentParser.parseValue(this, format, entityData, componentNode);
-                entityData.setComponent(entity, componentParser.getComponent(), value);
+            if (isNodeEnabled(componentNode)) {
+                Object component = templateManager.getComponent(format.getName(componentNode));
+                ComponentParser componentParser = templateManager.getComponentParser(component);
+                Object value = componentParser.parse(this, format, componentNode);
+                recording.setComponent(entityProxy.entity(), component, value);
             }
         }
     }
 
-    public String parseTemplateText(EntityData entityData, String templateText) {
-        return parseTemplate(entityData, templateText).getText();
-    }
-
-    public EntityTemplate parseTemplate(EntityData entityData, String templateText) {
+    public Template parseTemplate(String templateText) {
         String template = templateText;
         if (template.startsWith("./") || template.startsWith("../")) {
             template = currentDirectories.lastElement() + template;
         }
-        return EntityTemplate.parseTemplate(template, text -> {
+        return Template.parse(template, text -> {
             if (text.startsWith("#")) {
                 return text.substring(1);
             } else if (text.startsWith("[") && text.endsWith("]")) {
                 return text.substring(1, text.length() - 1);
             }
             return text;
-        }, key -> parseValue(entityData, key), value -> parseValue(entityData, value));
+        }, this::parseText, this::parseEntityOrText);
     }
 
-    private boolean isNodeEnabled(EntityData entityData, NODE node) {
+    private boolean isNodeEnabled(NODE node) {
         String ifCondition = format.getAttribute(node, TemplateKeyword.IF);
-        return ((ifCondition == null) || parseValueBoolean(entityData, ifCondition));
+        return ((ifCondition == null) || parseBoolean(ifCondition));
     }
 
-    private boolean parseValueBoolean(EntityData entityData, String text) {
+    public boolean parseBoolean(String text) {
         String valueText = text;
         boolean inverted = false;
         if (valueText.startsWith("!")) {
             valueText = valueText.substring(1);
             inverted = true;
         }
-        String value = parseValue(entityData, valueText);
+        String value = parseText(valueText);
         boolean isTruthy = ((!value.isEmpty()) && (!value.equals("false")) && (!value.equals("0")));
         return (isTruthy != inverted);
     }
 
-    public String parseValue(EntityData entityData, String text) {
+    public Object parseEntityOrText(String text) {
+        Object value = parseEntityNullable(text);
+        if (value == null) {
+            value = parseText(text);
+        }
+        return value;
+    }
+
+    public Object parseEntity(String text) {
+        Object entity = parseEntityNullable(text);
+        if (entity == null) {
+            throw new RuntimeException("Invalid entity text '" + text + "'");
+        }
+        return entity;
+    }
+
+    public Object parseEntityNullable(String text) {
         if (text.startsWith("#")) {
             String entityId = text.substring(1);
-            Integer entity = cachedEntities.lastElement().get(entityId);
-            if (entity == null) {
-                entity = createEntity(entityData, entityId);
+            EntityProxy entityProxy = cachedEntities.lastElement().get(entityId);
+            if (entityProxy == null) {
+                entityProxy = createEntity(entityId);
             }
-            return entity.toString();
+            return entityProxy;
         }
-        HashMap<String, String> values = cachedValues.lastElement();
-        for (Entry<String, String> valueEntry : values.entrySet()) {
-            text = text.replaceAll("\\[" + valueEntry.getKey() + "\\]", valueEntry.getValue());
+        HashMap<String, Object> values = cachedValues.lastElement();
+        for (Entry<String, Object> valueEntry : values.entrySet()) {
+            if (text.equals("[" + valueEntry.getKey() + "]")) {
+                return valueEntry.getValue();
+            }
+        }
+        return null;
+    }
+
+    public String parseText(String text) {
+        HashMap<String, Object> values = cachedValues.lastElement();
+        for (Entry<String, Object> valueEntry : values.entrySet()) {
+            text = text.replaceAll("\\[" + valueEntry.getKey() + "\\]", valueEntry.getValue().toString());
         }
         return text;
     }

@@ -26,7 +26,7 @@ public class PlayerActionsGenerator {
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
                 generateMulligans(data, isOwnedByPlayer, possibleEvents::add);
             } else {
-                generateSpellCasts(data, isOwnedByPlayer, possibleEvents::add);
+                generateSpellCasts(data, player, isOwnedByPlayer, possibleEvents::add);
                 possibleEvents.add(new EndTurnEvent(player));
             }
         }
@@ -41,23 +41,23 @@ public class PlayerActionsGenerator {
         }
     }
 
-    private void generateSpellCasts(EntityData data, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
+    private void generateSpellCasts(EntityData data, int player, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
-        generateSpellCasts(data, data.list(Components.HAND, isOwnedByPlayer), out);
-        generateSpellCasts(data, data.list(Components.CREATURE_ZONE, isOwnedByPlayer), out);
+        generateSpellCasts(data, player, data.list(Components.HAND, isOwnedByPlayer), out);
+        generateSpellCasts(data, player, data.list(Components.CREATURE_ZONE, isOwnedByPlayer), out);
     }
 
-    private void generateSpellCasts(EntityData data, IntList ownedCards, Consumer<Event> out) {
+    private void generateSpellCasts(EntityData data, int player, IntList ownedCards, Consumer<Event> out) {
         for (int card : ownedCards) {
             int[] spells = data.getComponent(card, Components.SPELLS);
             for (int spell : spells) {
-                generateCastSpellEvents(data, card, spell, out);
+                generateCastSpellEvents(data, player, card, spell, out);
             }
         }
     }
 
-    private void generateCastSpellEvents(EntityData data, int card, int spell, Consumer<Event> out) {
-        if (!SpellUtil.isCastable_WithoutSpellCondition(data, card, spell)) {
+    private void generateCastSpellEvents(EntityData data, int player, int card, int spell, Consumer<Event> out) {
+        if (!SpellUtil.isCastable_WithoutSpellCondition(data, player, spell)) {
             return;
         }
         if (SpellUtil.isTargeted(data, spell)) {

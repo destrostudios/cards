@@ -9,7 +9,7 @@ public class SpellUtil {
         return data.hasComponent(entity, Components.Target.TARGET_PREFILTERS);
     }
 
-    public static boolean isCastable_WithoutSpellCondition(EntityData data, int card, int spell) {
+    public static boolean isCastable_WithoutSpellCondition(EntityData data, int player, int spell) {
         Integer maximumCastsPerTurn = data.getComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN);
         if (maximumCastsPerTurn != null) {
             Integer currentCastsPerTurn = data.getComponent(spell, Components.Spell.CURRENT_CASTS_PER_TURN);
@@ -17,7 +17,6 @@ public class SpellUtil {
                 return false;
             }
         }
-        int player = data.getComponent(card, Components.OWNED_BY);
         return CostUtil.isPayable(data, player, spell);
     }
 

@@ -17,6 +17,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 
 import java.security.SecureRandom;
+import java.util.Random;
 import java.util.UUID;
 
 public class CardsGameStartServerModule extends GameStartServerModule<StartGameInfo> {
@@ -40,7 +41,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
 
     public UUID startGame(StartGameInfo startGameInfo) {
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
-        GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo);
+        GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo, new Random());
         gameSetup.apply();
         GameContext gameContext = new GameContext(startGameInfo, data);
 

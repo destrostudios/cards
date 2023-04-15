@@ -3,8 +3,7 @@ package com.destrostudios.cards.shared.rules.cards;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
-import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
+import com.destrostudios.cards.shared.rules.battle.ConditionsAffectedEvent;
 import com.destrostudios.cards.shared.rules.game.turn.StartTurnEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
@@ -19,20 +18,29 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
         int player = data.unique(Components.Player.ACTIVE_PLAYER);
         LOG.debug("Player {} is mulliganing away cards {}", inspect(player), inspect(event.cards));
         if (event.cards.length > 0) {
-            IntList remainingLibraryCards = data.list(Components.LIBRARY, card -> data.getComponent(card, Components.OWNED_BY) == player);
-            IntList newCards = new IntList(event.cards.length);
-            for (int i = 0; i < event.cards.length; i++) {
-                int newCard = remainingLibraryCards.removeAt(random.nextInt(remainingLibraryCards.size()));
-                newCards.add(newCard);
+            IntList handCards = data.getComponent(player, Components.Player.HAND_CARDS);
+            IntList libraryCards = data.getComponent(player, Components.Player.LIBRARY_CARDS);
+            IntList newHandCards = handCards.copy();
+            IntList newLibraryCards = libraryCards.copy();
+            int newCardsCount = Math.min(event.cards.length, libraryCards.size());
+            for (int i = 0; i < newCardsCount; i++) {
+                // Library is still shuffled from the initial shuffling, so we can simply take any N cards
+                int newCard = newLibraryCards.removeLast();
+                LOG.debug("Player {} is getting mulliganed new card {}", inspect(player), inspect(newCard));
+                data.removeComponent(newCard, Components.LIBRARY);
+                data.setComponent(newCard, Components.HAND);
+                newHandCards.add(newCard);
             }
-            LOG.debug("Player {} is getting mulliganed new cards {}", inspect(player), inspect(newCards));
             for (int card : event.cards) {
-                events.fire(new MoveToLibraryEvent(card), random);
+                data.removeComponent(card, Components.HAND);
+                data.setComponent(card, Components.LIBRARY);
+                newHandCards.removeFirstUnsafe(card);
+                newLibraryCards.add(card);
             }
-            events.fire(new ShuffleLibraryEvent(player), random);
-            for (int card : newCards) {
-                events.fire(new MoveToHandEvent(card), random);
-            }
+            newLibraryCards.shuffle(random::nextInt);
+            data.setComponent(player, Components.Player.LIBRARY_CARDS, newLibraryCards);
+            data.setComponent(player, Components.Player.HAND_CARDS, newHandCards);
+            events.fire(new ConditionsAffectedEvent(), random);
         }
         data.removeComponent(player, Components.Player.MULLIGAN);
         data.removeComponent(player, Components.Player.ACTIVE_PLAYER);

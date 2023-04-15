@@ -10,7 +10,10 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.ModelUtil;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @AllArgsConstructor
 public class GameSetup {
@@ -18,6 +21,7 @@ public class GameSetup {
     private List<Card> cards;
     private EntityData data;
     private StartGameInfo startGameInfo;
+    private Random random;
 
     public void apply() {
         int player1 = data.createEntity();
@@ -46,7 +50,9 @@ public class GameSetup {
     }
 
     private void fillTestLibrary(IntList libraryCards) {
-        cards.stream()/*.limit(GameConstants.MAXIMUM_DECK_SIZE)*/.forEach(card -> {
+        ArrayList<Card> randomSortedCards = new ArrayList<>(cards);
+        Collections.shuffle(randomSortedCards, random);
+        randomSortedCards.stream().limit(GameConstants.MAXIMUM_DECK_SIZE).forEach(card -> {
             int cardEntity = data.createEntity();
             EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
             setRandomFoil(cardEntity);

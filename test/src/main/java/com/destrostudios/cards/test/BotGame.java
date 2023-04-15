@@ -46,6 +46,9 @@ public class BotGame {
     private MctsBot[] bots;
 
     public void play() {
+        Random _random = new Random(seed);
+        MasterRandom random = new MasterRandom(_random);
+
         StartGameInfo startGameInfo = new StartGameInfo(
             mode,
             queue,
@@ -56,12 +59,9 @@ public class BotGame {
             }
         );
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
-        GameSetup gameSetup = new GameSetup(cards, data, startGameInfo);
+        GameSetup gameSetup = new GameSetup(cards, data, startGameInfo, _random);
         gameSetup.apply();
         gameContext = new GameContext(startGameInfo, data);
-
-        Random _random = new Random(seed);
-        MasterRandom random = new MasterRandom(_random);
 
         applyAction(new GameStartEvent(), random);
 

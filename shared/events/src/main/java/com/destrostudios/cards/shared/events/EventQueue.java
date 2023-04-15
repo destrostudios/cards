@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class EventQueue {
 
@@ -19,17 +19,18 @@ public class EventQueue {
 
     public void fire(Event event, NetworkRandom random) {
         event.setParent(parentEvent);
-        triggerHandlers(preHandlers, event, random, (event1, event2) -> event1.getParent() != event2.getParent());
-        triggerHandlers(instantHandlers, event, random, (event1, event2) -> event1.getParent() != event2.getParent());
-        triggerHandlers(resolvedHandlers, event, random, (event1, event2) -> event1.getRoot() != event2.getRoot());
+        Event root = event.getRoot();
+        triggerHandlers(preHandlers, event, random, (otherEvent) -> otherEvent.getParent() != parentEvent);
+        triggerHandlers(instantHandlers, event, random, (otherEvent) -> otherEvent.getParent() != parentEvent);
+        triggerHandlers(resolvedHandlers, event, random, (otherEvent) -> otherEvent.getRoot() != root);
     }
 
-    private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event, NetworkRandom random, BiPredicate<Event, Event> stopAndInsertEventHandlers) {
+    private <T extends Event> void triggerHandlers(EventHandlers eventHandlers, T event, NetworkRandom random, Predicate<Event> stopAndInsertEventHandlers) {
         EventHandler[] handlers = eventHandlers.get(event);
         if (handlers != null) {
             int startingIndex = 0;
             for (PendingEventHandler pendingEventHandler : pendingEventHandlers) {
-                if (stopAndInsertEventHandlers.test(pendingEventHandler.getEvent(), event)) {
+                if (stopAndInsertEventHandlers.test(pendingEventHandler.getEvent())) {
                     break;
                 }
                 startingIndex++;

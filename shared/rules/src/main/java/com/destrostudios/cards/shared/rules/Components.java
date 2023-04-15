@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,11 @@ public class Components {
     public static final ComponentDefinition<Integer> SOURCE = create("source");
     public static final ComponentDefinition<Void> BOARD = create("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = create("creatureCard");
-    public static final ComponentDefinition<Integer> CREATURE_ZONE = create("creatureZone");
+    public static final ComponentDefinition<Void> CREATURE_ZONE = create("creatureZone");
     public static final ComponentDefinition<String> FLAVOUR_TEXT = create("flavourText");
-    public static final ComponentDefinition<Integer> HAND = create("hand");
-    public static final ComponentDefinition<Integer> LIBRARY = create("library");
-    public static final ComponentDefinition<Integer> GRAVEYARD = create("graveyard");
+    public static final ComponentDefinition<Void> HAND = create("hand");
+    public static final ComponentDefinition<Void> LIBRARY = create("library");
+    public static final ComponentDefinition<Void> GRAVEYARD = create("graveyard");
     public static final ComponentDefinition<Integer> NEXT_PLAYER = create("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = create("ownedBy");
     public static final ComponentDefinition<int[]> AURAS = create("auras");
@@ -61,6 +62,10 @@ public class Components {
     public static class Player {
         public static final ComponentDefinition<Void> MULLIGAN = create("mulligan");
         public static final ComponentDefinition<Void> ACTIVE_PLAYER = create("activePlayer");
+        public static final ComponentDefinition<IntList> LIBRARY_CARDS = create("libraryCards");
+        public static final ComponentDefinition<IntList> HAND_CARDS = create("handCards");
+        public static final ComponentDefinition<IntList> CREATURE_ZONE_CARDS = create("creatureZoneCards");
+        public static final ComponentDefinition<IntList> GRAVEYARD_CARDS = create("graveyardCards");
     }
 
     public static class Ability {

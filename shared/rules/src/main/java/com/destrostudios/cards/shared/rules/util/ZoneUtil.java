@@ -7,32 +7,33 @@ import com.destrostudios.cards.shared.rules.Components;
 
 public class ZoneUtil {
 
-    public static void addToZone(EntityData data, int card, int owner, ComponentDefinition<Integer> zone) {
+    public static void addToZone(EntityData data, int card, int owner, ComponentDefinition<Void> cardZone, ComponentDefinition<IntList> playerZone) {
         // Enable check to catch any refactoring issues
-        /*if (data.hasComponent(card, zone)) {
-            throw new RuntimeException("Card " + card + " is already in zone " + zone.getName());
+        /*if (data.hasComponent(card, cardZone) || data.getComponent(owner, playerZone).contains(card)) {
+            throw new RuntimeException("Card " + card + " is already in zone " + cardZone.getName());
         }*/
-        data.setComponent(card, zone, data.count(zone, c -> data.getComponent(c, Components.OWNED_BY) == owner));
-        if (zone == Components.CREATURE_ZONE) {
+        data.setComponent(card, cardZone);
+        if (cardZone == Components.CREATURE_ZONE) {
             data.setComponent(card, Components.BOARD);
         }
+        IntList newPlayerCards = data.getComponent(owner, playerZone).copy();
+        newPlayerCards.add(card);
+        data.setComponent(owner, playerZone, newPlayerCards);
+    }
+
+    public static void removeFromZone(EntityData data, int card, int owner, ComponentDefinition<Void> cardZone, ComponentDefinition<IntList> playerZone) {
+        // Enable check to catch any refactoring issues
+        /*if (!data.hasComponent(card, cardZone) || !data.getComponent(owner, playerZone).contains(card)) {
+            throw new RuntimeException("Card " + card + " is not in zone " + cardZone.getName());
+        }*/
+        data.removeComponent(card, cardZone);
+        IntList newPlayerCards = data.getComponent(owner, playerZone).copy();
+        newPlayerCards.removeFirstUnsafe(card);
+        data.setComponent(owner, playerZone, newPlayerCards);
     }
 
     public static Integer getTopLibraryCard(EntityData data, int player) {
-        IntList libraryCards = data.list(Components.LIBRARY, card -> data.getComponent(card, Components.OWNED_BY) == player);
-        return getTopMostCard(data, libraryCards, Components.LIBRARY);
-    }
-
-    public static Integer getTopMostCard(EntityData data, IntList cards, ComponentDefinition<Integer> zoneComponent) {
-        Integer topCard = null;
-        int topCardIndex = -1;
-        for (int card : cards) {
-            int cardIndex = data.getComponent(card, zoneComponent);
-            if (cardIndex > topCardIndex) {
-                topCard = card;
-                topCardIndex = cardIndex;
-            }
-        }
-        return topCard;
+        IntList libraryCards = data.getComponent(player, Components.Player.LIBRARY_CARDS);
+        return (libraryCards.nonEmpty() ? libraryCards.get(libraryCards.size() - 1) : null);
     }
 }

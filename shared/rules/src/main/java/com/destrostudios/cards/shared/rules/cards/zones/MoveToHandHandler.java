@@ -7,12 +7,17 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 public class MoveToHandHandler extends BaseMoveToZoneHandler<MoveToHandEvent> {
 
     public MoveToHandHandler() {
-        super(Components.HAND, OTHER_COMPONENTS);
+        super(Components.HAND, Components.Player.HAND_CARDS, OTHER_CARD_COMPONENTS, OTHER_PLAYER_ZONE_COMPONENTS);
     }
-    private static ComponentDefinition[] OTHER_COMPONENTS = new ComponentDefinition[] {
+    private static ComponentDefinition[] OTHER_CARD_COMPONENTS = new ComponentDefinition[] {
         Components.LIBRARY,
         Components.CREATURE_ZONE,
         Components.GRAVEYARD,
+    };
+    private static ComponentDefinition[] OTHER_PLAYER_ZONE_COMPONENTS = new ComponentDefinition[] {
+        Components.Player.LIBRARY_CARDS,
+        Components.Player.CREATURE_ZONE_CARDS,
+        Components.Player.GRAVEYARD_CARDS
     };
 
     @Override

@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.CardList;
@@ -9,9 +10,7 @@ import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.ModelUtil;
 import lombok.AllArgsConstructor;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class GameSetup {
@@ -28,33 +27,31 @@ public class GameSetup {
     }
 
     private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {
-        List<Integer> library;
+        IntList libraryCards = new IntList(GameConstants.MAXIMUM_DECK_SIZE);
         if (playerInfo.getDeck() != null) {
-            library = createLibrary(playerInfo.getDeck());
+            fillLibrary(libraryCards, playerInfo.getDeck());
         } else {
-            library = createTestLibrary();
+            fillTestLibrary(libraryCards);
         }
-        initPlayer(data, player, opponent, playerInfo.getLogin(), library);
+        initPlayer(data, player, opponent, playerInfo.getLogin(), libraryCards);
     }
 
-    private List<Integer> createLibrary(CardList deck) {
-        LinkedList<Integer> library = new LinkedList<>();
+    private void fillLibrary(IntList libraryCards, CardList deck) {
         for (CardListCard cardListCard : deck.getCards()) {
             for (int i = 0; i < cardListCard.getAmount(); i++) {
                 int card = ModelUtil.createCard(data, cardListCard);
-                library.add(card);
+                libraryCards.add(card);
             }
         }
-        return library;
     }
 
-    private List<Integer> createTestLibrary() {
-        return cards.stream().map(card -> {
+    private void fillTestLibrary(IntList libraryCards) {
+        cards.stream()/*.limit(GameConstants.MAXIMUM_DECK_SIZE)*/.forEach(card -> {
             int cardEntity = data.createEntity();
             EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
             setRandomFoil(cardEntity);
-            return cardEntity;
-        }).collect(Collectors.toList());
+            libraryCards.add(cardEntity);
+        });
     }
 
     private void setRandomFoil(int card) {
@@ -64,17 +61,19 @@ public class GameSetup {
         }
     }
 
-    public static void initPlayer(EntityData data, int player, int opponent, String name, List<Integer> library) {
+    public static void initPlayer(EntityData data, int player, int opponent, String name, IntList libraryCards) {
         data.setComponent(player, Components.NAME, name);
         data.setComponent(player, Components.NEXT_PLAYER, opponent);
         data.setComponent(player, Components.Stats.HEALTH, GameConstants.PLAYER_HEALTH);
         data.setComponent(player, Components.BOARD);
+        data.setComponent(player, Components.Player.LIBRARY_CARDS, libraryCards);
+        data.setComponent(player, Components.Player.HAND_CARDS, new IntList());
+        data.setComponent(player, Components.Player.CREATURE_ZONE_CARDS, new IntList());
+        data.setComponent(player, Components.Player.GRAVEYARD_CARDS, new IntList());
         data.setComponent(player, Components.Player.MULLIGAN);
-        int i = 0;
-        for (int card : library) {
+        for (int card : libraryCards) {
             data.setComponent(card, Components.OWNED_BY, player);
-            data.setComponent(card, Components.LIBRARY, i);
-            i++;
+            data.setComponent(card, Components.LIBRARY);
         }
     }
 }

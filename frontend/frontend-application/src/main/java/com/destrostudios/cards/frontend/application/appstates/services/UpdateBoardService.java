@@ -7,6 +7,7 @@ import com.destrostudios.cards.frontend.application.EntityBoardMap;
 import com.destrostudios.cards.frontend.application.PlayerZones;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
@@ -47,42 +48,35 @@ public class UpdateBoardService {
             playerBoardObject.getModel().setMaxHealth(data.getComponent(player, Components.Stats.HEALTH));
             playerBoardObject.getModel().setCurrentMana(data.getOptionalComponent(player, Components.MANA).orElse(0));
             playerBoardObject.getModel().setMaxMana(data.getOptionalComponent(player, Components.AVAILABLE_MANA).orElse(0));
+
+            PlayerZones playerZones = playerZonesMap.get(player);
+            updateZoneCards(data, player, Components.Player.LIBRARY_CARDS, playerZones.getDeckZone());
+            updateZoneCards(data, player, Components.Player.HAND_CARDS, playerZones.getHandZone());
+            updateZoneCards(data, player, Components.Player.CREATURE_ZONE_CARDS, playerZones.getCreatureZone());
+            updateZoneCards(data, player, Components.Player.GRAVEYARD_CARDS, playerZones.getGraveyardZone());
         }
-        IntList cardEntities = data.list(Components.OWNED_BY);
-        for (int cardEntity : cardEntities) {
-            CardZone cardZone = null;
-            Integer cardZoneIndex;
+        if (possibleEvents != null) {
+            updateInteractivities(possibleEvents);
+        }
+    }
+
+    private void updateZoneCards(EntityData data, int player, ComponentDefinition<IntList> playerZoneComponent, CardZone playerCardZone) {
+        IntList cardEntities = data.getComponent(player, playerZoneComponent);
+        for (int i = 0; i < cardEntities.size(); i++) {
+            int cardZoneIndex = i;
+            int cardEntity = cardEntities.get(i);
+            CardZone cardZone = playerCardZone;
             boolean isFront = true;
 
-            int owner = data.getComponent(cardEntity, Components.OWNED_BY);
-            PlayerZones playerZones = playerZonesMap.get(owner);
-
-            // TODO: Yeah...
-            cardZoneIndex = data.getComponent(cardEntity, Components.LIBRARY);
-            if (cardZoneIndex != null) {
-                cardZone = playerZones.getDeckZone();
+            if (playerZoneComponent == Components.Player.LIBRARY_CARDS) {
                 isFront = false;
-            } else {
-                cardZoneIndex = data.getComponent(cardEntity, Components.HAND);
-                if (cardZoneIndex != null) {
-                    if ((owner == gameService.getPlayerEntity()) && data.hasComponent(owner, Components.Player.MULLIGAN)) {
+            } else if (playerZoneComponent == Components.Player.HAND_CARDS) {
+                if (player == gameService.getPlayerEntity()) {
+                    if (data.hasComponent(player, Components.Player.MULLIGAN)) {
                         cardZone = selectionZone;
-                    } else {
-                        cardZone = playerZones.getHandZone();
-                        if (owner != gameService.getPlayerEntity()) {
-                            isFront = false;
-                        }
                     }
                 } else {
-                    cardZoneIndex = data.getComponent(cardEntity, Components.CREATURE_ZONE);
-                    if (cardZoneIndex != null) {
-                        cardZone = playerZones.getCreatureZone();
-                    } else {
-                        cardZoneIndex = data.getComponent(cardEntity, Components.GRAVEYARD);
-                        if (cardZoneIndex != null) {
-                            cardZone = playerZones.getGraveyardZone();
-                        }
-                    }
+                    isFront = false;
                 }
             }
 
@@ -91,9 +85,6 @@ public class UpdateBoardService {
             CardGuiMapper.updateModel(data, cardEntity, card.getModel(), isFront);
 
             board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
-        }
-        if (possibleEvents != null) {
-            updateInteractivities(possibleEvents);
         }
     }
 

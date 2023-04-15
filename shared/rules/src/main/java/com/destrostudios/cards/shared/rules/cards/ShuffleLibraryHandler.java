@@ -14,11 +14,8 @@ public class ShuffleLibraryHandler extends GameEventHandler<ShuffleLibraryEvent>
     @Override
     public void handle(ShuffleLibraryEvent event, NetworkRandom random) {
         LOG.debug("Shuffling library of player {}", inspect(event.player));
-        IntList libraryCards = data.list(Components.LIBRARY, card -> data.getComponent(card, Components.OWNED_BY) == event.player);
-        for (int i = libraryCards.size(); i > 0; i--) {
-            int cardIndex = random.nextInt(i);
-            int cardEntity = libraryCards.removeAt(cardIndex);
-            data.setComponent(cardEntity, Components.LIBRARY, i - 1);
-        }
+        IntList newLibraryCards = data.getComponent(event.player, Components.Player.LIBRARY_CARDS).copy();
+        newLibraryCards.shuffle(random::nextInt);
+        data.setComponent(event.player, Components.Player.LIBRARY_CARDS, newLibraryCards);
     }
 }

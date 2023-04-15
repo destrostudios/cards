@@ -7,12 +7,17 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 public class MoveToCreatureZoneHandler extends BaseMoveToZoneHandler<MoveToCreatureZoneEvent> {
 
     public MoveToCreatureZoneHandler() {
-        super(Components.CREATURE_ZONE, OTHER_COMPONENTS);
+        super(Components.CREATURE_ZONE, Components.Player.CREATURE_ZONE_CARDS, OTHER_CARD_ZONE_COMPONENTS, OTHER_PLAYER_ZONE_COMPONENTS);
     }
-    private static ComponentDefinition[] OTHER_COMPONENTS = new ComponentDefinition[] {
+    private static ComponentDefinition[] OTHER_CARD_ZONE_COMPONENTS = new ComponentDefinition[] {
         Components.LIBRARY,
         Components.HAND,
         Components.GRAVEYARD
+    };
+    private static ComponentDefinition[] OTHER_PLAYER_ZONE_COMPONENTS = new ComponentDefinition[] {
+        Components.Player.LIBRARY_CARDS,
+        Components.Player.HAND_CARDS,
+        Components.Player.GRAVEYARD_CARDS
     };
 
     @Override

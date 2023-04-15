@@ -23,7 +23,6 @@ import com.destrostudios.cards.shared.rules.util.ZoneUtil;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.LinkedList;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -69,55 +68,55 @@ public class TestGame {
         player = data.createEntity();
         opponent = data.createEntity();
         players = new int[] { player, opponent };
-        GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), new LinkedList<>());
-        GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), new LinkedList<>());
+        GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), new IntList());
+        GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), new IntList());
     }
 
-    protected int[] createCards(int count, int owner, ComponentDefinition<Integer> zone) {
+    protected int[] createCards(int count, int owner, ComponentDefinition<Void> zone) {
         return create(count, () -> createCard(owner, zone));
     }
 
-    protected int createCard(int owner, ComponentDefinition<Integer> zone) {
+    protected int createCard(int owner, ComponentDefinition<Void> zone) {
         return createCreature(owner, zone);
     }
 
-    protected int[] createCreaturesForBothPlayers(int countPerPlayer, ComponentDefinition<Integer> zone) {
+    protected int[] createCreaturesForBothPlayers(int countPerPlayer, ComponentDefinition<Void> zone) {
         return createForBothPlayers(countPerPlayer, owner -> createCreature(owner, zone));
     }
 
-    protected int[] createCreatures(int count, int owner, ComponentDefinition<Integer> zone) {
+    protected int[] createCreatures(int count, int owner, ComponentDefinition<Void> zone) {
         return create(count, () -> createCreature(owner, zone));
     }
 
-    protected int createCreature(int owner, ComponentDefinition<Integer> zone) {
+    protected int createCreature(int owner, ComponentDefinition<Void> zone) {
         return createVanilla(0, 0, 1, owner, zone);
     }
 
-    protected int[] createVanillasForBothPlayers(int countPerPlayer, int manaCost, int attack, int health, ComponentDefinition<Integer> zone) {
+    protected int[] createVanillasForBothPlayers(int countPerPlayer, int manaCost, int attack, int health, ComponentDefinition<Void> zone) {
         return createForBothPlayers(countPerPlayer, owner -> createVanilla(manaCost, attack, health, owner, zone));
     }
 
-    protected int[] createVanillas(int count, int manaCost, int attack, int health, int owner, ComponentDefinition<Integer> zone) {
+    protected int[] createVanillas(int count, int manaCost, int attack, int health, int owner, ComponentDefinition<Void> zone) {
         return create(count, () -> createVanilla(manaCost, attack, health, owner, zone));
     }
 
-    protected int createVanilla(int manaCost, int attack, int health, int owner, ComponentDefinition<Integer> zone) {
+    protected int createVanilla(int manaCost, int attack, int health, int owner, ComponentDefinition<Void> zone) {
         return create("creatures/templates/vanilla(name=Dummy Creature,manaCost=" + manaCost + ",attack=" + attack + ",health=" + health + ")", owner, zone);
     }
 
-    protected int[] createSpells(int count, int owner, ComponentDefinition<Integer> zone) {
+    protected int[] createSpells(int count, int owner, ComponentDefinition<Void> zone) {
         return create(count, () -> createSpell(owner, zone));
     }
 
-    protected int createSpell(int owner, ComponentDefinition<Integer> zone) {
+    protected int createSpell(int owner, ComponentDefinition<Void> zone) {
         return createSpell(0, owner, zone);
     }
 
-    protected int[] createSpells(int count, int manaCost, int owner, ComponentDefinition<Integer> zone) {
+    protected int[] createSpells(int count, int manaCost, int owner, ComponentDefinition<Void> zone) {
         return create(count, () -> createSpell(manaCost, owner, zone));
     }
 
-    protected int createSpell(int manaCost, int owner, ComponentDefinition<Integer> zone) {
+    protected int createSpell(int manaCost, int owner, ComponentDefinition<Void> zone) {
         // TODO: Split this out in a template? Should however not be bundled with the app ideally
         int spellCard = data.createEntity();
         data.setComponent(spellCard, Components.NAME, "Dummy Spell");
@@ -132,7 +131,7 @@ public class TestGame {
         return spellCard;
     }
 
-    protected int create(String template, int owner, ComponentDefinition<Integer> zone) {
+    protected int create(String template, int owner, ComponentDefinition<Void> zone) {
         int card = create(template, owner);
         addToZone(card, zone);
         return card;
@@ -167,9 +166,22 @@ public class TestGame {
         return entities;
     }
 
-    private void addToZone(int card, ComponentDefinition<Integer> zone) {
+    private void addToZone(int card, ComponentDefinition<Void> zone) {
         int owner = data.getComponent(card, Components.OWNED_BY);
-        ZoneUtil.addToZone(data, card, owner, zone);
+        ZoneUtil.addToZone(data, card, owner, zone, getPlayerZone(zone));
+    }
+
+    private ComponentDefinition<IntList> getPlayerZone(ComponentDefinition<Void> cardZone) {
+        if (cardZone == Components.LIBRARY) {
+            return Components.Player.LIBRARY_CARDS;
+        } else if (cardZone == Components.HAND) {
+            return Components.Player.HAND_CARDS;
+        } else if (cardZone == Components.CREATURE_ZONE) {
+            return Components.Player.CREATURE_ZONE_CARDS;
+        } else if (cardZone == Components.GRAVEYARD) {
+            return Components.Player.GRAVEYARD_CARDS;
+        }
+        throw new IllegalArgumentException();
     }
 
     protected void setFullMana(int entity, int mana) {
@@ -249,23 +261,23 @@ public class TestGame {
         return -1;
     }
 
-    protected void assertCardsCount(int player, ComponentDefinition<Integer> zone, int count) {
+    protected void assertCardsCount(int player, ComponentDefinition<Void> zone, int count) {
         assertEquals(count, getCardsCount(player, zone));
     }
 
-    protected int getCardsCount(int player, ComponentDefinition<Integer> zone) {
+    protected int getCardsCount(int player, ComponentDefinition<Void> zone) {
         return data.count(zone, card -> data.getComponent(card, Components.OWNED_BY) == player);
     }
 
-    protected void assertOneCard(int player, ComponentDefinition<Integer> zone, String name) {
+    protected void assertOneCard(int player, ComponentDefinition<Void> zone, String name) {
         assertCardsCount(player, zone, name, 1);
     }
 
-    protected void assertCardsCount(int player, ComponentDefinition<Integer> zone, String name, int count) {
+    protected void assertCardsCount(int player, ComponentDefinition<Void> zone, String name, int count) {
         assertEquals(count, getCards(player, zone, name).size());
     }
 
-    protected int getCard(int player, ComponentDefinition<Integer> zone, String name) {
+    protected int getCard(int player, ComponentDefinition<Void> zone, String name) {
         IntList cards = getCards(player, zone, name);
         if (cards.size() != 1) {
             fail("More than one matching card found.");
@@ -273,7 +285,7 @@ public class TestGame {
         return cards.get(0);
     }
 
-    protected IntList getCards(int player, ComponentDefinition<Integer> zone, String name) {
+    protected IntList getCards(int player, ComponentDefinition<Void> zone, String name) {
         return data.list(zone, card -> (data.getComponent(card, Components.OWNED_BY) == player) && (data.getComponent(card, Components.NAME).equals(name)));
     }
 

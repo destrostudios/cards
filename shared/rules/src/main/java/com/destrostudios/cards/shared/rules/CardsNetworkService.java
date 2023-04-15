@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.IntMap;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -43,8 +44,29 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
         });
         kryo.register(PlayerInfo.class);
         kryo.register(StartGameInfo.class);
-        kryo.register(String[].class);
         kryo.register(Foil.class, new EnumSerializer<>(Foil.class));
+        kryo.register(IntList.class, new Serializer<IntList>() {
+
+            @Override
+            public void write(Kryo kryo, Output output, IntList intList) {
+                output.writeInt(intList.size());
+                for (int i = 0; i < intList.size(); i++) {
+                    output.writeInt(intList.get(i));
+                }
+            }
+
+            @Override
+            public IntList read(Kryo kryo, Input input, Class<IntList> type) {
+                int size = input.readInt();
+                int[] data = input.readInts(size);
+                return new IntList(data);
+            }
+        });
+        kryo.register(Prefilter_Advanced.class, new EnumSerializer<>(Prefilter_Advanced.class));
+        kryo.register(Prefilter_Advanced[].class);
+        kryo.register(Components.Prefilters.class, new FieldSerializer<>(kryo, Components.Prefilters.class));
+        kryo.register(Components.AddBuff.class);
+        kryo.register(Components.Create.class);
         kryo.register(ComponentDefinition.class, new Serializer<ComponentDefinition>() {
 
             @Override
@@ -58,11 +80,6 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
             }
         });
         kryo.register(ComponentDefinition[].class);
-        kryo.register(Prefilter_Advanced.class, new EnumSerializer<>(Prefilter_Advanced.class));
-        kryo.register(Prefilter_Advanced[].class);
-        kryo.register(Components.Prefilters.class, new FieldSerializer<>(kryo, Components.Prefilters.class));
-        kryo.register(Components.AddBuff.class);
-        kryo.register(Components.Create.class);
         kryo.register(SimpleEntityData.class, new Serializer<SimpleEntityData>() {
 
             @Override

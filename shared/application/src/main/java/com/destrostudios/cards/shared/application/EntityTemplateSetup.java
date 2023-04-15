@@ -24,11 +24,11 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.SOURCE, new ComponentParser_Entity());
         templateManager.registerComponent(Components.BOARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.CREATURE_CARD, new ComponentParser_Void());
-        templateManager.registerComponent(Components.CREATURE_ZONE, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.CREATURE_ZONE, new ComponentParser_Void());
         templateManager.registerComponent(Components.FLAVOUR_TEXT, new ComponentParser_String());
-        templateManager.registerComponent(Components.GRAVEYARD, new ComponentParser_Integer());
-        templateManager.registerComponent(Components.HAND, new ComponentParser_Integer());
-        templateManager.registerComponent(Components.LIBRARY, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.GRAVEYARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.HAND, new ComponentParser_Void());
+        templateManager.registerComponent(Components.LIBRARY, new ComponentParser_Void());
         templateManager.registerComponent(Components.NEXT_PLAYER, new ComponentParser_Entity());
         templateManager.registerComponent(Components.OWNED_BY, new ComponentParser_Entity());
         templateManager.registerComponent(Components.AURAS, new ComponentParser_Entities());
@@ -57,6 +57,10 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(Components.Player.MULLIGAN, new ComponentParser_Void());
         templateManager.registerComponent(Components.Player.ACTIVE_PLAYER, new ComponentParser_Void());
+        // Components.Player.LIBRARY_CARDS
+        // Components.Player.HAND_CARDS
+        // Components.Player.CREATURE_ZONE_CARDS
+        // Components.Player.GRAVEYARD_CARDS
 
         templateManager.registerComponent(Components.Ability.DIVINE_SHIELD, new ComponentParser_Boolean());
         templateManager.registerComponent(Components.Ability.TAUNT, new ComponentParser_Void());

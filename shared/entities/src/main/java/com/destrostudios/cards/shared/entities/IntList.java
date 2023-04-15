@@ -20,6 +20,11 @@ public class IntList implements Iterable<Integer> {
     private int size = 0;
     private int[] data;
 
+    public IntList(IntList intList) {
+        size = intList.size;
+        data = Arrays.copyOf(intList.data, size);
+    }
+
     public IntList(int... data) {
         this.data = Arrays.copyOf(data, Math.max(data.length, DEFAULT_CAPACITY));
         size = data.length;
@@ -207,6 +212,28 @@ public class IntList implements Iterable<Integer> {
         System.arraycopy(intList.data, 0, data, oldSize, intList.size);
     }
 
+    public void removeFirst(int value) {
+        for (int i = 0; i < size; i++) {
+            if (data[i] == value) {
+                int remaining = (--size) - i;
+                if (remaining > 0) {
+                    System.arraycopy(data, i + 1, data, i, remaining);
+                }
+                break;
+            }
+        }
+    }
+
+    public void removeFirstUnsafe(int value) {
+        size--;
+        for (int i = 0; i < size; i++) {
+            if (data[i] == value) {
+                System.arraycopy(data, i + 1, data, i, size - i);
+                break;
+            }
+        }
+    }
+
     public void retain(IntPredicate predicate) {
         int newSize = 0;
         for (int i = 0; i < size; i++) {
@@ -230,5 +257,9 @@ public class IntList implements Iterable<Integer> {
         IntList intList = new IntList(1);
         intList.add(value);
         return intList;
+    }
+
+    public IntList copy() {
+        return new IntList(this);
     }
 }

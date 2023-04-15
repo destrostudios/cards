@@ -111,7 +111,6 @@ public class BotTest_CardStats extends BotTest {
                 CardStats stats = entry.getValue();
                 csv += "\n\"" + entry.getKey() + "\"," + stats.getWinrateWhenDrawn() + "," + stats.gamesWhereInHand + "," + stats.getWinrateWhenPlayed() + "," + stats.gamesWherePlayed + "," + stats.getAverageEndOfTurnsInHand();
             }
-            System.out.println("---Stats---\n" + csv + "\n-----------");
             if ((games % 10) == 0) {
                 FileManager.putFileContent("./stats.csv", csv);
             }

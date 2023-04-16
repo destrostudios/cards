@@ -8,8 +8,8 @@ public class TestSiren extends TestGame {
 
     @Test
     public void testReduceSpellsManaCostWhenOnBoard() {
-        int spell = createSpell(2, player, Components.HAND);
-        create("creatures/siren", player, Components.CREATURE_ZONE);
+        int spell = createSpell(2, player, Components.Zone.HAND);
+        create("creatures/siren", player, Components.Zone.CREATURE_ZONE);
         assertManaCost(spell, 1);
     }
 }

@@ -8,8 +8,8 @@ public class TestSpikedGreyhump extends TestGame {
 
     @Test
     public void testDamageOpponentCreaturesOnDamageTaken() {
-        int[] creatures = createVanillas(2, 0, 0, 2, opponent, Components.CREATURE_ZONE);
-        int card = create("creatures/spiked_greyhump", player, Components.CREATURE_ZONE);
+        int[] creatures = createVanillas(2, 0, 0, 2, opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("creatures/spiked_greyhump", player, Components.Zone.CREATURE_ZONE);
         damage(card, 1);
         assertHealthAndDamaged(creatures, 1);
     }

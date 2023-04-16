@@ -8,9 +8,9 @@ public class TestPeacefulDeath extends TestGame {
 
     @Test
     public void testDestroyCreatureOnCast() {
-        int creature = createCreature(opponent, Components.CREATURE_ZONE);
-        int card = create("spells/peaceful_death", player, Components.HAND);
+        int creature = createCreature(opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/peaceful_death", player, Components.Zone.HAND);
         castFromHand(card, creature);
-        assertHasComponent(creature, Components.GRAVEYARD);
+        assertHasComponent(creature, Components.Zone.GRAVEYARD);
     }
 }

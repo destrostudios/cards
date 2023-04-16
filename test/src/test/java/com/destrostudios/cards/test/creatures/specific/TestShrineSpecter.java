@@ -8,8 +8,8 @@ public class TestShrineSpecter extends TestGame {
 
     @Test
     public void testBuffOnPlaySpellCard() {
-        int card = create("creatures/shrine_specter", player, Components.CREATURE_ZONE);
-        int spell = createSpell(player, Components.HAND);
+        int card = create("creatures/shrine_specter", player, Components.Zone.CREATURE_ZONE);
+        int spell = createSpell(player, Components.Zone.HAND);
         castFromHand(spell);
         assertHealth(card, 3);
     }

@@ -27,13 +27,17 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
                 // Library is still shuffled from the initial shuffling, so we can simply take any N cards
                 int newCard = newLibraryCards.removeLast();
                 LOG.debug("Player {} is getting mulliganed new card {}", inspect(player), inspect(newCard));
-                data.removeComponent(newCard, Components.LIBRARY);
-                data.setComponent(newCard, Components.HAND);
+                data.removeComponent(newCard, Components.Zone.LIBRARY);
+                data.removeComponent(newCard, Components.Zone.PLAYER_LIBRARY[player]);
+                data.setComponent(newCard, Components.Zone.HAND);
+                data.setComponent(newCard, Components.Zone.PLAYER_HAND[player]);
                 newHandCards.add(newCard);
             }
             for (int card : event.cards) {
-                data.removeComponent(card, Components.HAND);
-                data.setComponent(card, Components.LIBRARY);
+                data.removeComponent(card, Components.Zone.HAND);
+                data.removeComponent(card, Components.Zone.PLAYER_HAND[player]);
+                data.setComponent(card, Components.Zone.LIBRARY);
+                data.setComponent(card, Components.Zone.PLAYER_LIBRARY[player]);
                 newHandCards.removeFirstUnsafe(card);
                 newLibraryCards.add(card);
             }

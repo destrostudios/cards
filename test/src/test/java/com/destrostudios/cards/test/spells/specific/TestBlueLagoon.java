@@ -8,10 +8,10 @@ public class TestBlueLagoon extends TestGame {
 
     @Test
     public void testDrawBeastsOnCast() {
-        int[] beasts = createCreatures(3, player, Components.LIBRARY);
+        int[] beasts = createCreatures(3, player, Components.Zone.LIBRARY);
         forEach(beasts, beast -> data.setComponent(beast, Components.Tribe.BEAST));
-        int card = create("spells/blue_lagoon", player, Components.HAND);
+        int card = create("spells/blue_lagoon", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(beasts, Components.HAND);
+        assertHasComponent(beasts, Components.Zone.HAND);
     }
 }

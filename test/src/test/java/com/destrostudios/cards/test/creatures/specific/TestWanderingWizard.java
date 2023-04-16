@@ -8,9 +8,9 @@ public class TestWanderingWizard extends TestGame {
 
     @Test
     public void testDrawSpellOnSummon() {
-        int spell = createSpell(player, Components.LIBRARY);
-        int card = create("creatures/wandering_wizard", player, Components.HAND);
+        int spell = createSpell(player, Components.Zone.LIBRARY);
+        int card = create("creatures/wandering_wizard", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(spell, Components.HAND);
+        assertHasComponent(spell, Components.Zone.HAND);
     }
 }

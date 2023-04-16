@@ -8,10 +8,10 @@ public class TestALongTrip extends TestGame {
 
     @Test
     public void testDrawGoblinsOnCast() {
-        int[] goblins = createVanillas(3, 0, 0, 1, player, Components.LIBRARY);
+        int[] goblins = createVanillas(3, 0, 0, 1, player, Components.Zone.LIBRARY);
         forEach(goblins, goblin -> data.setComponent(goblin, Components.Tribe.GOBLIN));
-        int card = create("spells/a_long_trip", player, Components.HAND);
+        int card = create("spells/a_long_trip", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(goblins, Components.HAND);
+        assertHasComponent(goblins, Components.Zone.HAND);
     }
 }

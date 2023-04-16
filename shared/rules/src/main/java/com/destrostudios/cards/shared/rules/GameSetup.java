@@ -79,7 +79,8 @@ public class GameSetup {
         data.setComponent(player, Components.Player.MULLIGAN);
         for (int card : libraryCards) {
             data.setComponent(card, Components.OWNED_BY, player);
-            data.setComponent(card, Components.LIBRARY);
+            data.setComponent(card, Components.Zone.LIBRARY);
+            data.setComponent(card, Components.Zone.PLAYER_LIBRARY[player]);
         }
     }
 }

@@ -10,7 +10,7 @@ public class TestBonfire extends TestGame {
     @Test
     public void testHealOnCast() {
         damage(player, 10);
-        int card = create("spells/bonfire", player, Components.HAND);
+        int card = create("spells/bonfire", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 4);
     }

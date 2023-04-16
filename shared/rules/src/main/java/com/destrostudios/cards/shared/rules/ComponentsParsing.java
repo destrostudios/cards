@@ -9,10 +9,10 @@ public class ComponentsParsing {
     private static HashMap<String, ComponentDefinition> BASIC_COMPONENTS = new HashMap<>();
     static {
         BASIC_COMPONENTS.put("BOARD", Components.BOARD);
-        BASIC_COMPONENTS.put("CREATURE_ZONE", Components.CREATURE_ZONE);
-        BASIC_COMPONENTS.put("GRAVEYARD", Components.GRAVEYARD);
-        BASIC_COMPONENTS.put("HAND", Components.HAND);
-        BASIC_COMPONENTS.put("LIBRARY", Components.LIBRARY);
+        BASIC_COMPONENTS.put("CREATURE_ZONE", Components.Zone.CREATURE_ZONE);
+        BASIC_COMPONENTS.put("GRAVEYARD", Components.Zone.GRAVEYARD);
+        BASIC_COMPONENTS.put("HAND", Components.Zone.HAND);
+        BASIC_COMPONENTS.put("LIBRARY", Components.Zone.LIBRARY);
         BASIC_COMPONENTS.put("CREATURE_CARD", Components.CREATURE_CARD);
         BASIC_COMPONENTS.put("SPELL_CARD", Components.SPELL_CARD);
         BASIC_COMPONENTS.put("BEAST", Components.Tribe.BEAST);

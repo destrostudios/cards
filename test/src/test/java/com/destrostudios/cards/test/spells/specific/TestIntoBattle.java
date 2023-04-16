@@ -8,8 +8,8 @@ public class TestIntoBattle extends TestGame {
 
     @Test
     public void testBuffHandCreaturesOnCast() {
-        int[] creatures = createVanillas(2, 0, 1, 1, player, Components.HAND);
-        int card = create("spells/into_battle", player, Components.HAND);
+        int[] creatures = createVanillas(2, 0, 1, 1, player, Components.Zone.HAND);
+        int card = create("spells/into_battle", player, Components.Zone.HAND);
         castFromHand(card);
         assertAttack(creatures, 3);
         assertHealth(creatures, 3);

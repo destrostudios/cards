@@ -8,9 +8,9 @@ public class TestIxius extends TestGame {
 
     @Test
     public void testDamageOnPlaySpellCard() {
-        int[] creatures = createVanillas(2, 0, 0, 3, opponent, Components.CREATURE_ZONE);
-        create("creatures/ixius", player, Components.CREATURE_ZONE);
-        int spell = createSpell(player, Components.HAND);
+        int[] creatures = createVanillas(2, 0, 0, 3, opponent, Components.Zone.CREATURE_ZONE);
+        create("creatures/ixius", player, Components.Zone.CREATURE_ZONE);
+        int spell = createSpell(player, Components.Zone.HAND);
         castFromHand(spell);
         assertHealthAndDamaged(creatures, 1);
     }

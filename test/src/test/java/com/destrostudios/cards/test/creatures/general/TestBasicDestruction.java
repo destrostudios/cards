@@ -10,8 +10,8 @@ public class TestBasicDestruction extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/creatures/basic_destruction.csv", numLinesToSkip = 1)
     public void testDestruction(String template) {
-        int card = create(template, player, Components.CREATURE_ZONE);
+        int card = create(template, player, Components.Zone.CREATURE_ZONE);
         destroy(card);
-        assertHasComponent(card, Components.GRAVEYARD);
+        assertHasComponent(card, Components.Zone.GRAVEYARD);
     }
 }

@@ -8,10 +8,10 @@ public class TestPriestessOfValdas extends TestGame {
 
     @Test
     public void testDrawOnHeal() {
-        int libraryCard = createCard(player, Components.LIBRARY);
-        int card = create("creatures/priestess_of_valdas", player, Components.CREATURE_ZONE);
+        int libraryCard = createCard(player, Components.Zone.LIBRARY);
+        int card = create("creatures/priestess_of_valdas", player, Components.Zone.CREATURE_ZONE);
         damage(card, 1);
         heal(card, 1);
-        assertHasComponent(libraryCard, Components.HAND);
+        assertHasComponent(libraryCard, Components.Zone.HAND);
     }
 }

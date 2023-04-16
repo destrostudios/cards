@@ -8,10 +8,10 @@ public class TestExiledDruid extends TestGame {
 
     @Test
     public void testReviveBeastOnSummon() {
-        int beast = createCreature(player, Components.GRAVEYARD);
+        int beast = createCreature(player, Components.Zone.GRAVEYARD);
         data.setComponent(beast, Components.Tribe.BEAST);
-        int card = create("creatures/exiled_druid", player, Components.HAND);
+        int card = create("creatures/exiled_druid", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(beast, Components.CREATURE_ZONE);
+        assertHasComponent(beast, Components.Zone.CREATURE_ZONE);
     }
 }

@@ -10,8 +10,8 @@ public class TestSimpleSummoner extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/creatures/simple_summoner.csv", numLinesToSkip = 1)
     public void testSummonOnSummon(String template, String summonName) {
-        int card = create(template, player, Components.HAND);
+        int card = create(template, player, Components.Zone.HAND);
         castFromHand(card);
-        assertOneCard(player, Components.CREATURE_ZONE, summonName);
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, summonName);
     }
 }

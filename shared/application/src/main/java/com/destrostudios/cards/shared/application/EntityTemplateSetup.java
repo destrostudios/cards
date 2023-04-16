@@ -24,13 +24,9 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.SOURCE, new ComponentParser_Entity());
         templateManager.registerComponent(Components.BOARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.CREATURE_CARD, new ComponentParser_Void());
-        templateManager.registerComponent(Components.CREATURE_ZONE, new ComponentParser_Void());
         templateManager.registerComponent(Components.FLAVOUR_TEXT, new ComponentParser_String());
-        templateManager.registerComponent(Components.GRAVEYARD, new ComponentParser_Void());
-        templateManager.registerComponent(Components.HAND, new ComponentParser_Void());
-        templateManager.registerComponent(Components.LIBRARY, new ComponentParser_Void());
         templateManager.registerComponent(Components.NEXT_PLAYER, new ComponentParser_Entity());
-        templateManager.registerComponent(Components.OWNED_BY, new ComponentParser_Entity());
+        // Components.OWNED_BY
         templateManager.registerComponent(Components.AURAS, new ComponentParser_Entities());
         templateManager.registerComponent(Components.BUFFS, new ComponentParser_Entities());
         templateManager.registerComponent(Components.CONDITION, new ComponentParser_String());
@@ -41,6 +37,15 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.DESCRIPTION, new ComponentParser_String());
         templateManager.registerComponent(Components.LEGENDARY, new ComponentParser_Void());
         templateManager.registerComponent(Components.FOIL, new ComponentParser_Enum<>(Foil::valueOf));
+
+        // Components.Zone.CREATURE_ZONE
+        // Components.Zone.GRAVEYARD
+        // Components.Zone.HAND
+        // Components.Zone.LIBRARY
+        // Components.Zone.PLAYER_LIBRARY
+        // Components.Zone.PLAYER_HAND
+        // Components.Zone.PLAYER_CREATURE_ZONE
+        // Components.Zone.PLAYER_GRAVEYARD
 
         templateManager.registerComponent(Components.Cost.MANA_COST, new ComponentParser_Integer());
         templateManager.registerComponent(Components.Cost.BONUS_MANA_COST, new ComponentParser_String());

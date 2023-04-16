@@ -9,7 +9,7 @@ public class TestDarkRider extends TestGame {
 
     @Test
     public void testDamageOpponentOnDeath() {
-        int card = create("creatures/dark_rider", player, Components.CREATURE_ZONE);
+        int card = create("creatures/dark_rider", player, Components.Zone.CREATURE_ZONE);
         destroy(card);
         assertHealth(opponent, GameConstants.PLAYER_HEALTH - 2);
     }

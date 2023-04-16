@@ -11,34 +11,34 @@ public class TestMoveZones extends TestGame {
 
     @Test
     public void testHandToCreatureZone() {
-        int creature = createCreature(player, Components.HAND);
+        int creature = createCreature(player, Components.Zone.HAND);
         fire(new MoveToCreatureZoneEvent(creature));
-        assertHasNoComponent(creature, Components.LIBRARY);
-        assertHasNoComponent(creature, Components.HAND);
+        assertHasNoComponent(creature, Components.Zone.LIBRARY);
+        assertHasNoComponent(creature, Components.Zone.HAND);
         assertHasComponent(creature, Components.BOARD);
-        assertHasComponent(creature, Components.CREATURE_ZONE);
-        assertHasNoComponent(creature, Components.GRAVEYARD);
+        assertHasComponent(creature, Components.Zone.CREATURE_ZONE);
+        assertHasNoComponent(creature, Components.Zone.GRAVEYARD);
     }
 
     @Test
     public void testBoardToGraveyard() {
-        int creature = createCreature(player, Components.CREATURE_ZONE);
+        int creature = createCreature(player, Components.Zone.CREATURE_ZONE);
         fire(new MoveToGraveyardEvent(creature));
-        assertHasNoComponent(creature, Components.LIBRARY);
-        assertHasNoComponent(creature, Components.HAND);
+        assertHasNoComponent(creature, Components.Zone.LIBRARY);
+        assertHasNoComponent(creature, Components.Zone.HAND);
         assertHasNoComponent(creature, Components.BOARD);
-        assertHasNoComponent(creature, Components.CREATURE_ZONE);
-        assertHasComponent(creature, Components.GRAVEYARD);
+        assertHasNoComponent(creature, Components.Zone.CREATURE_ZONE);
+        assertHasComponent(creature, Components.Zone.GRAVEYARD);
     }
 
     @Test
     public void testGraveyardToHand() {
-        int creature = createCreature(player, Components.GRAVEYARD);
+        int creature = createCreature(player, Components.Zone.GRAVEYARD);
         fire(new MoveToHandEvent(creature));
-        assertHasNoComponent(creature, Components.LIBRARY);
-        assertHasComponent(creature, Components.HAND);
+        assertHasNoComponent(creature, Components.Zone.LIBRARY);
+        assertHasComponent(creature, Components.Zone.HAND);
         assertHasNoComponent(creature, Components.BOARD);
-        assertHasNoComponent(creature, Components.CREATURE_ZONE);
-        assertHasNoComponent(creature, Components.GRAVEYARD);
+        assertHasNoComponent(creature, Components.Zone.CREATURE_ZONE);
+        assertHasNoComponent(creature, Components.Zone.GRAVEYARD);
     }
 }

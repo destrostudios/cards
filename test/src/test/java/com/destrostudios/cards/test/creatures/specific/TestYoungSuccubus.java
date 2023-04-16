@@ -9,7 +9,7 @@ public class TestYoungSuccubus extends TestGame {
 
     @Test
     public void testDamageOnSummon() {
-        int card = create("creatures/young_succubus", player, Components.HAND);
+        int card = create("creatures/young_succubus", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 5);
     }

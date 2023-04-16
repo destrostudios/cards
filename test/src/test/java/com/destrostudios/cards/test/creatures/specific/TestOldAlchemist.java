@@ -8,9 +8,9 @@ public class TestOldAlchemist extends TestGame {
 
     @Test
     public void testPutSpellFromGraveyardToHandOnSummon() {
-        int spell = createSpell(player, Components.GRAVEYARD);
-        int card = create("creatures/old_alchemist", player, Components.HAND);
+        int spell = createSpell(player, Components.Zone.GRAVEYARD);
+        int card = create("creatures/old_alchemist", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(spell, Components.HAND);
+        assertHasComponent(spell, Components.Zone.HAND);
     }
 }

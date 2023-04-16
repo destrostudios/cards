@@ -8,10 +8,10 @@ public class TestWoodedChimera extends TestGame {
 
     @Test
     public void testSummonChildrenOnSummon() {
-        int card = create("creatures/wooded_chimera", player, Components.HAND);
+        int card = create("creatures/wooded_chimera", player, Components.Zone.HAND);
         castFromHand(card);
-        assertOneCard(player, Components.CREATURE_ZONE, "Wooded Chimera's Firstborn");
-        assertOneCard(player, Components.CREATURE_ZONE, "Wooded Chimera's Secondborn");
-        assertOneCard(player, Components.CREATURE_ZONE, "Wooded Chimera's Thirdborn");
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Wooded Chimera's Firstborn");
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Wooded Chimera's Secondborn");
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Wooded Chimera's Thirdborn");
     }
 }

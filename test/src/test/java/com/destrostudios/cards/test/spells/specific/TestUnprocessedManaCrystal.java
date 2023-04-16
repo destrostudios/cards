@@ -8,8 +8,8 @@ public class TestUnprocessedManaCrystal extends TestGame {
 
     @Test
     public void testReduceManaCostOnSummon() {
-        int spell = createSpell(2, player, Components.HAND);
-        int card = create("spells/unprocessed_mana_crystal", player, Components.HAND);
+        int spell = createSpell(2, player, Components.Zone.HAND);
+        int card = create("spells/unprocessed_mana_crystal", player, Components.Zone.HAND);
         castFromHand(card, spell);
         assertManaCost(spell, 1);
     }

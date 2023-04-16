@@ -8,9 +8,9 @@ public class TestWarcry extends TestGame {
 
     @Test
     public void testBuffGoblinsOnCast() {
-        int[] goblins = createVanillas(2, 0, 1, 1, player, Components.CREATURE_ZONE);
+        int[] goblins = createVanillas(2, 0, 1, 1, player, Components.Zone.CREATURE_ZONE);
         forEach(goblins, goblin -> data.setComponent(goblin, Components.Tribe.GOBLIN));
-        int card = create("spells/warcry", player, Components.HAND);
+        int card = create("spells/warcry", player, Components.Zone.HAND);
         castFromHand(card);
         assertAttack(goblins, 2);
         endTurn(player);

@@ -8,8 +8,8 @@ public class TestUndeadSoldier extends TestGame {
 
     @Test
     public void testSummonZombieOnDeath() {
-        int card = create("creatures/undead_soldier", player, Components.CREATURE_ZONE);
+        int card = create("creatures/undead_soldier", player, Components.Zone.CREATURE_ZONE);
         destroy(card);
-        assertOneCard(player, Components.CREATURE_ZONE, "Zombie");
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Zombie");
     }
 }

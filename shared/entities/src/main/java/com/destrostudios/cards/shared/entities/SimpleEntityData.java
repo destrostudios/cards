@@ -118,6 +118,11 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
+    public int count(ComponentDefinition<?> component) {
+        return getComponentMap(component).size();
+    }
+
+    @Override
     public int count(ComponentDefinition<?> component, IntPredicate predicate) {
         AtomicInteger count = new AtomicInteger();
         getComponentMap(component).foreachKey(value -> {

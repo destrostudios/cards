@@ -87,7 +87,7 @@ public class BotTest_CardStats extends BotTest {
                 protected void applyAction(Event action, NetworkRandom random) {
                     super.applyAction(action, random);
                     SimpleEntityData data = gameContext.getData();
-                    IntList handCards = data.list(Components.HAND);
+                    IntList handCards = data.list(Components.Zone.HAND);
                     for (int handCard : handCards) {
                         cardsInHand.add(handCard);
                         if (action instanceof EndTurnEvent endTurnEvent) {

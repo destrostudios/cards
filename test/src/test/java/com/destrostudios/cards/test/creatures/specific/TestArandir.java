@@ -8,8 +8,8 @@ public class TestArandir extends TestGame {
 
     @Test
     public void testDamageSpell() {
-        int target = createVanilla(0, 0, 2, opponent, Components.CREATURE_ZONE);
-        int card = create("creatures/arandir", player, Components.CREATURE_ZONE);
+        int target = createVanilla(0, 0, 2, opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("creatures/arandir", player, Components.Zone.CREATURE_ZONE);
         int spell = data.getComponent(card, Components.SPELLS)[2];
         assertManaCostSpell(spell, 1);
         assertComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN, 1);

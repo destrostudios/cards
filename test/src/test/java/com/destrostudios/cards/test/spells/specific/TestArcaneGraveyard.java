@@ -8,9 +8,9 @@ public class TestArcaneGraveyard extends TestGame {
 
     @Test
     public void testPutDragonsFromGraveyardToHandOnCast() {
-        int[] spells = createSpells(2, player, Components.GRAVEYARD);
-        int card = create("spells/arcane_graveyard", player, Components.HAND);
+        int[] spells = createSpells(2, player, Components.Zone.GRAVEYARD);
+        int card = create("spells/arcane_graveyard", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(spells, Components.HAND);
+        assertHasComponent(spells, Components.Zone.HAND);
     }
 }

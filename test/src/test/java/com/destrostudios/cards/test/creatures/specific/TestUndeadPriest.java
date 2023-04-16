@@ -8,9 +8,9 @@ public class TestUndeadPriest extends TestGame {
 
     @Test
     public void testDamageCreatureOnHeal() {
-        int creature = createVanilla(0, 0, 5, opponent, Components.CREATURE_ZONE);
+        int creature = createVanilla(0, 0, 5, opponent, Components.Zone.CREATURE_ZONE);
         damage(creature, 1);
-        create("creatures/undead_priest", player, Components.CREATURE_ZONE);
+        create("creatures/undead_priest", player, Components.Zone.CREATURE_ZONE);
         heal(creature, 1);
         assertHealthAndDamaged(creature, 1);
     }

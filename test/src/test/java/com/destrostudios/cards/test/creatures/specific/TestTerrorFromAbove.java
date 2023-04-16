@@ -8,9 +8,9 @@ public class TestTerrorFromAbove extends TestGame {
 
     @Test
     public void testDestroyCreaturesOnSummon() {
-        int[] creatures = createVanillasForBothPlayers(2, 0, 1, 1, Components.CREATURE_ZONE);
-        int card = create("creatures/terror_from_above", player, Components.HAND);
+        int[] creatures = createVanillasForBothPlayers(2, 0, 1, 1, Components.Zone.CREATURE_ZONE);
+        int card = create("creatures/terror_from_above", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(creatures, Components.GRAVEYARD);
+        assertHasComponent(creatures, Components.Zone.GRAVEYARD);
     }
 }

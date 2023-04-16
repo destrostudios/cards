@@ -10,8 +10,8 @@ public class TestBasicSpellCast extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/spells/basic_spell_cast.csv", numLinesToSkip = 1)
     public void testCast(String template) {
-        int card = create(template, player, Components.HAND);
+        int card = create(template, player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(card, Components.GRAVEYARD);
+        assertHasComponent(card, Components.Zone.GRAVEYARD);
     }
 }

@@ -8,10 +8,10 @@ public class TestElementalOrb extends TestGame {
 
     @Test
     public void testDamageAndSummonLandedElementalOrbOnCast() {
-        int target = createVanilla(0, 0, 5, opponent, Components.CREATURE_ZONE);
-        int card = create("spells/elemental_orb", player, Components.HAND);
+        int target = createVanilla(0, 0, 5, opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/elemental_orb", player, Components.Zone.HAND);
         castFromHand(card, target);
         assertHealthAndDamaged(target, 1);
-        assertOneCard(player, Components.CREATURE_ZONE, "Landed Elemental Orb");
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Landed Elemental Orb");
     }
 }

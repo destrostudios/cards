@@ -8,8 +8,8 @@ public class TestRimefireBolt extends TestGame {
 
     @Test
     public void testDamageCreatureOnCast() {
-        int creature = createVanilla(0, 0, 5, opponent, Components.CREATURE_ZONE);
-        int card = create("spells/rimefire_bolt", player, Components.HAND);
+        int creature = createVanilla(0, 0, 5, opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/rimefire_bolt", player, Components.Zone.HAND);
         castFromHand(card, creature);
         assertHealthAndDamaged(creature, 1);
     }

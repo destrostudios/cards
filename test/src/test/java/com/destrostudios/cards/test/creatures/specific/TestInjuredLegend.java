@@ -8,7 +8,7 @@ public class TestInjuredLegend extends TestGame {
 
     @Test
     public void testTakeDamageOnSummon() {
-        int card = create("creatures/injured_legend", player, Components.CREATURE_ZONE);
+        int card = create("creatures/injured_legend", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(card, 2);
     }

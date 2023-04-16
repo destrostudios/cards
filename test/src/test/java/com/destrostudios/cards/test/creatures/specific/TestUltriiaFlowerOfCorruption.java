@@ -8,7 +8,7 @@ public class TestUltriiaFlowerOfCorruption extends TestGame {
 
     @Test
     public void testReduceManaCostOnPlayerDamage() {
-        int card = create("creatures/ultriia_flower_of_corruption", player, Components.HAND);
+        int card = create("creatures/ultriia_flower_of_corruption", player, Components.Zone.HAND);
         damage(opponent, 1);
         assertManaCost(card, 7);
     }

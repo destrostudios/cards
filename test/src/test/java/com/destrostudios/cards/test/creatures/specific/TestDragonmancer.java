@@ -8,11 +8,11 @@ public class TestDragonmancer extends TestGame {
 
     @Test
     public void testDestroyAndReviveDragonOnDragonDestruction() {
-        int dragon = createCreature(player, Components.CREATURE_ZONE);
+        int dragon = createCreature(player, Components.Zone.CREATURE_ZONE);
         data.setComponent(dragon, Components.Tribe.DRAGON);
-        int card = create("creatures/dragonmancer", player, Components.CREATURE_ZONE);
+        int card = create("creatures/dragonmancer", player, Components.Zone.CREATURE_ZONE);
         destroy(dragon);
-        assertHasComponent(card, Components.GRAVEYARD);
-        assertHasComponent(dragon, Components.CREATURE_ZONE);
+        assertHasComponent(card, Components.Zone.GRAVEYARD);
+        assertHasComponent(dragon, Components.Zone.CREATURE_ZONE);
     }
 }

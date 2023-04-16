@@ -8,8 +8,8 @@ public class TestUndeadGeneral extends TestGame {
 
     @Test
     public void testIncreaseCreaturesManaCostWhenOnBoard() {
-        int creature = createVanilla(1, 0, 1, player, Components.HAND);
-        create("creatures/undead_general", player, Components.CREATURE_ZONE);
+        int creature = createVanilla(1, 0, 1, player, Components.Zone.HAND);
+        create("creatures/undead_general", player, Components.Zone.CREATURE_ZONE);
         assertManaCost(creature, 4);
     }
 }

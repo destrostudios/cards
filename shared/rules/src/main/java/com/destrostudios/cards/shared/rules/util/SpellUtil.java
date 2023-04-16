@@ -39,7 +39,7 @@ public class SpellUtil {
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
         // Currently, all spells with a hand prefilter are defaultCastFromHandSpells
         Components.Prefilters prefilters = data.getComponent(spell, Components.Target.SOURCE_PREFILTERS);
-        return ((prefilters != null) && (prefilters.getBasicComponents()[0] == Components.HAND));
+        return ((prefilters != null) && (prefilters.getBasicComponents()[0] == Components.Zone.HAND));
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {

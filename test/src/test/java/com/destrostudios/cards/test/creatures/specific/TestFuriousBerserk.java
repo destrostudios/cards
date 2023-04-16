@@ -8,7 +8,7 @@ public class TestFuriousBerserk extends TestGame {
 
     @Test
     public void testBuffOnDamageTaken() {
-        int card = create("creatures/furious_berserk", player, Components.CREATURE_ZONE);
+        int card = create("creatures/furious_berserk", player, Components.Zone.CREATURE_ZONE);
         damage(card, 1);
         assertAttack(card, 2);
     }

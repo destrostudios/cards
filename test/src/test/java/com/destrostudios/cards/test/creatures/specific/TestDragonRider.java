@@ -8,9 +8,9 @@ public class TestDragonRider extends TestGame {
 
     @Test
     public void testBuffOnSummonWhenDragonInHand() {
-        int dragon = createCreature(player, Components.HAND);
+        int dragon = createCreature(player, Components.Zone.HAND);
         data.setComponent(dragon, Components.Tribe.DRAGON);
-        int card = create("creatures/dragon_rider", player, Components.HAND);
+        int card = create("creatures/dragon_rider", player, Components.Zone.HAND);
         castFromHand(card);
         assertAttack(card, 4);
         assertHealth(card, 5);

@@ -12,23 +12,32 @@ import java.util.ArrayList;
 
 public class Components {
 
-    public static ArrayList<ComponentDefinition<?>> ALL = new ArrayList<>();
+    public static final ArrayList<ComponentDefinition<?>> ALL = new ArrayList<>();
+
+    public static void setup() {
+        // TODO: Cleanup the components setup - For the tests, we need to ensure these nested ones are initalized, otherwise Components.ALL does not include them yet when the tests run
+        Object initializedNestedStaticInnerClassArrayField = Components.Zone.PLAYER_LIBRARY;
+    }
+
+    static <T> ComponentDefinition<T>[] create(String name, int count) {
+        ComponentDefinition<T>[] components = new ComponentDefinition[count];
+        for (int i = 0; i < count; i++) {
+            components[i] = create(name + "_" + count);
+        }
+        return components;
+    }
 
     static <T> ComponentDefinition<T> create(String name) {
-        ComponentDefinition<T> componentDefinition = new ComponentDefinition<>(ALL.size(), name);
-        ALL.add(componentDefinition);
-        return componentDefinition;
+        ComponentDefinition<T> component = new ComponentDefinition<>(ALL.size(), name);
+        ALL.add(component);
+        return component;
     }
 
     public static final ComponentDefinition<String> NAME = create("name");
     public static final ComponentDefinition<Integer> SOURCE = create("source");
     public static final ComponentDefinition<Void> BOARD = create("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = create("creatureCard");
-    public static final ComponentDefinition<Void> CREATURE_ZONE = create("creatureZone");
     public static final ComponentDefinition<String> FLAVOUR_TEXT = create("flavourText");
-    public static final ComponentDefinition<Void> HAND = create("hand");
-    public static final ComponentDefinition<Void> LIBRARY = create("library");
-    public static final ComponentDefinition<Void> GRAVEYARD = create("graveyard");
     public static final ComponentDefinition<Integer> NEXT_PLAYER = create("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = create("ownedBy");
     public static final ComponentDefinition<int[]> AURAS = create("auras");
@@ -41,6 +50,17 @@ public class Components {
     public static final ComponentDefinition<String> DESCRIPTION = create("description");
     public static final ComponentDefinition<Void> LEGENDARY = create("legendary");
     public static final ComponentDefinition<Foil> FOIL = create("foil");
+
+    public static class Zone {
+        public static final ComponentDefinition<Void> LIBRARY = create("library");
+        public static final ComponentDefinition<Void> HAND = create("hand");
+        public static final ComponentDefinition<Void> CREATURE_ZONE = create("creatureZone");
+        public static final ComponentDefinition<Void> GRAVEYARD = create("graveyard");
+        public static final ComponentDefinition<Void>[] PLAYER_LIBRARY = create("library", 2);
+        public static final ComponentDefinition<Void>[] PLAYER_HAND = create("hand", 2);
+        public static final ComponentDefinition<Void>[] PLAYER_CREATURE_ZONE = create("creatureZone", 2);
+        public static final ComponentDefinition<Void>[] PLAYER_GRAVEYARD = create("graveyard", 2);
+    }
 
     public static class Cost {
         public static final ComponentDefinition<Integer> MANA_COST = create("manaCost");

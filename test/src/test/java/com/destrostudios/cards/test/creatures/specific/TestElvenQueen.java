@@ -8,8 +8,8 @@ public class TestElvenQueen extends TestGame {
 
     @Test
     public void testSummonElvenGuardsOnSummon() {
-        int card = create("creatures/elven_queen", player, Components.HAND);
+        int card = create("creatures/elven_queen", player, Components.Zone.HAND);
         castFromHand(card);
-        assertCardsCount(player, Components.CREATURE_ZONE, "Elven Guard", 2);
+        assertCardsCount(player, Components.Zone.CREATURE_ZONE, "Elven Guard", 2);
     }
 }

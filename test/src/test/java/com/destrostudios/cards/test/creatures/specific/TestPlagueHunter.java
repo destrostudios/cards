@@ -8,9 +8,9 @@ public class TestPlagueHunter extends TestGame {
 
     @Test
     public void testDrawOnSummonWhenEmptyHand() {
-        int libraryCard = createCard(player, Components.LIBRARY);
-        int card = create("creatures/plague_hunter", player, Components.HAND);
+        int libraryCard = createCard(player, Components.Zone.LIBRARY);
+        int card = create("creatures/plague_hunter", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(libraryCard, Components.HAND);
+        assertHasComponent(libraryCard, Components.Zone.HAND);
     }
 }

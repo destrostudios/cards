@@ -8,9 +8,9 @@ public class TestGoblinCommander extends TestGame {
 
     @Test
     public void testBuffGoblinsWhenOnBoard() {
-        int[] goblins = createVanillas(2, 0, 0, 1, player, Components.CREATURE_ZONE);
+        int[] goblins = createVanillas(2, 0, 0, 1, player, Components.Zone.CREATURE_ZONE);
         forEach(goblins, goblin -> data.setComponent(goblin, Components.Tribe.GOBLIN));
-        create("creatures/goblin_commander", player, Components.CREATURE_ZONE);
+        create("creatures/goblin_commander", player, Components.Zone.CREATURE_ZONE);
         assertAttack(goblins, 1);
         assertHealth(goblins, 2);
     }

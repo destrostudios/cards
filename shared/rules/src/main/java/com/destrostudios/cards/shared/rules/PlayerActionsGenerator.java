@@ -13,7 +13,6 @@ import com.destrostudios.cards.shared.rules.util.TargetUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.IntPredicate;
 
 public class PlayerActionsGenerator {
 
@@ -22,29 +21,28 @@ public class PlayerActionsGenerator {
     public List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new ArrayList<>(64);
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
-            IntPredicate isOwnedByPlayer = isOwnedBy(data, player);
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
-                generateMulligans(data, isOwnedByPlayer, possibleEvents::add);
+                generateMulligans(data, player, possibleEvents::add);
             } else {
-                generateSpellCasts(data, player, isOwnedByPlayer, possibleEvents::add);
+                generateSpellCasts(data, player, possibleEvents::add);
                 possibleEvents.add(new EndTurnEvent(player));
             }
         }
         return possibleEvents;
     }
 
-    private void generateMulligans(EntityData data, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
-        IntList handCards = data.list(Components.HAND, isOwnedByPlayer);
+    private void generateMulligans(EntityData data, int player, Consumer<Event> out) {
+        IntList handCards = data.list(Components.Zone.PLAYER_HAND[player]);
         List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
         for (int[] handCardsSubset : handCardsSubsets) {
             out.accept(new MulliganEvent(handCardsSubset));
         }
     }
 
-    private void generateSpellCasts(EntityData data, int player, IntPredicate isOwnedByPlayer, Consumer<Event> out) {
+    private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
-        generateSpellCasts(data, player, data.list(Components.HAND, isOwnedByPlayer), out);
-        generateSpellCasts(data, player, data.list(Components.CREATURE_ZONE, isOwnedByPlayer), out);
+        generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_HAND[player]), out);
+        generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_CREATURE_ZONE[player]), out);
     }
 
     private void generateSpellCasts(EntityData data, int player, IntList ownedCards, Consumer<Event> out) {
@@ -81,9 +79,5 @@ public class PlayerActionsGenerator {
         if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, NO_TARGETS)) {
             out.accept(new CastSpellEvent(card, spell, NO_TARGETS));
         }
-    }
-
-    private IntPredicate isOwnedBy(EntityData data, int player) {
-        return card -> data.getComponent(card, Components.OWNED_BY) == player;
     }
 }

@@ -8,8 +8,8 @@ public class TestFiulo extends TestGame {
 
     @Test
     public void testPutFromGraveyardToHandOnTurnEnd() {
-        int card = create("creatures/fiulo", player, Components.GRAVEYARD);
+        int card = create("creatures/fiulo", player, Components.Zone.GRAVEYARD);
         endTurn(player);
-        assertHasComponent(card, Components.HAND);
+        assertHasComponent(card, Components.Zone.HAND);
     }
 }

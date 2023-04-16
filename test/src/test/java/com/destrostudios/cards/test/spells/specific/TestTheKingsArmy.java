@@ -8,8 +8,8 @@ public class TestTheKingsArmy extends TestGame {
 
     @Test
     public void testSummonKingsSoldiersOnCast() {
-        int card = create("spells/the_kings_army", player, Components.HAND);
+        int card = create("spells/the_kings_army", player, Components.Zone.HAND);
         castFromHand(card);
-        assertCardsCount(player, Components.CREATURE_ZONE, "King's Soldier", 2);
+        assertCardsCount(player, Components.Zone.CREATURE_ZONE, "King's Soldier", 2);
     }
 }

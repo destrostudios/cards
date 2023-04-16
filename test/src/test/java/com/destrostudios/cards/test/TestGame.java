@@ -116,24 +116,24 @@ public class TestGame {
         return create(count, () -> createSpell(manaCost, owner, zone));
     }
 
-    protected int createSpell(int manaCost, int owner, ComponentDefinition<Void> zone) {
+    protected int createSpell(int manaCost, int owner, ComponentDefinition<Void> cardZone) {
         // TODO: Split this out in a template? Should however not be bundled with the app ideally
         int spellCard = data.createEntity();
         data.setComponent(spellCard, Components.NAME, "Dummy Spell");
         data.setComponent(spellCard, Components.SPELL_CARD);
         int spell = data.createEntity();
         data.setComponent(spell, Components.SOURCE, spellCard);
-        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Components.Prefilters(new ComponentDefinition[] { Components.HAND }, new Prefilter_Advanced[0]));
+        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Components.Prefilters(new ComponentDefinition[] { Components.Zone.HAND }, new Prefilter_Advanced[0]));
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);
-        addToZone(spellCard, zone);
+        addToZone(spellCard, owner, cardZone);
         return spellCard;
     }
 
-    protected int create(String template, int owner, ComponentDefinition<Void> zone) {
+    protected int create(String template, int owner, ComponentDefinition<Void> cardZone) {
         int card = create(template, owner);
-        addToZone(card, zone);
+        addToZone(card, owner, cardZone);
         return card;
     }
 
@@ -166,22 +166,8 @@ public class TestGame {
         return entities;
     }
 
-    private void addToZone(int card, ComponentDefinition<Void> zone) {
-        int owner = data.getComponent(card, Components.OWNED_BY);
-        ZoneUtil.addToZone(data, card, owner, zone, getPlayerZone(zone));
-    }
-
-    private ComponentDefinition<IntList> getPlayerZone(ComponentDefinition<Void> cardZone) {
-        if (cardZone == Components.LIBRARY) {
-            return Components.Player.LIBRARY_CARDS;
-        } else if (cardZone == Components.HAND) {
-            return Components.Player.HAND_CARDS;
-        } else if (cardZone == Components.CREATURE_ZONE) {
-            return Components.Player.CREATURE_ZONE_CARDS;
-        } else if (cardZone == Components.GRAVEYARD) {
-            return Components.Player.GRAVEYARD_CARDS;
-        }
-        throw new IllegalArgumentException();
+    private void addToZone(int card, int owner, ComponentDefinition<Void> cardZone) {
+        ZoneUtil.addToZone(data, card, owner, cardZone, getCardPlayerZone(cardZone)[owner], getPlayerCardsZone(cardZone));
     }
 
     protected void setFullMana(int entity, int mana) {
@@ -266,7 +252,7 @@ public class TestGame {
     }
 
     protected int getCardsCount(int player, ComponentDefinition<Void> zone) {
-        return data.count(zone, card -> data.getComponent(card, Components.OWNED_BY) == player);
+        return data.count(getCardPlayerZone(zone)[player]);
     }
 
     protected void assertOneCard(int player, ComponentDefinition<Void> zone, String name) {
@@ -286,7 +272,7 @@ public class TestGame {
     }
 
     protected IntList getCards(int player, ComponentDefinition<Void> zone, String name) {
-        return data.list(zone, card -> (data.getComponent(card, Components.OWNED_BY) == player) && (data.getComponent(card, Components.NAME).equals(name)));
+        return data.list(getCardPlayerZone(zone)[player], card -> data.getComponent(card, Components.NAME).equals(name));
     }
 
     protected void assertAttack(int[] entities, int value) {
@@ -398,5 +384,31 @@ public class TestGame {
         for (int entity : entities) {
             assertEntity.accept(entity);
         }
+    }
+
+    private static ComponentDefinition<Void>[] getCardPlayerZone(ComponentDefinition<Void> cardZone) {
+        if (cardZone == Components.Zone.LIBRARY) {
+            return Components.Zone.PLAYER_LIBRARY;
+        } else if (cardZone == Components.Zone.HAND) {
+            return Components.Zone.PLAYER_HAND;
+        } else if (cardZone == Components.Zone.CREATURE_ZONE) {
+            return Components.Zone.PLAYER_CREATURE_ZONE;
+        } else if (cardZone == Components.Zone.GRAVEYARD) {
+            return Components.Zone.PLAYER_GRAVEYARD;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    private static ComponentDefinition<IntList> getPlayerCardsZone(ComponentDefinition<Void> cardZone) {
+        if (cardZone == Components.Zone.LIBRARY) {
+            return Components.Player.LIBRARY_CARDS;
+        } else if (cardZone == Components.Zone.HAND) {
+            return Components.Player.HAND_CARDS;
+        } else if (cardZone == Components.Zone.CREATURE_ZONE) {
+            return Components.Player.CREATURE_ZONE_CARDS;
+        } else if (cardZone == Components.Zone.GRAVEYARD) {
+            return Components.Player.GRAVEYARD_CARDS;
+        }
+        throw new IllegalArgumentException();
     }
 }

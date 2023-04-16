@@ -11,7 +11,7 @@ public class TestSimpleTargetDamage extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/spells/simple_target_damage.csv", numLinesToSkip = 1)
     public void testDamageOnCast(String template, int damage) {
-        int card = create(template, player, Components.HAND);
+        int card = create(template, player, Components.Zone.HAND);
         castFromHand(card, opponent);
         assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - damage);
     }

@@ -8,8 +8,8 @@ public class TestWalkingMortuary extends TestGame {
 
     @Test
     public void testSummonZombiesOnDeath() {
-        int card = create("creatures/walking_mortuary", player, Components.CREATURE_ZONE);
+        int card = create("creatures/walking_mortuary", player, Components.Zone.CREATURE_ZONE);
         destroy(card);
-        assertCardsCount(player, Components.CREATURE_ZONE, "Zombie", 9);
+        assertCardsCount(player, Components.Zone.CREATURE_ZONE, "Zombie", 9);
     }
 }

@@ -8,10 +8,10 @@ public class TestBegoneLizard extends TestGame {
 
     @Test
     public void testDestroyDragonOnCast() {
-        int dragon = createCreature(opponent, Components.CREATURE_ZONE);
+        int dragon = createCreature(opponent, Components.Zone.CREATURE_ZONE);
         data.setComponent(dragon, Components.Tribe.DRAGON);
-        int card = create("spells/begone_lizard", player, Components.HAND);
+        int card = create("spells/begone_lizard", player, Components.Zone.HAND);
         castFromHand(card, dragon);
-        assertHasComponent(dragon, Components.GRAVEYARD);
+        assertHasComponent(dragon, Components.Zone.GRAVEYARD);
     }
 }

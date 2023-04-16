@@ -8,12 +8,12 @@ public class TestFireAltar extends TestGame {
 
     @Test
     public void testDestroyRandomAllyCreaturesAndSummonDragonOnCast() {
-        int[] creatures = createCreatures(2, player, Components.CREATURE_ZONE);
-        int dragon = createCreature(player, Components.HAND);
+        int[] creatures = createCreatures(2, player, Components.Zone.CREATURE_ZONE);
+        int dragon = createCreature(player, Components.Zone.HAND);
         data.setComponent(dragon, Components.Tribe.DRAGON);
-        int card = create("spells/fire_altar", player, Components.HAND);
+        int card = create("spells/fire_altar", player, Components.Zone.HAND);
         castFromHand(card, dragon);
-        assertHasComponent(creatures, Components.GRAVEYARD);
-        assertHasComponent(dragon, Components.CREATURE_ZONE);
+        assertHasComponent(creatures, Components.Zone.GRAVEYARD);
+        assertHasComponent(dragon, Components.Zone.CREATURE_ZONE);
     }
 }

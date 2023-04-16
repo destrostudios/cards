@@ -8,9 +8,9 @@ public class TestDragonsKnight extends TestGame {
 
     @Test
     public void testReduceDragonsManaCostWhenOnBoard() {
-        int dragon = createVanilla(3, 0, 1, player, Components.HAND);
+        int dragon = createVanilla(3, 0, 1, player, Components.Zone.HAND);
         data.setComponent(dragon, Components.Tribe.DRAGON);
-        create("creatures/dragons_knight", player, Components.CREATURE_ZONE);
+        create("creatures/dragons_knight", player, Components.Zone.CREATURE_ZONE);
         assertManaCost(dragon, 1);
     }
 }

@@ -8,7 +8,7 @@ public class TestCloudDevourer extends TestGame {
 
     @Test
     public void testHealOnTurnEnd() {
-        int card = create("creatures/cloud_devourer", player, Components.CREATURE_ZONE);
+        int card = create("creatures/cloud_devourer", player, Components.Zone.CREATURE_ZONE);
         damage(card, 3);
         endTurn(player);
         assertHealthAndDamaged(card, 5);

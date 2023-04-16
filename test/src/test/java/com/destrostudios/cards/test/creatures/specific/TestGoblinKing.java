@@ -8,9 +8,9 @@ public class TestGoblinKing extends TestGame {
 
     @Test
     public void testBuffOnSummon() {
-        int[] goblins = createCreatures(2, player, Components.CREATURE_ZONE);
+        int[] goblins = createCreatures(2, player, Components.Zone.CREATURE_ZONE);
         forEach(goblins, goblin -> data.setComponent(goblin, Components.Tribe.GOBLIN));
-        int card = create("creatures/goblin_king", player, Components.HAND);
+        int card = create("creatures/goblin_king", player, Components.Zone.HAND);
         castFromHand(card);
         assertAttack(card, 6);
     }

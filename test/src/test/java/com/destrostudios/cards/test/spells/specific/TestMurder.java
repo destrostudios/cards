@@ -8,9 +8,9 @@ public class TestMurder extends TestGame {
 
     @Test
     public void testDestroyCreatureOnCast() {
-        int creature = createCreature(opponent, Components.CREATURE_ZONE);
-        int card = create("spells/murder", player, Components.HAND);
+        int creature = createCreature(opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/murder", player, Components.Zone.HAND);
         castFromHand(card, creature);
-        assertHasComponent(creature, Components.GRAVEYARD);
+        assertHasComponent(creature, Components.Zone.GRAVEYARD);
     }
 }

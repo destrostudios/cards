@@ -8,9 +8,9 @@ public class TestOxWarhero extends TestGame {
 
     @Test
     public void testBuffWhenOtherAllyBeastOnBoard() {
-        int beast = createVanilla(0, 0, 1, player, Components.CREATURE_ZONE);
+        int beast = createVanilla(0, 0, 1, player, Components.Zone.CREATURE_ZONE);
         data.setComponent(beast, Components.Tribe.BEAST);
-        int card = create("creatures/ox_warhero", player, Components.CREATURE_ZONE);
+        int card = create("creatures/ox_warhero", player, Components.Zone.CREATURE_ZONE);
         assertHealth(card, 3);
         destroy(beast);
         assertHealth(card, 1);

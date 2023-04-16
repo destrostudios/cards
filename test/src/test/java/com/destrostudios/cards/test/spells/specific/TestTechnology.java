@@ -8,9 +8,9 @@ public class TestTechnology extends TestGame {
 
     @Test
     public void testDrawOnCast() {
-        int[] libraryCards = createCards(2, player, Components.LIBRARY);
-        int card = create("spells/technology", player, Components.HAND);
+        int[] libraryCards = createCards(2, player, Components.Zone.LIBRARY);
+        int card = create("spells/technology", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(libraryCards, Components.HAND);
+        assertHasComponent(libraryCards, Components.Zone.HAND);
     }
 }

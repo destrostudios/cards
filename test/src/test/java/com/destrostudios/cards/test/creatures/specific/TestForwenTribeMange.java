@@ -8,8 +8,8 @@ public class TestForwenTribeMange extends TestGame {
 
     @Test
     public void testAddThunderToHandOnDeath() {
-        int card = create("creatures/forwen_tribe_mage", player, Components.CREATURE_ZONE);
+        int card = create("creatures/forwen_tribe_mage", player, Components.Zone.CREATURE_ZONE);
         destroy(card);
-        assertOneCard(player, Components.HAND, "Thunder");
+        assertOneCard(player, Components.Zone.HAND, "Thunder");
     }
 }

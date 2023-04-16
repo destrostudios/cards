@@ -8,10 +8,10 @@ public class TestGoblinPillager extends TestGame {
 
     @Test
     public void testDrawGoblinOnSummon() {
-        int goblin = createCreature(player, Components.LIBRARY);
+        int goblin = createCreature(player, Components.Zone.LIBRARY);
         data.setComponent(goblin, Components.Tribe.GOBLIN);
-        int card = create("creatures/goblin_pillager", player, Components.HAND);
+        int card = create("creatures/goblin_pillager", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(goblin, Components.HAND);
+        assertHasComponent(goblin, Components.Zone.HAND);
     }
 }

@@ -36,7 +36,7 @@ public class ExpressionEntity {
     }
 
     public boolean getIsInHand() {
-        return data.hasComponent(entity, Components.HAND);
+        return data.hasComponent(entity, Components.Zone.HAND);
     }
 
     public boolean getIsOnBoard() {
@@ -44,7 +44,7 @@ public class ExpressionEntity {
     }
 
     public boolean getIsInGraveyard() {
-        return data.hasComponent(entity, Components.GRAVEYARD);
+        return data.hasComponent(entity, Components.Zone.GRAVEYARD);
     }
 
     public Integer getManaCost() {

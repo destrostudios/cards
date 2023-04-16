@@ -10,8 +10,8 @@ public class TestBasicAttack extends TestGame {
     @ParameterizedTest
     @CsvFileSource(resources = "/creatures/basic_attack.csv", numLinesToSkip = 1)
     public void testAttack(String template, int timesPerTurn) {
-        int card = create(template, player, Components.CREATURE_ZONE);
-        int target = createVanilla(0, 0, getAttack(card) + 1, opponent, Components.CREATURE_ZONE);
+        int card = create(template, player, Components.Zone.CREATURE_ZONE);
+        int target = createVanilla(0, 0, getAttack(card) + 1, opponent, Components.Zone.CREATURE_ZONE);
         int defaultAttackSpell = getDefaultAttackSpell(card);
         assertComponent(defaultAttackSpell, Components.Spell.MAXIMUM_CASTS_PER_TURN, timesPerTurn);
         cast(defaultAttackSpell, target);

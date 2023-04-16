@@ -57,7 +57,7 @@ public class CardGuiMapper {
             if ((!checkedDefaultCastFromHandSpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
                 baseManaCost = data.getComponent(spellEntity, Components.Cost.MANA_COST);
                 manaCostDetails = manaCost;
-                if (data.hasComponent(card, Components.HAND)) {
+                if (data.hasComponent(card, Components.Zone.HAND)) {
                     manaCostFullArt = manaCostDetails;
                 }
                 checkedDefaultCastFromHandSpell = true;

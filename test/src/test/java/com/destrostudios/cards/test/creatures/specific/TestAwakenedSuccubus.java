@@ -8,9 +8,9 @@ public class TestAwakenedSuccubus extends TestGame {
 
     @Test
     public void testDiscardOnSummon() {
-        int handCard = createCard(player, Components.HAND);
-        int card = create("creatures/awakened_succubus", player, Components.HAND);
+        int handCard = createCard(player, Components.Zone.HAND);
+        int card = create("creatures/awakened_succubus", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(handCard, Components.GRAVEYARD);
+        assertHasComponent(handCard, Components.Zone.GRAVEYARD);
     }
 }

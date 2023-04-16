@@ -94,7 +94,7 @@ public class UpdateBoardService {
         int player = gameService.getPlayerEntity();
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
-                IntList handCards = data.list(Components.HAND, card -> data.getComponent(card, Components.OWNED_BY) == player);
+                IntList handCards = data.list(Components.Zone.PLAYER_HAND[player]);
                 for (int cardEntity : handCards) {
                     Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
                     card.setInteractivity(InteractivitySource.MOUSE_LEFT, new ClickInteractivity() {
@@ -139,7 +139,7 @@ public class UpdateBoardService {
                                         return null;
                                     }
                                 };
-                            } else if (data.hasComponent(cardEntity, Components.HAND)) {
+                            } else if (data.hasComponent(cardEntity, Components.Zone.HAND)) {
                                 interactivity = new DragToPlayInteractivity() {
 
                                     @Override

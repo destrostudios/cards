@@ -8,12 +8,12 @@ public class TestStampede extends TestGame {
 
     @Test
     public void testDestroyAllyBeastsAndAsManyOpponentCreatures() {
-        int[] beasts = createCreatures(2, player, Components.CREATURE_ZONE);
+        int[] beasts = createCreatures(2, player, Components.Zone.CREATURE_ZONE);
         forEach(beasts, beast -> data.setComponent(beast, Components.Tribe.BEAST));
-        int[] creatures = createCreatures(2, opponent, Components.CREATURE_ZONE);
-        int card = create("spells/stampede", player, Components.HAND);
+        int[] creatures = createCreatures(2, opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/stampede", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(beasts, Components.GRAVEYARD);
-        assertHasComponent(creatures, Components.GRAVEYARD);
+        assertHasComponent(beasts, Components.Zone.GRAVEYARD);
+        assertHasComponent(creatures, Components.Zone.GRAVEYARD);
     }
 }

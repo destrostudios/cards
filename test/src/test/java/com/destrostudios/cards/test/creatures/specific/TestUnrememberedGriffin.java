@@ -8,8 +8,8 @@ public class TestUnrememberedGriffin extends TestGame {
 
     @Test
     public void testDamageCreaturesOnSummon() {
-        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 2, Components.CREATURE_ZONE);
-        int card = create("creatures/unremembered_griffin", player, Components.HAND);
+        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 2, Components.Zone.CREATURE_ZONE);
+        int card = create("creatures/unremembered_griffin", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(creatures, 1);
     }

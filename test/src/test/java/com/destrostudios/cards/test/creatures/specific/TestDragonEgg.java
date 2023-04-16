@@ -8,11 +8,11 @@ public class TestDragonEgg extends TestGame {
 
     @Test
     public void testHatchIntoDragonSpell() {
-        int card = create("creatures/dragon_egg", player, Components.CREATURE_ZONE);
+        int card = create("creatures/dragon_egg", player, Components.Zone.CREATURE_ZONE);
         int spell = data.getComponent(card, Components.SPELLS)[2];
         assertManaCostSpell(spell, 3);
         cast(spell);
-        assertHasComponent(card, Components.GRAVEYARD);
-        assertOneCard(player, Components.CREATURE_ZONE, "Dragon");
+        assertHasComponent(card, Components.Zone.GRAVEYARD);
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Dragon");
     }
 }

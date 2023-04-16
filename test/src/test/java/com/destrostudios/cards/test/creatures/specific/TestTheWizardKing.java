@@ -8,8 +8,8 @@ public class TestTheWizardKing extends TestGame {
 
     @Test
     public void testSetSpellManaCostToZeroOnSummon() {
-        int spell = createSpell(999, player, Components.HAND);
-        int card = create("creatures/the_wizard_king", player, Components.HAND);
+        int spell = createSpell(999, player, Components.Zone.HAND);
+        int card = create("creatures/the_wizard_king", player, Components.Zone.HAND);
         castFromHand(card, spell);
         assertManaCost(spell, 0);
     }

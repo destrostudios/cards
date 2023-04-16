@@ -9,8 +9,8 @@ public class TestSeaStorm extends TestGame {
 
     @Test
     public void testDamageCharactersOnCast() {
-        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 4, Components.CREATURE_ZONE);
-        int card = create("spells/sea_storm", player, Components.HAND);
+        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 4, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/sea_storm", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(creatures, 1);
         assertHealthAndDamaged(players, GameConstants.PLAYER_HEALTH - 3);

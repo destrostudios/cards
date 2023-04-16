@@ -8,11 +8,11 @@ public class TestTheEtherDragon extends TestGame {
 
     @Test
     public void testSummonDragonsAndEndTurnOnSummon() {
-        int[] dragons = createCreatures(2, player, Components.HAND);
+        int[] dragons = createCreatures(2, player, Components.Zone.HAND);
         forEach(dragons, dragon -> data.setComponent(dragon, Components.Tribe.DRAGON));
-        int card = create("creatures/the_ether_dragon", player, Components.HAND);
+        int card = create("creatures/the_ether_dragon", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(dragons, Components.CREATURE_ZONE);
+        assertHasComponent(dragons, Components.Zone.CREATURE_ZONE);
         assertHasComponent(opponent, Components.Player.ACTIVE_PLAYER);
     }
 }

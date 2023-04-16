@@ -8,8 +8,8 @@ public class TestMermaid extends TestGame {
 
     @Test
     public void testReduceMermaidsManaCostWhenOnBoard() {
-        int handMermaid = create("creatures/mermaid", player, Components.HAND);
-        create("creatures/mermaid", player, Components.CREATURE_ZONE);
+        int handMermaid = create("creatures/mermaid", player, Components.Zone.HAND);
+        create("creatures/mermaid", player, Components.Zone.CREATURE_ZONE);
         assertManaCost(handMermaid, 1);
     }
 }

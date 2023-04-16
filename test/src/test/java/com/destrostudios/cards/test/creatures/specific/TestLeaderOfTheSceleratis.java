@@ -9,8 +9,8 @@ public class TestLeaderOfTheSceleratis extends TestGame {
 
     @Test
     public void testDamageOnPlayCard() {
-        int handCard = createCard(player, Components.HAND);
-        create("creatures/leader_of_the_sceleratis", player, Components.CREATURE_ZONE);
+        int handCard = createCard(player, Components.Zone.HAND);
+        create("creatures/leader_of_the_sceleratis", player, Components.Zone.CREATURE_ZONE);
         castFromHand(handCard);
         assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 1);
     }

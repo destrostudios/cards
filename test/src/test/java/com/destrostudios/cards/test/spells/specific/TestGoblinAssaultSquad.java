@@ -8,8 +8,8 @@ public class TestGoblinAssaultSquad extends TestGame {
 
     @Test
     public void testSummonGoblinsOnCast() {
-        int card = create("spells/goblin_assault_squad", player, Components.HAND);
+        int card = create("spells/goblin_assault_squad", player, Components.Zone.HAND);
         castFromHand(card);
-        assertCardsCount(player, Components.CREATURE_ZONE, "Goblin", 3);
+        assertCardsCount(player, Components.Zone.CREATURE_ZONE, "Goblin", 3);
     }
 }

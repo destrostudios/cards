@@ -8,9 +8,9 @@ public class TestHarannaUdagan extends TestGame {
 
     @Test
     public void testDrawOnDeath() {
-        int libraryCard = createCard(player, Components.LIBRARY);
-        int card = create("creatures/haranna_udagan", player, Components.CREATURE_ZONE);
+        int libraryCard = createCard(player, Components.Zone.LIBRARY);
+        int card = create("creatures/haranna_udagan", player, Components.Zone.CREATURE_ZONE);
         destroy(card);
-        assertHasComponent(libraryCard, Components.HAND);
+        assertHasComponent(libraryCard, Components.Zone.HAND);
     }
 }

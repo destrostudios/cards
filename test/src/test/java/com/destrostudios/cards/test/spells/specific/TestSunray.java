@@ -8,9 +8,9 @@ public class TestSunray extends TestGame {
 
     @Test
     public void testHealCreaturesOnCast() {
-        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 5, Components.CREATURE_ZONE);
+        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 5, Components.Zone.CREATURE_ZONE);
         damage(creatures, 4);
-        int card = create("spells/sunray", player, Components.HAND);
+        int card = create("spells/sunray", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(creatures, 4);
     }

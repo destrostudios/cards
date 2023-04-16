@@ -8,9 +8,9 @@ public class TestMahabitShaman extends TestGame {
 
     @Test
     public void testBuffBeastOnSummon() {
-        int beast = createVanilla(0, 0, 1, player, Components.CREATURE_ZONE);
+        int beast = createVanilla(0, 0, 1, player, Components.Zone.CREATURE_ZONE);
         data.setComponent(beast, Components.Tribe.BEAST);
-        int card = create("creatures/mahabit_shaman", player, Components.HAND);
+        int card = create("creatures/mahabit_shaman", player, Components.Zone.HAND);
         castFromHand(card, beast);
         assertAttack(beast, 2);
         assertHealth(beast, 3);

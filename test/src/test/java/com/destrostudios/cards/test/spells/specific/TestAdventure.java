@@ -8,9 +8,9 @@ public class TestAdventure extends TestGame {
 
     @Test
     public void testDrawCreatureOnCast() {
-        int creature = createVanilla(5, 0, 1, player, Components.LIBRARY);
-        int card = create("spells/adventure", player, Components.HAND);
+        int creature = createVanilla(5, 0, 1, player, Components.Zone.LIBRARY);
+        int card = create("spells/adventure", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHasComponent(creature, Components.HAND);
+        assertHasComponent(creature, Components.Zone.HAND);
     }
 }

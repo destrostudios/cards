@@ -9,7 +9,7 @@ public class TestDemonSamurai extends TestGame {
 
     @Test
     public void testDamageOpponentsOnAttack() {
-        int card = create("creatures/demon_samurai", player, Components.CREATURE_ZONE);
+        int card = create("creatures/demon_samurai", player, Components.Zone.CREATURE_ZONE);
         attack(card, opponent);
         assertHealth(opponent, GameConstants.PLAYER_HEALTH - 4);
     }

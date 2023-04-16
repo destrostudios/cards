@@ -10,7 +10,7 @@ public class TestCrazedDoctor extends TestGame {
     @Test
     public void testHealOnSummon() {
         damage(player, 15);
-        int card = create("creatures/crazed_doctor", player, Components.HAND);
+        int card = create("creatures/crazed_doctor", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 5);
     }

@@ -8,8 +8,8 @@ public class TestFieryObliteration extends TestGame {
 
     @Test
     public void testDamageOpponentCreaturesOnCast() {
-        int[] creatures = createVanillas(2, 0, 0, 5, opponent, Components.CREATURE_ZONE);
-        int card = create("spells/fiery_obliteration", player, Components.HAND);
+        int[] creatures = createVanillas(2, 0, 0, 5, opponent, Components.Zone.CREATURE_ZONE);
+        int card = create("spells/fiery_obliteration", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(creatures, 1);
     }

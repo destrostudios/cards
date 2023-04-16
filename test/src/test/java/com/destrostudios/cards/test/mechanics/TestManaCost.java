@@ -9,7 +9,7 @@ public class TestManaCost extends TestGame {
     @Test
     public void testPayManaCostOnCast() {
         setFullMana(player, 3);
-        int spell = createSpell(2, player, Components.HAND);
+        int spell = createSpell(2, player, Components.Zone.HAND);
         castFromHand(spell);
         assertComponent(player, Components.MANA, 1);
     }

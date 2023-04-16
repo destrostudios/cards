@@ -95,7 +95,7 @@ public class CardsBotEval {
             playerInfos[i] = playerInfo;
             i++;
         }
-        IntList cardsOnBoard = data.list(Components.CREATURE_ZONE);
+        IntList cardsOnBoard = data.list(Components.Zone.CREATURE_ZONE);
         for (int card : cardsOnBoard) {
             int owner = data.getComponent(card, Components.OWNED_BY);
             Integer attack = StatsUtil.getEffectiveAttack(data, card);
@@ -107,7 +107,7 @@ public class CardsBotEval {
                 playerInfos[owner].creaturesHealth += health;
             }
         }
-        IntList cardsInHand = data.list(Components.HAND);
+        IntList cardsInHand = data.list(Components.Zone.HAND);
         for (int card : cardsInHand) {
             int owner = data.getComponent(card, Components.OWNED_BY);
             playerInfos[owner].cardsInHand++;

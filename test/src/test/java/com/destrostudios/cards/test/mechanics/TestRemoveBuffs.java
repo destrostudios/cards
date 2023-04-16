@@ -9,7 +9,7 @@ public class TestRemoveBuffs extends TestGame {
 
     @Test
     public void testRemoveCardBuffsOnRemoveFromCreatureZone() {
-        int creature = createCreature(player, Components.CREATURE_ZONE);
+        int creature = createCreature(player, Components.Zone.CREATURE_ZONE);
         int buff = data.createEntity();
         fire(new AddBuffEvent(creature, buff));
         destroy(creature);
@@ -18,7 +18,7 @@ public class TestRemoveBuffs extends TestGame {
 
     @Test
     public void testRemoveDefaultCastFromHandSpellBuffsOnRemoveFromHand() {
-        int card = createCard(player, Components.HAND);
+        int card = createCard(player, Components.Zone.HAND);
         int defaultCastFromHandSpell = getDefaultCastFromHandSpell(card);
         int buff = data.createEntity();
         fire(new AddBuffEvent(defaultCastFromHandSpell, buff));

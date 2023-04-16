@@ -8,8 +8,8 @@ public class TestBabyTurtle extends TestGame {
 
     @Test
     public void testSummonTarasqueOnDeath() {
-        int card = create("creatures/baby_turtle", player, Components.CREATURE_ZONE);
+        int card = create("creatures/baby_turtle", player, Components.Zone.CREATURE_ZONE);
         destroy(card);
-        assertOneCard(player, Components.CREATURE_ZONE, "Tarasque");
+        assertOneCard(player, Components.Zone.CREATURE_ZONE, "Tarasque");
     }
 }

@@ -8,8 +8,8 @@ public class TestInspiringAngel extends TestGame {
 
     @Test
     public void testBuffCreaturesOnSummon() {
-        int[] creatures = createVanillas(2, 0, 1, 1, player, Components.CREATURE_ZONE);
-        int card = create("creatures/inspiring_angel", player, Components.HAND);
+        int[] creatures = createVanillas(2, 0, 1, 1, player, Components.Zone.CREATURE_ZONE);
+        int card = create("creatures/inspiring_angel", player, Components.Zone.HAND);
         castFromHand(card);
         assertAttack(creatures, 2);
         assertHealth(creatures, 2);

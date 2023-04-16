@@ -1,7 +1,5 @@
 package com.destrostudios.cards.shared.rules.battle;
 
-import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -13,15 +11,10 @@ public abstract class BaseDestroyOnZeroHealthHandler<T extends Event> extends Ga
 
     private static final Logger LOG = LoggerFactory.getLogger(BaseDestroyOnZeroHealthHandler.class);
 
-    @Override
-    public void handle(T event, NetworkRandom random) {
-        for (int target : getAffectedTargets(data, event)) {
-            if (StatsUtil.getEffectiveHealth(data, target) <= 0) {
-                LOG.debug("{} has zero or less health (event = {})", inspect(target), event);
-                events.fire(new DestructionEvent(target), random);
-            }
+    protected void destroyOnZeroHealth(int entity, T event, NetworkRandom random) {
+        if (StatsUtil.getEffectiveHealth(data, entity) <= 0) {
+            LOG.debug("{} has zero or less health (event = {})", inspect(entity), event);
+            events.fire(new DestructionEvent(entity), random);
         }
     }
-
-    protected abstract IntList getAffectedTargets(EntityData data, T event);
 }

@@ -12,7 +12,7 @@
                         <targets>
                             <entity template="../targets/source_owner_opponent"/>
                         </targets>
-                        <damage>2</damage>
+                        <damage>[damage]</damage>
                     </entity>
                 </effects>
             </entity>

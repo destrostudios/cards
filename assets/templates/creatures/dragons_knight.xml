@@ -4,7 +4,7 @@
         <auras>
             <entity>
                 <sourcePrefilters basic="CREATURE_ZONE"/>
-                <condition>target.isDefaultCastFromHandSpell &amp;&amp; target.source.isAlly(source) &amp;&amp; target.source.isDragon &amp;&amp; target.source.isInHand</condition>
+                <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_HAND,SOURCE_DRAGON,SOURCE_ALLY"/>
                 <auraBuff>
                     <entity>
                         <source>#card</source>

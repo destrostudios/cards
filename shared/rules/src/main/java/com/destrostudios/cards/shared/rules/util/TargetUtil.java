@@ -101,19 +101,61 @@ public class TargetUtil {
                 }
                 return data.getComponent(entity, Components.Player.CREATURE_ZONE_CARDS).isEmpty();
             }
-            case SOURCE -> { return entity == source; }
-            case NOT_SOURCE -> { return entity != source; }
-            case ALLY -> { return ConditionUtil.isAlly(data, entity, source); }
-            case NOT_ALLY -> { return !ConditionUtil.isAlly(data, entity, source); }
-            case DAMAGED -> { return StatsUtil.isDamaged(data, entity); }
-            case NOT_DAMAGED -> { return !StatsUtil.isDamaged(data, entity); }
-            case OWNER -> { return entity == data.getComponent(source, Components.OWNED_BY); }
+            case SOURCE -> {
+                return entity == source;
+            }
+            case NOT_SOURCE -> {
+                return entity != source;
+            }
+            case ALLY -> {
+                return ConditionUtil.isAlly(data, entity, source);
+            }
+            case NOT_ALLY -> {
+                return !ConditionUtil.isAlly(data, entity, source);
+            }
+            case DAMAGED -> {
+                return StatsUtil.isDamaged(data, entity);
+            }
+            case NOT_DAMAGED -> {
+                return !StatsUtil.isDamaged(data, entity);
+            }
+            case OWNER -> {
+                return entity == data.getComponent(source, Components.OWNED_BY);
+            }
             case OPPONENT -> {
                 int sourceOwner = data.getComponent(source, Components.OWNED_BY);
                 int sourceOpponent = data.getComponent(sourceOwner, Components.NEXT_PLAYER);
                 return (entity == sourceOpponent);
             }
+            case DEFAULT_CAST_FROM_HAND_SPELL -> {
+                return SpellUtil.isDefaultCastFromHandSpell(data, entity);
+            }
+            case SOURCE_HAND -> {
+                return hasSourceComponent(data, entity, Components.Zone.HAND);
+            }
+            case SOURCE_CREATURE_CARD -> {
+                return hasSourceComponent(data, entity, Components.CREATURE_CARD);
+            }
+            case SOURCE_SPELL_CARD -> {
+                return hasSourceComponent(data, entity, Components.SPELL_CARD);
+            }
+            case SOURCE_DRAGON -> {
+                return hasSourceComponent(data, entity, Components.Tribe.DRAGON);
+            }
+            case SOURCE_ALLY -> {
+                int entitySource = data.getComponent(entity, Components.SOURCE);
+                return ConditionUtil.isAlly(data, entitySource, source);
+            }
+            case SOURCE_NOT_ALLY -> {
+                int entitySource = data.getComponent(entity, Components.SOURCE);
+                return !ConditionUtil.isAlly(data, entitySource, source);
+            }
         }
         throw new IllegalArgumentException();
+    }
+
+    private static boolean hasSourceComponent(EntityData data, int entity, ComponentDefinition<?> component) {
+        int entitySource = data.getComponent(entity, Components.SOURCE);
+        return data.hasComponent(entitySource, component);
     }
 }

@@ -25,9 +25,9 @@ public class ComponentsParsing {
         for (int i = 0; i < basic.length; i++) {
             basic[i] = BASIC_COMPONENTS.get(basicNames[i]);
         }
-        Prefilter_Advanced[] advanced = new Prefilter_Advanced[advancedNames.length];
+        AdvancedPrefilter[] advanced = new AdvancedPrefilter[advancedNames.length];
         for (int i = 0; i < advanced.length; i++) {
-            advanced[i] = Prefilter_Advanced.valueOf(advancedNames[i]);
+            advanced[i] = AdvancedPrefilter.valueOf(advancedNames[i]);
         }
         return new Components.Prefilters(basic, advanced);
     }

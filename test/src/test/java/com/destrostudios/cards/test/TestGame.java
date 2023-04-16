@@ -123,7 +123,7 @@ public class TestGame {
         data.setComponent(spellCard, Components.SPELL_CARD);
         int spell = data.createEntity();
         data.setComponent(spell, Components.SOURCE, spellCard);
-        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Components.Prefilters(new ComponentDefinition[] { Components.Zone.HAND }, new Prefilter_Advanced[0]));
+        data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Components.Prefilters(new ComponentDefinition[] { Components.Zone.HAND }, new AdvancedPrefilter[0]));
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);

@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.SimpleTarget;
 
 public class SpellUtil {
 
@@ -51,8 +52,8 @@ public class SpellUtil {
                     if (data.hasComponent(effect, Components.Effect.BATTLE)) {
                         int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);
                         for (int targetDefinition : targetDefinitions) {
-                            String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
-                            if (targetExpression.equals("targets")) {
+                            SimpleTarget[] simpleTargets = data.getComponent(targetDefinition, Components.Target.TARGET_SIMPLE);
+                            if (simpleTargets[0] == SimpleTarget.TARGETS) {
                                 return true;
                             }
                         }

@@ -62,9 +62,11 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
                 return new IntList(data);
             }
         });
-        kryo.register(Prefilter_Advanced.class, new EnumSerializer<>(Prefilter_Advanced.class));
-        kryo.register(Prefilter_Advanced[].class);
+        kryo.register(AdvancedPrefilter.class, new EnumSerializer<>(AdvancedPrefilter.class));
+        kryo.register(AdvancedPrefilter[].class);
         kryo.register(Components.Prefilters.class, new FieldSerializer<>(kryo, Components.Prefilters.class));
+        kryo.register(SimpleTarget.class, new EnumSerializer<>(SimpleTarget.class));
+        kryo.register(SimpleTarget[].class);
         kryo.register(Components.AddBuff.class);
         kryo.register(Components.Create.class);
         kryo.register(ComponentDefinition.class, new Serializer<ComponentDefinition>() {

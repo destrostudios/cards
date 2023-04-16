@@ -1,5 +1,5 @@
 <template>
     <entity>
-        <target>source.map(targets, "target.defaultCastFromHandSpell")</target>
+        <targetSimple>TARGETS_DEFAULT_CAST_FROM_HAND_SPELL</targetSimple>
     </entity>
 </template>

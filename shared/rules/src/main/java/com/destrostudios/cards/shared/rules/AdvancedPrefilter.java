@@ -1,6 +1,6 @@
 package com.destrostudios.cards.shared.rules;
 
-public enum Prefilter_Advanced {
+public enum AdvancedPrefilter {
     CREATURE_OR_NO_CREATURES,
     SOURCE,
     NOT_SOURCE,

@@ -5,10 +5,7 @@ import com.destrostudios.cards.shared.entities.templates.*;
 import com.destrostudios.cards.shared.entities.templates.components.*;
 import com.destrostudios.cards.shared.entities.templates.formats.*;
 import com.destrostudios.cards.shared.files.FileAssets;
-import com.destrostudios.cards.shared.rules.CardsComponentsInfo;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.ComponentsTriggers;
-import com.destrostudios.cards.shared.rules.CreateLocation;
+import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
 public class EntityTemplateSetup {
@@ -130,7 +127,8 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Target.SOURCE_PREFILTERS, new ComponentParser_Prefilters());
         templateManager.registerComponent(Components.Target.TARGET_PREFILTERS, new ComponentParser_Prefilters());
         templateManager.registerComponent(Components.Target.TARGETS, new ComponentParser_Entities());
-        templateManager.registerComponent(Components.Target.TARGET, new ComponentParser_String());
+        templateManager.registerComponent(Components.Target.TARGET_SIMPLE, new ComponentParser_EnumArray<>(SimpleTarget[]::new, SimpleTarget::valueOf));
+        templateManager.registerComponent(Components.Target.TARGET_CUSTOM, new ComponentParser_String());
         templateManager.registerComponent(Components.Target.TARGET_ALL, new ComponentParser_String());
         templateManager.registerComponent(Components.Target.TARGET_RANDOM, new ComponentParser_String());
 

@@ -1,5 +1,5 @@
 <template>
     <entity>
-        <target>targets</target>
+        <targetSimple>TARGETS</targetSimple>
     </entity>
 </template>

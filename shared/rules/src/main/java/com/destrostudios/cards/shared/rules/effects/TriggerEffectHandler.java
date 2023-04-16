@@ -20,7 +20,7 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         String repeatExpression = data.getComponent(event.effect, Components.Effect.REPEAT);
         int repetitions = ((repeatExpression != null) ? Expressions.evaluate(repeatExpression, Expressions.getContext_Provider(data, event)) : 1);
         int[] targetDefinitions = data.getComponent(event.effect, Components.Target.TARGETS);
-        IntList affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event, random);
+        IntList affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event.targets, event, random);
         for (int i = 0; i < repetitions; i++) {
             for (int target : affectedTargets) {
                 events.fire(new TriggerEffectImpactEvent(event.source, target, event.effect), random);

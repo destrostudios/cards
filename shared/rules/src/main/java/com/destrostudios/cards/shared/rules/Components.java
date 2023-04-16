@@ -134,7 +134,8 @@ public class Components {
         public static final ComponentDefinition<Prefilters> SOURCE_PREFILTERS = create("sourcePrefilters");
         public static final ComponentDefinition<Prefilters> TARGET_PREFILTERS = create("targetPrefilters");
         public static final ComponentDefinition<int[]> TARGETS = create("targets");
-        public static final ComponentDefinition<String> TARGET = create("target");
+        public static final ComponentDefinition<SimpleTarget[]> TARGET_SIMPLE = create("targetSimple");
+        public static final ComponentDefinition<String> TARGET_CUSTOM = create("targetCustom");
         public static final ComponentDefinition<String> TARGET_ALL = create("targetAll");
         public static final ComponentDefinition<String> TARGET_RANDOM = create("targetRandom");
     }
@@ -152,7 +153,7 @@ public class Components {
     @Getter
     public static class Prefilters {
         private ComponentDefinition<?>[] basicComponents;
-        private Prefilter_Advanced[] advanced;
+        private AdvancedPrefilter[] advanced;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

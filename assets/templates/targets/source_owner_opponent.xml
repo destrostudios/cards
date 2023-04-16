@@ -1,5 +1,5 @@
 <template>
     <entity>
-        <target>source.owner.opponent</target>
+        <targetSimple>SOURCE_OWNER_OPPONENT</targetSimple>
     </entity>
 </template>

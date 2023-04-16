@@ -4,26 +4,35 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.Prefilter_Advanced;
+import com.destrostudios.cards.shared.rules.AdvancedPrefilter;
+import com.destrostudios.cards.shared.rules.SimpleTarget;
 import com.destrostudios.cards.shared.rules.expressions.ExpressionContextProvider;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
+import java.util.function.IntConsumer;
+
 public class TargetUtil {
 
-    public static IntList getAffectedTargets(EntityData data, int[] targetDefinitions, int source, ExpressionContextProvider expressionContextProvider, NetworkRandom random) {
+    public static IntList getAffectedTargets(EntityData data, int[] targetDefinitions, int source, int[] targets, ExpressionContextProvider expressionContextProvider, NetworkRandom random) {
         // TODO: Use Set so entities are not affected multiple times? Dependent on effect/context? (here and in the methods below)
         IntList affectedTargets = new IntList();
         for (int targetDefinition : targetDefinitions) {
-            affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, expressionContextProvider, random));
+            affectedTargets.addAll(getAffectedTargets(data, targetDefinition, source, targets, expressionContextProvider, random));
         }
         return affectedTargets;
     }
 
-    private static IntList getAffectedTargets(EntityData data, int targetDefinition, int source, ExpressionContextProvider expressionContextProvider, NetworkRandom random) {
+    private static IntList getAffectedTargets(EntityData data, int targetDefinition, int source, int[] targets, ExpressionContextProvider expressionContextProvider, NetworkRandom random) {
         IntList affectedTargets = new IntList();
         if (isFulfillingPrefilters_Source(data, source, targetDefinition)) {
-            String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET);
+            SimpleTarget[] simpleTargets = data.getComponent(targetDefinition, Components.Target.TARGET_SIMPLE);
+            if (simpleTargets != null) {
+                for (SimpleTarget simpleTarget : simpleTargets) {
+                    addSimpleTarget(data, source, targets, simpleTarget, affectedTargets::add);
+                }
+            }
+            String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET_CUSTOM);
             if (targetExpression != null) {
                 int[] evaluatedTargets = Expressions.evaluateEntities(targetExpression, Expressions.getContext_Provider(data, expressionContextProvider));
                 for (int target : evaluatedTargets) {
@@ -44,6 +53,34 @@ public class TargetUtil {
             }
         }
         return affectedTargets;
+    }
+
+    private static void addSimpleTarget(EntityData data, int source, int[] targets, SimpleTarget simpleTarget, IntConsumer add) {
+        switch (simpleTarget) {
+            case SOURCE -> {
+                add.accept(source);
+            }
+            case SOURCE_OWNER -> {
+                add.accept(data.getComponent(source, Components.OWNED_BY));
+            }
+            case SOURCE_OWNER_OPPONENT -> {
+                int sourceOwner = data.getComponent(source, Components.OWNED_BY);
+                add.accept(data.getComponent(sourceOwner, Components.NEXT_PLAYER));
+            }
+            case SOURCE_DEFAULT_CAST_FROM_HAND_SPELL -> {
+                add.accept(SpellUtil.getDefaultCastFromHandSpell(data, source));
+            }
+            case TARGETS -> {
+                for (int target : targets) {
+                    add.accept(target);
+                }
+            }
+            case TARGETS_DEFAULT_CAST_FROM_HAND_SPELL -> {
+                for (int target : targets) {
+                    add.accept(SpellUtil.getDefaultCastFromHandSpell(data, target));
+                }
+            }
+        }
     }
 
     public static IntList getAllConditionTargets(EntityData data, int source, Components.Prefilters targetPrefilters, String condition) {
@@ -84,17 +121,17 @@ public class TargetUtil {
         return true;
     }
 
-    private static boolean isFulfillingPrefilters_Advanced(EntityData data, int entity, int source, Prefilter_Advanced[] prefiltersAdvanced) {
-        for (Prefilter_Advanced prefilterAdvanced : prefiltersAdvanced) {
-            if (!isFulfillingPrefilter_Advanced(data, entity, source, prefilterAdvanced)) {
+    private static boolean isFulfillingPrefilters_Advanced(EntityData data, int entity, int source, AdvancedPrefilter[] advancedPrefilters) {
+        for (AdvancedPrefilter advancedPrefilter : advancedPrefilters) {
+            if (!isFulfillingPrefilter_Advanced(data, entity, source, advancedPrefilter)) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean isFulfillingPrefilter_Advanced(EntityData data, int entity, int source, Prefilter_Advanced prefilterAdvanced) {
-        switch (prefilterAdvanced) {
+    private static boolean isFulfillingPrefilter_Advanced(EntityData data, int entity, int source, AdvancedPrefilter advancedPrefilter) {
+        switch (advancedPrefilter) {
             case CREATURE_OR_NO_CREATURES -> {
                 if (data.hasComponent(entity, Components.CREATURE_CARD)) {
                     return true;

@@ -46,11 +46,18 @@ public class Expressions {
 
     public static <T> T evaluate(String expression, JexlContext context) {
         try {
+            if (isIntegerExpression(expression)) {
+                return (T) Integer.valueOf(expression);
+            }
             return (T) ENGINE.createExpression(expression).evaluate(context);
         } catch (JexlException ex) {
             System.err.println("Error while evaluating expression: " + expression);
             ex.printStackTrace();
             throw ex;
         }
+    }
+
+    private static boolean isIntegerExpression(String text) {
+        return text.chars().allMatch(c -> ((c <= '9') && ((c >= '0')) || (c == '-')));
     }
 }

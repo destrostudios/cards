@@ -95,6 +95,12 @@ public class TargetUtil {
 
     private static boolean isFulfillingPrefilter_Advanced(EntityData data, int entity, int source, Prefilter_Advanced prefilterAdvanced) {
         switch (prefilterAdvanced) {
+            case CREATURE_OR_NO_CREATURES -> {
+                if (data.hasComponent(entity, Components.CREATURE_CARD)) {
+                    return true;
+                }
+                return data.getComponent(entity, Components.Player.CREATURE_ZONE_CARDS).isEmpty();
+            }
             case SOURCE -> { return entity == source; }
             case NOT_SOURCE -> { return entity != source; }
             case ALLY -> { return ConditionUtil.isAlly(data, entity, source); }

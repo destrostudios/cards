@@ -5,7 +5,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(TriggerEffectHandler.class);
 
     @Override
-    public void handle(TriggerEffectEvent event, NetworkRandom random) {
+    public void handle(TriggerEffectEvent event) {
         LOG.debug("Triggering effect (source = {}, targets = {}, effect = {})", inspect(event.source), inspect(event.targets), inspect(event.effect));
 
         String repeatExpression = data.getComponent(event.effect, Components.Effect.REPEAT);

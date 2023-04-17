@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 public class MoveToGraveyardHandler extends BaseMoveToZoneHandler<MoveToGraveyardEvent> {
 
@@ -33,7 +32,7 @@ public class MoveToGraveyardHandler extends BaseMoveToZoneHandler<MoveToGraveyar
     };
 
     @Override
-    public void handle(MoveToGraveyardEvent event, NetworkRandom random) {
+    public void handle(MoveToGraveyardEvent event) {
         handle(event.card);
     }
 }

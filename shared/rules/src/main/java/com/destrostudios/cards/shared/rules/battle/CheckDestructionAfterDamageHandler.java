@@ -1,11 +1,9 @@
 package com.destrostudios.cards.shared.rules.battle;
 
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
-
 public class CheckDestructionAfterDamageHandler extends BaseDestroyOnZeroHealthHandler<DamageEvent> {
 
     @Override
-    public void handle(DamageEvent event, NetworkRandom random) {
+    public void handle(DamageEvent event) {
         destroyOnZeroHealth(event.target, event);
     }
 }

@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 public class MoveToHandHandler extends BaseMoveToZoneHandler<MoveToHandEvent> {
 
@@ -33,7 +32,7 @@ public class MoveToHandHandler extends BaseMoveToZoneHandler<MoveToHandEvent> {
     };
 
     @Override
-    public void handle(MoveToHandEvent event, NetworkRandom random) {
+    public void handle(MoveToHandEvent event) {
         super.handle(event.card);
     }
 }

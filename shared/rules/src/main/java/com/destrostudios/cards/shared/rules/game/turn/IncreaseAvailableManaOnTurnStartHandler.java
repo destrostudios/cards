@@ -4,7 +4,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.effects.SetAvailableManaEvent;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ public class IncreaseAvailableManaOnTurnStartHandler extends GameEventHandler<St
     private static final Logger LOG = LoggerFactory.getLogger(IncreaseAvailableManaOnTurnStartHandler.class);
 
     @Override
-    public void handle(StartTurnEvent event, NetworkRandom random) {
+    public void handle(StartTurnEvent event) {
         int currentAvailableMana = data.getOptionalComponent(event.player, Components.AVAILABLE_MANA).orElse(0);
         if (currentAvailableMana < GameConstants.MAXIMUM_AVAILABLE_MANA) {
             int newAvailableMana = currentAvailableMana + 1;

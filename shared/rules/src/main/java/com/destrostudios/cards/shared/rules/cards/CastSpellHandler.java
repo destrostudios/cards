@@ -4,7 +4,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.TriggerUtil;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(CastSpellHandler.class);
 
     @Override
-    public void handle(CastSpellEvent event, NetworkRandom random) {
+    public void handle(CastSpellEvent event) {
         LOG.debug("Casting spell {} on {}", inspect(event.spell), inspect(event.targets));
 
         Integer manaCost = CostUtil.getEffectiveManaCost(data, event.spell);

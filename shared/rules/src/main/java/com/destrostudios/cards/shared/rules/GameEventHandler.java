@@ -12,16 +12,18 @@ public abstract class GameEventHandler<E extends Event> implements EventHandler<
     protected GameContext context;
     protected EntityData data;
     protected EventQueue events;
+    protected NetworkRandom random;
 
     @Override
     public void onEvent(E event, GameContext context) {
         this.context = context;
         data = context.getData();
         events = context.getEvents();
-        handle(event, context.getRandom());
+        random = context.getRandom();
+        handle(event);
     }
 
-    public abstract void handle(E event, NetworkRandom random);
+    public abstract void handle(E event);
 
     protected Object inspect(Iterable<Integer> entities) {
         return new DebugUtil.EntityDebugText_Iterable(data, entities);

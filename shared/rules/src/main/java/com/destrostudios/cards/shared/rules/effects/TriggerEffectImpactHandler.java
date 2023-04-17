@@ -15,7 +15,6 @@ import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.BuffUtil;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +23,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
     private static final Logger LOG = LoggerFactory.getLogger(TriggerEffectImpactHandler.class);
 
     @Override
-    public void handle(TriggerEffectImpactEvent event, NetworkRandom random) {
+    public void handle(TriggerEffectImpactEvent event) {
         LOG.debug("Triggering effect impact (source = {}, target = {}, effect = {})", inspect(event.source), inspect(event.target), inspect(event.effect));
 
         if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_CREATURE_ZONE)) {

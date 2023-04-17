@@ -5,7 +5,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.ConditionsAffectedEvent;
 import com.destrostudios.cards.shared.rules.game.turn.StartTurnEvent;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(MulliganHandler.class);
 
     @Override
-    public void handle(MulliganEvent event, NetworkRandom random) {
+    public void handle(MulliganEvent event) {
         int player = data.unique(Components.Player.ACTIVE_PLAYER);
         LOG.debug("Player {} is mulliganing away cards {}", inspect(player), inspect(event.cards));
         if (event.cards.length > 0) {

@@ -4,7 +4,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.RemovedFromHandEvent;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ public class RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler extends
     private static final Logger LOG = LoggerFactory.getLogger(RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler.class);
 
     @Override
-    public void handle(RemovedFromHandEvent event, NetworkRandom random) {
+    public void handle(RemovedFromHandEvent event) {
         int defaultCastFromHandSpell = SpellUtil.getDefaultCastFromHandSpell(data, event.card);
         int[] buffs = data.getComponent(defaultCastFromHandSpell, Components.BUFFS);
         if (buffs != null) {

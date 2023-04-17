@@ -4,7 +4,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.util.ConditionUtil;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ public class TriggerIfPossibleHandler extends GameEventHandler<TriggerIfPossible
     private static final Logger LOG = LoggerFactory.getLogger(TriggerIfPossibleHandler.class);
 
     @Override
-    public void handle(TriggerIfPossibleEvent event, NetworkRandom random) {
+    public void handle(TriggerIfPossibleEvent event) {
         LOG.debug("Trying to trigger trigger (source = {}, targets = {}, trigger = {})", inspect(event.source), inspect(event.targets), inspect(event.trigger));
 
         if (ConditionUtil.isConditionFulfilled(data, event.trigger, event.source, event.targets)) {

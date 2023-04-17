@@ -6,7 +6,6 @@ import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,7 @@ public class AddInitialCardsHandOnGameStartHandler extends GameEventHandler<Game
     private static final Logger LOG = LoggerFactory.getLogger(AddInitialCardsHandOnGameStartHandler.class);
 
     @Override
-    public void handle(GameStartEvent event, NetworkRandom random) {
+    public void handle(GameStartEvent event) {
         for (int player : data.list(Components.NEXT_PLAYER)) {
             int initialHandSize = GameConstants.INITIAL_HAND_SIZE + (data.hasComponent(player, Components.Player.ACTIVE_PLAYER) ? 0 : 1);
             LOG.debug("Adding initial {} cards to hand of player {}", initialHandSize, inspect(player));

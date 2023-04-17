@@ -45,7 +45,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     public IngameAppState(GameService gameService) {
         this.gameService = gameService;
         entityBoardMap = new EntityBoardMap(gameService.getGameContext().getData());
-        playerActionsGenerator = new PlayerActionsGenerator();
     }
     private static final float ZONE_HEIGHT = 1.3f;
     private GameService gameService;
@@ -56,7 +55,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private Card<CardModel> inspectionCard;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private EntityBoardMap entityBoardMap;
-    private PlayerActionsGenerator playerActionsGenerator;
     private UpdateBoardService updateBoardService;
     private EntryAnimationService entryAnimationService;
     private Event sendableEndTurnEvent;
@@ -331,7 +329,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         if (gameService.getGameContext().isGameOver()) {
             possibleEvents = null;
         } else {
-            possibleEvents = playerActionsGenerator.generatePossibleActions(gameService.getGameContext().getData(), gameService.getPlayerEntity());
+            possibleEvents = PlayerActionsGenerator.generatePossibleActions(gameService.getGameContext().getData(), gameService.getPlayerEntity());
             for (Event event : possibleEvents) {
                 if (event instanceof EndTurnEvent) {
                     sendableEndTurnEvent = event;

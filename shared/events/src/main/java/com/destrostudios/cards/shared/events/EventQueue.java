@@ -68,4 +68,8 @@ public class EventQueue<C> {
             }
         }
     }
+
+    public void clear() {
+        pendingEventHandlers.clear();
+    }
 }

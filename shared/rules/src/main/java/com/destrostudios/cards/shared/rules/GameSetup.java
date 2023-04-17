@@ -8,39 +8,32 @@ import com.destrostudios.cards.shared.model.CardList;
 import com.destrostudios.cards.shared.model.CardListCard;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.ModelUtil;
-import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-@AllArgsConstructor
 public class GameSetup {
 
-    private List<Card> cards;
-    private EntityData data;
-    private StartGameInfo startGameInfo;
-    private Random random;
-
-    public void apply() {
+    public static void apply(EntityData data, StartGameInfo startGameInfo, List<Card> allCards, Random random) {
         int player1 = data.createEntity();
         int player2 = data.createEntity();
-        initPlayer(player1, player2, startGameInfo.getPlayers()[0]);
-        initPlayer(player2, player1, startGameInfo.getPlayers()[1]);
+        initPlayer(data, player1, player2, startGameInfo.getPlayers()[0], allCards, random);
+        initPlayer(data, player2, player1, startGameInfo.getPlayers()[1], allCards, random);
     }
 
-    private void initPlayer(int player, int opponent, PlayerInfo playerInfo) {
+    private static void initPlayer(EntityData data, int player, int opponent, PlayerInfo playerInfo, List<Card> allCards, Random random) {
         IntList libraryCards = new IntList(GameConstants.MAXIMUM_DECK_SIZE);
         if (playerInfo.getDeck() != null) {
-            fillLibrary(libraryCards, playerInfo.getDeck());
+            fillLibrary(data, libraryCards, playerInfo.getDeck());
         } else {
-            fillTestLibrary(libraryCards);
+            fillTestLibrary(data, libraryCards, allCards, random);
         }
         initPlayer(data, player, opponent, playerInfo.getLogin(), libraryCards);
     }
 
-    private void fillLibrary(IntList libraryCards, CardList deck) {
+    private static void fillLibrary(EntityData data, IntList libraryCards, CardList deck) {
         for (CardListCard cardListCard : deck.getCards()) {
             for (int i = 0; i < cardListCard.getAmount(); i++) {
                 int card = ModelUtil.createCard(data, cardListCard);
@@ -49,21 +42,21 @@ public class GameSetup {
         }
     }
 
-    private void fillTestLibrary(IntList libraryCards) {
-        ArrayList<Card> randomSortedCards = new ArrayList<>(cards);
+    private static void fillTestLibrary(EntityData data, IntList libraryCards, List<Card> allCards, Random random) {
+        ArrayList<Card> randomSortedCards = new ArrayList<>(allCards);
         Collections.shuffle(randomSortedCards, random);
         randomSortedCards.stream().limit(GameConstants.MAXIMUM_DECK_SIZE).forEach(card -> {
             int cardEntity = data.createEntity();
             EntityTemplate.loadTemplate(data, cardEntity, card.getPath());
-            setRandomFoil(cardEntity);
+            setRandomFoil(data, cardEntity);
             libraryCards.add(cardEntity);
         });
     }
 
-    private void setRandomFoil(int card) {
+    private static void setRandomFoil(EntityData data, int card) {
         switch ((int) (Math.random() * 7)) {
-            case 0: data.setComponent(card, Components.FOIL, Foil.ARTWORK); break;
-            case 1: data.setComponent(card, Components.FOIL, Foil.FULL); break;
+            case 0 -> data.setComponent(card, Components.FOIL, Foil.ARTWORK);
+            case 1 -> data.setComponent(card, Components.FOIL, Foil.FULL);
         }
     }
 

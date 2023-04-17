@@ -13,28 +13,31 @@ import java.util.*;
 
 public class CardsBotState implements BotGameState<Event, Integer> {
 
-    public CardsBotState(CardsBotState cardsBotState) {
-        this.gameContext = new GameContext(cardsBotState.gameContext);
-        players = cardsBotState.players;
-        playerActionsGenerator = cardsBotState.playerActionsGenerator;
-        random = cardsBotState.random;
+    // Used to create a new bot worker thread needing an own instance, will be set up immediately via copyFrom
+    public CardsBotState() {
+        gameContext = new GameContext();
     }
 
-    public CardsBotState(GameContext gameContext, NetworkRandom random) {
+    // Used to create the actual first instance
+    public CardsBotState(GameContext gameContext, Random botRandom) {
         this.gameContext = gameContext;
+        this.botRandom = new SimpleRandom(botRandom);
         players = gameContext.getData().list(Components.NEXT_PLAYER).boxed();
-        playerActionsGenerator = new PlayerActionsGenerator();
-        this.random = random;
     }
     @Getter
     private GameContext gameContext;
+    private NetworkRandom botRandom;
     private List<Integer> players;
-    private PlayerActionsGenerator playerActionsGenerator;
-    private NetworkRandom random;
+
+    public void copyFrom(CardsBotState source) {
+        gameContext.copyFrom(source.gameContext);
+        botRandom = source.botRandom;
+        players = source.players;
+    }
 
     @Override
     public BotActionReplay<Event> applyAction(Event action) {
-        gameContext.fireAndResolveEvent(action, random);
+        gameContext.fireAndResolveEvent(action, botRandom);
         return new BotActionReplay<>(action, new int[0]); // TODO: Randomness?
     }
 
@@ -45,7 +48,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     @Override
     public List<Event> generateActions(Integer team) {
-        return playerActionsGenerator.generatePossibleActions(gameContext.getData(), team);
+        return PlayerActionsGenerator.generatePossibleActions(gameContext.getData(), team);
     }
 
     @Override

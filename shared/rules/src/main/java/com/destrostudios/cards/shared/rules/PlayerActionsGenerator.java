@@ -18,7 +18,7 @@ public class PlayerActionsGenerator {
 
     private static final int[] NO_TARGETS = new int[0];
 
-    public List<Event> generatePossibleActions(EntityData data, int player) {
+    public static List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new ArrayList<>(64);
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
@@ -31,7 +31,7 @@ public class PlayerActionsGenerator {
         return possibleEvents;
     }
 
-    private void generateMulligans(EntityData data, int player, Consumer<Event> out) {
+    private static void generateMulligans(EntityData data, int player, Consumer<Event> out) {
         IntList handCards = data.list(Components.Zone.PLAYER_HAND[player]);
         List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
         for (int[] handCardsSubset : handCardsSubsets) {
@@ -39,13 +39,13 @@ public class PlayerActionsGenerator {
         }
     }
 
-    private void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
+    private static void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
         generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_HAND[player]), out);
         generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_CREATURE_ZONE[player]), out);
     }
 
-    private void generateSpellCasts(EntityData data, int player, IntList ownedCards, Consumer<Event> out) {
+    private static void generateSpellCasts(EntityData data, int player, IntList ownedCards, Consumer<Event> out) {
         for (int card : ownedCards) {
             int[] spells = data.getComponent(card, Components.SPELLS);
             for (int spell : spells) {
@@ -54,7 +54,7 @@ public class PlayerActionsGenerator {
         }
     }
 
-    private void generateCastSpellEvents(EntityData data, int player, int card, int spell, Consumer<Event> out) {
+    private static void generateCastSpellEvents(EntityData data, int player, int card, int spell, Consumer<Event> out) {
         if (!SpellUtil.isCastable_WithoutSpellCondition(data, player, spell)) {
             return;
         }

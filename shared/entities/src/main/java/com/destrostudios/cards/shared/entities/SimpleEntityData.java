@@ -6,20 +6,11 @@ import java.util.function.IntPredicate;
 
 public class SimpleEntityData implements EntityData {
 
-    public SimpleEntityData(SimpleEntityData data) {
-        components = new IntMap[data.components.length];
-        cacheList = new IntList[data.components.length];
-        for (int i = 0; i < components.length; i++) {
-            components[i] = new IntMap(data.components[i]);
-        }
-        nextEntity = data.nextEntity;
-    }
-
     public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
         components = new IntMap[componentDefinitions.size()];
         cacheList = new IntList[components.length];
         for (int i = 0; i < components.length; i++) {
-            components[i] = new IntMap();
+            components[i] = new IntMap(16); // Picking this optimally greatly improves performance by doing less resizes (important for bot!)
         }
         nextEntity = 0;
     }
@@ -147,5 +138,13 @@ public class SimpleEntityData implements EntityData {
 
     public int getNextEntity() {
         return nextEntity;
+    }
+
+    public void copyFrom(SimpleEntityData source) {
+        for (int i = 0; i < components.length; i++) {
+            components[i].copyFrom(source.components[i]);
+        }
+        System.arraycopy(source.cacheList, 0, cacheList, 0, components.length);
+        nextEntity = source.nextEntity;
     }
 }

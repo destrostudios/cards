@@ -58,7 +58,7 @@ public class CardsBotModule extends NetworkModule {
                 botSettings.evaluation = CardsBotEval::eval;
                 return new MctsBot<>(new CardsBotService(), botSettings);
             });
-            CardsBotState botState = new CardsBotState(game.state, new SimpleRandom(new Random()));
+            CardsBotState botState = new CardsBotState(game.state, new Random());
             LOG.debug("Bot started calculating... (gameId = {})", game.id);
             long startNanos = System.nanoTime();
             List<Event> actions = bot.sortedActions(botState, botState.activeTeam());

@@ -124,10 +124,10 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
             @Override
             public GameContext read(Kryo kryo, Input input, Class<GameContext> type) {
                 StartGameInfo startGameInfo = kryo.readObject(input, StartGameInfo.class);
-                SimpleEntityData data = kryo.readObject(input, SimpleEntityData.class);
                 // Create an own instance, so the frontend can add custom handlers
                 GameEventHandling eventHandling = new GameEventHandling();
-                return new GameContext(startGameInfo, data, eventHandling);
+                SimpleEntityData data = kryo.readObject(input, SimpleEntityData.class);
+                return new GameContext(startGameInfo, eventHandling, data);
             }
         });
         kryo.register(EventType.class);

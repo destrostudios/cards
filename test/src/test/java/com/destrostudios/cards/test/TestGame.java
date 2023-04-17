@@ -55,8 +55,8 @@ public class TestGame {
                 new PlayerInfo(2, "Opponent", null),
             }
         );
-        data = new SimpleEntityData(Components.ALL);
-        gameContext = new GameContext(startGameInfo, data, GameEventHandling.GLOBAL_INSTANCE);
+        gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE);
+        data = gameContext.getData();
         random = mock(NetworkRandom.class);
         setupGame();
         fire(new GameStartEvent());

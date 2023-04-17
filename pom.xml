@@ -18,7 +18,7 @@
         <jm3.group>org.jmonkeyengine</jm3.group>
         <jm3.version>3.2.1-stable</jm3.version>
         <version.card-gui>0434bbe3a83056f4e0e78e3ed99dd98493fb63ce</version.card-gui>
-        <version.game-tools>0f108ac88f80fe0932d0a3427f2d91b080d2677e</version.game-tools>
+        <version.game-tools>76bd23e029824acdbf2596f2030a95a48beeefbb</version.game-tools>
         <version.groovy>3.0.10</version.groovy>
         <version.jackson>2.14.2</version.jackson>
         <version.javax.activation>1.1.1</version.javax.activation>

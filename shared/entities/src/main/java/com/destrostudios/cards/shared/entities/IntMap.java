@@ -22,21 +22,12 @@ public class IntMap<T> implements Iterable<Integer> {
     private int fillLimit;
     private boolean hasFreeKey;
 
-    public IntMap(IntMap<T> intMap) {
-        fillFactor = intMap.fillFactor;
-        mask = intMap.mask;
-        keys = new int[intMap.keys.length];
-        System.arraycopy(intMap.keys, 0, keys, 0, keys.length);
-        values = new Object[intMap.keys.length];
-        System.arraycopy(intMap.values, 0, values, 0, values.length);
-        freeValue = intMap.freeValue;
-        count = intMap.count;
-        fillLimit = intMap.fillLimit;
-        hasFreeKey = intMap.hasFreeKey;
+    public IntMap() {
+        this(8);
     }
 
-    public IntMap() {
-        this(8, 0.75f);
+    public IntMap(int capacity) {
+        this(capacity, 0.75f);
     }
 
     public IntMap(int capacity, float fillFactor) {
@@ -278,23 +269,17 @@ public class IntMap<T> implements Iterable<Integer> {
     }
 
     public void copyFrom(IntMap<T> other) {
-        if (keys.length < other.keys.length && fillFactor == other.fillFactor) {
+        if (keys.length != other.keys.length) {
+            fillFactor = other.fillFactor;
+            mask = other.mask;
             keys = new int[other.keys.length];
             values = new Object[other.keys.length];
             fillLimit = other.fillLimit;
-            mask = other.mask;
         }
-        if (keys.length == other.keys.length) {
-            System.arraycopy(other.keys, 0, keys, 0, keys.length);
-            System.arraycopy(other.values, 0, values, 0, values.length);
-            hasFreeKey = other.hasFreeKey;
-            freeValue = other.freeValue;
-            count = other.count;
-        } else {
-            clear();
-            for (int key : other) {
-                set(key, other.get(key));
-            }
-        }
+        System.arraycopy(other.keys, 0, keys, 0, keys.length);
+        System.arraycopy(other.values, 0, values, 0, values.length);
+        hasFreeKey = other.hasFreeKey;
+        freeValue = other.freeValue;
+        count = other.count;
     }
 }

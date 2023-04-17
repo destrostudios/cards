@@ -6,12 +6,16 @@ import com.destrostudios.gametools.bot.BotGameService;
 public class CardsBotService implements BotGameService<CardsBotState, Event, Integer, CardsBotState> {
 
     @Override
-    public CardsBotState serialize(CardsBotState cardsBotState) {
-        return cardsBotState;
+    public CardsBotState serialize(CardsBotState state) {
+        return state;
     }
 
     @Override
-    public CardsBotState deserialize(CardsBotState data) {
-        return new CardsBotState(data);
+    public CardsBotState deserialize(CardsBotState source, CardsBotState target) {
+        if (target == null) {
+            target = new CardsBotState();
+        }
+        target.copyFrom(source);
+        return target;
     }
 }

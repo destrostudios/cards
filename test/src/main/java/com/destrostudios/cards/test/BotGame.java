@@ -3,7 +3,6 @@ package com.destrostudios.cards.test;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotEval;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotService;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
@@ -58,10 +57,8 @@ public class BotGame {
                 new PlayerInfo(2, "Bot2", null)
             }
         );
-        SimpleEntityData data = new SimpleEntityData(Components.ALL);
-        GameSetup gameSetup = new GameSetup(cards, data, startGameInfo, _random);
-        gameSetup.apply();
-        gameContext = new GameContext(startGameInfo, data, GameEventHandling.GLOBAL_INSTANCE);
+        gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE);
+        GameSetup.apply(gameContext.getData(), startGameInfo, cards, _random);
 
         applyAction(new GameStartEvent(), random);
 
@@ -77,7 +74,8 @@ public class BotGame {
             MctsBot bot = new MctsBot<>(new CardsBotService(), botSettings);
             bots[i] = bot;
         }
-        CardsBotState botState = new CardsBotState(gameContext, random);
+        Random botRandom = new Random(seed + 1);
+        CardsBotState botState = new CardsBotState(gameContext, botRandom);
 
         long gameStartNanos = System.nanoTime();
         int actionIndex = 0;

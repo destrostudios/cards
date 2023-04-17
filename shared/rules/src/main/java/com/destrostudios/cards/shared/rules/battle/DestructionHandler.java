@@ -21,9 +21,9 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
             Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
             if (nextPlayer.isPresent()) {
                 int winner = nextPlayer.get();
-                events.fire(new GameOverEvent(winner), random);
+                events.fire(new GameOverEvent(winner));
             } else {
-                events.fire(new MoveToGraveyardEvent(event.target), random);
+                events.fire(new MoveToGraveyardEvent(event.target));
             }
         } else {
             LOG.debug("{} is not on board, preventing destruction.", inspect(event.target));

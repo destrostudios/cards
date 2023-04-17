@@ -15,6 +15,6 @@ public class AddManaHandler extends GameEventHandler<AddManaEvent> {
         int currentMana = data.getOptionalComponent(event.player, Components.MANA).orElse(0);
         int newMana = currentMana + event.manaAmount;
         LOG.debug("Adding {} mana to player {} (current mana = {}, new mana = {})", event.manaAmount, inspect(event.player), currentMana, newMana);
-        events.fire(new SetManaEvent(event.player, newMana), random);
+        events.fire(new SetManaEvent(event.player, newMana));
     }
 }

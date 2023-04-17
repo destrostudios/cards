@@ -2,32 +2,32 @@ package com.destrostudios.cards.shared.events;
 
 import com.esotericsoftware.kryo.util.IntMap;
 
-public class EventHandlers {
+public class EventHandlers<C> {
 
-    private IntMap<EventHandler[]> eventHandlers = new IntMap<>();
+    private IntMap<EventHandler[]> handlers = new IntMap<>();
 
-    public <T extends Event> void add(Enum<?> eventType, EventHandler<T> handler) {
-        EventHandler[] oldEventHandlers = get(eventType);
-        EventHandler[] newEventHandlers;
-        if (oldEventHandlers == null) {
-            newEventHandlers = new EventHandler[] { handler };
+    public <T extends Event, C> void add(Enum<?> eventType, EventHandler<T, C> handler) {
+        EventHandler[] oldHandlers = get(eventType);
+        EventHandler[] newHandlers;
+        if (oldHandlers == null) {
+            newHandlers = new EventHandler[] { handler };
         } else {
-            newEventHandlers = new EventHandler[oldEventHandlers.length + 1];
-            System.arraycopy(oldEventHandlers, 0, newEventHandlers, 0, oldEventHandlers.length);
-            newEventHandlers[oldEventHandlers.length] = handler;
+            newHandlers = new EventHandler[oldHandlers.length + 1];
+            System.arraycopy(oldHandlers, 0, newHandlers, 0, oldHandlers.length);
+            newHandlers[oldHandlers.length] = handler;
         }
-        put(eventType, newEventHandlers);
+        put(eventType, newHandlers);
     }
 
-    public <T extends Event> void put(Enum<?> eventType, EventHandler<T>[] handlers) {
-        eventHandlers.put(eventType.ordinal(), handlers);
+    public <T extends Event> void put(Enum<?> eventType, EventHandler<T, C>[] handlers) {
+        this.handlers.put(eventType.ordinal(), handlers);
     }
 
-    public EventHandler[] get(Event event) {
+    public <E extends Event> EventHandler<E, C>[] get(E event) {
         return get(event.getEventType());
     }
 
-    private EventHandler[] get(Enum<?> eventType) {
-        return eventHandlers.get(eventType.ordinal());
+    private <E extends Event> EventHandler<E, C>[] get(Enum<?> eventType) {
+        return handlers.get(eventType.ordinal());
     }
 }

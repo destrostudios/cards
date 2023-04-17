@@ -24,7 +24,7 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
     private ComponentDefinition<IntList> playerZoneCards;
     private ComponentDefinition<IntList>[] otherPlayerZonesCards;
 
-    protected void handle(int card, NetworkRandom random) {
+    protected void handle(int card) {
         LOG.debug("Moving {} to zone {}", inspect(card), cardZone.getName());
 
         int owner = data.getComponent(card, Components.OWNED_BY);
@@ -35,9 +35,9 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
                 ZoneUtil.removeFromZone(data, card, owner, otherCardZone, otherCardPlayerZones[i][owner], otherPlayerZonesCards[i]);
                 if (otherCardZone == Components.Zone.CREATURE_ZONE) {
                     data.removeComponent(card, Components.BOARD);
-                    events.fire(new RemovedFromCreatureZoneEvent(card), random);
+                    events.fire(new RemovedFromCreatureZoneEvent(card));
                 } else if (otherCardZone == Components.Zone.HAND) {
-                    events.fire(new RemovedFromHandEvent(card), random);
+                    events.fire(new RemovedFromHandEvent(card));
                 }
                 break;
             }
@@ -45,6 +45,6 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
 
         ZoneUtil.addToZone(data, card, owner, cardZone, cardPlayerZone[owner], playerZoneCards);
 
-        events.fire(new ConditionsAffectedEvent(), random);
+        events.fire(new ConditionsAffectedEvent());
     }
 }

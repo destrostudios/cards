@@ -28,61 +28,61 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
         LOG.debug("Triggering effect impact (source = {}, target = {}, effect = {})", inspect(event.source), inspect(event.target), inspect(event.effect));
 
         if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_CREATURE_ZONE)) {
-            events.fire(new MoveToCreatureZoneEvent(event.target), random);
+            events.fire(new MoveToCreatureZoneEvent(event.target));
         } else if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_GRAVEYARD)) {
-            events.fire(new MoveToGraveyardEvent(event.target), random);
+            events.fire(new MoveToGraveyardEvent(event.target));
         } else if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_HAND)) {
-            events.fire(new MoveToHandEvent(event.target), random);
+            events.fire(new MoveToHandEvent(event.target));
         }
 
         String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);
         if (damageExpression != null) {
             int damage = evaluate(data, damageExpression, event);
-            events.fire(new DamageEvent(event.target, damage), random);
+            events.fire(new DamageEvent(event.target, damage));
         }
 
         String healExpression = data.getComponent(event.effect, Components.Effect.HEAL);
         if (healExpression != null) {
             int heal = evaluate(data, healExpression, event);
-            events.fire(new HealEvent(event.target, heal), random);
+            events.fire(new HealEvent(event.target, heal));
         }
 
         String drawExpression = data.getComponent(event.effect, Components.Effect.DRAW);
         if (drawExpression != null) {
             int drawnCards = evaluate(data, drawExpression, event);
             for (int r = 0; r < drawnCards; r++) {
-                events.fire(new DrawCardEvent(event.target), random);
+                events.fire(new DrawCardEvent(event.target));
             }
         }
 
         String gainManaExpression = data.getComponent(event.effect, Components.Effect.GAIN_MANA);
         if (gainManaExpression != null) {
             int gainedMana = evaluate(data, gainManaExpression, event);
-            events.fire(new AddManaEvent(event.target, gainedMana), random);
+            events.fire(new AddManaEvent(event.target, gainedMana));
         }
 
         if (data.hasComponent(event.effect, Components.Effect.DESTROY)) {
-            events.fire(new DestructionEvent(event.target), random);
+            events.fire(new DestructionEvent(event.target));
         }
 
         if (data.hasComponent(event.effect, Components.Effect.BATTLE)) {
-            events.fire(new BattleEvent(event.source, event.target), random);
+            events.fire(new BattleEvent(event.source, event.target));
         }
 
         Components.AddBuff addBuff = data.getComponent(event.effect, Components.Effect.ADD_BUFF);
         if (addBuff != null) {
             int buff = (addBuff.isConstant() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event.source, event.target) : addBuff.getBuff());
-            events.fire(new AddBuffEvent(event.target, buff), random);
+            events.fire(new AddBuffEvent(event.target, buff));
         }
 
         Components.Create create = data.getComponent(event.effect, Components.Effect.CREATE);
         if (create != null) {
-            events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation()), random);
+            events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation()));
         }
 
         if (data.hasComponent(event.effect, Components.Effect.END_TURN)) {
             int activePlayer = data.unique(Components.Player.ACTIVE_PLAYER);
-            events.fire(new EndTurnEvent(activePlayer), random);
+            events.fire(new EndTurnEvent(activePlayer));
         }
     }
 

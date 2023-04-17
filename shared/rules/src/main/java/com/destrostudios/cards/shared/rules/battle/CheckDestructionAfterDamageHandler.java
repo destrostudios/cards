@@ -6,6 +6,6 @@ public class CheckDestructionAfterDamageHandler extends BaseDestroyOnZeroHealthH
 
     @Override
     public void handle(DamageEvent event, NetworkRandom random) {
-        destroyOnZeroHealth(event.target, event, random);
+        destroyOnZeroHealth(event.target, event);
     }
 }

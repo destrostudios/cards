@@ -213,10 +213,7 @@ public class TestGame {
     }
 
     protected void fire(Event event) {
-        gameContext.getEvents().fire(event, random);
-        while (gameContext.getEvents().hasPendingEventHandler()) {
-            gameContext.getEvents().triggerNextEventHandler();
-        }
+        gameContext.fireAndResolveEvent(event, random);
     }
 
     protected void assertManaCost(int card, int value) {

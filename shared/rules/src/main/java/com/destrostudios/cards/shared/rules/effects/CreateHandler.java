@@ -21,8 +21,8 @@ public class CreateHandler extends GameEventHandler<CreateEvent> {
         data.setComponent(card, Components.FOIL, data.getComponent(event.source, Components.FOIL));
         data.setComponent(card, Components.OWNED_BY, event.player);
         switch (event.location) {
-            case CREATURE_ZONE -> events.fire(new MoveToCreatureZoneEvent(card), random);
-            case HAND -> events.fire(new MoveToHandEvent(card), random);
+            case CREATURE_ZONE -> events.fire(new MoveToCreatureZoneEvent(card));
+            case HAND -> events.fire(new MoveToHandEvent(card));
         }
     }
 }

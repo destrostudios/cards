@@ -20,12 +20,12 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.EventType;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -245,23 +245,23 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Events
 
-        gameService.getGameContext().getEvents().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (MoveToCreatureZoneEvent event, NetworkRandom random) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (MoveToCreatureZoneEvent event, GameContext context) -> {
             tryPlayEntryAnimation(event.card);
         });
-        gameService.getGameContext().getEvents().pre().add(EventType.BATTLE, (BattleEvent event, NetworkRandom random) -> {
+        gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (BattleEvent event, GameContext context) -> {
             TransformedBoardObject<?> attacker = entityBoardMap.getBoardObject(event.source);
             TransformedBoardObject<?> defender = entityBoardMap.getBoardObject(event.target);
             board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
         });
-        gameService.getGameContext().getEvents().resolved().add(EventType.BATTLE, (event, random) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (event, context) -> {
             board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f));
         });
-        /*gameService.getGameContext().getEvents().pre().add(EventType.SHUFFLE_LIBRARY, (ShuffleLibraryEvent event, NetworkRandom random) -> {
+        /*gameService.getGameContext().getEventHandling().pre().add(EventType.SHUFFLE_LIBRARY, (ShuffleLibraryEvent event, GameContext context) -> {
             LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
         });*/
 
-        gameService.getGameContext().getEvents().instant().add(EventType.GAME_OVER, (GameOverEvent event, NetworkRandom random) -> {
+        gameService.getGameContext().getEventHandling().instant().add(EventType.GAME_OVER, (GameOverEvent event, GameContext context) -> {
             gameService.onGameOver();
             boolean isWinner = (gameService.getPlayerEntity() == event.winner);
             mainApplication.getStateManager().attach(new GameOverAppState(isWinner));
@@ -307,13 +307,13 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void processNextEvents() {
-        EventQueue eventQueue = gameService.getGameContext().getEvents();
+        EventQueue<GameContext> eventQueue = gameService.getGameContext().getEvents();
         if (!eventQueue.hasPendingEventHandler()) {
             gameService.applyNextActionIfExisting();
         }
         if (eventQueue.hasPendingEventHandler()) {
             while (!board.isAnimationPlaying()) {
-                eventQueue.triggerNextEventHandler();
+                eventQueue.triggerNextEventHandler(gameService.getGameContext());
                 if (board.isAnimationPlaying()) {
                     updateBoardService.update(null);
                 }

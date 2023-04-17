@@ -34,10 +34,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
 
     @Override
     public BotActionReplay<Event> applyAction(Event action) {
-        gameContext.getEvents().fire(action, random);
-        while (gameContext.getEvents().hasPendingEventHandler()) {
-            gameContext.getEvents().triggerNextEventHandler();
-        }
+        gameContext.fireAndResolveEvent(action, random);
         return new BotActionReplay<>(action, new int[0]); // TODO: Randomness?
     }
 

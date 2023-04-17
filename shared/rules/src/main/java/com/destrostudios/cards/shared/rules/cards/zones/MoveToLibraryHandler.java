@@ -34,6 +34,6 @@ public class MoveToLibraryHandler extends BaseMoveToZoneHandler<MoveToLibraryEve
 
     @Override
     public void handle(MoveToLibraryEvent event, NetworkRandom random) {
-        handle(event.card, random);
+        handle(event.card);
     }
 }

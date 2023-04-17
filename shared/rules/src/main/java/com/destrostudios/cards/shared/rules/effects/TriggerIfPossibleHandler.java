@@ -22,7 +22,7 @@ public class TriggerIfPossibleHandler extends GameEventHandler<TriggerIfPossible
             int[] effects = data.getComponent(event.trigger, Components.Trigger.EFFECTS);
             for (int effect : effects) {
                 for (int i = 0; i < repetitions; i++) {
-                    events.fire(new TriggerEffectEvent(event.source, event.targets, effect), random);
+                    events.fire(new TriggerEffectEvent(event.source, event.targets, effect));
                 }
             }
         }

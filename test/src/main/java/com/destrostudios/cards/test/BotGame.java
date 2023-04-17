@@ -128,10 +128,7 @@ public class BotGame {
     }
 
     protected void applyAction(Event action, NetworkRandom random) {
-        gameContext.getEvents().fire(action, random);
-        while (gameContext.getEvents().hasPendingEventHandler()) {
-            gameContext.getEvents().triggerNextEventHandler();
-        }
+        gameContext.fireAndResolveEvent(action, random);
     }
 
     public String getWinnerName() {

@@ -15,6 +15,6 @@ public class EndTurnHandler extends GameEventHandler<EndTurnEvent> {
         LOG.debug("Ending turn of player {}", inspect(event.player));
         data.removeComponent(event.player, Components.Player.ACTIVE_PLAYER);
         int nextPlayer = data.getComponent(event.player, Components.NEXT_PLAYER);
-        events.fire(new StartTurnEvent(nextPlayer), random);
+        events.fire(new StartTurnEvent(nextPlayer));
     }
 }

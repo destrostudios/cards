@@ -19,7 +19,7 @@ public class RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler extends
         if (buffs != null) {
             LOG.debug("Removing all {} buffs from defaultCastFromHandSpell {} of {}", buffs.length, inspect(defaultCastFromHandSpell), inspect(event.card));
             for (int buff : buffs) {
-                events.fire(new RemoveBuffEvent(defaultCastFromHandSpell, buff), random);
+                events.fire(new RemoveBuffEvent(defaultCastFromHandSpell, buff));
             }
         }
     }

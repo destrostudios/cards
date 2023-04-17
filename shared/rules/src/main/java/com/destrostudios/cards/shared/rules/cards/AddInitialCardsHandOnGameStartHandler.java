@@ -23,7 +23,7 @@ public class AddInitialCardsHandOnGameStartHandler extends GameEventHandler<Game
             int lastDrawnLibraryCardIndex = Math.max(0, libraryCards.size() - initialHandSize);
             for (int i = libraryCards.size() - 1; i >= lastDrawnLibraryCardIndex; i--) {
                 int card = libraryCards.get(i);
-                events.fire(new MoveToHandEvent(card), random);
+                events.fire(new MoveToHandEvent(card));
             }
         }
     }

@@ -19,9 +19,9 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
         Integer manaCost = CostUtil.getEffectiveManaCost(data, event.spell);
         if (manaCost != null) {
             int owner = data.getComponent(event.source, Components.OWNED_BY);
-            events.fire(new PayManaEvent(owner, manaCost), random);
+            events.fire(new PayManaEvent(owner, manaCost));
         }
 
-        TriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, events, random);
+        TriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, events);
     }
 }

@@ -15,6 +15,6 @@ public class SetManaToAvailableManaOnTurnStartHandler extends GameEventHandler<S
     public void handle(StartTurnEvent event, NetworkRandom random) {
         int availableMana = data.getOptionalComponent(event.player, Components.AVAILABLE_MANA).orElse(0);
         LOG.debug("Setting mana of player {} at start of turn to {}", inspect(event.player), availableMana);
-        events.fire(new SetManaEvent(event.player, availableMana), random);
+        events.fire(new SetManaEvent(event.player, availableMana));
     }
 }

@@ -34,6 +34,6 @@ public class MoveToGraveyardHandler extends BaseMoveToZoneHandler<MoveToGraveyar
 
     @Override
     public void handle(MoveToGraveyardEvent event, NetworkRandom random) {
-        handle(event.card, random);
+        handle(event.card);
     }
 }

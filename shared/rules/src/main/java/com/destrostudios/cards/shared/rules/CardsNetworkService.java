@@ -137,11 +137,9 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
 
     @Override
     public GameContext applyAction(GameContext state, Event action, NetworkRandom random) {
-        state.getEvents().fire(action, random);
+        state.fireEvent(action, random);
         if (resolveActions) {
-            while (state.getEvents().hasPendingEventHandler()) {
-                state.getEvents().triggerNextEventHandler();
-            }
+            state.resolveEvents();
         }
         return state;
     }

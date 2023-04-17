@@ -16,7 +16,7 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
         Integer card = ZoneUtil.getTopLibraryCard(data, event.player);
         if (card != null) {
             LOG.debug("Player {} is drawing card {}", inspect(event.player), inspect(card));
-            events.fire(new MoveToHandEvent(card), random);
+            events.fire(new MoveToHandEvent(card));
         } else {
             // TODO: Fatigue?
             LOG.debug("Player {} tried to draw a card but has none left", inspect(event.player));

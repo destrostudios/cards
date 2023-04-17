@@ -15,13 +15,13 @@ public class BattleHandler extends GameEventHandler<BattleEvent> {
         LOG.debug("{} is attacking {}", inspect(event.source), inspect(event.target));
         Integer damageToTarget = StatsUtil.getEffectiveAttack(data, event.source);
         Integer damageToSource = StatsUtil.getEffectiveAttack(data, event.target);
-        tryDealDamage(event.target, damageToTarget, random);
-        tryDealDamage(event.source, damageToSource, random);
+        tryDealDamage(event.target, damageToTarget);
+        tryDealDamage(event.source, damageToSource);
     }
 
-    private void tryDealDamage(int target, Integer damage, NetworkRandom random) {
+    private void tryDealDamage(int target, Integer damage) {
         if ((damage != null) && (damage > 0)) {
-            events.fire(new DamageEvent(target, damage), random);
+            events.fire(new DamageEvent(target, damage));
         }
     }
 }

@@ -34,6 +34,6 @@ public class MoveToHandHandler extends BaseMoveToZoneHandler<MoveToHandEvent> {
 
     @Override
     public void handle(MoveToHandEvent event, NetworkRandom random) {
-        super.handle(event.card, random);
+        super.handle(event.card);
     }
 }

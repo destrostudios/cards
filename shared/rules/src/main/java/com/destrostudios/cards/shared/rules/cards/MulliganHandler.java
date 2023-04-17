@@ -44,7 +44,7 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
             newLibraryCards.shuffle(random::nextInt);
             data.setComponent(player, Components.Player.LIBRARY_CARDS, newLibraryCards);
             data.setComponent(player, Components.Player.HAND_CARDS, newHandCards);
-            events.fire(new ConditionsAffectedEvent(), random);
+            events.fire(new ConditionsAffectedEvent());
         }
         data.removeComponent(player, Components.Player.MULLIGAN);
         data.removeComponent(player, Components.Player.ACTIVE_PLAYER);
@@ -54,7 +54,7 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
             data.setComponent(nextPlayer, Components.Player.ACTIVE_PLAYER);
         } else {
             LOG.debug("Mulligan phase finished");
-            events.fire(new StartTurnEvent(nextPlayer), random);
+            events.fire(new StartTurnEvent(nextPlayer));
         }
     }
 }

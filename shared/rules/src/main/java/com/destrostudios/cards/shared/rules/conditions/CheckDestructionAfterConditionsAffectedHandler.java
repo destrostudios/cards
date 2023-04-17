@@ -11,7 +11,7 @@ public class CheckDestructionAfterConditionsAffectedHandler extends BaseDestroyO
     public void handle(ConditionsAffectedEvent event, NetworkRandom random) {
         // Currently, only creatures with self-health-auras could drop to zero health here
         for (int target : data.listAll(Components.Zone.CREATURE_ZONE, Components.AURAS)) {
-            destroyOnZeroHealth(target, event, random);
+            destroyOnZeroHealth(target, event);
         }
     }
 }

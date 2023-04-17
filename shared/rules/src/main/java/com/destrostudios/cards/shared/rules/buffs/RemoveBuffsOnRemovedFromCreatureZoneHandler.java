@@ -17,7 +17,7 @@ public class RemoveBuffsOnRemovedFromCreatureZoneHandler extends GameEventHandle
         if (buffs != null) {
             LOG.debug("Removing all {} buffs from {}", buffs.length, inspect(event.card));
             for (int buff : buffs) {
-                events.fire(new RemoveBuffEvent(event.card, buff), random);
+                events.fire(new RemoveBuffEvent(event.card, buff));
             }
         }
     }

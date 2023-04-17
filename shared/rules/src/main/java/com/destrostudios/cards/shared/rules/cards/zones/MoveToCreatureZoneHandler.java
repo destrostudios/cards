@@ -34,6 +34,6 @@ public class MoveToCreatureZoneHandler extends BaseMoveToZoneHandler<MoveToCreat
 
     @Override
     public void handle(MoveToCreatureZoneEvent event, NetworkRandom random) {
-        handle(event.card, random);
+        handle(event.card);
     }
 }

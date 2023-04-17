@@ -1,6 +1,8 @@
 package com.destrostudios.cards.shared.rules.battle;
 
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.game.GameOverEvent;
@@ -14,18 +16,19 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(DestructionHandler.class);
 
     @Override
-    public void handle(DestructionEvent event) {
+    public void handle(GameContext context, DestructionEvent event) {
+        EntityData data = context.getData();
         if (data.hasComponent(event.target, Components.BOARD)) {
-            LOG.debug("Destroying {}", inspect(event.target));
+            LOG.debug("Destroying {}", inspect(data, event.target));
             Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
             if (nextPlayer.isPresent()) {
                 int winner = nextPlayer.get();
-                events.fire(new GameOverEvent(winner));
+                context.getEvents().fire(new GameOverEvent(winner));
             } else {
-                events.fire(new MoveToGraveyardEvent(event.target));
+                context.getEvents().fire(new MoveToGraveyardEvent(event.target));
             }
         } else {
-            LOG.debug("{} is not on board, preventing destruction.", inspect(event.target));
+            LOG.debug("{} is not on board, preventing destruction.", inspect(data, event.target));
             event.cancel();
         }
     }

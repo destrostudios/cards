@@ -1,6 +1,8 @@
 package com.destrostudios.cards.shared.rules.battle;
 
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import org.slf4j.Logger;
@@ -11,11 +13,12 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(DamageHandler.class);
 
     @Override
-    public void handle(DamageEvent event) {
+    public void handle(GameContext context, DamageEvent event) {
         boolean damaged = false;
-        LOG.debug("Dealing {} damage to {}", event.damage, inspect(event.target));
+        EntityData data = context.getData();
+        LOG.debug("Dealing {} damage to {}", event.damage, inspect(data, event.target));
         if (data.getOptionalComponent(event.target, Components.Ability.DIVINE_SHIELD).orElse(false)) {
-            LOG.debug("Removing divine shield from {}", inspect(event.target));
+            LOG.debug("Removing divine shield from {}", inspect(data, event.target));
             data.setComponent(event.target, Components.Ability.DIVINE_SHIELD, false);
         } else {
             int remainingDamage = event.damage;
@@ -26,7 +29,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
                 if (bonusDamageDealt > 0) {
                     int newBonusDamaged = oldBonusDamaged + bonusDamageDealt;
                     data.setComponent(event.target, Components.Stats.BONUS_DAMAGED, newBonusDamaged);
-                    LOG.debug("Changing bonus damaged of {} from {} to {}", inspect(event.target), oldBonusDamaged, newBonusDamaged);
+                    LOG.debug("Changing bonus damaged of {} from {} to {}", inspect(data, event.target), oldBonusDamaged, newBonusDamaged);
                     remainingDamage -= bonusDamageDealt;
                     damaged = true;
                 }
@@ -34,7 +37,7 @@ public class DamageHandler extends GameEventHandler<DamageEvent> {
             if (remainingDamage > 0) {
                 int oldDamaged = data.getOptionalComponent(event.target, Components.Stats.DAMAGED).orElse(0);
                 int newDamaged = oldDamaged + remainingDamage;
-                LOG.debug("Changing damaged of {} from {} to {}", inspect(event.target), oldDamaged, newDamaged);
+                LOG.debug("Changing damaged of {} from {} to {}", inspect(data, event.target), oldDamaged, newDamaged);
                 data.setComponent(event.target, Components.Stats.DAMAGED, newDamaged);
                 damaged = true;
             }

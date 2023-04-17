@@ -245,23 +245,23 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Events
 
-        gameService.getGameContext().getEventHandling().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (MoveToCreatureZoneEvent event, GameContext context) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (GameContext context, MoveToCreatureZoneEvent event) -> {
             tryPlayEntryAnimation(event.card);
         });
-        gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (BattleEvent event, GameContext context) -> {
+        gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (GameContext context, BattleEvent event) -> {
             TransformedBoardObject<?> attacker = entityBoardMap.getBoardObject(event.source);
             TransformedBoardObject<?> defender = entityBoardMap.getBoardObject(event.target);
             board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
         });
-        gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (event, context) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (context, event) -> {
             board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f));
         });
-        /*gameService.getGameContext().getEventHandling().pre().add(EventType.SHUFFLE_LIBRARY, (ShuffleLibraryEvent event, GameContext context) -> {
+        /*gameService.getGameContext().getEventHandling().pre().add(EventType.SHUFFLE_LIBRARY, (GameContext context, ShuffleLibraryEvent event) -> {
             LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
         });*/
 
-        gameService.getGameContext().getEventHandling().instant().add(EventType.GAME_OVER, (GameOverEvent event, GameContext context) -> {
+        gameService.getGameContext().getEventHandling().instant().add(EventType.GAME_OVER, (GameContext context, GameOverEvent event) -> {
             gameService.onGameOver();
             boolean isWinner = (gameService.getPlayerEntity() == event.winner);
             mainApplication.getStateManager().attach(new GameOverAppState(isWinner));

@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 
 public class MoveToCreatureZoneHandler extends BaseMoveToZoneHandler<MoveToCreatureZoneEvent> {
 
@@ -32,7 +33,7 @@ public class MoveToCreatureZoneHandler extends BaseMoveToZoneHandler<MoveToCreat
     };
 
     @Override
-    public void handle(MoveToCreatureZoneEvent event) {
-        handle(event.card);
+    public void handle(GameContext context, MoveToCreatureZoneEvent event) {
+        handle(context, event.card);
     }
 }

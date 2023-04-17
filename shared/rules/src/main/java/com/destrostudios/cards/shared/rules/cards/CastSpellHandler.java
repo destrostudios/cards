@@ -1,6 +1,8 @@
 package com.destrostudios.cards.shared.rules.cards;
 
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.TriggerUtil;
@@ -12,15 +14,16 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(CastSpellHandler.class);
 
     @Override
-    public void handle(CastSpellEvent event) {
-        LOG.debug("Casting spell {} on {}", inspect(event.spell), inspect(event.targets));
+    public void handle(GameContext context, CastSpellEvent event) {
+        EntityData data = context.getData();
+        LOG.debug("Casting spell {} on {}", inspect(data, event.spell), inspect(data, event.targets));
 
         Integer manaCost = CostUtil.getEffectiveManaCost(data, event.spell);
         if (manaCost != null) {
             int owner = data.getComponent(event.source, Components.OWNED_BY);
-            events.fire(new PayManaEvent(owner, manaCost));
+            context.getEvents().fire(new PayManaEvent(owner, manaCost));
         }
 
-        TriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, events);
+        TriggerUtil.trigger(data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, context.getEvents());
     }
 }

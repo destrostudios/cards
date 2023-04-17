@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 
 public class MoveToLibraryHandler extends BaseMoveToZoneHandler<MoveToLibraryEvent> {
 
@@ -32,7 +33,7 @@ public class MoveToLibraryHandler extends BaseMoveToZoneHandler<MoveToLibraryEve
     };
 
     @Override
-    public void handle(MoveToLibraryEvent event) {
-        handle(event.card);
+    public void handle(GameContext context, MoveToLibraryEvent event) {
+        handle(context, event.card);
     }
 }

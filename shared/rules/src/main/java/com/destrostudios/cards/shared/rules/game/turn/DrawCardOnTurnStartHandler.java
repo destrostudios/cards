@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.rules.game.turn;
 
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import org.slf4j.Logger;
@@ -10,8 +11,8 @@ public class DrawCardOnTurnStartHandler extends GameEventHandler<StartTurnEvent>
     private static final Logger LOG = LoggerFactory.getLogger(DrawCardOnTurnStartHandler.class);
 
     @Override
-    public void handle(StartTurnEvent event) {
-        LOG.debug("Player {} is drawing card at start of turn", inspect(event.player));
-        events.fire(new DrawCardEvent(event.player));
+    public void handle(GameContext context, StartTurnEvent event) {
+        LOG.debug("Player {} is drawing card at start of turn", inspect(context.getData(), event.player));
+        context.getEvents().fire(new DrawCardEvent(event.player));
     }
 }

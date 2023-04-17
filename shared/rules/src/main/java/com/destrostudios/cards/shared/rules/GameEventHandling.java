@@ -102,11 +102,6 @@ public class GameEventHandling extends EventHandling<GameContext> {
     }
 
     private <T extends Event> void set(EventHandlers<GameContext> eventHandlers, EventType eventType, GameEventHandler... handlers) {
-        EventHandler<T, GameContext>[] rawHandlers = new EventHandler[handlers.length];
-        for (int i = 0; i < rawHandlers.length; i++) {
-            GameEventHandler<T> handler = handlers[i];
-            rawHandlers[i] = handler::onEvent;
-        }
-        eventHandlers.put(eventType, rawHandlers);
+        eventHandlers.put(eventType, handlers);
     }
 }

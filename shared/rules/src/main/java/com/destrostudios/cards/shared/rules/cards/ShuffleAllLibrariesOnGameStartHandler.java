@@ -1,7 +1,9 @@
 package com.destrostudios.cards.shared.rules.cards;
 
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 
@@ -13,11 +15,12 @@ public class ShuffleAllLibrariesOnGameStartHandler extends GameEventHandler<Game
     private static final Logger LOG = LoggerFactory.getLogger(ShuffleAllLibrariesOnGameStartHandler.class);
 
     @Override
-    public void handle(GameStartEvent event) {
+    public void handle(GameContext context, GameStartEvent event) {
+        EntityData data = context.getData();
         IntList players = data.list(Components.NEXT_PLAYER);
-        LOG.debug("Shuffling libraries of players {}", inspect(players));
+        LOG.debug("Shuffling libraries of players {}", inspect(data, players));
         for (int player : players) {
-            events.fire(new ShuffleLibraryEvent(player));
+            context.getEvents().fire(new ShuffleLibraryEvent(player));
         }
     }
 }

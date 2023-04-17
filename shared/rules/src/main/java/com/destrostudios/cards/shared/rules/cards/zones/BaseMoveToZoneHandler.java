@@ -1,13 +1,14 @@
 package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
+import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.ConditionsAffectedEvent;
 import com.destrostudios.cards.shared.rules.util.ZoneUtil;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,9 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
     private ComponentDefinition<IntList> playerZoneCards;
     private ComponentDefinition<IntList>[] otherPlayerZonesCards;
 
-    protected void handle(int card) {
-        LOG.debug("Moving {} to zone {}", inspect(card), cardZone.getName());
+    protected void handle(GameContext context, int card) {
+        EntityData data = context.getData();
+        LOG.debug("Moving {} to zone {}", inspect(data, card), cardZone.getName());
 
         int owner = data.getComponent(card, Components.OWNED_BY);
 
@@ -35,9 +37,9 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
                 ZoneUtil.removeFromZone(data, card, owner, otherCardZone, otherCardPlayerZones[i][owner], otherPlayerZonesCards[i]);
                 if (otherCardZone == Components.Zone.CREATURE_ZONE) {
                     data.removeComponent(card, Components.BOARD);
-                    events.fire(new RemovedFromCreatureZoneEvent(card));
+                    context.getEvents().fire(new RemovedFromCreatureZoneEvent(card));
                 } else if (otherCardZone == Components.Zone.HAND) {
-                    events.fire(new RemovedFromHandEvent(card));
+                    context.getEvents().fire(new RemovedFromHandEvent(card));
                 }
                 break;
             }
@@ -45,6 +47,6 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
 
         ZoneUtil.addToZone(data, card, owner, cardZone, cardPlayerZone[owner], playerZoneCards);
 
-        events.fire(new ConditionsAffectedEvent());
+        context.getEvents().fire(new ConditionsAffectedEvent());
     }
 }

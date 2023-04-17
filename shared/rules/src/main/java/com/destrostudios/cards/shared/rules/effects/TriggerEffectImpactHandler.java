@@ -1,7 +1,9 @@
 package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.battle.BattleEvent;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
@@ -23,8 +25,10 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
     private static final Logger LOG = LoggerFactory.getLogger(TriggerEffectImpactHandler.class);
 
     @Override
-    public void handle(TriggerEffectImpactEvent event) {
-        LOG.debug("Triggering effect impact (source = {}, target = {}, effect = {})", inspect(event.source), inspect(event.target), inspect(event.effect));
+    public void handle(GameContext context, TriggerEffectImpactEvent event) {
+        EntityData data = context.getData();
+        EventQueue<GameContext> events = context.getEvents();
+        LOG.debug("Triggering effect impact (source = {}, target = {}, effect = {})", inspect(data, event.source), inspect(data, event.target), inspect(data, event.effect));
 
         if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_CREATURE_ZONE)) {
             events.fire(new MoveToCreatureZoneEvent(event.target));

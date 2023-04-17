@@ -51,7 +51,7 @@ public class EventQueue<C> {
         Event event = pendingEventHandler.event();
         LOG.trace("Handling {}", event);
         parentEvent = event;
-        pendingEventHandler.handler().onEvent(event, context);
+        pendingEventHandler.handler().handle(context, event);
         parentEvent = null;
         if (event.isCancelled()) {
             removeCancelledHandlers();

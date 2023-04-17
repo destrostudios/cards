@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.cards.zones;
 
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameContext;
 
 public class MoveToGraveyardHandler extends BaseMoveToZoneHandler<MoveToGraveyardEvent> {
 
@@ -32,7 +33,7 @@ public class MoveToGraveyardHandler extends BaseMoveToZoneHandler<MoveToGraveyar
     };
 
     @Override
-    public void handle(MoveToGraveyardEvent event) {
-        handle(event.card);
+    public void handle(GameContext context, MoveToGraveyardEvent event) {
+        handle(context, event.card);
     }
 }

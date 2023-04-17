@@ -61,7 +61,7 @@ public class BotGame {
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
         GameSetup gameSetup = new GameSetup(cards, data, startGameInfo, _random);
         gameSetup.apply();
-        gameContext = new GameContext(startGameInfo, data);
+        gameContext = new GameContext(startGameInfo, data, GameEventHandling.GLOBAL_INSTANCE);
 
         applyAction(new GameStartEvent(), random);
 

@@ -8,14 +8,13 @@ import lombok.Getter;
 public class GameContext {
 
     public GameContext(GameContext gameContext) {
-        // TODO: Reuse the same GameEventHandler instances (after making them completely stateless (they still reference data+events))
-        this(gameContext.startGameInfo, new SimpleEntityData(gameContext.data));
+        this(gameContext.startGameInfo, new SimpleEntityData(gameContext.data), gameContext.eventHandling);
     }
 
-    public GameContext(StartGameInfo startGameInfo, SimpleEntityData data) {
+    public GameContext(StartGameInfo startGameInfo, SimpleEntityData data, GameEventHandling eventHandling) {
         this.startGameInfo = startGameInfo;
         this.data = data;
-        eventHandling = new GameEventHandling();
+        this.eventHandling = eventHandling;
         events = new EventQueue<>(eventHandling);
     }
     @Getter
@@ -23,7 +22,7 @@ public class GameContext {
     @Getter
     private SimpleEntityData data;
     @Getter
-    private EventHandling<GameContext> eventHandling;
+    private GameEventHandling eventHandling;
     @Getter
     private EventQueue<GameContext> events;
     @Getter

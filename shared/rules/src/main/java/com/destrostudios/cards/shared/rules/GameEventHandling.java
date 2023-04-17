@@ -25,6 +25,8 @@ import static com.destrostudios.cards.shared.rules.ComponentsTriggers.*;
 
 public class GameEventHandling extends EventHandling<GameContext> {
 
+    public static GameEventHandling GLOBAL_INSTANCE = new GameEventHandling();
+
     public GameEventHandling() {
         set(instant, EventType.MOVE_TO_CREATURE_ZONE,
             new MoveToCreatureZoneHandler(),

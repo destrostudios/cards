@@ -4,10 +4,7 @@ import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.CardService;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.GameSetup;
-import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.GameStartServerModule;
@@ -43,7 +40,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
         SimpleEntityData data = new SimpleEntityData(Components.ALL);
         GameSetup gameSetup = new GameSetup(cardService.getCards(), data, startGameInfo, new Random());
         gameSetup.apply();
-        GameContext gameContext = new GameContext(startGameInfo, data);
+        GameContext gameContext = new GameContext(startGameInfo, data, GameEventHandling.GLOBAL_INSTANCE);
 
         UUID gameId = UUID.randomUUID();
         System.out.println("Start game \"" + gameId + "\".");

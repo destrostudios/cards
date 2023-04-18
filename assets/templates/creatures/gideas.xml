@@ -2,7 +2,7 @@
     <values>
         <bonusManaCost>1</bonusManaCost>
     </values>
-    <entity id="card" template="./templates/vanilla(name=Gideas,manaCost=7,attack=4,health=4)">
+    <entity id="card" template="./templates/vanilla(name=Gideas,manaCost=7,attack=5,health=5)">
         <description>Your opponents creatures cost ([bonusManaCost]) more.</description>
         <auras>
             <entity>

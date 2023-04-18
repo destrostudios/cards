@@ -12,7 +12,7 @@ public class TestWarcry extends TestGame {
         forEach(goblins, goblin -> data.setComponent(goblin, Components.Tribe.GOBLIN));
         int card = create("spells/warcry", player, Components.Zone.HAND);
         castFromHand(card);
-        assertAttack(goblins, 2);
+        assertAttack(goblins, 3);
         endTurn(player);
         assertAttack(goblins, 1);
     }

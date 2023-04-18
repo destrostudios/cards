@@ -2,7 +2,7 @@
     <entity id="card">
         <name>Goblin Pillager</name>
         <creatureCard/>
-        <attack>1</attack>
+        <attack>2</attack>
         <health>2</health>
         <goblin/>
         <description>Cast: If the top card of your library is a Goblin, draw it.</description>

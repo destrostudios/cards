@@ -2,8 +2,8 @@
     <entity id="card">
         <name>Goblin Recruiter</name>
         <creatureCard/>
-        <attack>1</attack>
-        <health>1</health>
+        <attack>2</attack>
+        <health>2</health>
         <goblin/>
         <spells>
             <entity template="../spells/templates/simple_summon(source=#card,manaCost=2)"/>

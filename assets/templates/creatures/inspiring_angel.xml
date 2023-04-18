@@ -6,8 +6,8 @@
     <entity id="card">
         <name>Inspiring Angel</name>
         <creatureCard/>
-        <attack>4</attack>
-        <health>4</health>
+        <attack>5</attack>
+        <health>5</health>
         <description>Cast: Your creatures on board gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>

@@ -1,3 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Dam,manaCost=1,attack=0,health=4)"/>
+    <entity template="./templates/vanilla(name=Dam,manaCost=1,attack=0,health=4)">
+        <taunt/>
+    </entity>
 </template>

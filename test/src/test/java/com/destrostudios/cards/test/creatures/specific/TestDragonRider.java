@@ -12,7 +12,7 @@ public class TestDragonRider extends TestGame {
         data.setComponent(dragon, Components.Tribe.DRAGON);
         int card = create("creatures/dragon_rider", player, Components.Zone.HAND);
         castFromHand(card);
-        assertAttack(card, 4);
+        assertAttack(card, 5);
         assertHealth(card, 5);
     }
 }

@@ -6,7 +6,7 @@
         <name>Copperfang Tribesman</name>
         <creatureCard/>
         <attack>3</attack>
-        <health>2</health>
+        <health>3</health>
         <description>Cast: Your beasts on board gain +[bonusHealth] health.</description>
         <spells>
             <entity>

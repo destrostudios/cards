@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Sir Theodor the Third,manaCost=1,attack=1,health=1)">
+    <entity template="./templates/vanilla(name=Sir Theodor the Third,manaCost=1,attack=1,health=2)">
         <taunt/>
         <beast/>
     </entity>

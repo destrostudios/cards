@@ -2,7 +2,7 @@
     <values>
         <damage>2</damage>
     </values>
-    <entity template="./templates/vanilla(name=Ixius,manaCost=5,attack=3,health=4)">
+    <entity template="./templates/vanilla(name=Ixius,manaCost=5,attack=3,health=5)">
         <legendary/>
         <description>After you play a spell, deal [damage] damage to all opponents.</description>
         <postCastSpellTriggers>

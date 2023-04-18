@@ -1,8 +1,8 @@
 <template>
     <values>
-        <bonusHealth>2</bonusHealth>
+        <bonusHealth>1</bonusHealth>
     </values>
-    <entity id="card" template="./templates/vanilla(name=Ox Warhero,manaCost=2,attack=3,health=1)">
+    <entity id="card" template="./templates/vanilla(name=Ox Warhero,manaCost=2,attack=3,health=2)">
         <legendary/>
         <beast/>
         <description>Has +[bonusHealth] health if you have another Beast on board.</description>

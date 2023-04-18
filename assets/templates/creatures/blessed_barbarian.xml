@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Blessed Barbarian,manaCost=2,attack=1,health=2)">
+    <entity template="./templates/vanilla(name=Blessed Barbarian,manaCost=2,attack=2,health=1)">
         <divineShield/>
     </entity>
 </template>

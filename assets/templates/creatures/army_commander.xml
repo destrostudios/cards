@@ -3,7 +3,7 @@
         <bonusAttack>1</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
-    <entity id="card" template="./templates/vanilla(name=Army Commander,manaCost=4,attack=1,health=1)">
+    <entity id="card" template="./templates/vanilla(name=Army Commander,manaCost=4,attack=2,health=2)">
         <description>Your creatures on board have +[bonusAttack]/+[bonusHealth].</description>
         <auras>
             <entity>

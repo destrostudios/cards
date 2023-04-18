@@ -1,6 +1,6 @@
 <template>
     <values>
-        <bonusAttack>1</bonusAttack>
+        <bonusAttack>2</bonusAttack>
     </values>
     <entity id="card">
         <name>Warcry</name>

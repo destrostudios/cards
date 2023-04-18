@@ -17,7 +17,7 @@ public class BotTest_Duration extends BotTest {
         while (true) {
             long seed = random.nextLong();
             System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
-            BotGame botGame = new BotGame(allCards, mode, queue, seed, false, (botSettings, player) -> {});
+            BotGame botGame = new BotGame(allCards, mode, queue, seed, false, false, (botSettings, player) -> {});
             long start = System.nanoTime();
             botGame.play();
             long duration = (System.nanoTime() - start);

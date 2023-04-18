@@ -52,7 +52,7 @@ public class BotTest_CardStats extends BotTest {
         while (true) {
             long seed = actualRandom.nextLong();
             System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
-            BotGame botGame = new BotGame(allCards, mode, queue, seed, false, (botSettings, player) -> {}) {
+            BotGame botGame = new BotGame(allCards, mode, queue, seed, false, false, (botSettings, player) -> {}) {
 
                 private HashSet<Integer> cardsInHand = new HashSet<>();
                 private HashSet<Integer> cardsPlayed = new HashSet<>();

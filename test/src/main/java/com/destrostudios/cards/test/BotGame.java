@@ -27,12 +27,13 @@ import java.util.function.BiConsumer;
 
 public class BotGame {
 
-    public BotGame(List<Card> cards, Mode mode, Queue queue, long seed, boolean verbose, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
+    public BotGame(List<Card> cards, Mode mode, Queue queue, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
         this.cards = cards;
         this.mode = mode;
         this.queue = queue;
         this.seed = seed;
         this.verbose = verbose;
+        this.botPerPlayer = botPerPlayer;
         this.modifyBotSettings = modifyBotSettings;
     }
     private List<Card> cards;
@@ -40,6 +41,7 @@ public class BotGame {
     private Queue queue;
     private long seed;
     private boolean verbose;
+    private boolean botPerPlayer;
     private BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings;
     protected GameContext gameContext;
     private MctsBot[] bots;
@@ -62,7 +64,7 @@ public class BotGame {
 
         applyAction(new GameStartEvent(), random);
 
-        bots = new MctsBot[2];
+        bots = new MctsBot[botPerPlayer ? 2 : 1];
         for (int i = 0; i < bots.length; i++) {
             MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
             botSettings.maxThreads = 8;
@@ -82,7 +84,7 @@ public class BotGame {
         while (!gameContext.isGameOver()) {
             int activePlayer = botState.activeTeam();
             long actionStartNanos = System.nanoTime();
-            MctsBot activeBot = bots[activePlayer];
+            MctsBot activeBot = bots[botPerPlayer ? activePlayer : 0];
             List<Event> actions = activeBot.sortedActions(botState, activePlayer);
             long actionDurationNanos = (System.nanoTime() - actionStartNanos);
             Event action = actions.get(0);

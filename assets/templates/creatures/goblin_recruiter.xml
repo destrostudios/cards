@@ -1,4 +1,7 @@
 <template>
+    <values>
+        <timesPerTurn>3</timesPerTurn>
+    </values>
     <entity id="card">
         <name>Goblin Recruiter</name>
         <creatureCard/>
@@ -12,6 +15,7 @@
                 <source>#card</source>
                 <description>Summon a 1/1 Goblin.</description>
                 <sourcePrefilters basic="CREATURE_ZONE"/>
+                <maximumCastsPerTurn>[timesPerTurn]</maximumCastsPerTurn>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

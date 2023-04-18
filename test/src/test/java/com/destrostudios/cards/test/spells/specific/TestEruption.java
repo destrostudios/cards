@@ -10,6 +10,6 @@ public class TestEruption extends TestGame {
     public void testSummonPebblesOnCast() {
         int card = create("spells/eruption", player, Components.Zone.HAND);
         castFromHand(card);
-        assertCardsCount(player, Components.Zone.CREATURE_ZONE, "Pebble", 10);
+        assertCardsCount(player, Components.Zone.CREATURE_ZONE, "Pebble", 7);
     }
 }

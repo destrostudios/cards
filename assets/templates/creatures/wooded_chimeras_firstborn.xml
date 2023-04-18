@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Wooded Chimera's Firstborn,manaCost=4,attack=4,health=4)">
+    <entity template="./templates/vanilla(name=Wooded Chimera's Firstborn,manaCost=3,attack=3,health=3)">
         <beast/>
     </entity>
 </template>

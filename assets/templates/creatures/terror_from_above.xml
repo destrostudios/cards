@@ -3,10 +3,10 @@
         <name>Terror from Above</name>
         <legendary/>
         <creatureCard/>
-        <attack>8</attack>
-        <health>8</health>
+        <attack>5</attack>
+        <health>5</health>
         <dragon/>
-        <description>Cast: Destroy all creatures on board.</description>
+        <description>Cast: Destroy all creatures on board and end your turn.</description>
         <spells>
             <entity>
                 <source>#card</source>
@@ -22,6 +22,7 @@
                                 <destroy/>
                             </entity>
                             <entity template="../effects/move_source_to_creature_zone"/>
+                            <entity template="../effects/end_turn"/>
                         </effects>
                     </entity>
                 </castTriggers>

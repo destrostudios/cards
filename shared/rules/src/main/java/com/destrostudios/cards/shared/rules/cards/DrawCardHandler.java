@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
@@ -20,8 +21,9 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
             LOG.debug("Player {} is drawing card {}", inspect(data, event.player), inspect(data, card));
             context.getEvents().fire(new MoveToHandEvent(card));
         } else {
-            // TODO: Fatigue?
             LOG.debug("Player {} tried to draw a card but has none left", inspect(data, event.player));
+            int opponent = data.getComponent(event.player, Components.NEXT_PLAYER);
+            context.onGameOver(opponent);
             event.cancel();
         }
     }

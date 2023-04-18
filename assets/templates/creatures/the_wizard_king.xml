@@ -7,7 +7,7 @@
         <legendary/>
         <creatureCard/>
         <attack>6</attack>
-        <health>9</health>
+        <health>6</health>
         <description>Cast: Set the cost of target spell in your hand to ([setManaCost]).</description>
         <spells>
             <entity>

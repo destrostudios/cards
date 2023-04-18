@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=_,manaCost=8,attack=5,health=4)">
+    <entity template="./templates/vanilla(name=_,manaCost=8,attack=5,health=3)">
         <name>Ultriia, Flower of Corruption</name>
         <legendary/>
         <description>After your opponent takes damage, reduce this card's cost by (1).</description>

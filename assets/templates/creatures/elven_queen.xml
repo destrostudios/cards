@@ -2,8 +2,8 @@
     <entity id="card">
         <name>Elven Queen</name>
         <creatureCard/>
-        <attack>3</attack>
-        <health>3</health>
+        <attack>2</attack>
+        <health>2</health>
         <description>Cast: Summon 2 1/1 Elven Guards with Taunt.</description>
         <spells>
             <entity>

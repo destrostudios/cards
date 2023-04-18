@@ -8,7 +8,7 @@ public class TestLeviathan extends TestGame {
 
     @Test
     public void testDamageCreaturesOnSummon() {
-        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 4, Components.Zone.CREATURE_ZONE);
+        int[] creatures = createVanillasForBothPlayers(2, 0, 0, 3, Components.Zone.CREATURE_ZONE);
         int card = create("creatures/leviathan", player, Components.Zone.HAND);
         castFromHand(card);
         assertHealthAndDamaged(creatures, 1);

@@ -13,6 +13,6 @@ public class TestBloodhawk extends TestGame {
         data.setComponent(beast, Components.Tribe.BEAST);
         destroy(beast);
         assertAttack(card, 7);
-        assertHealth(card, 7);
+        assertHealth(card, 6);
     }
 }

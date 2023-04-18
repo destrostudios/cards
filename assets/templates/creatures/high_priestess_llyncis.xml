@@ -1,14 +1,14 @@
 <template>
     <values>
-        <heal>4</heal>
-        <damage>7</damage>
+        <heal>5</heal>
+        <damage>5</damage>
     </values>
     <entity id="card">
         <name>High Priestess Llyncis</name>
         <legendary/>
         <creatureCard/>
-        <attack>7</attack>
-        <health>7</health>
+        <attack>5</attack>
+        <health>5</health>
         <description>Cast: Heal [heal] health of target character. Then, if it's undamaged, deal [damage] damage to it.</description>
         <spells>
             <entity>

@@ -1,12 +1,12 @@
 <template>
     <values>
-        <damage>3</damage>
+        <damage>2</damage>
     </values>
     <entity id="card">
         <name>Leviathan</name>
         <creatureCard/>
-        <attack>6</attack>
-        <health>6</health>
+        <attack>5</attack>
+        <health>5</health>
         <description>Cast: Deal [damage] damage to all creatures.</description>
         <spells>
             <entity>

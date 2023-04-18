@@ -2,7 +2,7 @@
     <entity id="card">
         <name>Eruption</name>
         <spellCard/>
-        <description>Summon 10 1/1 Pebbles.</description>
+        <description>Summon 7 1/1 Pebbles.</description>
         <spells>
             <entity>
                 <source>#card</source>
@@ -12,9 +12,6 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>
                             <entity template="../effects/spawn_for_owner(template=creatures/pebble)"/>

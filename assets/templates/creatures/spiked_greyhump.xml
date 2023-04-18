@@ -2,7 +2,7 @@
     <values>
         <damage>1</damage>
     </values>
-    <entity template="./templates/vanilla(name=Spiked Greyhump,manaCost=5,attack=2,health=5)">
+    <entity template="./templates/vanilla(name=Spiked Greyhump,manaCost=5,attack=2,health=4)">
         <taunt/>
         <dragon/>
         <description>After this creature takes damage, deal [damage] damage to all opponent creatures.</description>

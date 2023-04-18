@@ -11,7 +11,7 @@
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
-                <manaCost>6</manaCost>
+                <manaCost>5</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

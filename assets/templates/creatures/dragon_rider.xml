@@ -1,12 +1,12 @@
 <template>
     <values>
-        <bonusAttack>1</bonusAttack>
+        <bonusAttack>2</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
     <entity id="card">
         <name>Dragon Rider</name>
         <creatureCard/>
-        <attack>4</attack>
+        <attack>3</attack>
         <health>4</health>
         <description>Cast: If you have a Dragon in your hand, gain +[bonusAttack]/+[bonusHealth].</description>
         <spells>

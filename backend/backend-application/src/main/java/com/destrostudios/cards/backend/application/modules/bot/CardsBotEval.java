@@ -117,13 +117,13 @@ public class CardsBotEval {
 
     static float getPlayerScore(EvalPlayerInfo ownPlayerInfo, EvalPlayerInfo opponentPlayerInfo, Weights weights) {
         float score = 0;
-        score += weights.playerHealth * ownPlayerInfo.playerHealth;
+        score += weights.playerHealth * (ownPlayerInfo.playerHealth - opponentPlayerInfo.playerHealth);
         score += weights.playerHealthPortion * getPortion(ownPlayerInfo, opponentPlayerInfo, EvalPlayerInfo::getPlayerHealth);
-        score += weights.creaturesAttack * ownPlayerInfo.creaturesAttack;
+        score += weights.creaturesAttack * (ownPlayerInfo.creaturesAttack - opponentPlayerInfo.creaturesAttack);
         score += weights.creaturesAttackPortion * getPortion(ownPlayerInfo, opponentPlayerInfo, EvalPlayerInfo::getCreaturesAttack);
-        score += weights.creaturesHealth * ownPlayerInfo.creaturesHealth;
+        score += weights.creaturesHealth * (ownPlayerInfo.creaturesHealth - opponentPlayerInfo.creaturesHealth);
         score += weights.creaturesHealthPortion * getPortion(ownPlayerInfo, opponentPlayerInfo, EvalPlayerInfo::getCreaturesHealth);
-        score += weights.cardsInHand * ownPlayerInfo.cardsInHand;
+        score += weights.cardsInHand * (ownPlayerInfo.cardsInHand - opponentPlayerInfo.cardsInHand);
         score += weights.cardsInHandPortion * getPortion(ownPlayerInfo, opponentPlayerInfo, EvalPlayerInfo::getCardsInHand);
         return score;
     }

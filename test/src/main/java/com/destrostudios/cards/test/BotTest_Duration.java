@@ -25,7 +25,7 @@ public class BotTest_Duration extends BotTest {
             // Wait until warm
             if (games > 5) {
                 durations.add(duration);
-                System.out.println("Duration: " + TestUtil.getMedian(durations) + " median, " + TestUtil.getAverage(durations) + " average");
+                System.out.println("Duration: " + TestUtil.getMedian_Long(durations) + " median, " + TestUtil.getAverage_Long(durations) + " average");
             }
         }
     }

@@ -41,13 +41,13 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
         String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);
         if (damageExpression != null) {
             int damage = evaluate(data, damageExpression, event);
-            events.fire(new DamageEvent(event.target, damage));
+            events.fire(new DamageEvent(event.source, event.target, damage));
         }
 
         String healExpression = data.getComponent(event.effect, Components.Effect.HEAL);
         if (healExpression != null) {
             int heal = evaluate(data, healExpression, event);
-            events.fire(new HealEvent(event.target, heal));
+            events.fire(new HealEvent(event.source, event.target, heal));
         }
 
         String drawExpression = data.getComponent(event.effect, Components.Effect.DRAW);

@@ -31,12 +31,14 @@ public class BotTest_Winrate extends BotTest {
             String winnerName = botGame.getWinnerName();
             playerWins.put(winnerName, playerWins.computeIfAbsent(winnerName, wn -> 0) + 1);
             games++;
-            System.out.println("---Stats---");
-            int _games = games;
-            playerWins.forEach((name, wins) -> {
-                System.out.println(name + ": " + wins + "/" + _games + " games won (" + Math.round((((float) wins) / _games) * 100) + "%)");
-            });
-            System.out.println("-----------");
+            if ((games % 10) == 0) {
+                System.out.println("---Stats---");
+                int _games = games;
+                playerWins.forEach((name, wins) -> {
+                    System.out.println(name + ": " + wins + "/" + _games + " games won (" + Math.round((((float) wins) / _games) * 100) + "%)");
+                });
+                System.out.println("-----------");
+            }
         }
     }
 }

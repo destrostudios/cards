@@ -61,29 +61,33 @@ public class CardsBotEval {
         return eval(gameContext.getData(), gameContext.getWinner(), weights);
     }
 
-    private static float[] eval(EntityData data, Integer winner, Weights weights) {
+    public static float[] eval(EntityData data, Integer winner, Weights weights) {
         IntList players = data.list(Components.NEXT_PLAYER);
+        if (winner != null) {
+            float[] probabilities = new float[players.size()];
+            probabilities[winner] = 1;
+            return probabilities;
+        }
         EvalPlayerInfo[] playerInfos = collectPlayerInfos(data, players);
         float[] scores = new float[players.size()];
-        float scoreSum = 0;
-        int i = 0;
-        for (int player : players) {
-            float score;
-            if (winner != null) {
-                score = ((winner == player) ? 1 : 0);
-            } else {
-                EvalPlayerInfo ownPlayerInfo = playerInfos[i];
-                EvalPlayerInfo opponentPlayerInfo = playerInfos[(i == 0) ? 1 : 0];
-                score = getPlayerScore(ownPlayerInfo, opponentPlayerInfo, weights);
-            }
-            scores[i] = score;
-            scoreSum += score;
+        for (int i = 0; i < scores.length; i++) {
+            EvalPlayerInfo ownPlayerInfo = playerInfos[i];
+            EvalPlayerInfo opponentPlayerInfo = playerInfos[(i == 0) ? 1 : 0];
+            scores[i] = getPlayerScore(ownPlayerInfo, opponentPlayerInfo, weights);
             i++;
         }
-        for (i = 0; i < scores.length; i++) {
-            scores[i] /= scoreSum;
-        }
-        return scores;
+        return mapScoresToProbabilities(scores);
+    }
+
+    public static float[] mapScoresToProbabilities(float[] scores) {
+        float gapLeftAndRight = 1;
+        float lower = Math.min(scores[0], scores[1]) - gapLeftAndRight;
+        float upper = Math.max(scores[0], scores[1]) + gapLeftAndRight;
+        float bounds = Math.abs(upper - lower);
+        return new float[] {
+            ((scores[0] - lower) / bounds),
+            ((scores[1] - lower) / bounds),
+        };
     }
 
     private static EvalPlayerInfo[] collectPlayerInfos(EntityData data, IntList players) {

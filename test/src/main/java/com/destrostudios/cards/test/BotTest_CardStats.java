@@ -1,18 +1,13 @@
 package com.destrostudios.cards.test;
 
-import com.destrostudios.cards.shared.entities.IntList;
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.files.FileManager;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
-import com.destrostudios.cards.shared.rules.util.SpellUtil;
-import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
-import lombok.Setter;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import static com.destrostudios.cards.test.TestUtil.*;
 
 public class BotTest_CardStats extends BotTest {
 
@@ -20,105 +15,68 @@ public class BotTest_CardStats extends BotTest {
         new BotTest_CardStats().run();
     }
 
-    @Setter
-    class CardStats {
-        int gamesWhereInHand;
-        int gamesWherePlayed;
-        int gamesWhereInHandWon;
-        int gamesWherePlayedWon;
-        int totalEndOfTurnsInHand;
-
-        public float getWinrateWhenDrawn() {
-            return ((((float) gamesWhereInHandWon) / gamesWhereInHand) * 100);
-        }
-
-        public float getWinrateWhenPlayed() {
-            return ((((float) gamesWherePlayedWon) / gamesWherePlayed) * 100);
-        }
-
-        public float getAverageEndOfTurnsInHand() {
-            return (((float) totalEndOfTurnsInHand) / gamesWhereInHand);
-        }
-    }
-
-    private HashMap<String, CardStats> cardStats;
-
     @Override
     public void run() {
         super.run();
         int games = 0;
         Random actualRandom = new Random();
-        cardStats = new HashMap<>();
+        HashMap<String, BotGame_WithCardStats.CardStatsTotal> totalCardStats = new HashMap<>();
         while (true) {
             long seed = actualRandom.nextLong();
             System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
-            BotGame botGame = new BotGame(allCards, mode, queue, seed, false, false, (botSettings, player) -> {}) {
-
-                private HashSet<Integer> cardsInHand = new HashSet<>();
-                private HashSet<Integer> cardsPlayed = new HashSet<>();
-                private HashMap<Integer, Integer> endOfTurnsInHand = new HashMap<>();
-
-                @Override
-                public void play() {
-                    super.play();
-                    SimpleEntityData data = gameContext.getData();
-                    int winner = gameContext.getWinner();
-                    for (int card : cardsInHand) {
-                        CardStats stats = getStats(gameContext, card);
-                        stats.gamesWhereInHand++;
-                        if (data.getComponent(card, Components.OWNED_BY) == winner) {
-                            stats.gamesWhereInHandWon++;
-                        }
-                    }
-                    for (int card : cardsPlayed) {
-                        CardStats stats = getStats(gameContext, card);
-                        stats.gamesWherePlayed++;
-                        if (data.getComponent(card, Components.OWNED_BY) == winner) {
-                            stats.gamesWherePlayedWon++;
-                        }
-                    }
-                    endOfTurnsInHand.forEach((card, endOfTurns) -> {
-                        CardStats stats = getStats(gameContext, card);
-                        stats.totalEndOfTurnsInHand += endOfTurns;
-                    });
-                }
-
-                @Override
-                protected void applyAction(Event action, NetworkRandom random) {
-                    super.applyAction(action, random);
-                    SimpleEntityData data = gameContext.getData();
-                    IntList handCards = data.list(Components.Zone.HAND);
-                    for (int handCard : handCards) {
-                        cardsInHand.add(handCard);
-                        if (action instanceof EndTurnEvent endTurnEvent) {
-                            int owner = data.getComponent(handCard, Components.OWNED_BY);
-                            if (endTurnEvent.player == owner) {
-                                endOfTurnsInHand.put(handCard, endOfTurnsInHand.computeIfAbsent(handCard, hc -> 0) + 1);
-                            }
-                        }
-                    }
-                    if (action instanceof CastSpellEvent castSpellEvent) {
-                        if (SpellUtil.isDefaultCastFromHandSpell(data, castSpellEvent.spell)) {
-                            cardsPlayed.add(castSpellEvent.source);
-                        }
-                    }
-                }
-            };
+            BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, mode, queue, seed, false, false, (botSettings, player) -> {});
             botGame.play();
+            botGame.addToTotalStats(totalCardStats);
             games++;
-            String csv = "card,wr-when-drawn,games-when-drawn,wr-when-played,games-when-played,avg-end-of-turns-in-hand";
-            for (Map.Entry<String, CardStats> entry : cardStats.entrySet()) {
-                CardStats stats = entry.getValue();
-                csv += "\n\"" + entry.getKey() + "\"," + stats.getWinrateWhenDrawn() + "," + stats.gamesWhereInHand + "," + stats.getWinrateWhenPlayed() + "," + stats.gamesWherePlayed + "," + stats.getAverageEndOfTurnsInHand();
-            }
-            if ((games % 10) == 0) {
-                FileManager.putFileContent("./stats.csv", csv);
+            if ((games % 20) == 0) {
+                FileManager.putFileContent("./stats.csv", getCsv(totalCardStats));
             }
         }
     }
 
-    private CardStats getStats(GameContext gameContext, int entity) {
-        String name =  gameContext.getData().getComponent(entity, Components.NAME);
-        return cardStats.computeIfAbsent(name, n -> new CardStats());
+    private String getCsv(HashMap<String, BotGame_WithCardStats.CardStatsTotal> cardStats) {
+        String csv = "card";
+        csv += ",wr-when-drawn";
+        csv += ",games-where-drawn";
+        csv += ",wr-when-played";
+        csv += ",games-where-played";
+        csv += ",avg-end-of-turns-in-hand";
+        csv += ",med-end-of-turns-in-hand";
+        csv += ",avg-damage-dealt";
+        csv += ",med-damage-dealt";
+        csv += ",avg-health-healed";
+        csv += ",med-health-healed";
+        csv += ",avg-available-mana-when-played";
+        csv += ",med-available-mana-when-played";
+        csv += ",avg-delta-eval-at-turn-end-after-played";
+        csv += ",med-delta-eval-at-turn-end-after-played";
+        for (Map.Entry<String, BotGame_WithCardStats.CardStatsTotal> entry : cardStats.entrySet()) {
+            BotGame_WithCardStats.CardStatsTotal stats = entry.getValue();
+            csv += "\n\"" + entry.getKey() + "\"";
+            csv += "," + toStringNullable(stats.getWinrateWhenDrawn());
+            csv += "," + stats.getGamesWhereDrawn();
+            csv += "," + toStringNullable(stats.getWinrateWhenPlayed());
+            csv += "," + stats.getGamesWherePlayed();
+            List<Integer> endOfTurnsInHand = stats.getEndOfTurnsInHand();
+            csv += "," + toStringNullable(getAverage_Int(endOfTurnsInHand));
+            csv += "," + toStringNullable(getMedian_Int(endOfTurnsInHand));
+            List<Integer> damageDealt = stats.getDamageDealt();
+            csv += "," + toStringNullable(getAverage_Int(damageDealt));
+            csv += "," + toStringNullable(getMedian_Int(damageDealt));
+            List<Integer> healthHealed = stats.getHealthHealed();
+            csv += "," + toStringNullable(getAverage_Int(healthHealed));
+            csv += "," + toStringNullable(getMedian_Int(healthHealed));
+            List<Integer> ownerAvailableManaWhenPlayed = stats.getOwnerAvailableManaWhenPlayed();
+            csv += "," + toStringNullable(getAverage_Int(ownerAvailableManaWhenPlayed));
+            csv += "," + toStringNullable(getMedian_Int(ownerAvailableManaWhenPlayed));
+            List<Float> deltaEvalTurnAtEndAfterPlayed = stats.getDeltaEvalAtTurnEndAfterPlayed();
+            csv += "," + toStringNullable(getAverage_Float(deltaEvalTurnAtEndAfterPlayed));
+            csv += "," + toStringNullable(getMedian_Float(deltaEvalTurnAtEndAfterPlayed));
+        }
+        return csv;
+    }
+
+    private String toStringNullable(Object object) {
+        return ((object != null) ? object.toString() : "");
     }
 }

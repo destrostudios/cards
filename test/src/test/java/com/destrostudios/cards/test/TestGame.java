@@ -193,7 +193,7 @@ public class TestGame {
     }
 
     protected void damage(int entity, int damage) {
-        fire(new DamageEvent(entity, damage));
+        fire(new DamageEvent(entity, entity, damage));
     }
 
     protected void heal(int[] entities, int heal) {
@@ -201,7 +201,7 @@ public class TestGame {
     }
 
     protected void heal(int entity, int heal) {
-        fire(new HealEvent(entity, heal));
+        fire(new HealEvent(entity, entity, heal));
     }
 
     protected void destroy(int entity) {

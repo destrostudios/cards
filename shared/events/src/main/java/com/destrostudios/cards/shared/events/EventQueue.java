@@ -46,6 +46,10 @@ public class EventQueue<C> {
         return (pendingEventHandlers.size() > 0);
     }
 
+    public PendingEventHandler getNextPendingEventHandler() {
+        return pendingEventHandlers.get(0);
+    }
+
     public void triggerNextEventHandler(C context) {
         PendingEventHandler<Event, C> pendingEventHandler = pendingEventHandlers.poll();
         Event event = pendingEventHandler.event();

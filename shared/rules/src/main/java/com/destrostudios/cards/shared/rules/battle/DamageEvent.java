@@ -9,16 +9,17 @@ import com.destrostudios.cards.shared.rules.EventType;
  */
 public class DamageEvent extends Event {
 
-    public int target, damage;
+    public int source, target, damage;
 
-    public DamageEvent(int target, int damage) {
+    public DamageEvent(int source, int target, int damage) {
         super(EventType.DAMAGE);
+        this.source = source;
         this.target = target;
         this.damage = damage;
     }
 
     @Override
     public String toString() {
-        return "DamageEvent{" + "target=" + target + ", damage=" + damage + '}';
+        return "DamageEvent{" + "source=" + source+  ", target=" + target + ", damage=" + damage + '}';
     }
 }

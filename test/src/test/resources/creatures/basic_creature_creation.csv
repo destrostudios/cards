@@ -17,7 +17,7 @@ creatures/bronze_golem,Bronze Golem,false,1,1,2,false,false
 creatures/cloud_devourer,Cloud Devourer,false,6,5,6,false,false
 creatures/copperfang_tribesman,Copperfang Tribesman,false,3,3,2,false,false
 creatures/crazed_doctor,Crazed Doctor,false,5,2,2,false,false
-creatures/dam,Dam,false,1,0,4,false,false
+creatures/dam,Dam,false,1,0,4,true,false
 creatures/dark_rider,Dark Rider,false,2,2,2,false,false
 creatures/demon_samurai,Demon Samurai,false,3,3,2,false,false
 creatures/divine_justicar,Divine Justicar,false,9,6,6,false,false

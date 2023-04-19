@@ -6,7 +6,7 @@
         <name>Sun Ornament Dragon</name>
         <creatureCard/>
         <attack>3</attack>
-        <health>4</health>
+        <health>5</health>
         <dragon/>
         <description>Cast: Heal [heal] health of yourself for each dragon in your hand.</description>
         <spells>

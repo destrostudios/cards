@@ -12,7 +12,7 @@ public class TestBloodhawk extends TestGame {
         int beast = createCreature(player, Components.Zone.CREATURE_ZONE);
         data.setComponent(beast, Components.Tribe.BEAST);
         destroy(beast);
-        assertAttack(card, 7);
+        assertAttack(card, 6);
         assertHealth(card, 6);
     }
 }

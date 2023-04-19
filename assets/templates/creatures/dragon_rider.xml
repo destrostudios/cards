@@ -1,6 +1,6 @@
 <template>
     <values>
-        <bonusAttack>2</bonusAttack>
+        <bonusAttack>1</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
     <entity id="card">

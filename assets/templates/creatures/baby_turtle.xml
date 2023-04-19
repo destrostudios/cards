@@ -1,7 +1,7 @@
 <template>
-    <entity template="./templates/vanilla(name=Baby Turtle,manaCost=4,attack=0,health=4)">
+    <entity template="./templates/vanilla(name=Baby Turtle,manaCost=4,attack=0,health=5)">
         <beast/>
-        <description>Death: Summon its mother, the 4/4 Tarasque.</description>
+        <description>Death: Summon its mother, the 5/5 Tarasque.</description>
         <postDestructionTriggers>
             <entity>
                 <targetPrefilters advanced="SOURCE"/>

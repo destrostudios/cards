@@ -3,7 +3,7 @@
         <bonusAttack>1</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
-    <entity template="./templates/vanilla(name=Bloodhawk,manaCost=6,attack=6,health=5)">
+    <entity template="./templates/vanilla(name=Bloodhawk,manaCost=6,attack=5,health=5)">
         <beast/>
         <description>After an ally Beast dies, gain +[bonusAttack]/+[bonusHealth].</description>
         <postDestructionTriggers>

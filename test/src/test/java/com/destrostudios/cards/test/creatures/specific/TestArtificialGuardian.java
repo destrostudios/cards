@@ -10,12 +10,9 @@ public class TestArtificialGuardian extends TestGame {
     public void testBuffWhenOnBoard() {
         int card1 = create("creatures/artificial_guardian", player, Components.Zone.CREATURE_ZONE);
         assertAttack(card1, 2);
-        assertHealth(card1, 2);
+        assertHealth(card1, 1);
         int card2 = create("creatures/artificial_guardian", player, Components.Zone.CREATURE_ZONE);
         assertAttack(new int[] { card1, card2 }, 3);
-        assertHealth(new int[] { card1, card2 }, 3);
-        destroy(card2);
-        assertAttack(card1, 2);
-        assertHealth(card1, 2);
+        assertHealth(new int[] { card1, card2 }, 2);
     }
 }

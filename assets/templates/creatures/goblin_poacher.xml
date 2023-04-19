@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Goblin Poacher,manaCost=2,attack=2,health=3)">
+    <entity template="./templates/vanilla(name=Goblin Poacher,manaCost=2,attack=2,health=2)">
         <goblin/>
     </entity>
 </template>

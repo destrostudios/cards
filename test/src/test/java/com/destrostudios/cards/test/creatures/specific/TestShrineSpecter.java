@@ -11,6 +11,6 @@ public class TestShrineSpecter extends TestGame {
         int card = create("creatures/shrine_specter", player, Components.Zone.CREATURE_ZONE);
         int spell = createSpell(player, Components.Zone.HAND);
         castFromHand(spell);
-        assertHealth(card, 4);
+        assertHealth(card, 3);
     }
 }

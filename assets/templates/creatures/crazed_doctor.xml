@@ -6,8 +6,8 @@
     <entity id="card">
         <name>Crazed Doctor</name>
         <creatureCard/>
-        <attack>3</attack>
-        <health>3</health>
+        <attack>2</attack>
+        <health>2</health>
         <description>Cast: Deal [damage] damage to yourself, then heal [heal] health.</description>
         <spells>
             <entity>

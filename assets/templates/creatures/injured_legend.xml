@@ -6,7 +6,7 @@
         <name>Injured Legend</name>
         <creatureCard/>
         <attack>3</attack>
-        <health>7</health>
+        <health>6</health>
         <description>Cast: Deal [damage] damage to this creature.</description>
         <spells>
             <entity>

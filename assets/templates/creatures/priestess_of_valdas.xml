@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Priestess of Valdas,manaCost=2,attack=1,health=4)">
+    <entity template="./templates/vanilla(name=Priestess of Valdas,manaCost=2,attack=1,health=3)">
         <description>After this creature is healed, draw a card.</description>
         <postHealTriggers>
             <entity>

@@ -7,7 +7,7 @@
         <legendary/>
         <creatureCard/>
         <attack>0</attack>
-        <health>3</health>
+        <health>2</health>
         <spells>
             <entity template="../spells/templates/simple_summon(source=#card,manaCost=1)"/>
             <entity template="../spells/templates/simple_attack(source=#card)"/>

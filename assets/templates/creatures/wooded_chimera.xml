@@ -3,15 +3,15 @@
         <name>Wooded Chimera</name>
         <legendary/>
         <creatureCard/>
-        <attack>4</attack>
-        <health>4</health>
+        <attack>8</attack>
+        <health>8</health>
         <beast/>
         <description>Cast: Summon its children!</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
-                <manaCost>10</manaCost>
+                <manaCost>8</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

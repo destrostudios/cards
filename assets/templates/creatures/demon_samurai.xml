@@ -2,7 +2,7 @@
     <values>
         <damage>1</damage>
     </values>
-    <entity template="./templates/vanilla(name=Demon Samurai,manaCost=3,attack=3,health=3)">
+    <entity template="./templates/vanilla(name=Demon Samurai,manaCost=3,attack=3,health=2)">
         <description>After this creature attacks, deal [damage] damage to your opponent.</description>
         <postBattleTriggers>
             <entity>

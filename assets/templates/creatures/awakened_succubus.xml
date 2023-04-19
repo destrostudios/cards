@@ -3,7 +3,7 @@
         <name>Awakened Succubus</name>
         <creatureCard/>
         <attack>6</attack>
-        <health>5</health>
+        <health>4</health>
         <description>Cast: Discard a random card.</description>
         <spells>
             <entity>

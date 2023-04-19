@@ -10,6 +10,6 @@ public class TestInjuredLegend extends TestGame {
     public void testTakeDamageOnSummon() {
         int card = create("creatures/injured_legend", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealthAndDamaged(card, 3);
+        assertHealthAndDamaged(card, 2);
     }
 }

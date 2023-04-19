@@ -1,6 +1,6 @@
 <template>
     <values>
-        <damage>3</damage>
+        <damage>2</damage>
     </values>
     <entity template="./templates/vanilla(name=Dark Rider,manaCost=2,attack=2,health=2)">
         <description>Death: Deal [damage] damage to your opponent.</description>

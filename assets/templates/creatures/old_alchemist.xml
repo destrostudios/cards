@@ -5,7 +5,7 @@
     <entity id="card">
         <name>Old Alchemist</name>
         <creatureCard/>
-        <attack>4</attack>
+        <attack>5</attack>
         <health>5</health>
         <description>Cast: Add a random spell from your graveyard to your hand.</description>
         <spells>

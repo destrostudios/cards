@@ -5,7 +5,7 @@
     <entity id="card">
         <name>Elemental Orb</name>
         <spellCard/>
-        <description>Deal [damage] damage to target creature and summon a 3/3 Landed Elemental Orb.</description>
+        <description>Deal [damage] damage to target creature and summon a 4/4 Landed Elemental Orb.</description>
         <spells>
             <entity>
                 <source>#card</source>

@@ -3,7 +3,7 @@
         <name>Mermaid</name>
     </values>
     <entity id="card" template="./templates/vanilla(name=[name],manaCost=2,attack=2,health=2)">
-        <description>Your "[name]"s cost (2) less.</description>
+        <description>Your "[name]"s cost (1) less.</description>
         <auras>
             <entity>
                 <sourcePrefilters basic="CREATURE_ZONE"/>
@@ -12,7 +12,7 @@
                 <auraBuff>
                     <entity>
                         <source>#card</source>
-                        <bonusManaCost>-2</bonusManaCost>
+                        <bonusManaCost>-1</bonusManaCost>
                     </entity>
                 </auraBuff>
             </entity>

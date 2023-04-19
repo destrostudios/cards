@@ -10,6 +10,6 @@ public class TestMermaid extends TestGame {
     public void testReduceMermaidsManaCostWhenOnBoard() {
         int handMermaid = create("creatures/mermaid", player, Components.Zone.HAND);
         create("creatures/mermaid", player, Components.Zone.CREATURE_ZONE);
-        assertManaCost(handMermaid, 0);
+        assertManaCost(handMermaid, 1);
     }
 }

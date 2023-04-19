@@ -2,7 +2,7 @@
     <entity id="card">
         <name>Exiled Druid</name>
         <creatureCard/>
-        <attack>3</attack>
+        <attack>5</attack>
         <health>5</health>
         <description>Cast: Revive a random ally Beast.</description>
         <spells>

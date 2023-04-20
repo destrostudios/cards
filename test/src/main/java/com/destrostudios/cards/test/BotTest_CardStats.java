@@ -28,7 +28,7 @@ public class BotTest_CardStats extends BotTest {
             botGame.play();
             botGame.addToTotalStats(totalCardStats);
             games++;
-            if ((games % 20) == 0) {
+            if ((games % 50) == 0) {
                 FileManager.putFileContent("./stats.csv", getCsv(totalCardStats));
             }
         }

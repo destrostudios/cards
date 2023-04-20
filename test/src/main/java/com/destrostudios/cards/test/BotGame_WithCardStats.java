@@ -5,9 +5,8 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Card;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
@@ -25,8 +24,8 @@ import java.util.function.Predicate;
 
 public class BotGame_WithCardStats extends BotGame {
 
-    public BotGame_WithCardStats(List<Card> cards, Mode mode, Queue queue, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
-        super(cards, mode, queue, seed, verbose, botPerPlayer, modifyBotSettings);
+    public BotGame_WithCardStats(List<Card> cards, StartGameInfo startGameInfo, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
+        super(cards, startGameInfo, seed, verbose, botPerPlayer, modifyBotSettings);
     }
     private HashMap<Integer, CardStatsGame> cardStats = new HashMap<>();
     private ArrayList<PlayedCardThisTurn> playedCardsThisTurn = new ArrayList<>();

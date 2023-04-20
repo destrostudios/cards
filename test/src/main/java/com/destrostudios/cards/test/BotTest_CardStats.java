@@ -24,7 +24,7 @@ public class BotTest_CardStats extends BotTest {
         while (true) {
             long seed = actualRandom.nextLong();
             System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
-            BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, mode, queue, seed, false, false, (botSettings, player) -> {});
+            BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, getDefaultStartGameInfo(), seed, false, false, (botSettings, player) -> {});
             botGame.play();
             botGame.addToTotalStats(totalCardStats);
             games++;

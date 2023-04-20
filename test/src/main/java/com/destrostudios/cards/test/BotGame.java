@@ -6,8 +6,6 @@ import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.model.Card;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
@@ -30,18 +28,16 @@ import java.util.function.BiConsumer;
 
 public class BotGame {
 
-    public BotGame(List<Card> cards, Mode mode, Queue queue, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
+    public BotGame(List<Card> cards, StartGameInfo startGameInfo, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
         this.cards = cards;
-        this.mode = mode;
-        this.queue = queue;
+        this.startGameInfo = startGameInfo;
         this.seed = seed;
         this.verbose = verbose;
         this.botPerPlayer = botPerPlayer;
         this.modifyBotSettings = modifyBotSettings;
     }
     private List<Card> cards;
-    private Mode mode;
-    private Queue queue;
+    private StartGameInfo startGameInfo;
     private long seed;
     private boolean verbose;
     private boolean botPerPlayer;
@@ -55,15 +51,6 @@ public class BotGame {
         Random _random = new Random(seed);
         MasterRandom random = new MasterRandom(_random);
 
-        StartGameInfo startGameInfo = new StartGameInfo(
-            mode,
-            queue,
-            "forest",
-            new PlayerInfo[] {
-                new PlayerInfo(1, "Bot1", null),
-                new PlayerInfo(2, "Bot2", null)
-            }
-        );
         gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE) {
 
             private HashSet<Event> triggeredEvents = new HashSet<>();

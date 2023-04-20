@@ -8,6 +8,8 @@ import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
+import com.destrostudios.cards.shared.rules.PlayerInfo;
+import com.destrostudios.cards.shared.rules.StartGameInfo;
 import org.slf4j.impl.SimpleLogger;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class BotTest {
     protected QueueService queueService;
 
     protected List<Card> allCards;
-    protected Mode mode;
-    protected Queue queue;
+    private Mode defaultMode;
+    private Queue defaultQueue;
 
     public void run() {
         ApplicationSetup.setup();
@@ -37,7 +39,19 @@ public class BotTest {
         queueService = new QueueService(database);
 
         allCards = cardService.getCards();
-        mode = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
-        queue = queueService.getQueue(GameConstants.QUEUE_NAME_BOT);
+        defaultMode = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
+        defaultQueue = queueService.getQueue(GameConstants.QUEUE_NAME_BOT);
+    }
+
+    protected StartGameInfo getDefaultStartGameInfo() {
+        return new StartGameInfo(
+            defaultMode,
+            defaultQueue,
+            "forest",
+            new PlayerInfo[] {
+                new PlayerInfo(1, "Bot1", null),
+                new PlayerInfo(2, "Bot2", null)
+            }
+        );
     }
 }

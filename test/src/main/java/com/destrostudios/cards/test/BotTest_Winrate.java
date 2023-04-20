@@ -20,7 +20,7 @@ public class BotTest_Winrate extends BotTest {
         while (true) {
             long seed = actualRandom.nextLong();
             System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
-            BotGame botGame = new BotGame(allCards, mode, queue, seed, false, true, (botSettings, player) -> {
+            BotGame botGame = new BotGame(allCards, getDefaultStartGameInfo(), seed, false, true, (botSettings, player) -> {
                 CardsBotEval.Weights weights = CardsBotEval.getDefaultWeights();
                 if (player == 1) {
                     // Modify weights to compare
@@ -31,7 +31,7 @@ public class BotTest_Winrate extends BotTest {
             String winnerName = botGame.getWinnerName();
             playerWins.put(winnerName, playerWins.computeIfAbsent(winnerName, wn -> 0) + 1);
             games++;
-            if ((games % 10) == 0) {
+            if ((games % 50) == 0) {
                 System.out.println("---Stats---");
                 int _games = games;
                 playerWins.forEach((name, wins) -> {

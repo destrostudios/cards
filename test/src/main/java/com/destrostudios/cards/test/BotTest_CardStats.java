@@ -48,6 +48,8 @@ public class BotTest_CardStats extends BotTest {
         csv += ",med-health-healed";
         csv += ",avg-available-mana-when-played";
         csv += ",med-available-mana-when-played";
+        csv += ",avg-eval-at-turn-end-after-played";
+        csv += ",med-eval-at-turn-end-after-played";
         csv += ",avg-delta-eval-at-turn-end-after-played";
         csv += ",med-delta-eval-at-turn-end-after-played";
         for (Map.Entry<String, BotGame_WithCardStats.CardStatsTotal> entry : cardStats.entrySet()) {
@@ -69,6 +71,9 @@ public class BotTest_CardStats extends BotTest {
             List<Integer> ownerAvailableManaWhenPlayed = stats.getOwnerAvailableManaWhenPlayed();
             csv += "," + toStringNullable(getAverage_Int(ownerAvailableManaWhenPlayed));
             csv += "," + toStringNullable(getMedian_Int(ownerAvailableManaWhenPlayed));
+            List<Float> evalTurnAtEndAfterPlayed = stats.getEvalAtTurnEndAfterPlayed();
+            csv += "," + toStringNullable(getAverage_Float(evalTurnAtEndAfterPlayed));
+            csv += "," + toStringNullable(getMedian_Float(evalTurnAtEndAfterPlayed));
             List<Float> deltaEvalTurnAtEndAfterPlayed = stats.getDeltaEvalAtTurnEndAfterPlayed();
             csv += "," + toStringNullable(getAverage_Float(deltaEvalTurnAtEndAfterPlayed));
             csv += "," + toStringNullable(getMedian_Float(deltaEvalTurnAtEndAfterPlayed));

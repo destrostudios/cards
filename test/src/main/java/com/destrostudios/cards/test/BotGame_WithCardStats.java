@@ -55,10 +55,12 @@ public class BotGame_WithCardStats extends BotGame {
             }
         } else if (action instanceof EndTurnEvent) {
             playedCardsThisTurn.forEach(playedCard -> {
-                int owner = data.getComponent(playedCard.card, Components.OWNED_BY);
                 CardStatsGame stats = getStats(playedCard.card);
                 CardStatsAction actionStats = new CardStatsAction();
-                actionStats.deltaEvalAtTurnEndAfterPlayed = (getActiveBotActivePlayerEval() - playedCard.evalBeforePlayed);
+                float eval = getActiveBotActivePlayerEval();
+                actionStats.evalAtTurnEndAfterPlayed = eval;
+                actionStats.deltaEvalAtTurnEndAfterPlayed = (eval - playedCard.evalBeforePlayed);
+                int owner = data.getComponent(playedCard.card, Components.OWNED_BY);
                 actionStats.ownerAvailableMana = data.getComponent(owner, Components.AVAILABLE_MANA);
                 stats.playActions.add(actionStats);
             });
@@ -109,6 +111,7 @@ public class BotGame_WithCardStats extends BotGame {
 
     public static class CardStatsAction {
         private int ownerAvailableMana;
+        private float evalAtTurnEndAfterPlayed;
         private float deltaEvalAtTurnEndAfterPlayed;
     }
 
@@ -154,6 +157,10 @@ public class BotGame_WithCardStats extends BotGame {
 
         public List<Integer> getHealthHealed() {
             return getGameStat(game -> game.healthHealed);
+        }
+
+        public List<Float> getEvalAtTurnEndAfterPlayed() {
+            return getActionStat(action -> action.evalAtTurnEndAfterPlayed);
         }
 
         public List<Float> getDeltaEvalAtTurnEndAfterPlayed() {

@@ -50,6 +50,8 @@ public class BotGame {
     public void play() {
         Random _random = new Random(seed);
         MasterRandom random = new MasterRandom(_random);
+        Random _botRandomInternal = new Random(seed + 1);
+        Random _botRandomGame = new Random(seed + 2);
 
         gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE) {
 
@@ -80,14 +82,13 @@ public class BotGame {
             settings.termination = TerminationType.NODE_COUNT;
             settings.strength = 100;
             settings.evaluation = CardsBotEval::eval;
-            settings.random = _random;
+            settings.random = _botRandomInternal;
             modifyBotSettings.accept(settings, i);
             botSettings[i] = settings;
             MctsBot bot = new MctsBot<>(new CardsBotService(), settings);
             bots[i] = bot;
         }
-        Random botRandom = new Random(seed + 1);
-        botState = new CardsBotState(gameContext, botRandom);
+        botState = new CardsBotState(gameContext, _botRandomGame);
 
         long gameStartNanos = System.nanoTime();
         int actionIndex = 0;

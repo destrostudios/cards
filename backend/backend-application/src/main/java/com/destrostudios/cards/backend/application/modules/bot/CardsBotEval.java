@@ -74,7 +74,6 @@ public class CardsBotEval {
             EvalPlayerInfo ownPlayerInfo = playerInfos[i];
             EvalPlayerInfo opponentPlayerInfo = playerInfos[(i == 0) ? 1 : 0];
             scores[i] = getPlayerScore(ownPlayerInfo, opponentPlayerInfo, weights);
-            i++;
         }
         return mapScoresToProbabilities(scores);
     }

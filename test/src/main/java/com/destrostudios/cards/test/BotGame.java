@@ -164,7 +164,7 @@ public class BotGame {
         gameContext.fireAndResolveEvent(action, random);
     }
 
-    public String getWinnerName() {
-        return gameContext.getData().getComponent(gameContext.getWinner(), Components.NAME);
+    public PlayerInfo getWinner() {
+        return gameContext.getStartGameInfo().getPlayers()[gameContext.getWinner()];
     }
 }

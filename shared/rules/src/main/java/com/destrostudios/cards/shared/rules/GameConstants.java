@@ -11,6 +11,7 @@ public class GameConstants {
     public static final int MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY = 2;
     public static final int MAXIMUM_AVAILABLE_MANA = 10;
     public static final String MODE_NAME_ARENA = "arena";
+    public static final String MODE_NAME_BRAWL = "brawl";
     public static final String MODE_NAME_CLASSIC = "classic";
     public static final int PACKS_FOR_NEW_PLAYERS_CLASSIC = 5;
     public static final int PACKS_FOR_NEW_ARENA_RUN = 6;

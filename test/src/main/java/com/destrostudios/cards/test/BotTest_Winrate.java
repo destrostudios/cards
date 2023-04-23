@@ -40,13 +40,15 @@ public abstract class BotTest_Winrate extends BotTest {
         }
     }
 
-    protected abstract String getWinnerName(PlayerInfo winner);
+    protected StartGameInfo getStartGameInfo(Random random) {
+        return getDefaultStartGameInfo();
+    }
 
     protected void modifyBotSettings(MctsBotSettings<CardsBotState, Event> settings, int player) {
 
     }
 
-    protected StartGameInfo getStartGameInfo(Random random) {
-        return getDefaultStartGameInfo();
+    protected String getWinnerName(PlayerInfo winner) {
+        return winner.getLogin();
     }
 }

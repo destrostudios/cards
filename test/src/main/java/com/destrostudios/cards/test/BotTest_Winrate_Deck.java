@@ -19,11 +19,6 @@ public class BotTest_Winrate_Deck extends BotTest_Winrate {
     }
 
     @Override
-    protected String getWinnerName(PlayerInfo winner) {
-        return winner.getDeck().getName();
-    }
-
-    @Override
     protected StartGameInfo getStartGameInfo(Random random) {
         return getDefaultStartGameInfo(getRandomDeck(random), getRandomDeck(random));
     }
@@ -31,5 +26,10 @@ public class BotTest_Winrate_Deck extends BotTest_Winrate {
     private CardList getRandomDeck(Random random) {
         Mode mode = modeService.getMode(GameConstants.MODE_NAME_BRAWL);
         return mode.getDecks().get(random.nextInt(mode.getDecks().size())).getDeckCardList();
+    }
+
+    @Override
+    protected String getWinnerName(PlayerInfo winner) {
+        return winner.getDeck().getName();
     }
 }

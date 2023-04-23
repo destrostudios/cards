@@ -3,7 +3,6 @@ package com.destrostudios.cards.test;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotEval;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 
 public class BotTest_Winrate_Bot extends BotTest_Winrate {
@@ -24,10 +23,5 @@ public class BotTest_Winrate_Bot extends BotTest_Winrate {
             // Modify weights to compare
         }
         settings.evaluation = state -> CardsBotEval.eval(state, weights);
-    }
-
-    @Override
-    protected String getWinnerName(PlayerInfo winner) {
-        return winner.getLogin();
     }
 }

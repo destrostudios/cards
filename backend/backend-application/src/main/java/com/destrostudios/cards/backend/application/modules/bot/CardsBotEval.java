@@ -41,14 +41,14 @@ public class CardsBotEval {
 
     public static Weights getDefaultWeights() {
         return new Weights(
-            0.2f,
-            1,
-            0.2f,
-            3,
-            0.2f,
-            4,
             0.1f,
-            0.25f
+            0.8f,
+            0.3f,
+            3,
+            0.3f,
+            4,
+            1,
+            1
         );
     }
 

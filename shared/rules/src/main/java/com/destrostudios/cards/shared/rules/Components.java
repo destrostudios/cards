@@ -122,6 +122,8 @@ public class Components {
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
         public static final ComponentDefinition<Create> CREATE = create("create");
         public static final ComponentDefinition<Void> END_TURN = create("endTurn");
+        public static final ComponentDefinition<String[]> PRE_ANIMATIONS = create("preAnimations");
+        public static final ComponentDefinition<String[]> POST_ANIMATIONS = create("postAnimations");
 
         public static class Zones {
             public static final ComponentDefinition<Void> MOVE_TO_HAND = create("moveToHand");

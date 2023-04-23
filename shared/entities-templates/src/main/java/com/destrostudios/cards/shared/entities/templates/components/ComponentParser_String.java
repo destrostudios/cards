@@ -4,15 +4,15 @@ import com.destrostudios.cards.shared.entities.templates.ComponentParser;
 import com.destrostudios.cards.shared.entities.templates.TemplateFormat;
 import com.destrostudios.cards.shared.entities.templates.TemplateParser;
 
-public class ComponentParser_String extends ComponentParser<Object, Object, String> {
+public class ComponentParser_String extends ComponentParser<Object, String, String> {
 
     @Override
-    public Object parse(TemplateParser parser, TemplateFormat format, Object node) {
+    public String parse(TemplateParser parser, TemplateFormat format, Object node) {
         return parser.parseText(format.getText(node));
     }
 
     @Override
-    public String resolve(int[] proxiedEntities, Object recordedValue) {
-        return recordedValue.toString();
+    public String resolve(int[] proxiedEntities, String recordedValue) {
+        return recordedValue;
     }
 }

@@ -119,6 +119,8 @@ public class EntityTemplateSetup {
             }
         });
         templateManager.registerComponent(Components.Effect.END_TURN, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.PRE_ANIMATIONS, new ComponentParser_StringArray());
+        templateManager.registerComponent(Components.Effect.POST_ANIMATIONS, new ComponentParser_StringArray());
 
         templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_HAND, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_CREATURE_ZONE, new ComponentParser_Void());

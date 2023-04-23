@@ -3,6 +3,8 @@ package com.destrostudios.cards.frontend.application.appstates;
 import com.destrostudios.cardgui.*;
 import com.destrostudios.cardgui.boardobjects.TargetArrow;
 import com.destrostudios.cardgui.events.MoveCardEvent;
+import com.destrostudios.cardgui.samples.boardobjects.staticspatial.StaticSpatial;
+import com.destrostudios.cardgui.samples.boardobjects.staticspatial.StaticSpatialVisualizer;
 import com.destrostudios.cardgui.samples.boardobjects.targetarrow.*;
 import com.destrostudios.cardgui.samples.animations.*;
 import com.destrostudios.cardgui.samples.visualization.*;
@@ -16,6 +18,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
@@ -24,6 +27,7 @@ import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
+import com.destrostudios.cards.shared.rules.effects.TriggerEffectImpactEvent;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.jme3.app.Application;
@@ -56,7 +60,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private EntityBoardMap entityBoardMap;
     private UpdateBoardService updateBoardService;
-    private EntryAnimationService entryAnimationService;
+    private AnimationService animationService;
+    private AnimationContentService animationContentService;
     private Event sendableEndTurnEvent;
 
     @Override
@@ -181,6 +186,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Visualizers
 
+        board.registerVisualizer_Class(StaticSpatial.class, new StaticSpatialVisualizer());
         board.registerVisualizer_Class(PlayerBoardObject.class, new PlayerVisualizer());
         // TODO: Offer this kind of ZoneVisualizer out of the box from the cardgui
         board.registerVisualizer_Class(CardZone.class, new DebugZoneVisualizer() {
@@ -239,12 +245,13 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         // Services
 
         updateBoardService = new UpdateBoardService(gameService, board, selectionZone, playerZonesMap, entityBoardMap);
-        entryAnimationService = new EntryAnimationService(mainApplication);
+        animationService = new AnimationService(entityBoardMap, board, mainApplication.getAssetManager());
+        animationContentService = new AnimationContentService(animationService, mainApplication);
 
         // Events
 
         gameService.getGameContext().getEventHandling().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (GameContext context, MoveToCreatureZoneEvent event) -> {
-            tryPlayEntryAnimation(event.card);
+            tryPlayAnimation_Entry(event.card);
         });
         gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (GameContext context, BattleEvent event) -> {
             TransformedBoardObject<?> attacker = entityBoardMap.getBoardObject(event.source);
@@ -253,6 +260,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
         gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (context, event) -> {
             board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f));
+        });
+        gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext context, TriggerEffectImpactEvent event) -> {
+            tryPlayAnimation_Effect(event.source, event.target, event.effect, Components.Effect.PRE_ANIMATIONS);
+        });
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext context, TriggerEffectImpactEvent event) -> {
+            tryPlayAnimation_Effect(event.source, event.target, event.effect, Components.Effect.POST_ANIMATIONS);
         });
         /*gameService.getGameContext().getEventHandling().pre().add(EventType.SHUFFLE_LIBRARY, (GameContext context, ShuffleLibraryEvent event) -> {
             LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
@@ -274,14 +287,18 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         return false;
     }
 
-    private void tryPlayEntryAnimation(int cardEntity) {
+    private void tryPlayAnimation_Entry(int cardEntity) {
         mainApplication.enqueue(() -> {
             Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
-            Animation entryAnimation = entryAnimationService.getEntryAnimation(card);
+            Animation entryAnimation = animationContentService.getEntryAnimation(card);
             if (entryAnimation != null) {
                 board.playAnimation(entryAnimation);
             }
         });
+    }
+
+    private void tryPlayAnimation_Effect(int source, int target, int effect, ComponentDefinition<String[]> animationsComponent) {
+        animationContentService.playEffectAnimations(gameService.getGameContext().getData(), source, target, effect, animationsComponent);
     }
 
     private void initInputListeners() {
@@ -294,6 +311,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     @Override
     public void update(float lastTimePerFrame) {
         super.update(lastTimePerFrame);
+        animationService.removeFinishedAnimationObjects();
         if (initState == 0) {
             // Board is initialized now
             updateVisuals();

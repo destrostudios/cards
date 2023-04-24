@@ -28,6 +28,7 @@ import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.effects.TriggerEffectImpactEvent;
+import com.destrostudios.cards.shared.rules.effects.TriggerEvent;
 import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.jme3.app.Application;
@@ -246,7 +247,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         updateBoardService = new UpdateBoardService(gameService, board, selectionZone, playerZonesMap, entityBoardMap);
         animationService = new AnimationService(entityBoardMap, board, mainApplication.getAssetManager());
-        animationContentService = new AnimationContentService(animationService, mainApplication);
+        animationContentService = new AnimationContentService(board, animationService, mainApplication);
 
         // Events
 
@@ -260,6 +261,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
         gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (context, event) -> {
             board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f));
+        });
+        gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER, (GameContext context, TriggerEvent event) -> {
+            tryPlayAnimation_Effect(event.source, null, event.trigger, Components.Effect.PRE_ANIMATIONS);
+        });
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.TRIGGER, (GameContext context, TriggerEvent event) -> {
+            tryPlayAnimation_Effect(event.source, null, event.trigger, Components.Effect.POST_ANIMATIONS);
         });
         gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext context, TriggerEffectImpactEvent event) -> {
             tryPlayAnimation_Effect(event.source, event.target, event.effect, Components.Effect.PRE_ANIMATIONS);
@@ -297,8 +304,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         });
     }
 
-    private void tryPlayAnimation_Effect(int source, int target, int effect, ComponentDefinition<String[]> animationsComponent) {
-        animationContentService.playEffectAnimations(gameService.getGameContext().getData(), source, target, effect, animationsComponent);
+    private void tryPlayAnimation_Effect(int source, Integer target, int entity, ComponentDefinition<String[]> animationsComponent) {
+        animationContentService.playEffectAnimations(gameService.getGameContext().getData(), source, target, entity, animationsComponent);
     }
 
     private void initInputListeners() {

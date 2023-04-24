@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test;
 public class TestHighPriestessLlyncis extends TestGame {
 
     @Test
-    public void testHealCharacterOnSummon() {
-        damage(player, 5);
+    public void testHealDamagedCharacterOnSummon() {
+        damage(player, 8);
         int card = create("creatures/high_priestess_llyncis", player, Components.Zone.HAND);
         castFromHand(card, player);
         assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 1);
     }
 
     @Test
-    public void testDamageCharacterOnSummon() {
+    public void testDamageUndamagedCharacterOnSummon() {
         int card = create("creatures/high_priestess_llyncis", player, Components.Zone.HAND);
         castFromHand(card, opponent);
         assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 7);

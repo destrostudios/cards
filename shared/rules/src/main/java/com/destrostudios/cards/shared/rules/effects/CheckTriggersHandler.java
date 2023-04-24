@@ -1,4 +1,4 @@
-package com.destrostudios.cards.shared.rules.triggers;
+package com.destrostudios.cards.shared.rules.effects;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.Event;
@@ -11,9 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @AllArgsConstructor
-public class TriggerHandler<T extends Event> extends GameEventHandler<T> {
+public class CheckTriggersHandler<T extends Event> extends GameEventHandler<T> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TriggerHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CheckTriggersHandler.class);
 
     private ComponentsTriggers.TriggerDefinition<T> trigger;
 
@@ -22,7 +22,7 @@ public class TriggerHandler<T extends Event> extends GameEventHandler<T> {
         EntityData data = context.getData();
         LOG.debug("Checking triggers of type {} for {}", trigger, event);
         for (int entity : data.list(trigger.component())) {
-            TriggerUtil.trigger(data.getComponent(entity, trigger.component()), entity, trigger.getTargets().apply(event), context.getEvents());
+            TriggerUtil.triggerIfPossible(data, data.getComponent(entity, trigger.component()), entity, trigger.getTargets().apply(event), context.getEvents());
         }
     }
 }

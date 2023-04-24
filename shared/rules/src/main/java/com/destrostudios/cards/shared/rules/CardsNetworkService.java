@@ -62,6 +62,7 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
                 return new IntList(data);
             }
         });
+        kryo.register(String[].class);
         kryo.register(AdvancedPrefilter.class, new EnumSerializer<>(AdvancedPrefilter.class));
         kryo.register(AdvancedPrefilter[].class);
         kryo.register(Components.Prefilters.class, new FieldSerializer<>(kryo, Components.Prefilters.class));

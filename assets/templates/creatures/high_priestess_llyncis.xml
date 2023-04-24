@@ -1,6 +1,6 @@
 <template>
     <values>
-        <heal>4</heal>
+        <heal>7</heal>
         <damage>7</damage>
     </values>
     <entity id="card">
@@ -9,7 +9,7 @@
         <creatureCard/>
         <attack>7</attack>
         <health>7</health>
-        <description>Cast: Heal [heal] health of target character. Then, if it's undamaged, deal [damage] damage to it.</description>
+        <description>Cast: Heal [heal] health of target damaged character or deal [damage] damage to target undamaged character.</description>
         <spells>
             <entity>
                 <source>#card</source>
@@ -24,8 +24,10 @@
                         </effects>
                     </entity>
                     <entity>
+                        <targetPrefilters advanced="DAMAGED"/>
                         <effects>
                             <entity>
+                                <preAnimations>LANCE</preAnimations>
                                 <targets>
                                     <entity template="../targets/targets"/>
                                 </targets>
@@ -37,6 +39,7 @@
                         <targetPrefilters advanced="NOT_DAMAGED"/>
                         <effects>
                             <entity>
+                                <preAnimations>LANCE</preAnimations>
                                 <targets>
                                     <entity template="../targets/targets"/>
                                 </targets>

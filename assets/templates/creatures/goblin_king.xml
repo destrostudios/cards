@@ -22,7 +22,7 @@
                                 <addBuff constant="true">
                                     <entity>
                                         <source>#card</source>
-                                        <bonusAttack>source.owner.count(["CREATURE_ZONE","GOBLIN"], ["ALLY"])</bonusAttack>
+                                        <bonusAttack>source.count(["CREATURE_ZONE","GOBLIN"], ["ALLY"])</bonusAttack>
                                     </entity>
                                 </addBuff>
                             </entity>

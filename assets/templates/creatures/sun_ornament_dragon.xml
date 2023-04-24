@@ -22,7 +22,7 @@
                                 <targets>
                                     <entity template="../targets/source_owner"/>
                                 </targets>
-                                <heal>[heal] * source.owner.count(["HAND","DRAGON"], ["ALLY"])</heal>
+                                <heal>[heal] * source.count(["HAND","DRAGON"], ["ALLY"])</heal>
                             </entity>
                         </effects>
                     </entity>

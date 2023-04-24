@@ -21,6 +21,7 @@
                     <entity>
                         <effects>
                             <entity>
+                                <preAnimations>AQUA</preAnimations>
                                 <targets>
                                     <entity template="../targets/targets"/>
                                 </targets>

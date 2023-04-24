@@ -19,7 +19,6 @@ import com.destrostudios.cards.shared.rules.effects.*;
 import com.destrostudios.cards.shared.rules.game.GameOverHandler;
 import com.destrostudios.cards.shared.rules.game.SetStartingPlayerHandler;
 import com.destrostudios.cards.shared.rules.game.turn.*;
-import com.destrostudios.cards.shared.rules.triggers.TriggerHandler;
 
 import static com.destrostudios.cards.shared.rules.ComponentsTriggers.*;
 
@@ -39,24 +38,24 @@ public class GameEventHandling extends EventHandling<GameContext> {
         set(instant, EventType.SET_MANA, new SetManaHandler());
         set(instant, EventType.BATTLE, new BattleHandler());
         set(resolved, EventType.BATTLE,
-            new TriggerHandler<>(getTriggersComponent(POST, BattleEvent.class))
+            new CheckTriggersHandler<>(getTriggersComponent(POST, BattleEvent.class))
         );
         set(instant, EventType.DAMAGE, new DamageHandler());
         set(resolved, EventType.DAMAGE,
-            new TriggerHandler<>(getTriggersComponent(POST, DamageEvent.class)),
+            new CheckTriggersHandler<>(getTriggersComponent(POST, DamageEvent.class)),
             new CheckDestructionAfterDamageHandler()
         );
         set(instant, EventType.HEAL, new HealHandler());
         set(resolved, EventType.HEAL,
-            new TriggerHandler<>(getTriggersComponent(POST, HealEvent.class))
+            new CheckTriggersHandler<>(getTriggersComponent(POST, HealEvent.class))
         );
         set(instant, EventType.DESTRUCTION, new DestructionHandler());
         set(resolved, EventType.DESTRUCTION,
-            new TriggerHandler<>(getTriggersComponent(POST, DestructionEvent.class))
+            new CheckTriggersHandler<>(getTriggersComponent(POST, DestructionEvent.class))
         );
         set(instant, EventType.DRAW_CARD, new DrawCardHandler());
         set(pre, EventType.END_TURN,
-            new TriggerHandler<>(getTriggersComponent(PRE, EndTurnEvent.class)),
+            new CheckTriggersHandler<>(getTriggersComponent(PRE, EndTurnEvent.class)),
             new RemoveTemporaryBuffsOnEndTurnHandler());
         set(instant, EventType.END_TURN,
             new EndTurnHandler(),
@@ -73,7 +72,7 @@ public class GameEventHandling extends EventHandling<GameContext> {
             new IncreaseCurrentCastsPerTurnHandler()
         );
         set(resolved, EventType.CAST_SPELL,
-            new TriggerHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
+            new CheckTriggersHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
         );
         set(instant, EventType.REMOVED_FROM_CREATURE_ZONE,
             new RemoveDamageOnRemovedFromCreatureZoneHandler(),
@@ -90,7 +89,7 @@ public class GameEventHandling extends EventHandling<GameContext> {
             new SetManaToAvailableManaOnTurnStartHandler(),
             new DrawCardOnTurnStartHandler()
         );
-        set(instant, EventType.TRIGGER_IF_POSSIBLE, new TriggerIfPossibleHandler());
+        set(instant, EventType.TRIGGER, new TriggerHandler());
         set(instant, EventType.TRIGGER_EFFECT, new TriggerEffectHandler());
         set(instant, EventType.TRIGGER_EFFECT_IMPACT, new TriggerEffectImpactHandler());
         set(instant, EventType.ADD_BUFF, new AddBuffHandler());

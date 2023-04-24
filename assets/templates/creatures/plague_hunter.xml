@@ -17,7 +17,7 @@
                         </effects>
                     </entity>
                     <entity>
-                        <condition>!source.owner.exists(["HAND"], ["ALLY"])</condition>
+                        <condition>!source.exists(["HAND"], ["NOT_SOURCE","ALLY"])</condition>
                         <effects>
                             <entity>
                                 <targets>

@@ -30,7 +30,7 @@ public enum EventType {
     SET_MANA,
     TRIGGER_EFFECT,
     TRIGGER_EFFECT_IMPACT,
-    TRIGGER_IF_POSSIBLE,
+    TRIGGER,
     // game/turn
     END_TURN,
     START_TURN,

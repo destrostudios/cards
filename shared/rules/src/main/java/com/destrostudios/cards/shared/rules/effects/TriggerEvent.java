@@ -7,14 +7,14 @@ import com.destrostudios.cards.shared.rules.expressions.ExpressionContextProvide
 import com.destrostudios.cards.shared.rules.expressions.ExpressionEntity;
 import org.apache.commons.jexl3.JexlContext;
 
-public class TriggerIfPossibleEvent extends Event implements ExpressionContextProvider {
+public class TriggerEvent extends Event implements ExpressionContextProvider {
 
     public final int source;
     public final int[] targets;
     public final int trigger;
 
-    public TriggerIfPossibleEvent(int source, int[] targets, int trigger) {
-        super(EventType.TRIGGER_IF_POSSIBLE);
+    public TriggerEvent(int source, int[] targets, int trigger) {
+        super(EventType.TRIGGER);
         this.source = source;
         this.targets = targets;
         this.trigger = trigger;
@@ -22,7 +22,7 @@ public class TriggerIfPossibleEvent extends Event implements ExpressionContextPr
 
     @Override
     public String toString() {
-        return "TriggerIfPossibleEvent{" + "source=" + source + ", targets=" + targets + ", trigger=" + trigger + '}';
+        return "TriggerEvent{" + "source=" + source + ", targets=" + targets + ", trigger=" + trigger + '}';
     }
 
     @Override

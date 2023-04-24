@@ -13,6 +13,7 @@
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>
+                        <preAnimations>FIRE2</preAnimations>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
                             <entity>

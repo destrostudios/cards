@@ -17,6 +17,7 @@
                         <preAnimations>CAMERA_SHAKE,FIRE1</preAnimations>
                         <effects>
                             <entity>
+                                <preAnimations/>
                                 <targets>
                                     <entity template="../targets/all_creatures_on_board"/>
                                 </targets>

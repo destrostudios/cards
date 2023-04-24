@@ -18,12 +18,14 @@
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
                             <entity>
+                                <preAnimations/>
                                 <targets>
                                     <entity template="../targets/all_opponent_creatures_on_board"/>
                                 </targets>
                                 <damage>[damage]</damage>
                             </entity>
                             <entity>
+                                <preAnimations/>
                                 <targets>
                                     <entity template="../targets/all_ally_creatures_on_board"/>
                                 </targets>

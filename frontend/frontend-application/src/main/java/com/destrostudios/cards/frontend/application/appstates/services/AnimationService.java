@@ -9,7 +9,6 @@ import com.jme.effekseer.EffekseerEmitterControl;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.*;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -77,7 +76,6 @@ public class AnimationService {
     private Node createParticleEffectNode(Transform transform) {
         Node node = new Node();
         node.setLocalTransform(transform);
-        node.setShadowMode(RenderQueue.ShadowMode.Off);
         return node;
     }
 

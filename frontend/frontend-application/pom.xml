@@ -46,30 +46,24 @@
             <version>0.0.1</version>
         </dependency>
         <dependency>
-            <groupId>${jm3.group}</groupId>
+            <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-core</artifactId>
-            <version>${jm3.version}</version>
         </dependency>
         <dependency>
-            <groupId>${jm3.group}</groupId>
+            <groupId>org.jmonkeyengine</groupId>
+            <artifactId>jme3-lwjgl3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-desktop</artifactId>
-            <version>${jm3.version}</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>${jm3.group}</groupId>
+            <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-effects</artifactId>
-            <version>${jm3.version}</version>
         </dependency>
         <dependency>
-            <groupId>${jm3.group}</groupId>
-            <artifactId>jme3-lwjgl</artifactId>
-            <version>${jm3.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${jm3.group}</groupId>
+            <groupId>org.jmonkeyengine</groupId>
             <artifactId>jme3-terrain</artifactId>
-            <version>${jm3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.simsilica</groupId>
@@ -101,6 +95,10 @@
             <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>network-client</artifactId>
             <version>${version.game-tools}</version>
+        </dependency>
+        <dependency>
+            <groupId>wf.frk</groupId>
+            <artifactId>jme-effekseer-native</artifactId>
         </dependency>
     </dependencies>
     <build>

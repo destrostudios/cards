@@ -15,15 +15,15 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jm3.group>org.jmonkeyengine</jm3.group>
-        <jm3.version>3.2.1-stable</jm3.version>
-        <version.card-gui>0434bbe3a83056f4e0e78e3ed99dd98493fb63ce</version.card-gui>
+        <version.card-gui>ca86f1d3fcb80423cd148060f9e3847ca2396ec1</version.card-gui>
         <version.game-tools>76bd23e029824acdbf2596f2030a95a48beeefbb</version.game-tools>
         <version.groovy>3.0.10</version.groovy>
         <version.jackson>2.14.2</version.jackson>
         <version.javax.activation>1.1.1</version.javax.activation>
         <version.jaxb>2.3.0</version.jaxb>
         <version.jexl>3.2.1</version.jexl>
+        <version.jme>3.6.0-stable</version.jme>
+        <version.jme-effekseer-native>0.4.1</version.jme-effekseer-native>
         <version.junit>5.9.2</version.junit>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
@@ -39,6 +39,10 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/riccardobl/jme-effekseerNative</url>
         </repository>
     </repositories>
     <dependencyManagement>
@@ -93,6 +97,39 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${version.mysql}</version>
+            </dependency>
+            <!--jME-->
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-core</artifactId>
+                <version>${version.jme}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-lwjgl3</artifactId>
+                <version>${version.jme}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-desktop</artifactId>
+                <version>${version.jme}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-effects</artifactId>
+                <version>${version.jme}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jmonkeyengine</groupId>
+                <artifactId>jme3-terrain</artifactId>
+                <version>${version.jme}</version>
+            </dependency>
+            <!--jME Effekseer Native-->
+            <dependency>
+                <groupId>wf.frk</groupId>
+                <artifactId>jme-effekseer-native</artifactId>
+                <version>${version.jme-effekseer-native}</version>
             </dependency>
             <!--JUnit-->
             <dependency>

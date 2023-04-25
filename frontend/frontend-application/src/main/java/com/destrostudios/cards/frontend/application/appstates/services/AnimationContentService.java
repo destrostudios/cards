@@ -11,7 +11,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.jme3.app.Application;
-import com.jme3.math.ColorRGBA;
+import com.jme3.math.*;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -38,13 +38,13 @@ public class AnimationContentService {
         if (animationNames != null) {
             for (String animationName : animationNames) {
                 switch (animationName) {
-                    case "AQUA" -> animationService.shootParticleEffect(source, target, "MAGICALxSPIRAL/AquaPoint", 0.4f, 2);
-                    case "BENEDICTION" -> animationService.playParticleEffect("Pierre02/Benediction", 0.3f, 2);
+                    case "AQUA" -> animationService.shootParticleEffect(source, target, "MAGICALxSPIRAL/AquaPoint", new Transform().setTranslation(0, 0.35f, 0).setScale(0.4f));
+                    case "BENEDICTION" -> animationService.playParticleEffect("Pierre02/Benediction", new Transform().setTranslation(0, 0.1f, 0).setScale(0.4f));
                     case "CAMERA_SHAKE" -> board.playAnimation(new CameraShakeAnimation(application.getCamera(), 0.3f, 0.2f));
-                    case "FIRE1" -> animationService.playParticleEffect("tktk01/Fire7", 1, 1);
-                    case "FIRE2" -> animationService.playParticleEffect("TouhouStrategy/patch_stElmo_area", 0.3f, 1);
-                    case "LANCE" -> animationService.playParticleEffect(target, "MAGICALxSPIRAL/Lance3", 0.5f, 2);
-                    case "THUNDER" -> animationService.playParticleEffect(target, "Pierre01/LightningStrike", 0.08f, 2);
+                    case "FIRE1" -> animationService.playParticleEffect("tktk01/Fire7", new Transform().setRotation(new Quaternion().fromAngleAxis(-0.5f * FastMath.PI, Vector3f.UNIT_X)).setScale(0.35f));
+                    case "FIRE2" -> animationService.playParticleEffect("TouhouStrategy/patch_stElmo_area", new Transform().setTranslation(0, 0.1f, 0.8f).setRotation(new Quaternion().fromAngleAxis(-0.1f * FastMath.PI, Vector3f.UNIT_X)).setScale(0.2f));
+                    case "LANCE" -> animationService.playParticleEffect(target, "MAGICALxSPIRAL/Lance3", new Transform().setTranslation(0, 0.1f, 0).setScale(0.5f));
+                    case "THUNDER" -> animationService.playParticleEffect(target, "Pierre01/LightningStrike", new Transform().setTranslation(0, 0.1f, 0).setScale(0.04f));
                 }
             }
         } else if (target != null) {

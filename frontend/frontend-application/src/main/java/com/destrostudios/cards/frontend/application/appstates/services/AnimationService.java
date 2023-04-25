@@ -1,19 +1,14 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
-import com.destroflyer.jme3.effekseer.model.ParticleEffect;
-import com.destroflyer.jme3.effekseer.model.ParticleEffectSettings;
-import com.destroflyer.jme3.effekseer.reader.EffekseerReader;
-import com.destroflyer.jme3.effekseer.renderer.EffekseerControl;
 import com.destrostudios.cardgui.*;
-import com.destrostudios.cardgui.samples.animations.EffekseerAnimation;
 import com.destrostudios.cardgui.samples.animations.TargetedArcAnimation;
 import com.destrostudios.cardgui.samples.boardobjects.staticspatial.StaticSpatial;
 import com.destrostudios.cardgui.transformations.ConstantButTargetedTransformation;
 import com.destrostudios.cards.frontend.application.EntityBoardMap;
-import com.destrostudios.cards.shared.files.FileAssets;
+import com.jme.effekseer.EffekseerEmitterControl;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
+import com.jme3.math.*;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -46,10 +41,9 @@ public class AnimationService {
         shootSpatial(source, target, sphere);
     }
 
-    public void shootParticleEffect(int source, int target, String particleEffectName, float scale, float speed) {
-        ParticleEffect particleEffect = new EffekseerReader().read(FileAssets.ROOT, getParticleEffectPath(particleEffectName));
-        Node node = createParticleEffectNode(scale);
-        node.addControl(new EffekseerControl(particleEffect, getParticleEffectSettings(speed), assetManager));
+    public void shootParticleEffect(int source, int target, String particleEffectName, Transform transform) {
+        Node node = createParticleEffectNode(transform);
+        node.addControl(createParticleEffect(particleEffectName));
         shootSpatial(source, target, node);
     }
 
@@ -70,50 +64,35 @@ public class AnimationService {
         playingAnimationObjects.put(animation, transformedBoardObject);
     }
 
-    public void playParticleEffect(String particleEffectName, float scale, float speed) {
-        Node node = createParticleEffectNode(scale);
-        node.setLocalTranslation(0, 0, 1);
-        playParticleEffect(node, particleEffectName, speed);
-    }
-
-    public void playParticleEffect(int target, String particleEffectName, float scale, float speed) {
-        Node node = createParticleEffectNode(scale);
-        StaticSpatial staticSpatial = playParticleEffect(node, particleEffectName, speed);
+    public void playParticleEffect(int target, String particleEffectName, Transform transform) {
+        StaticSpatial staticSpatial = playParticleEffect(particleEffectName, transform);
         staticSpatial.getModel().setFollowTarget(entityBoardMap.getBoardObject(target));
     }
 
-    private Node createParticleEffectNode(float scale) {
+    public StaticSpatial playParticleEffect(String particleEffectName, Transform transform) {
+        Node node = createParticleEffectNode(transform);
+        return playParticleEffect(node, particleEffectName);
+    }
+
+    private Node createParticleEffectNode(Transform transform) {
         Node node = new Node();
-        node.setLocalScale(scale);
+        node.setLocalTransform(transform);
         node.setShadowMode(RenderQueue.ShadowMode.Off);
         return node;
     }
 
-    private StaticSpatial playParticleEffect(Node node, String particleEffectName, float speed) {
+    private StaticSpatial playParticleEffect(Node node, String particleEffectName) {
         StaticSpatial staticSpatial = new StaticSpatial();
         staticSpatial.getModel().setSpatial(node);
         board.register(staticSpatial);
-        EffekseerAnimation animation = new EffekseerAnimation(
-            node,
-            FileAssets.ROOT,
-            getParticleEffectPath(particleEffectName),
-            getParticleEffectSettings(speed),
-            assetManager
-        );
+        EffekseerAnimation animation = new EffekseerAnimation(node, createParticleEffect(particleEffectName));
         board.playAnimation(animation);
         playingAnimationObjects.put(animation, staticSpatial);
         return staticSpatial;
     }
 
-    private String getParticleEffectPath(String particleEffectName) {
-        return FileAssets.ROOT + "effekseer/" + particleEffectName + ".efkproj";
-    }
-
-    private ParticleEffectSettings getParticleEffectSettings(float speed) {
-        return ParticleEffectSettings.builder()
-                .loop(false)
-                .frameLength((1f / 24) / speed)
-                .build();
+    private EffekseerEmitterControl createParticleEffect(String name) {
+        return new EffekseerEmitterControl(assetManager, "effekseer/" + name + ".efkefc");
     }
 
     public void removeFinishedAnimationObjects() {

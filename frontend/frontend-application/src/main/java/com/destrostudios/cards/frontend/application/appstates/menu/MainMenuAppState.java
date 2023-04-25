@@ -18,7 +18,7 @@ public class MainMenuAppState extends MenuAppState {
         int totalPacks = getModule(GameDataClientModule.class).getTotalPacks();
         Button buttonPacks = addButton(2, "Packs" + ((totalPacks > 0) ? " (" + totalPacks + ")" : ""), b -> switchTo(new PacksAppState()));
         GuiUtil.setButtonBackground(buttonPacks, (totalPacks > 0) ? GuiUtil.BUTTON_COLOR_HIGHLIGHT : null);
-        addButton(3, "Exit", b -> System.exit(0));
+        addButton(3, "Exit", b -> mainApplication.stop());
     }
 
     private Button addButton(int index, String text, Command<Button> command) {

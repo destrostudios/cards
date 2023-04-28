@@ -1,7 +1,7 @@
 <template>
     <values>
-        <heal>7</heal>
-        <damage>7</damage>
+        <heal>5</heal>
+        <damage>5</damage>
     </values>
     <entity id="card">
         <name>High Priestess Llyncis</name>

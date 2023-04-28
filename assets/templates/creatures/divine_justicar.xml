@@ -1,9 +1,9 @@
 <template>
     <values>
-        <bonusAttack>6</bonusAttack>
-        <bonusHealth>6</bonusHealth>
+        <bonusAttack>4</bonusAttack>
+        <bonusHealth>4</bonusHealth>
     </values>
-    <entity id="card" template="./templates/simple_target_buffer(name=Divine Justicar,manaCost=9,attack=6,health=6,buff=#buff)">
+    <entity id="card" template="./templates/simple_target_buffer(name=Divine Justicar,manaCost=9,attack=7,health=7,buff=#buff)">
         <description>Cast: Target creature on board gains +[bonusAttack]/+[bonusHealth].</description>
     </entity>
     <entity id="buff">

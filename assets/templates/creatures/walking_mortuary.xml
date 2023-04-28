@@ -1,15 +1,10 @@
 <template>
-    <entity template="./templates/vanilla(name=Walking Mortuary,manaCost=9,attack=9,health=9)">
-        <description>Death: Summon 9 1/1 Zombies.</description>
+    <entity template="./templates/vanilla(name=Walking Mortuary,manaCost=9,attack=8,health=8)">
+        <description>Death: Summon 4 1/1 Zombies.</description>
         <postDestructionTriggers>
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
-                    <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
-                    <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
-                    <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
-                    <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>
                     <entity template="../effects/spawn_for_owner(template=creatures/zombie)"/>

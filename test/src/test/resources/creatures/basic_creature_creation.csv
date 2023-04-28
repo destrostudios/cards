@@ -1,9 +1,9 @@
 template,name,legendary,manaCost,attack,health,taunt,divine_shield
 creatures/ancient_tree,Ancient Tree,false,7,4,7,true,false
 creatures/angelic_gate,Angelic Gate,true,1,0,2,false,false
-creatures/arandir,Arandir,false,5,3,3,false,false
+creatures/arandir,Arandir,false,5,3,4,false,false
 creatures/army_commander,Army Commander,false,4,1,1,false,false
-creatures/artificial_guardian,Artificial Guardian,false,2,1,0,false,false
+creatures/artificial_guardian,Artificial Guardian,false,2,1,1,false,false
 creatures/astral_lich,Astral Lich,false,4,1,6,false,false
 creatures/awakened_succubus,Awakened Succubus,false,4,6,4,false,false
 creatures/baby_turtle,Baby Turtle,false,4,0,5,false,false
@@ -20,7 +20,7 @@ creatures/crazed_doctor,Crazed Doctor,false,5,2,2,false,false
 creatures/dam,Dam,false,1,0,4,true,false
 creatures/dark_rider,Dark Rider,false,2,2,2,false,false
 creatures/demon_samurai,Demon Samurai,false,3,3,2,false,false
-creatures/divine_justicar,Divine Justicar,false,9,6,6,false,false
+creatures/divine_justicar,Divine Justicar,false,9,7,7,false,false
 creatures/dragon,Dragon,false,4,4,4,false,false
 creatures/dragon_egg,Dragon Egg,false,2,0,3,false,false
 creatures/dragon_rider,Dragon Rider,false,4,3,4,false,false
@@ -101,11 +101,11 @@ creatures/undead_soldier,Undead Soldier,false,1,1,1,false,false
 creatures/underground_knave,Underground Knave,false,1,2,1,false,false
 creatures/unremembered_griffin,Unremembered Griffin,false,4,3,3,false,false
 creatures/valkyrie,Valkyrie,false,3,3,1,false,true
-creatures/walking_mortuary,Walking Mortuary,false,9,9,9,false,false
+creatures/walking_mortuary,Walking Mortuary,false,9,8,8,false,false
 creatures/wandering_wizard,Wandering Wizard,false,5,4,4,false,false
 creatures/war_angel,War Angel,false,6,4,4,false,false
-creatures/wooded_chimera,Wooded Chimera,true,8,8,8,false,false
-creatures/wooded_chimeras_firstborn,Wooded Chimera's Firstborn,false,4,4,4,false,false
+creatures/wooded_chimera,Wooded Chimera,true,9,6,6,false,false
+creatures/wooded_chimeras_firstborn,Wooded Chimera's Firstborn,false,3,3,3,false,false
 creatures/wooded_chimeras_secondborn,Wooded Chimera's Secondborn,false,2,2,2,false,false
 creatures/wooded_chimeras_thirdborn,Wooded Chimera's Thirdborn,false,1,1,1,false,false
 creatures/young_inventor,Young Inventor,false,2,1,1,false,false

@@ -6,7 +6,7 @@
         <name>Arandir</name>
         <creatureCard/>
         <attack>3</attack>
-        <health>3</health>
+        <health>4</health>
         <spells>
             <entity template="../spells/templates/simple_summon(source=#card,manaCost=5)"/>
             <entity template="../spells/templates/simple_attack(source=#card)"/>

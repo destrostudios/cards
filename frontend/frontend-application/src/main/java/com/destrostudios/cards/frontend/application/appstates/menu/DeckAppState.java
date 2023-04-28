@@ -100,7 +100,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     private void initDeckBuilder() {
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CardZone deckZone = new SimpleIntervalZone(new Vector3f(8.25f, 0, -4.715f), new Vector3f(1, 1, 0.57f));
-        IngameCardVisualizer collectionCardVisualizer = new IngameCardVisualizer(false, false, 4.25f);
         CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(guiNode);
         DeckBuilderCardVisualizer deckCardVisualizer = new DeckBuilderCardVisualizer();
         Comparator<CardModel> cardOrder = new CompositeComparator<>(
@@ -112,7 +111,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             .collectionCards(collectionCards)
             .collectionZone(collectionZone)
             .deckZone(deckZone)
-            .collectionCardVisualizer(collectionCardVisualizer)
+            .collectionCardVisualizer(IngameCardVisualizer.forCollection())
             .collectionCardAmountVisualizer(collectionCardAmountVisualizer)
             .deckCardVisualizer(deckCardVisualizer)
             .deckCardOrder(cardOrder)

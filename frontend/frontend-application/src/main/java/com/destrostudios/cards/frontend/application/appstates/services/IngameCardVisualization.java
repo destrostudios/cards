@@ -14,11 +14,12 @@ import com.jme3.texture.Texture2D;
 
 public class IngameCardVisualization extends CustomAttachmentVisualization<Node> {
 
-    public IngameCardVisualization(AssetManager assetManager, boolean fullArt, float scale, boolean shadows) {
+    public IngameCardVisualization(AssetManager assetManager, boolean fullArt, float scale, boolean shadows, float foilDistortion) {
         this.fullArt = fullArt;
         node = new Node();
         node.setLocalScale(scale);
         foilModelledCard = new FoilModelledCard(assetManager, "images/cardbacks/yugioh.png", ColorRGBA.Black);
+        foilModelledCard.getMaterial_Front().setFloat("Distortion", foilDistortion);
         Node foilModelledCardNode = foilModelledCard.getNode();
         foilModelledCardNode.setShadowMode(shadows ? RenderQueue.ShadowMode.CastAndReceive : RenderQueue.ShadowMode.Off);
         this.node.attachChild(foilModelledCardNode);

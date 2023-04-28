@@ -133,11 +133,10 @@ public class PacksAppState extends MenuAppState {
 
     private void showPackResult(List<CardModel> cards) {
         CardZone cardZone = new SimpleIntervalZone(new Vector3f(0, 0, 0.38f), new Vector3f(3.9f, 3.9f, 4));
-        IngameCardVisualizer cardVisualizer = new IngameCardVisualizer(false, false, 3.8f);
         CardPackSettings<CardModel> settings = CardPackSettings.<CardModel>builder()
                 .cards(cards)
                 .cardZone(cardZone)
-                .cardVisualizer(cardVisualizer)
+                .cardVisualizer(IngameCardVisualizer.forPack())
                 .packOpenDuration(0.5f)
                 .packOpenDurationFactorScale(0.8f)
                 .build();

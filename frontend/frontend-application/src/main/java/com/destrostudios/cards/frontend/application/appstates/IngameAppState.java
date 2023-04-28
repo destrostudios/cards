@@ -222,7 +222,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             }
             return false;
-        }, new IngameCardVisualizer(true, true));
+        }, IngameCardVisualizer.forIngame_General(true, true));
         board.registerVisualizer_ZonePosition(zonePosition -> {
             for (PlayerZones playerZones : playerZonesMap.values()) {
                 if (zonePosition.getZone() == playerZones.getHandZone()) {
@@ -230,12 +230,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 }
             }
             return false;
-        }, new IngameCardVisualizer(true, false));
+        }, IngameCardVisualizer.forIngame_General(true, false));
         board.registerVisualizer_ZonePosition(
             zonePosition -> (zonePosition.getZone() == selectionZone) || (zonePosition.getZone() == inspectionZone),
-            new IngameCardVisualizer(false, false, 1, false)
+            IngameCardVisualizer.forIngame_InspectOrSelect()
         );
-        board.registerVisualizer_Class(Card.class, new IngameCardVisualizer(false, false));
+        board.registerVisualizer_Class(Card.class, IngameCardVisualizer.forIngame_General(false, false));
         board.registerVisualizer_Class(TargetArrow.class, new SimpleTargetArrowVisualizer(SimpleTargetArrowSettings.builder()
                 .width(0.5f)
                 .build()));

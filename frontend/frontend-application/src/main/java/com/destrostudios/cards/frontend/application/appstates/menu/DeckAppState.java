@@ -1,8 +1,10 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
-import com.destrostudios.cardgui.BoardSettings;
-import com.destrostudios.cardgui.CardZone;
+import com.destrostudios.cardgui.*;
+import com.destrostudios.cardgui.Card;
+import com.destrostudios.cardgui.events.MoveCardEvent;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
+import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderDeckCardModel;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.CompositeComparator;
@@ -32,9 +34,17 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Quad;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Label;
 import com.simsilica.lemur.TextField;
@@ -55,6 +65,11 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     private HashMap<CardModel, Integer> collectionCards;
     private HashMap<String, CardModel> cardsToCardModelsMap;
     private HashMap<CardModel, CardListCard> cardModelsToCardsMap;
+    private Node collectionGuiNode;
+    private DeckBuilderAppState<CardModel> deckBuilderAppState;
+    private SimpleIntervalZone inspectionZone;
+    private Card<CardModel> inspectionCard;
+    private Geometry inspectionBackdrop;
     private BitmapText textTitle;
     private TextField textFieldName;
     private Button buttonPreviousPage;
@@ -99,9 +114,12 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     }
 
     private void initDeckBuilder() {
+        collectionGuiNode = new Node();
+        guiNode.attachChild(collectionGuiNode);
+
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CardZone deckZone = new DeckBuilderDeckZone(new Vector3f(8.25f, 0, -5));
-        CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(guiNode);
+        CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(collectionGuiNode);
         DeckBuilderCardVisualizer deckCardVisualizer = new DeckBuilderCardVisualizer();
         Comparator<CardModel> cardOrder = new CompositeComparator<>(
             Comparator.comparing(CardModel::getManaCostDetails),
@@ -122,6 +140,32 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             .collectionRowsPerPage(2)
             .boardSettings(BoardSettings.builder()
                 .inputActionPrefix("deckbuilder")
+                .hoverInspectionDelay(0f)
+                .isInspectable(transformedBoardObject -> (transformedBoardObject instanceof Card card) && (card.getZonePosition().getZone() == deckZone))
+                .inspector(new Inspector() {
+
+                    @Override
+                    public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
+                        Card<DeckBuilderDeckCardModel<CardModel>> deckCard = (Card<DeckBuilderDeckCardModel<CardModel>>) transformedBoardObject;
+                        deckBuilderAppState.getBoard().triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
+                        inspectionCard.finishTransformations();
+                        inspectionCard.getModel().set(deckCard.getModel().getCardModel());
+                        inspectionBackdrop.setCullHint(Spatial.CullHint.Inherit);
+                        collectionGuiNode.setCullHint(Spatial.CullHint.Always);
+                    }
+
+                    @Override
+                    public boolean isReadyToUninspect() {
+                        return true;
+                    }
+
+                    @Override
+                    public void uninspect() {
+                        deckBuilderAppState.getBoard().unregister(inspectionCard);
+                        inspectionBackdrop.setCullHint(Spatial.CullHint.Always);
+                        collectionGuiNode.setCullHint(Spatial.CullHint.Inherit);
+                    }
+                })
                 .build())
             .build();
 
@@ -131,7 +175,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             deck.put(cardModel, cardListCard.getAmount());
         }
 
-        mainApplication.getStateManager().attach(new DeckBuilderAppState<>(mainApplication.getRootNode(), settings) {
+        deckBuilderAppState = new DeckBuilderAppState<>(mainApplication.getRootNode(), settings) {
 
             @Override
             protected void initialize(Application app) {
@@ -139,7 +183,28 @@ public class DeckAppState extends MenuAppState implements ActionListener {
                 setCollectionCardOrder(cardOrder);
                 setDeck(deck);
             }
-        });
+        };
+        mainApplication.getStateManager().attach(deckBuilderAppState);
+
+        // Inspection
+
+        inspectionZone = new SimpleIntervalZone(new Vector3f(-1.97f, 0.2f, 0), Quaternion.IDENTITY, Vector3f.UNIT_XYZ);
+        deckBuilderAppState.getBoard().addZone(inspectionZone);
+        deckBuilderAppState.getBoard().registerVisualizer_ZonePosition(
+            zonePosition -> zonePosition.getZone() == inspectionZone,
+            IngameCardVisualizer.forCollection()
+        );
+        inspectionCard = new Card<>(new CardModel());
+        inspectionBackdrop = new Geometry("inspectionBackdrop", new Quad(16.37f, 9.93f));
+        inspectionBackdrop.setLocalTranslation(-10.17f, 0.1f, 4.97f);
+        inspectionBackdrop.setLocalRotation(new Quaternion().fromAngleAxis(-1 * FastMath.HALF_PI, Vector3f.UNIT_X));
+        Material materialInspectionBackdrop = new Material(mainApplication.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+        materialInspectionBackdrop.setColor("Color", new ColorRGBA(0, 0, 0, 0.75f));
+        materialInspectionBackdrop.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        inspectionBackdrop.setMaterial(materialInspectionBackdrop);
+        inspectionBackdrop.setQueueBucket(RenderQueue.Bucket.Transparent);
+        inspectionBackdrop.setCullHint(Spatial.CullHint.Always);
+        mainApplication.getRootNode().attachChild(inspectionBackdrop);
     }
 
     private String getCardListCardKey(CardListCard cardListCard) {
@@ -147,8 +212,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     }
 
     private void initGui() {
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
-
         float rightColumnWidth = 293;
         float rightColumnX = width - 56 - rightColumnWidth;
 
@@ -184,6 +247,10 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         buttonPreviousPage.setLocalTranslation(buttonPreviousX, buttonPaginationY, 0);
         buttonNextPage = addButton(">", buttonPaginationWidth, buttonPaginationHeight, b -> goToNextPage());
         buttonNextPage.setLocalTranslation(buttonNextX, buttonPaginationY, 0);
+
+        // Hide these buttons when a card is inspected
+        collectionGuiNode.attachChild(buttonPreviousPage);
+        collectionGuiNode.attachChild(buttonNextPage);
 
         // Filter
         x = 55;
@@ -229,7 +296,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
         textTitle.setText("Deckbuilder (" + deckBuilderAppState.getDeckSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")");
     }
 
@@ -243,7 +309,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     }
 
     private void goToPreviousPage() {
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
         if (deckBuilderAppState.getCollectionPage() > 0) {
             deckBuilderAppState.goToPreviousCollectionPage();
             updateGui();
@@ -251,7 +316,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     }
 
     private void goToNextPage() {
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
         if (deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1)) {
             deckBuilderAppState.goToNextCollectionPage();
             updateGui();
@@ -259,7 +323,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     }
 
     private void updateGui() {
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
         buttonPreviousPage.setCullHint(deckBuilderAppState.getCollectionPage() > 0 ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         buttonNextPage.setCullHint(deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1) ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
@@ -269,7 +332,6 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     }
 
     private void saveDeck() {
-        DeckBuilderAppState<CardModel> deckBuilderAppState = getAppState(DeckBuilderAppState.class);
         LinkedList<NewCardListCard> cards = new LinkedList<>();
         for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
             CardListCard cardListCard = cardModelsToCardsMap.get(entry.getKey());
@@ -295,7 +357,8 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         mainApplication.getInputManager().deleteMapping("left");
         mainApplication.getInputManager().deleteMapping("right");
         mainApplication.getInputManager().removeListener(this);
-        mainApplication.getStateManager().detach(getAppState(DeckBuilderAppState.class));
+        mainApplication.getRootNode().detachChild(inspectionBackdrop);
+        mainApplication.getStateManager().detach(deckBuilderAppState);
         mainApplication.getRootNode().removeLight(ambientLight);
         mainApplication.getRootNode().removeLight(directionalLight);
         getAppState(BackgroundAppState.class).resetBackground();

@@ -5,7 +5,7 @@ public class GameConstants {
     public static final String FOIL_NAME_ARTWORK = "artwork";
     public static final String FOIL_NAME_FULL = "full";
     public static final String FOIL_NAME_NONE = "none";
-    public static final int INITIAL_HAND_SIZE = 5;
+    public static final int INITIAL_HAND_SIZE = 4;
     public static final int MAXIMUM_DECK_SIZE = 30;
     public static final int MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY = 1;
     public static final int MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY = 2;

@@ -12,8 +12,9 @@ import java.awt.image.BufferedImage;
 public class DeckBuilderCardVisualizer extends SimpleDeckBuilderDeckCardVisualizer<CardModel> {
 
     public DeckBuilderCardVisualizer() {
-        super(3.98f, 0.57f, 57, false);
+        super(3.98f, GEOMETRY_HEIGHT, 57, false);
     }
+    public static final float GEOMETRY_HEIGHT = 0.57f;
     private static final Font FONT = new Font("Tahoma", Font.BOLD, 22);
 
     @Override

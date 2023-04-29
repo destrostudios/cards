@@ -13,6 +13,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.Collectio
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
+import com.destrostudios.cards.frontend.application.appstates.services.zones.DeckBuilderDeckZone;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.entities.EntityData;
@@ -99,7 +100,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
 
     private void initDeckBuilder() {
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
-        CardZone deckZone = new SimpleIntervalZone(new Vector3f(8.25f, 0, -4.715f), new Vector3f(1, 1, 0.57f));
+        CardZone deckZone = new DeckBuilderDeckZone(new Vector3f(8.25f, 0, -5));
         CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(guiNode);
         DeckBuilderCardVisualizer deckCardVisualizer = new DeckBuilderCardVisualizer();
         Comparator<CardModel> cardOrder = new CompositeComparator<>(

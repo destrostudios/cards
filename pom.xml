@@ -23,7 +23,7 @@
         <version.jaxb>2.3.0</version.jaxb>
         <version.jexl>3.2.1</version.jexl>
         <version.jme>3.6.0-stable</version.jme>
-        <version.jme-effekseer-native>0.4.2</version.jme-effekseer-native>
+        <version.jme3-effekseer>f505042e7682ff5f2d0bdcdada97cf199a7ad9d7</version.jme3-effekseer>
         <version.junit>5.9.2</version.junit>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
@@ -39,10 +39,6 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/riccardobl/jme-effekseerNative</url>
         </repository>
     </repositories>
     <dependencyManagement>
@@ -125,11 +121,18 @@
                 <artifactId>jme3-terrain</artifactId>
                 <version>${version.jme}</version>
             </dependency>
-            <!--jME Effekseer Native-->
+            <!--jME3 Effekseer-->
             <dependency>
-                <groupId>wf.frk</groupId>
-                <artifactId>jme-effekseer-native</artifactId>
-                <version>${version.jme-effekseer-native}</version>
+                <groupId>com.github.destroflyer.jme3-effekseer</groupId>
+                <artifactId>jme3-effekseer-native</artifactId>
+                <version>${version.jme3-effekseer}</version>
+                <exclusions>
+                    <!--Directly included in jme3-effekseer-native jar-->
+                    <exclusion>
+                        <groupId>effekseer</groupId>
+                        <artifactId>effekseer-native</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!--JUnit-->
             <dependency>

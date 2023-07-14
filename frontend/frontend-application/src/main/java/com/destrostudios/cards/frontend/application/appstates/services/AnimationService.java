@@ -5,7 +5,7 @@ import com.destrostudios.cardgui.samples.animations.TargetedArcAnimation;
 import com.destrostudios.cardgui.samples.boardobjects.staticspatial.StaticSpatial;
 import com.destrostudios.cardgui.transformations.ConstantButTargetedTransformation;
 import com.destrostudios.cards.frontend.application.EntityBoardMap;
-import com.jme.effekseer.EffekseerEmitterControl;
+import com.destroflyer.jme3.effekseer.nativ.EffekseerControl;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.*;
@@ -89,8 +89,8 @@ public class AnimationService {
         return staticSpatial;
     }
 
-    private EffekseerEmitterControl createParticleEffect(String name) {
-        return new EffekseerEmitterControl(assetManager, "effekseer/" + name + ".efkefc");
+    private EffekseerControl createParticleEffect(String name) {
+        return new EffekseerControl(assetManager, "effekseer/" + name + ".efkefc");
     }
 
     public void removeFinishedAnimationObjects() {

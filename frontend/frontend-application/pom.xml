@@ -66,6 +66,10 @@
             <artifactId>jme3-terrain</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.destroflyer.jme3-effekseer</groupId>
+            <artifactId>jme3-effekseer-native</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.simsilica</groupId>
             <artifactId>lemur</artifactId>
             <version>${version.lemur}</version>
@@ -95,10 +99,6 @@
             <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>network-client</artifactId>
             <version>${version.game-tools}</version>
-        </dependency>
-        <dependency>
-            <groupId>wf.frk</groupId>
-            <artifactId>jme-effekseer-native</artifactId>
         </dependency>
     </dependencies>
     <build>

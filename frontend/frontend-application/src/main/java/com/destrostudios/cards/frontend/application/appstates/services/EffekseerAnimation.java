@@ -1,17 +1,17 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
+import com.destroflyer.jme3.effekseer.nativ.EffekseerControl;
 import com.destrostudios.cardgui.Animation;
-import com.jme.effekseer.EffekseerEmitterControl;
 import com.jme3.scene.Node;
 
 public class EffekseerAnimation extends Animation {
 
-    public EffekseerAnimation(Node node, EffekseerEmitterControl effect) {
+    public EffekseerAnimation(Node node, EffekseerControl effect) {
         this.node = node;
         this.effect = effect;
     }
     private Node node;
-    private EffekseerEmitterControl effect;
+    private EffekseerControl effect;
     private boolean initialized;
 
     @Override
@@ -23,17 +23,13 @@ public class EffekseerAnimation extends Animation {
     @Override
     public void update(float lastTimePerFrame) {
         super.update(lastTimePerFrame);
-        if (!initialized && hasHandles()) {
+        if (!initialized && effect.isPlaying()) {
             initialized = true;
         }
     }
 
     @Override
     public boolean isFinished() {
-        return (initialized && !hasHandles());
-    }
-
-    private boolean hasHandles() {
-        return (effect.getHandles().size() > 0);
+        return (initialized && !effect.isPlaying());
     }
 }

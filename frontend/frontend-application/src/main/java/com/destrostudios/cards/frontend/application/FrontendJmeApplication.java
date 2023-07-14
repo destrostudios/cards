@@ -8,7 +8,7 @@ import com.destrostudios.cards.frontend.application.appstates.menu.MainMenuAppSt
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.gametools.network.client.ToolsClient;
-import com.jme.effekseer.jme3.EffekseerRenderer;
+import com.destroflyer.jme3.effekseer.nativ.Effekseer;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.system.AppSettings;
@@ -46,8 +46,8 @@ public class FrontendJmeApplication extends SimpleApplication {
         stateManager.attach(new BackgroundAppState());
         stateManager.attach(new PostFilterAppState());
         stateManager.attach(new LightAndShadowAppState());
+        Effekseer.initialize(stateManager, viewPort, assetManager, context.getSettings().isGammaCorrection(), false, false);
         GuiGlobals.initialize(this);
-        EffekseerRenderer.addToViewPort(stateManager, viewPort, assetManager, settings.isGammaCorrection());
 
         AtomicBoolean asyncInitDone = new AtomicBoolean(false);
         initAsync(asyncInitDone);

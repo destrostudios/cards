@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application;
 
+import com.destroflyer.jme3.effekseer.nativ.Effekseer;
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
 import com.destrostudios.cards.frontend.application.appstates.LightAndShadowAppState;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
@@ -8,7 +9,6 @@ import com.destrostudios.cards.frontend.application.appstates.menu.MainMenuAppSt
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.gametools.network.client.ToolsClient;
-import com.destroflyer.jme3.effekseer.nativ.Effekseer;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.FileLocator;
 import com.jme3.system.AppSettings;

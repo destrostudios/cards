@@ -1,11 +1,12 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
+import com.destroflyer.jme3.effekseer.nativ.EffekseerControl;
 import com.destrostudios.cardgui.*;
+import com.destrostudios.cardgui.samples.animations.EffekseerAnimation;
 import com.destrostudios.cardgui.samples.animations.TargetedArcAnimation;
 import com.destrostudios.cardgui.samples.boardobjects.staticspatial.StaticSpatial;
 import com.destrostudios.cardgui.transformations.ConstantButTargetedTransformation;
 import com.destrostudios.cards.frontend.application.EntityBoardMap;
-import com.destroflyer.jme3.effekseer.nativ.EffekseerControl;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.*;

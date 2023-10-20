@@ -23,4 +23,4 @@ curl https://destrostudios.com:8080/apps/11/updateFiles
 
 # Deploy (Server)
 mv backend/backend-application/target/backend-application-0.0.1-jar-with-dependencies.jar "${SERVER}cards.jar"
-sh "${SERVER}control.sh" restart
+pm2 restart ecosystem.config.js

@@ -5,15 +5,11 @@ import com.destrostudios.cards.frontend.application.gui.GuiComponent;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.model.Mode;
-import com.jme3.math.ColorRGBA;
 import com.simsilica.lemur.Button;
-import com.simsilica.lemur.Label;
 import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 
 public class ModeSelector extends GuiComponent {
 
@@ -30,14 +26,6 @@ public class ModeSelector extends GuiComponent {
         super.init(mainApplication);
         addLabel("Mode:", 0);
         initModes();
-    }
-
-    protected void addLabel(String text, float y) {
-        Label label = new Label(text);
-        label.setFontSize(16);
-        label.setLocalTranslation(0, y, 0);
-        label.setColor(ColorRGBA.White);
-        guiNode.attachChild(label);
     }
 
     private void initModes() {
@@ -59,7 +47,7 @@ public class ModeSelector extends GuiComponent {
         selectMode(modes.get(0));
     }
 
-    protected void selectMode(Mode mode) {
+    public void selectMode(Mode mode) {
         if (mode != this.mode) {
             if (this.mode != null) {
                 setButtonSelected(modeButtons.get(this.mode), false);
@@ -68,27 +56,6 @@ public class ModeSelector extends GuiComponent {
             if (mode != null) {
                 setButtonSelected(modeButtons.get(mode), true);
             }
-            onModeSelected();
         }
-    }
-
-    protected void onModeSelected() {
-
-    }
-
-    protected void setButtonSelected(Button button, boolean selected) {
-        GuiUtil.setButtonBackground(button, (selected ? GuiUtil.BUTTON_COLOR_SELECTED : null));
-    }
-
-    public void setEnabled(boolean enabled) {
-        setNonSelectedButtonsEnabled(modeButtons, m -> m == mode, enabled);
-    }
-
-    protected static <K> void setNonSelectedButtonsEnabled(Map<K, Button> buttons, Predicate<K> isSelected, boolean enabled) {
-        buttons.forEach((key, button) -> {
-            if (!isSelected.test(key)) {
-                GuiUtil.setButtonEnabled(button, enabled);
-            }
-        });
     }
 }

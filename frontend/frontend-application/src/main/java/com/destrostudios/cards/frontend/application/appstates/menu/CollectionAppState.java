@@ -3,14 +3,17 @@ package com.destrostudios.cards.frontend.application.appstates.menu;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
+import com.destrostudios.cards.shared.model.Deck;
+import com.destrostudios.cards.shared.model.Mode;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Command;
 
-public class DecksAppState extends MenuAppState {
+public class CollectionAppState extends MenuAppState {
 
-    private ModeAndDeckSelector modeAndDeckSelector;
+    private ModeSelector modeSelector;
+    private DeckSelector deckSelector;
     private Button buttonEdit;
     private Button buttonDelete;
 
@@ -18,17 +21,30 @@ public class DecksAppState extends MenuAppState {
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
         addTitle("Collection");
-        modeAndDeckSelector = new ModeAndDeckSelector(true);
-        addComponent(modeAndDeckSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
         addButtons();
-    }
+        modeSelector = new ModeSelector(true) {
 
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        boolean isDeckSelected = (modeAndDeckSelector.getDeck() != null);
-        GuiUtil.setButtonEnabled(buttonEdit, isDeckSelected);
-        GuiUtil.setButtonEnabled(buttonDelete, isDeckSelected);
+            @Override
+            public void selectMode(Mode mode) {
+                super.selectMode(mode);
+                updateDecks();
+            }
+        };
+        deckSelector = new DeckSelector() {
+
+            @Override
+            public void selectDeck(Deck deck) {
+                super.selectDeck(deck);
+                boolean isDeckSelected = (deck != null);
+                GuiUtil.setButtonEnabled(buttonEdit, isDeckSelected);
+                GuiUtil.setButtonEnabled(buttonDelete, isDeckSelected);
+            }
+        };
+        float x = 50;
+        float y = (height - GuiUtil.BUTTON_HEIGHT_DEFAULT);
+        // Initialize deck selector before mode selector, since auto selecting the initial mode will load its decks
+        addComponent(deckSelector, x, y);
+        addComponent(modeSelector, x, y);
     }
 
     private void addButtons() {
@@ -53,16 +69,16 @@ public class DecksAppState extends MenuAppState {
     }
 
     private void createDeck() {
-        getModule(GameDataClientModule.class).createDeck(modeAndDeckSelector.getMode());
+        getModule(GameDataClientModule.class).createDeck(modeSelector.getMode());
         waitForUpdatedDecks();
     }
 
     private void editDeck() {
-        switchTo(new CollectionDeckAppState(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck()));
+        switchTo(new CollectionDeckAppState(modeSelector.getMode(), deckSelector.getDeck()));
     }
 
     private void deleteDeck() {
-        getModule(GameDataClientModule.class).deleteDeck(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck());
+        getModule(GameDataClientModule.class).deleteDeck(modeSelector.getMode(), deckSelector.getDeck());
         waitForUpdatedDecks();
     }
 
@@ -77,8 +93,12 @@ public class DecksAppState extends MenuAppState {
             @Override
             protected void close() {
                 super.close();
-                modeAndDeckSelector.updateDecks();
+                updateDecks();
             }
         });
+    }
+
+    private void updateDecks() {
+        deckSelector.setDecks(modeSelector.getMode());
     }
 }

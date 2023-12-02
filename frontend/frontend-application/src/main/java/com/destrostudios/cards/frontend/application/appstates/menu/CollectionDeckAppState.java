@@ -190,7 +190,7 @@ public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAp
 
     @Override
     protected void back() {
-        switchTo(new DecksAppState());
+        switchTo(new CollectionAppState());
     }
 
     private void initListeners() {

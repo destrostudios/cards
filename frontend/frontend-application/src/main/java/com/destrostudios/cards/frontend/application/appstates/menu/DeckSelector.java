@@ -1,10 +1,12 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cards.frontend.application.FrontendJmeApplication;
+import com.destrostudios.cards.frontend.application.gui.GuiComponent;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.model.CardList;
 import com.destrostudios.cards.shared.model.Deck;
+import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.simsilica.lemur.Button;
 import lombok.Getter;
@@ -12,11 +14,8 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.List;
 
-public class ModeAndDeckSelector extends ModeSelector {
+public class DeckSelector extends GuiComponent {
 
-    public ModeAndDeckSelector(boolean onlyModesWithUserDecks) {
-        super(onlyModesWithUserDecks);
-    }
     private HashMap<Deck, Button> deckButtons = new HashMap<>();
     @Getter
     private Deck deck;
@@ -27,13 +26,11 @@ public class ModeAndDeckSelector extends ModeSelector {
         addLabel("Decks:", -100);
     }
 
-    @Override
-    protected void onModeSelected() {
-        updateDecks();
+    public void setDecks(Mode mode) {
+        setDecks(getModule(GameDataClientModule.class).getDecks(mode));
     }
 
-    public void updateDecks() {
-        List<? extends Deck> decks = getModule(GameDataClientModule.class).getDecks(getMode());
+    public void setDecks(List<? extends Deck> decks) {
         if (!decks.contains(deck)) {
             selectDeck(null);
         }
@@ -67,7 +64,7 @@ public class ModeAndDeckSelector extends ModeSelector {
         return ((name != null) ? name : "Unnamed deck") + "\n(" + deckCardList.getSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")";
     }
 
-    private void selectDeck(Deck deck) {
+    public void selectDeck(Deck deck) {
         if (deck != this.deck) {
             if (this.deck != null) {
                 setButtonSelected(deckButtons.get(this.deck), false);
@@ -77,11 +74,5 @@ public class ModeAndDeckSelector extends ModeSelector {
                 setButtonSelected(deckButtons.get(deck), true);
             }
         }
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        setNonSelectedButtonsEnabled(deckButtons, d -> d == deck, enabled);
     }
 }

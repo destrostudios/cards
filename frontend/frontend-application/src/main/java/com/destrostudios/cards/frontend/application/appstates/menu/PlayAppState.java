@@ -6,6 +6,8 @@ import com.destrostudios.cards.frontend.application.appstates.services.GameServi
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
 import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.model.Deck;
+import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameContext;
@@ -22,16 +24,37 @@ import java.util.UUID;
 
 public class PlayAppState extends MenuAppState {
 
-    private ModeAndDeckSelector modeAndDeckSelector;
+    private ModeSelector modeSelector;
+    private DeckSelector deckSelector;
     private List<Button> buttonsQueue;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application){
         super.initialize(stateManager, application);
         addTitle("Play");
-        modeAndDeckSelector = new ModeAndDeckSelector(false);
-        addComponent(modeAndDeckSelector, 50, (height - GuiUtil.BUTTON_HEIGHT_DEFAULT));
         addButtons();
+        modeSelector = new ModeSelector(false) {
+
+            @Override
+            public void selectMode(Mode mode) {
+                super.selectMode(mode);
+                deckSelector.setDecks(mode);
+            }
+        };
+        deckSelector = new DeckSelector() {
+
+            @Override
+            public void selectDeck(Deck deck) {
+                super.selectDeck(deck);
+                boolean isDeckSelected = (deck != null);
+                buttonsQueue.forEach(buttonQueue -> GuiUtil.setButtonEnabled(buttonQueue, isDeckSelected));
+            }
+        };
+        float x = 50;
+        float y = (height - GuiUtil.BUTTON_HEIGHT_DEFAULT);
+        // Initialize deck selector before mode selector, since auto selecting the initial mode will load its decks
+        addComponent(deckSelector, x, y);
+        addComponent(modeSelector, x, y);
     }
 
     private void addButtons() {
@@ -63,7 +86,7 @@ public class PlayAppState extends MenuAppState {
                     b.setText("Queue vs Human");
                 }
             } else {
-                queueModule.queue(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck(), queue);
+                queueModule.queue(modeSelector.getMode(), deckSelector.getDeck(), queue);
                 if (isUserQueue) {
                     b.setText("Unqueue vs Human");
                 }
@@ -76,8 +99,6 @@ public class PlayAppState extends MenuAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        boolean isDeckSelected = (modeAndDeckSelector.getDeck() != null);
-        buttonsQueue.forEach(buttonQueue -> GuiUtil.setButtonEnabled(buttonQueue, isDeckSelected));
         switchToActiveGameIfExisting();
     }
 

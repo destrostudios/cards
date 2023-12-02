@@ -14,7 +14,7 @@ public class MainMenuAppState extends MenuAppState {
         super.initialize(stateManager, application);
         addTitle("Cards");
         addButton(0, "Play", b -> switchTo(new PlayAppState()));
-        addButton(1, "Collection", b -> switchTo(new DecksAppState()));
+        addButton(1, "Collection", b -> switchTo(new CollectionAppState()));
         int packs = getModule(GameDataClientModule.class).getPacks();
         Button buttonPacks = addButton(2, "Packs" + ((packs > 0) ? " (" + packs + ")" : ""), b -> switchTo(new PacksAppState()));
         GuiUtil.setButtonBackground(buttonPacks, (packs > 0) ? GuiUtil.BUTTON_COLOR_HIGHLIGHT : null);

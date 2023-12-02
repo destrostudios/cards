@@ -1,6 +1,6 @@
 package com.destrostudios.cards.shared.model.internal;
 
-import com.destrostudios.cards.shared.model.CardListCard;
+import com.destrostudios.cards.shared.model.BaseCardIdentifier;
 import lombok.*;
 
 import java.util.List;
@@ -10,5 +10,5 @@ import java.util.List;
 @Getter
 @ToString
 public class PackResult {
-    private List<CardListCard> cards;
+    private List<BaseCardIdentifier> cards;
 }

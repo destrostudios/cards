@@ -38,7 +38,7 @@ public class PlayAppState extends MenuAppState {
             @Override
             public void selectMode(Mode mode) {
                 super.selectMode(mode);
-                deckSelector.setDecks(mode);
+                onModeSelected(mode);
             }
         };
         deckSelector = new DeckSelector() {
@@ -46,8 +46,7 @@ public class PlayAppState extends MenuAppState {
             @Override
             public void selectDeck(Deck deck) {
                 super.selectDeck(deck);
-                boolean isDeckSelected = (deck != null);
-                buttonsQueue.forEach(buttonQueue -> GuiUtil.setButtonEnabled(buttonQueue, isDeckSelected));
+                onDeckSelected(deck);
             }
         };
         float x = 50;
@@ -94,6 +93,18 @@ public class PlayAppState extends MenuAppState {
         });
         button.setLocalTranslation(x, y, 0);
         return button;
+    }
+
+    private void onModeSelected(Mode mode) {
+        deckSelector.setDecks(mode);
+        if (mode.getName().equals(GameConstants.MODE_NAME_ARENA)) {
+            switchTo(new ArenaAppState());
+        }
+    }
+
+    private void onDeckSelected(Deck deck) {
+        boolean isDeckSelected = (deck != null);
+        buttonsQueue.forEach(buttonQueue -> GuiUtil.setButtonEnabled(buttonQueue, isDeckSelected));
     }
 
     @Override

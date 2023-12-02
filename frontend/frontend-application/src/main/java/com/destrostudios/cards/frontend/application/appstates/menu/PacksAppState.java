@@ -116,7 +116,7 @@ public class PacksAppState extends MenuAppState {
     private List<CardModel> createCardModels(PackResult packResult) {
         EntityData data = new SimpleEntityData(Components.ALL);
         return packResult.getCards().stream()
-                .map(cardListCard -> CardGuiMapper.createModel(data, cardListCard))
+                .map(cardIdentifier -> CardGuiMapper.createModel(data, cardIdentifier))
                 .collect(Collectors.toList());
     }
 

@@ -3,7 +3,7 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.*;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.model.CardListCard;
+import com.destrostudios.cards.shared.model.CardIdentifier;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
 import com.destrostudios.cards.shared.rules.util.ModelUtil;
@@ -25,8 +25,8 @@ public class CardGuiMapper {
         tribeComponents.put(Components.Tribe.GOBLIN, "Goblin");
     }
 
-    public static CardModel createModel(EntityData data, CardListCard cardListCard) {
-        int card = ModelUtil.createCard(data, cardListCard);
+    public static CardModel createModel(EntityData data, CardIdentifier cardIdentifier) {
+        int card = ModelUtil.createCard(data, cardIdentifier);
         CardModel cardModel = new CardModel();
         updateModel(data, card, cardModel, true);
         return cardModel;

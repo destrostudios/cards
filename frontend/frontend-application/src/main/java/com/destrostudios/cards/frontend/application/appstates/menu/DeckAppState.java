@@ -168,6 +168,14 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
     protected abstract void back();
 
     @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        textTitle.setText(getTitle() + " (" + deckBuilderAppState.getDeckSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")");
+    }
+
+    protected abstract String getTitle();
+
+    @Override
     public void cleanup() {
         super.cleanup();
         mainApplication.getRootNode().detachChild(inspectionBackdrop);

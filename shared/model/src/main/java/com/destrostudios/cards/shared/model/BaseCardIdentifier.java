@@ -6,9 +6,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-public class CardListCard implements CardIdentifier {
-    private int id;
+public class BaseCardIdentifier implements CardIdentifier {
     private Card card;
     private Foil foil;
-    private int amount;
 }

@@ -6,21 +6,13 @@ import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.Collection
 import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
-import com.destrostudios.cards.frontend.application.appstates.services.CardGuiMapper;
 import com.destrostudios.cards.frontend.application.appstates.services.CollectionCardAmountVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
-import com.destrostudios.cards.shared.entities.EntityData;
-import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.model.CardList;
-import com.destrostudios.cards.shared.model.CardListCard;
-import com.destrostudios.cards.shared.model.Deck;
-import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
@@ -41,7 +33,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAppState<CardModel>> implements ActionListener {
+public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionDeckBuilderAppState<CardModel>> implements ActionListener {
 
     public CollectionDeckAppState(Mode mode, Deck deck) {
         this.mode = mode;
@@ -50,14 +42,17 @@ public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAp
     private Mode mode;
     private Deck deck;
     private HashMap<CardModel, Integer> collectionCards;
-    private HashMap<String, CardModel> cardsToCardModelsMap;
-    private HashMap<CardModel, CardListCard> cardModelsToCardsMap;
     private Node collectionGuiNode;
     private TextField textFieldName;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
     private Button[] buttonFilterManaCost;
     private Integer filteredManaCost;
+
+    @Override
+    protected String getTitle() {
+        return "Deckbuilder";
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application application){
@@ -73,8 +68,9 @@ public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAp
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(collectionGuiNode);
 
-        initCollectionCards();
-        HashMap<CardModel, Integer> deck = initDeckCards();
+        CardList collection = getModule(GameDataClientModule.class).getCollection();
+        collectionCards = mapCardList(collection);
+        HashMap<CardModel, Integer> deck = mapCardList(this.deck.getDeckCardList());
 
         CollectionDeckBuilderSettings<CardModel> settings = CollectionDeckBuilderSettings.<CardModel>builder()
             .deckBuilderSettings(deckBuilderSettings)
@@ -95,35 +91,6 @@ public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAp
                 setDeck(deck);
             }
         };
-    }
-
-    private void initCollectionCards() {
-        collectionCards = new HashMap<>();
-        cardsToCardModelsMap = new HashMap<>();
-        cardModelsToCardsMap = new HashMap<>();
-        CardList collection = getModule(GameDataClientModule.class).getCollection();
-        EntityData data = new SimpleEntityData(Components.ALL);
-        for (CardListCard cardListCard : collection.getCards()) {
-            CardModel cardModel = CardGuiMapper.createModel(data, cardListCard);
-            collectionCards.put(cardModel, cardListCard.getAmount());
-
-            String cardKey = getCardListCardKey(cardListCard);
-            cardsToCardModelsMap.put(cardKey, cardModel);
-            cardModelsToCardsMap.put(cardModel, cardListCard);
-        }
-    }
-
-    private HashMap<CardModel, Integer> initDeckCards() {
-        HashMap<CardModel, Integer> deckCards = new HashMap<>();
-        for (CardListCard cardListCard : this.deck.getDeckCardList().getCards()) {
-            CardModel cardModel = cardsToCardModelsMap.get(getCardListCardKey(cardListCard));
-            deckCards.put(cardModel, cardListCard.getAmount());
-        }
-        return deckCards;
-    }
-
-    private String getCardListCardKey(CardListCard cardListCard) {
-        return cardListCard.getCard().getId() + "_" + cardListCard.getFoil().getId();
     }
 
     @Override
@@ -201,12 +168,6 @@ public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAp
     }
 
     @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        textTitle.setText("Deckbuilder (" + deckBuilderAppState.getDeckSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")");
-    }
-
-    @Override
     public void onAction(String name, boolean isPressed, float lastTimePerFrame) {
         if ("left".equals(name) && isPressed) {
             goToPreviousPage();
@@ -241,8 +202,8 @@ public class CollectionDeckAppState extends DeckAppState<CollectionDeckBuilderAp
     private void saveDeck() {
         LinkedList<NewCardListCard> cards = new LinkedList<>();
         for (Map.Entry<CardModel, Integer> entry : deckBuilderAppState.getDeck().entrySet()) {
-            CardListCard cardListCard = cardModelsToCardsMap.get(entry.getKey());
-            cards.add(new NewCardListCard(cardListCard.getCard().getId(), cardListCard.getFoil().getId(), entry.getValue()));
+            CardIdentifier cardIdentifier = getCardIdentifier(entry.getKey());
+            cards.add(new NewCardListCard(cardIdentifier.getCard().getId(), cardIdentifier.getFoil().getId(), entry.getValue()));
         }
         String name = textFieldName.getText();
         if (name.isEmpty()) {

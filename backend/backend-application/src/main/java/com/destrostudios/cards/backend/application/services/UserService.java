@@ -219,8 +219,8 @@ public class UserService {
         database.execute("UPDATE user SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE id = " + userId);
         PackResult packResult = createPackResult();
         CardList collectionCardList = getCollectionCardList(userId);
-        for (CardListCard cardListCard : packResult.getCards()) {
-            cardListService.addCard(collectionCardList.getId(), cardListCard.getCard().getId(), cardListCard.getFoil().getId(), cardListCard.getAmount());
+        for (CardIdentifier cardIdentifier : packResult.getCards()) {
+            cardListService.addCard(collectionCardList.getId(), cardIdentifier.getCard().getId(), cardIdentifier.getFoil().getId(), 1);
         }
         return packResult;
     }
@@ -229,12 +229,12 @@ public class UserService {
         List<Card> availableCards = cardService.getCards_NonCore();
         Foil foilArtwork = foilService.getFoil(GameConstants.FOIL_NAME_ARTWORK);
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
-        LinkedList<CardListCard> cards = new LinkedList<>();
+        LinkedList<BaseCardIdentifier> cards = new LinkedList<>();
         for (int i = 0; i < GameConstants.CARDS_PER_PACK; i++) {
             int cardIndex = (int) (Math.random() * availableCards.size());
             Card card = availableCards.get(cardIndex);
             Foil foil = ((i == 0) ? foilArtwork : foilNone);
-            cards.add(new CardListCard(0, card, foil, 1));
+            cards.add(new BaseCardIdentifier(card, foil));
         }
         return new PackResult(cards);
     }

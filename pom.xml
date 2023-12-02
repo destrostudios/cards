@@ -13,7 +13,7 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.card-gui>0946f401a4caf4dd52d3ff2bfaaa3a6c5d62b517</version.card-gui>
+        <version.card-gui>d1d41e67a44388ff317130e1684b4bdf6fb308d4</version.card-gui>
         <version.game-tools>76bd23e029824acdbf2596f2030a95a48beeefbb</version.game-tools>
         <version.groovy>3.0.10</version.groovy>
         <version.jackson>2.14.2</version.jackson>

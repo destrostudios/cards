@@ -58,7 +58,7 @@ public class DecksAppState extends MenuAppState {
     }
 
     private void editDeck() {
-        switchTo(new DeckAppState(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck()));
+        switchTo(new CollectionDeckAppState(modeAndDeckSelector.getMode(), modeAndDeckSelector.getDeck()));
     }
 
     private void deleteDeck() {

@@ -3,9 +3,10 @@ package com.destrostudios.cards.frontend.application.appstates.menu;
 import com.destrostudios.cardgui.*;
 import com.destrostudios.cardgui.Card;
 import com.destrostudios.cardgui.events.MoveCardEvent;
-import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderDeckCardModel;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
+import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderAppState;
+import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.CompositeComparator;
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
@@ -66,7 +67,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
     private HashMap<String, CardModel> cardsToCardModelsMap;
     private HashMap<CardModel, CardListCard> cardModelsToCardsMap;
     private Node collectionGuiNode;
-    private DeckBuilderAppState<CardModel> deckBuilderAppState;
+    private CollectionDeckBuilderAppState<CardModel> deckBuilderAppState;
     private SimpleIntervalZone inspectionZone;
     private Card<CardModel> inspectionCard;
     private Geometry inspectionBackdrop;
@@ -126,47 +127,49 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             Comparator.comparing(CardModel::getTitle),
             Comparator.comparing(cardModel -> ((cardModel.getFoil() != null) ? cardModel.getFoil().ordinal() : -1))
         );
-        DeckBuilderSettings<CardModel> settings = DeckBuilderSettings.<CardModel>builder()
+        CollectionDeckBuilderSettings<CardModel> settings = CollectionDeckBuilderSettings.<CardModel>builder()
+            .deckBuilderSettings(DeckBuilderSettings.<CardModel>builder()
+                .deckZone(deckZone)
+                .deckCardVisualizer(deckCardVisualizer)
+                .deckCardOrder(cardOrder)
+                .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
+                .deckCardsMaximumUnique(cardModel -> cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY)
+                .boardSettings(BoardSettings.builder()
+                    .inputActionPrefix("deckbuilder")
+                    .hoverInspectionDelay(0f)
+                    .isInspectable(transformedBoardObject -> (transformedBoardObject instanceof Card card) && (card.getZonePosition().getZone() == deckZone))
+                    .inspector(new Inspector() {
+
+                        @Override
+                        public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
+                            Card<DeckBuilderDeckCardModel<CardModel>> deckCard = (Card<DeckBuilderDeckCardModel<CardModel>>) transformedBoardObject;
+                            deckBuilderAppState.getBoard().triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
+                            inspectionCard.finishTransformations();
+                            inspectionCard.getModel().set(deckCard.getModel().getCardModel());
+                            inspectionBackdrop.setCullHint(Spatial.CullHint.Inherit);
+                            collectionGuiNode.setCullHint(Spatial.CullHint.Always);
+                        }
+
+                        @Override
+                        public boolean isReadyToUninspect() {
+                            return true;
+                        }
+
+                        @Override
+                        public void uninspect() {
+                            deckBuilderAppState.getBoard().unregister(inspectionCard);
+                            inspectionBackdrop.setCullHint(Spatial.CullHint.Always);
+                            collectionGuiNode.setCullHint(Spatial.CullHint.Inherit);
+                        }
+                    })
+                    .build())
+                .build())
             .collectionCards(collectionCards)
             .collectionZone(collectionZone)
-            .deckZone(deckZone)
             .collectionCardVisualizer(IngameCardVisualizer.forCollection())
             .collectionCardAmountVisualizer(collectionCardAmountVisualizer)
-            .deckCardVisualizer(deckCardVisualizer)
-            .deckCardOrder(cardOrder)
-            .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
-            .deckCardsMaximumUnique(cardModel -> cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY)
             .collectionCardsPerRow(4)
             .collectionRowsPerPage(2)
-            .boardSettings(BoardSettings.builder()
-                .inputActionPrefix("deckbuilder")
-                .hoverInspectionDelay(0f)
-                .isInspectable(transformedBoardObject -> (transformedBoardObject instanceof Card card) && (card.getZonePosition().getZone() == deckZone))
-                .inspector(new Inspector() {
-
-                    @Override
-                    public void inspect(BoardAppState boardAppState, TransformedBoardObject<?> transformedBoardObject, Vector3f vector3f) {
-                        Card<DeckBuilderDeckCardModel<CardModel>> deckCard = (Card<DeckBuilderDeckCardModel<CardModel>>) transformedBoardObject;
-                        deckBuilderAppState.getBoard().triggerEvent(new MoveCardEvent(inspectionCard, inspectionZone, new Vector3f()));
-                        inspectionCard.finishTransformations();
-                        inspectionCard.getModel().set(deckCard.getModel().getCardModel());
-                        inspectionBackdrop.setCullHint(Spatial.CullHint.Inherit);
-                        collectionGuiNode.setCullHint(Spatial.CullHint.Always);
-                    }
-
-                    @Override
-                    public boolean isReadyToUninspect() {
-                        return true;
-                    }
-
-                    @Override
-                    public void uninspect() {
-                        deckBuilderAppState.getBoard().unregister(inspectionCard);
-                        inspectionBackdrop.setCullHint(Spatial.CullHint.Always);
-                        collectionGuiNode.setCullHint(Spatial.CullHint.Inherit);
-                    }
-                })
-                .build())
             .build();
 
         HashMap<CardModel, Integer> deck = new HashMap<>();
@@ -175,7 +178,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
             deck.put(cardModel, cardListCard.getAmount());
         }
 
-        deckBuilderAppState = new DeckBuilderAppState<>(mainApplication.getRootNode(), settings) {
+        deckBuilderAppState = new CollectionDeckBuilderAppState<>(mainApplication.getRootNode(), settings) {
 
             @Override
             protected void initialize(Application app) {
@@ -183,17 +186,22 @@ public class DeckAppState extends MenuAppState implements ActionListener {
                 setCollectionCardOrder(cardOrder);
                 setDeck(deck);
             }
+
+            @Override
+            protected void initBoard() {
+                super.initBoard();
+                inspectionZone = new SimpleIntervalZone(new Vector3f(-1.97f, 0.2f, 0), Quaternion.IDENTITY, Vector3f.UNIT_XYZ);
+                board.addZone(inspectionZone);
+                board.registerVisualizer_ZonePosition(
+                    zonePosition -> zonePosition.getZone() == inspectionZone,
+                    IngameCardVisualizer.forCollection()
+                );
+            }
         };
         mainApplication.getStateManager().attach(deckBuilderAppState);
 
         // Inspection
 
-        inspectionZone = new SimpleIntervalZone(new Vector3f(-1.97f, 0.2f, 0), Quaternion.IDENTITY, Vector3f.UNIT_XYZ);
-        deckBuilderAppState.getBoard().addZone(inspectionZone);
-        deckBuilderAppState.getBoard().registerVisualizer_ZonePosition(
-            zonePosition -> zonePosition.getZone() == inspectionZone,
-            IngameCardVisualizer.forCollection()
-        );
         inspectionCard = new Card<>(new CardModel());
         inspectionBackdrop = new Geometry("inspectionBackdrop", new Quad(16.37f, 9.93f));
         inspectionBackdrop.setLocalTranslation(-10.17f, 0.1f, 4.97f);

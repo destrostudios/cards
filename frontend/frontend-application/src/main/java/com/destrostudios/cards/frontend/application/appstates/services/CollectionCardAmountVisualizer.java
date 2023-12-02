@@ -1,8 +1,8 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cardgui.StatefulBoardObjectVisualizer;
-import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderCollectionCardAmount;
-import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderCollectionCardAmountModel;
+import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderCardAmount;
+import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderCardAmountModel;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -12,7 +12,7 @@ import com.simsilica.lemur.Label;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class CollectionCardAmountVisualizer extends StatefulBoardObjectVisualizer<DeckBuilderCollectionCardAmount, Label> {
+public class CollectionCardAmountVisualizer extends StatefulBoardObjectVisualizer<CollectionDeckBuilderCardAmount, Label> {
 
     private Node guiNode;
 
@@ -32,8 +32,8 @@ public class CollectionCardAmountVisualizer extends StatefulBoardObjectVisualize
     }
 
     @Override
-    protected void updateVisualizationObject(Label label, DeckBuilderCollectionCardAmount amount, AssetManager assetManager) {
-        DeckBuilderCollectionCardAmountModel model = amount.getModel();
+    protected void updateVisualizationObject(Label label, CollectionDeckBuilderCardAmount amount, AssetManager assetManager) {
+        CollectionDeckBuilderCardAmountModel model = amount.getModel();
 
         float x = 135 + (model.getX() * 265);
         float y = 475 - (model.getY() * 363);

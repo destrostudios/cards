@@ -17,10 +17,10 @@ import java.util.function.Predicate;
 
 public class ModeSelector extends GuiComponent {
 
-    public ModeSelector(boolean onlyModesWithUserCollections) {
-        this.onlyModesWithUserCollections = onlyModesWithUserCollections;
+    public ModeSelector(boolean onlyModesWithUserDecks) {
+        this.onlyModesWithUserDecks = onlyModesWithUserDecks;
     }
-    private boolean onlyModesWithUserCollections;
+    private boolean onlyModesWithUserDecks;
     private HashMap<Mode, Button> modeButtons = new HashMap<>();
     @Getter
     private Mode mode;
@@ -46,8 +46,8 @@ public class ModeSelector extends GuiComponent {
         float x = 0;
         float y = -30;
         List<Mode> modes = getModule(GameDataClientModule.class).getModes();
-        if (onlyModesWithUserCollections) {
-            modes = modes.stream().filter(Mode::isHasUserLibrary).toList();
+        if (onlyModesWithUserDecks) {
+            modes = modes.stream().filter(Mode::isHasUserDecks).toList();
         }
         for (Mode mode : modes) {
             Button button = GuiUtil.createButton(mode.getTitle(), buttonWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> selectMode(mode));

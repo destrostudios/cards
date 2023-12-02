@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Connection;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class GameDataClientModule extends NetworkModule {
@@ -38,13 +39,13 @@ public class GameDataClientModule extends NetworkModule {
         }
     }
 
-    public CardList getCollection(Mode mode) {
-        return getUserMode(mode).getCollectionCardList();
+    public CardList getCollection() {
+        return user.getCollectionCardList();
     }
 
     public List<? extends Deck> getDecks(Mode mode) {
-        if (mode.isHasUserLibrary()) {
-            return getUserMode(mode).getDecks();
+        if (mode.isHasUserDecks()) {
+            return user.getDecks().stream().filter(deck -> deck.getMode().getId() == mode.getId()).collect(Collectors.toList());
         } else {
             return mode.getDecks();
         }
@@ -70,22 +71,13 @@ public class GameDataClientModule extends NetworkModule {
         connection.sendTCP(new GetUserMessage());
     }
 
-    public int getTotalPacks() {
-        return user.getModes().stream().map(UserMode::getPacks).reduce(0, Integer::sum);
+    public int getPacks() {
+        return user.getPacks();
     }
 
-    public int getPacks(Mode mode) {
-        return getUserMode(mode).getPacks();
-    }
-
-    public void openPack(Mode mode) {
-        int userModeId = getUserMode(mode).getId();
+    public void openPack() {
         user = null;
         packResult = null;
-        connection.sendTCP(new OpenPackMessage(userModeId));
-    }
-
-    private UserMode getUserMode(Mode mode) {
-        return user.getModes().stream().filter(um -> um.getMode().getId() == mode.getId()).findFirst().orElseThrow();
+        connection.sendTCP(new OpenPackMessage());
     }
 }

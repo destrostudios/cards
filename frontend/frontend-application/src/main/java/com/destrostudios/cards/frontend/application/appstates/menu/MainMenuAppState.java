@@ -15,9 +15,9 @@ public class MainMenuAppState extends MenuAppState {
         addTitle("Cards");
         addButton(0, "Play", b -> switchTo(new PlayAppState()));
         addButton(1, "Collection", b -> switchTo(new DecksAppState()));
-        int totalPacks = getModule(GameDataClientModule.class).getTotalPacks();
-        Button buttonPacks = addButton(2, "Packs" + ((totalPacks > 0) ? " (" + totalPacks + ")" : ""), b -> switchTo(new PacksAppState()));
-        GuiUtil.setButtonBackground(buttonPacks, (totalPacks > 0) ? GuiUtil.BUTTON_COLOR_HIGHLIGHT : null);
+        int packs = getModule(GameDataClientModule.class).getPacks();
+        Button buttonPacks = addButton(2, "Packs" + ((packs > 0) ? " (" + packs + ")" : ""), b -> switchTo(new PacksAppState()));
+        GuiUtil.setButtonBackground(buttonPacks, (packs > 0) ? GuiUtil.BUTTON_COLOR_HIGHLIGHT : null);
         addButton(3, "Exit", b -> mainApplication.stop());
     }
 

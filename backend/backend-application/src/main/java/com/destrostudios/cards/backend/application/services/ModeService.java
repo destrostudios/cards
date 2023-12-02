@@ -29,7 +29,7 @@ public class ModeService {
                     modeId,
                     result.getString("name"),
                     result.getString("title"),
-                    result.getBoolean("has_user_library"),
+                    result.getBoolean("has_user_decks"),
                     getModeDecks(modeId)
                 );
                 modes.put(mode.getId(), mode);

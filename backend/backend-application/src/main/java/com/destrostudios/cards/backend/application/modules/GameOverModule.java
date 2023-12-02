@@ -43,9 +43,7 @@ public class GameOverModule extends NetworkModule {
         StartGameInfo startGameInfo = gameContext.getStartGameInfo();
         Mode mode = startGameInfo.getMode();
         Queue queue = startGameInfo.getQueue();
-        // TODO: Cleanup
         int winnerUserId = gameContext.getUserId(gameContext.getWinner());
-        int loserUserId = ((winnerUserId == startGameInfo.getPlayers()[0].getId()) ? startGameInfo.getPlayers()[1].getId() : startGameInfo.getPlayers()[0].getId());
         database.transaction(() -> {
             for (PlayerInfo playerInfo : startGameInfo.getPlayers()) {
                 if (playerInfo.getId() != QueueServerModule.BOT_USER_ID) {
@@ -53,13 +51,9 @@ public class GameOverModule extends NetworkModule {
                     userService.onGameOver(playerInfo.getId(), mode.getId(), queue.getId(), win);
                 }
             }
-            // TODO: Extract logic below?
-            if (mode.isHasUserLibrary() && (winnerUserId != QueueServerModule.BOT_USER_ID)) {
-                userService.addPacks(winnerUserId, mode.getId(), GameConstants.PACKS_FOR_WINNER);
-            }
-            if (mode.getName().equals(GameConstants.MODE_NAME_ARENA) && (loserUserId != QueueServerModule.BOT_USER_ID)) {
-                userService.deleteAllUserModeDecksAndCollectionCards(loserUserId, mode.getId());
-                userService.setPacks(loserUserId, mode.getId(), GameConstants.PACKS_FOR_NEW_ARENA_RUN);
+            // TODO: Extract mode logic below?
+            if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC) && (winnerUserId != QueueServerModule.BOT_USER_ID)) {
+                userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER);
             }
         });
     }

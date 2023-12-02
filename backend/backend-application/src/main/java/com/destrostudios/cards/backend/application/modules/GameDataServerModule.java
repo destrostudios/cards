@@ -51,10 +51,10 @@ public class GameDataServerModule extends NetworkModule {
             sendUser(connection);
         } else if (object instanceof GetUserMessage) {
             sendUser(connection);
-        } else if (object instanceof OpenPackMessage openPackMessage) {
+        } else if (object instanceof OpenPackMessage) {
             int userId = getUserId(connection);
             database.transaction(() -> {
-                PackResult packResult = userService.openPack(openPackMessage.getUserModeId());
+                PackResult packResult = userService.openPack(userId);
                 User user = userService.getUser(userId);
                 connection.sendTCP(new PackResultMessage(packResult, user));
             });

@@ -12,8 +12,6 @@
         <module>test</module>
     </modules>
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.card-gui>d8b46a1f06a2c689b2e18479a97d1fb2198c9663</version.card-gui>
         <version.game-tools>76bd23e029824acdbf2596f2030a95a48beeefbb</version.game-tools>
@@ -160,19 +158,6 @@
                 <configuration>
                     <workingDirectory>${session.executionRootDirectory}/backend/backend-application/workspace</workingDirectory>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.0.4</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

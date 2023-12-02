@@ -29,10 +29,10 @@ public class UserService {
         if (hasUser(userId)) {
             database.execute("UPDATE user SET last_login_date = '" + escapedNow + "' WHERE id = " + userId);
         } else {
-            database.execute("INSERT INTO user (id, login, admin, first_login_date, last_login_date) VALUES (" + userId + ", '" + database.escape(jwtUser.login) + "', FALSE, '" + escapedNow + "', '" + escapedNow + "')");
+            int collectionCardListId = cardListService.createCardList();
+            database.execute("INSERT INTO user (id, login, admin, collection_card_list_id, packs, packs_opened, first_login_date, last_login_date) VALUES (" + userId + ", '" + database.escape(jwtUser.login) + "', FALSE, " + collectionCardListId + ", " + GameConstants.PACKS_FOR_NEW_PLAYERS + ", 0, '" + escapedNow + "', '" + escapedNow + "')");
+            createIntroductionDeck(userId);
         }
-        // Always do this, in case of new modes being introduced to existing users
-        createUserModesIfNotExisting(userId);
     }
 
     private boolean hasUser(int userId) {
@@ -41,45 +41,9 @@ public class UserService {
         }
     }
 
-    private void createUserModesIfNotExisting(int userId) {
-        for (Mode mode : modeService.getModes()) {
-            if (getUserModeId(userId, mode.getId()) == null) {
-                createUserMode(userId, mode);
-            }
-        }
-    }
-
-    public Integer getUserModeId(int userId, int modeId) {
-        try (QueryResult result = database.select("SELECT id FROM user_mode WHERE user_id = " + userId + " AND mode_id = " + modeId)) {
-            return (result.next() ? result.getInteger("id") : null);
-        }
-    }
-
-    private void createUserMode(int userId, Mode mode) {
-        Integer collectionCardListId = null;
-        if (mode.isHasUserLibrary()) {
-            collectionCardListId = cardListService.createCardList();
-        }
-        // TODO: Extract logic
-        boolean isModeClassic = mode.getName().equals(GameConstants.MODE_NAME_CLASSIC);
-        boolean isModeArena = mode.getName().equals(GameConstants.MODE_NAME_ARENA);
-        int packs = 0;
-        if (isModeClassic) {
-            packs = GameConstants.PACKS_FOR_NEW_PLAYERS_CLASSIC;
-        } else if (isModeArena) {
-            packs = GameConstants.PACKS_FOR_NEW_ARENA_RUN;
-        }
-        try (QueryResult result = database.insert("INSERT INTO user_mode (user_id, mode_id, collection_card_list_id, packs, packs_opened) VALUES (" + userId + ", " + mode.getId() + ", " + collectionCardListId + ", " + packs + ", 0)")) {
-            result.next();
-            int userModeId = result.getInteger(1);
-            if (isModeClassic) {
-                createIntroductionDeck(userModeId);
-            }
-        }
-    }
-
-    private void createIntroductionDeck(int userModeId) {
-        int introductionDeckId = createUserModeDeck(userModeId);
+    private void createIntroductionDeck(int userId) {
+        Mode classicMode = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
+        int introductionDeckId = createUserModeDeck(userId, classicMode.getId());
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
         List<NewCardListCard> cards = cardService.getCards_Core().stream()
                 .map(card -> new NewCardListCard(card.getId(), foilNone.getId(), 2))
@@ -94,72 +58,33 @@ public class UserService {
                 result.getInteger("id"),
                 result.getString("login"),
                 result.getBoolean("admin"),
+                getCollectionCardList(userId, result.getInteger("collection_card_list_id")),
+                result.getInteger("packs"),
+                result.getInteger("packs_opened"),
                 result.getDateTime("first_login_date"),
                 result.getDateTime("last_login_date"),
-                getUserModes(userId)
+                getUserModeDecks(userId),
+                getUserModeQueues(userId)
             );
         }
     }
 
-    private List<UserMode> getUserModes(int userId) {
-        LinkedList<UserMode> userModes = new LinkedList<>();
-        try (QueryResult result = database.select("SELECT * FROM user_mode WHERE user_id = " + userId)) {
-            while (result.next()) {
-                userModes.add(mapUserMode(result));
-            }
-        }
-        return userModes;
-    }
-
-    private UserMode getUserMode(int userModeId) {
-        try (QueryResult result = database.select("SELECT * FROM user_mode WHERE id = " + userModeId)) {
+    public CardList getCollectionCardList(int userId) {
+        try (QueryResult result = database.select("SELECT collection_card_list_id FROM user WHERE id = " + userId)) {
             result.next();
-            return mapUserMode(result);
+            int collectionCardListId = result.getInteger("collection_card_list_id");
+            return getCollectionCardList(userId, collectionCardListId);
         }
     }
 
-    private UserMode getUserMode(int userId, int modeId) {
-        try (QueryResult result = database.select("SELECT * FROM user_mode WHERE user_id = " + userId + " AND mode_id = " + modeId)) {
-            result.next();
-            return mapUserMode(result);
+    private CardList getCollectionCardList(int userId, int collectionCardListId) {
+        CardList cardList = cardListService.getCardList(collectionCardListId);
+        if (isAdmin(userId)) {
+            addAllCardsToList(cardList);
+        } else {
+            addCoreCardsToList(cardList);
         }
-    }
-
-    private UserMode mapUserMode(QueryResult result) {
-        int userModeId = result.getInteger("id");
-        int userId = result.getInteger("user_id");
-        int modeId = result.getInteger("mode_id");
-        return new UserMode(
-            userModeId,
-            userId,
-            modeService.getMode(modeId),
-            getCollectionCardList(userId, modeId),
-            result.getInteger("packs"),
-            result.getInteger("packs_opened"),
-            getUserModeDecks(userModeId),
-            getUserModeQueues(userModeId)
-        );
-    }
-
-    public CardList getCollectionCardList(int userId, int modeId) {
-        try (QueryResult result = database.select("SELECT collection_card_list_id FROM user_mode WHERE user_id = " + userId + " AND mode_id = " + modeId)) {
-            result.next();
-            int cardListId = result.getInteger("collection_card_list_id");
-            // getInteger returns null as 0 at the moment
-            if (cardListId != 0) {
-                CardList cardList = cardListService.getCardList(cardListId);
-                if (isAdmin(userId)) {
-                    addAllCardsToList(cardList);
-                } else {
-                    Mode mode = modeService.getMode(modeId);
-                    if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC)) {
-                        addCoreCardsToList(cardList);
-                    }
-                }
-                return cardList;
-            }
-            return null;
-        }
+        return cardList;
     }
 
     private boolean isAdmin(int userId) {
@@ -184,9 +109,9 @@ public class UserService {
         }
     }
 
-    private List<UserModeDeck> getUserModeDecks(int userModeId) {
+    private List<UserModeDeck> getUserModeDecks(int userId) {
         LinkedList<UserModeDeck> userModeDecks = new LinkedList<>();
-        try (QueryResult result = database.select("SELECT * FROM user_mode_deck WHERE user_mode_id = " + userModeId)) {
+        try (QueryResult result = database.select("SELECT * FROM user_mode_deck WHERE user_id = " + userId)) {
             while (result.next()) {
                 userModeDecks.add(mapUserModeDeck(result));
             }
@@ -204,14 +129,15 @@ public class UserService {
     private UserModeDeck mapUserModeDeck(QueryResult result) {
         return new UserModeDeck(
             result.getInteger("id"),
-            result.getInteger("user_mode_id"),
+            result.getInteger("user_id"),
+            modeService.getMode(result.getInteger("mode_id")),
             cardListService.getCardList(result.getInteger("deck_card_list_id"))
         );
     }
 
-    public int createUserModeDeck(int userModeId) {
+    public int createUserModeDeck(int userId, int modeId) {
         int deckCardListId = cardListService.createCardList();
-        try (QueryResult result = database.insert("INSERT INTO user_mode_deck (user_mode_id, deck_card_list_id) VALUES (" + userModeId + ", " + deckCardListId + ")")) {
+        try (QueryResult result = database.insert("INSERT INTO user_mode_deck (user_id, mode_id, deck_card_list_id) VALUES (" + userId + ", " + modeId + ", " + deckCardListId + ")")) {
             result.next();
             return result.getInteger(1);
         }
@@ -222,27 +148,15 @@ public class UserService {
         cardListService.updateCardList(userModeDeck.getDeckCardList().getId(), name, cards);
     }
 
-    public void deleteAllUserModeDecksAndCollectionCards(int userId, int modeId) {
-        UserMode userMode = getUserMode(userId, modeId);
-        for (UserModeDeck userModeDeck : userMode.getDecks()) {
-            deleteUserModeDeck(userModeDeck);
-        }
-        cardListService.updateCardList(userMode.getCollectionCardList().getId(), null, new LinkedList<>());
-    }
-
     public void deleteUserModeDeck(int userModeDeckId) {
         UserModeDeck userModeDeck = getUserModeDeck(userModeDeckId);
-        deleteUserModeDeck(userModeDeck);
-    }
-
-    private void deleteUserModeDeck(UserModeDeck userModeDeck) {
         database.execute("DELETE FROM user_mode_deck WHERE id = " + userModeDeck.getId());
         cardListService.deleteCardList(userModeDeck.getDeckCardList().getId());
     }
 
-    private List<UserModeQueue> getUserModeQueues(int userModeId) {
+    private List<UserModeQueue> getUserModeQueues(int userId) {
         LinkedList<UserModeQueue> userModeQueues = new LinkedList<>();
-        try (QueryResult result = database.select("SELECT * FROM user_mode_queue WHERE user_mode_id = " + userModeId)) {
+        try (QueryResult result = database.select("SELECT * FROM user_mode_queue WHERE user_id = " + userId)) {
             while (result.next()) {
                 userModeQueues.add(mapUserModeQueue(result));
             }
@@ -250,10 +164,20 @@ public class UserService {
         return userModeQueues;
     }
 
+    private UserModeQueue getUserModeQueue(int userId, int modeId, int queueId) {
+        try (QueryResult result = database.select("SELECT * FROM user_mode_queue WHERE user_id = " + userId + " AND mode_id = " + modeId + " AND queue_id = " + queueId)) {
+            if (result.next()) {
+                return mapUserModeQueue(result);
+            }
+        }
+        return null;
+    }
+
     private UserModeQueue mapUserModeQueue(QueryResult result) {
         return new UserModeQueue(
             result.getInteger("id"),
-            result.getInteger("user_mode_id"),
+            result.getInteger("user_id"),
+            modeService.getMode(result.getInteger("mode_id")),
             queueService.getQueue(result.getInteger("queue_id")),
             result.getInteger("games"),
             result.getInteger("wins"),
@@ -266,11 +190,10 @@ public class UserService {
 
     public void onGameOver(int userId, int modeId, int queueId, boolean win) {
         String escapedNow = database.getEscapedNow();
-        UserMode userMode = getUserMode(userId, modeId);
-        UserModeQueue userModeQueue = userMode.getQueues().stream().filter(umq -> umq.getQueue().getId() == queueId).findFirst().orElse(null);
+        UserModeQueue userModeQueue = getUserModeQueue(userId, modeId, queueId);
         if (userModeQueue == null) {
             int wins = (win ? 1 : 0);
-            database.execute("INSERT INTO user_mode_queue (user_mode_id, queue_id, games, wins, current_win_streak, longest_win_streak, first_game_date, last_game_date) VALUES (" + userMode.getId() + ", " + queueId + ", 1, " + wins + ", " + wins + ", " + wins + ", '" + escapedNow + "', '" + escapedNow + "')");
+            database.execute("INSERT INTO user_mode_queue (user_id, mode_id, queue_id, games, wins, current_win_streak, longest_win_streak, first_game_date, last_game_date) VALUES (" + userId + ", " + modeId + ", " + queueId + ", 1, " + wins + ", " + wins + ", " + wins + ", '" + escapedNow + "', '" + escapedNow + "')");
         } else {
             int currentWinStreak = 0;
             Integer newLongestWinStreak = null;
@@ -284,31 +207,26 @@ public class UserService {
         }
     }
 
-    public void setPacks(int userId, int modeId, int packs) {
-        database.execute("UPDATE user_mode SET packs = " + packs + " WHERE user_id = " + userId + " AND mode_id = " + modeId);
+    public void addPacks(int userId, int packs) {
+        database.execute("UPDATE user SET packs = packs + " + packs + " WHERE id = " + userId);
     }
 
-    public void addPacks(int userId, int modeId, int additionalPacks) {
-        database.execute("UPDATE user_mode SET packs = packs + " + additionalPacks + " WHERE user_id = " + userId + " AND mode_id = " + modeId);
-    }
-
-    public PackResult openPack(int userModeId) {
-        UserMode userMode = getUserMode(userModeId);
+    public PackResult openPack(int userId) {
+        User userMode = getUser(userId);
         if (userMode.getPacks() <= 0) {
-            throw new RuntimeException("User has no packs for this mode.");
+            throw new RuntimeException("User has no packs.");
         }
-        database.execute("UPDATE user_mode SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE user_id = " + userMode.getUserId() + " AND mode_id = " + userMode.getMode().getId());
-        PackResult packResult = createPackResult(userMode.getMode());
-        CardList collectionCardList = getCollectionCardList(userMode.getUserId(), userMode.getMode().getId());
+        database.execute("UPDATE user SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE id = " + userId);
+        PackResult packResult = createPackResult();
+        CardList collectionCardList = getCollectionCardList(userId);
         for (CardListCard cardListCard : packResult.getCards()) {
             cardListService.addCard(collectionCardList.getId(), cardListCard.getCard().getId(), cardListCard.getFoil().getId(), cardListCard.getAmount());
         }
         return packResult;
     }
 
-    private PackResult createPackResult(Mode mode) {
-        // TODO: Extract logic about modes
-        List<Card> availableCards = (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC) ? cardService.getCards_NonCore() : cardService.getCards());
+    private PackResult createPackResult() {
+        List<Card> availableCards = cardService.getCards_NonCore();
         Foil foilArtwork = foilService.getFoil(GameConstants.FOIL_NAME_ARTWORK);
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
         LinkedList<CardListCard> cards = new LinkedList<>();

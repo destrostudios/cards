@@ -8,6 +8,7 @@ import lombok.*;
 @ToString
 public class UserModeDeck implements Deck {
     private int id;
-    private int userModeId;
+    private int userId;
+    private Mode mode;
     private CardList deckCardList;
 }

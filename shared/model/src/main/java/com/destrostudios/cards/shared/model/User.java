@@ -13,7 +13,11 @@ public class User {
     private int id;
     private String login;
     private boolean admin;
+    private CardList collectionCardList;
+    private int packs;
+    private int packsOpened;
     private LocalDateTime firstLoginDate;
     private LocalDateTime lastLoginDate;
-    private List<UserMode> modes;
+    private List<UserModeDeck> decks;
+    private List<UserModeQueue> queues;
 }

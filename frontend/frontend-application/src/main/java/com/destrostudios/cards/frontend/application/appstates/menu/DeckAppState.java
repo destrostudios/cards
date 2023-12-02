@@ -101,7 +101,7 @@ public class DeckAppState extends MenuAppState implements ActionListener {
         collectionCards = new HashMap<>();
         cardsToCardModelsMap = new HashMap<>();
         cardModelsToCardsMap = new HashMap<>();
-        CardList collection = getModule(GameDataClientModule.class).getCollection(mode);
+        CardList collection = getModule(GameDataClientModule.class).getCollection();
         EntityData data = new SimpleEntityData(Components.ALL);
         for (CardListCard cardListCard : collection.getCards()) {
             CardModel cardModel = CardGuiMapper.createModel(data, cardListCard);

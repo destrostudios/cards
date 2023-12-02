@@ -10,7 +10,8 @@ import java.time.LocalDateTime;
 @ToString
 public class UserModeQueue {
     private int id;
-    private int userModeId;
+    private int userId;
+    private Mode mode;
     private Queue queue;
     private int games;
     private int wins;

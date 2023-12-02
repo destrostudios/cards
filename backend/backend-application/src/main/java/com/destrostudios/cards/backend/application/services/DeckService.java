@@ -23,9 +23,8 @@ public class DeckService {
 
     public void createDeck(int userId, int modeId) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserLibrary()) {
-            int userModeId = userService.getUserModeId(userId, modeId);
-            userService.createUserModeDeck(userModeId);
+        if (mode.isHasUserDecks()) {
+            userService.createUserModeDeck(userId, modeId);
         } else {
             throw new UnsupportedOperationException();
         }
@@ -33,7 +32,7 @@ public class DeckService {
 
     public void updateDeck(int modeId, int deckId, String name,List<NewCardListCard> cards) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserLibrary()) {
+        if (mode.isHasUserDecks()) {
             userService.updateUserModeDeck(deckId, name, cards);
         } else {
             throw new UnsupportedOperationException();
@@ -42,7 +41,7 @@ public class DeckService {
 
     public void deleteDeck(int modeId, int deckId) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserLibrary()) {
+        if (mode.isHasUserDecks()) {
             userService.deleteUserModeDeck(deckId);
         } else {
             throw new UnsupportedOperationException();
@@ -51,7 +50,7 @@ public class DeckService {
 
     private Object getDeck(int modeId, int deckId) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserLibrary()) {
+        if (mode.isHasUserDecks()) {
             return userService.getUserModeDeck(deckId);
         } else {
             return mode.getDecks().stream().filter(modeDeck -> modeDeck.getId() == deckId).findAny().orElseThrow();

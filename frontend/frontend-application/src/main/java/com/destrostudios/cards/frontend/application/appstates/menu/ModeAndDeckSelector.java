@@ -14,8 +14,8 @@ import java.util.List;
 
 public class ModeAndDeckSelector extends ModeSelector {
 
-    public ModeAndDeckSelector(boolean onlyModesWithUserCollections) {
-        super(onlyModesWithUserCollections);
+    public ModeAndDeckSelector(boolean onlyModesWithUserDecks) {
+        super(onlyModesWithUserDecks);
     }
     private HashMap<Deck, Button> deckButtons = new HashMap<>();
     @Getter

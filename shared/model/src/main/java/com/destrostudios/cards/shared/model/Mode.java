@@ -12,6 +12,6 @@ public class Mode {
     private int id;
     private String name;
     private String title;
-    private boolean hasUserLibrary;
+    private boolean hasUserDecks;
     private List<ModeDeck> decks;
 }

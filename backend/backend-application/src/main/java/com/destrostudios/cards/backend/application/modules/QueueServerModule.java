@@ -67,7 +67,7 @@ public class QueueServerModule extends NetworkModule {
                     startGameIfPossible(mode, queue);
                 } else {
                     CardList botDeck = null;
-                    if (!mode.isHasUserLibrary()) {
+                    if (!mode.isHasUserDecks()) {
                         botDeck = mode.getDecks().get((int) (Math.random() * mode.getDecks().size())).getDeckCardList();
                     }
                     UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo(

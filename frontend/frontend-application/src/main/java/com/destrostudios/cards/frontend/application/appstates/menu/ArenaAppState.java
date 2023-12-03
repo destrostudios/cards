@@ -8,15 +8,23 @@ import com.destrostudios.cardgui.zones.CenteredIntervalZone;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
-import com.destrostudios.cards.shared.model.CardIdentifier;
+import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
+import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Deck;
+import com.destrostudios.cards.shared.model.internal.BaseCardIdentifier;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.math.Vector3f;
 import com.simsilica.lemur.Button;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ArenaAppState extends CachedModelsDeckAppState<DraftDeckBuilderAppState<CardModel>> {
+
+    private Button buttonPlay;
+    private boolean waitingForUpdate = true;
 
     @Override
     protected String getTitle() {
@@ -36,12 +44,17 @@ public class ArenaAppState extends CachedModelsDeckAppState<DraftDeckBuilderAppS
         return new DraftDeckBuilderAppState<>(mainApplication.getRootNode(), settings);
     }
 
-    private void setDeck(Deck deck) {
-        deckBuilderAppState.setDeck(mapCardList(deck.getDeckCardList()));
+    @Override
+    protected boolean isAllowedToAddCard(CardModel cardModel) {
+        return !waitingForUpdate;
     }
 
-    private void setDraftCards(List<CardIdentifier> draftCards) {
-        deckBuilderAppState.setDraftCards(mapCards(draftCards));
+    @Override
+    protected void onCardAdded(CardModel cardModel) {
+        super.onCardAdded(cardModel);
+        Card card = getCardIdentifier(cardModel).getCard();
+        getModule(GameDataClientModule.class).addArenaCard(card);
+        waitingForUpdate = true;
     }
 
     @Override
@@ -49,13 +62,44 @@ public class ArenaAppState extends CachedModelsDeckAppState<DraftDeckBuilderAppS
         super.initGui(rightColumnX, rightColumnWidth);
 
         // Play
-        Button buttonPlay = addButton("Play", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> play());
+        buttonPlay = addButton("Play", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> play());
         buttonPlay.setLocalTranslation(rightColumnX, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
     }
 
     @Override
     protected void back() {
         switchTo(new PlayAppState());
+    }
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        if (waitingForUpdate && (getModule(GameDataClientModule.class).getUser() != null)) {
+            updateCards();
+        }
+        boolean isLoading = !waitingForUpdate;
+        GuiUtil.setButtonEnabled(buttonPlay, isLoading && isDeckComplete());
+        GuiUtil.setButtonEnabled(buttonBack, isLoading);
+    }
+
+    private void updateCards() {
+        Deck deck = getDeck();
+        deckBuilderAppState.setDeck((deck != null) ? mapCardList(deck.getDeckCardList()) : new HashMap<>());
+        deckBuilderAppState.setDraftCards(isDeckComplete() ? new LinkedList<>() : mapCards(getDraftCards()));
+        waitingForUpdate = false;
+    }
+
+    private boolean isDeckComplete() {
+        Deck deck = getDeck();
+        return ((deck != null) && (deck.getDeckCardList().getSize() >= GameConstants.MAXIMUM_DECK_SIZE));
+    }
+
+    private Deck getDeck() {
+        return getModule(GameDataClientModule.class).getArenaDeck();
+    }
+
+    private List<BaseCardIdentifier> getDraftCards() {
+        return getModule(GameDataClientModule.class).getUser().getArenaDraftCards();
     }
 
     private void play() {

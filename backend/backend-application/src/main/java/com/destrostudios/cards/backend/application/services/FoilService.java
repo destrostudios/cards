@@ -4,8 +4,8 @@ import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.backend.database.databases.QueryResult;
 import com.destrostudios.cards.shared.model.Foil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class FoilService {
@@ -28,7 +28,7 @@ public class FoilService {
     }
 
     public List<Foil> getFoils() {
-        return new LinkedList<>(foils.values());
+        return new ArrayList<>(foils.values());
     }
 
     public Foil getFoil(int foilId) {

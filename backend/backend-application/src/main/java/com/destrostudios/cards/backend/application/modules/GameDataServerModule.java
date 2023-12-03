@@ -58,6 +58,10 @@ public class GameDataServerModule extends NetworkModule {
                 User user = userService.getUser(userId);
                 connection.sendTCP(new PackResultMessage(packResult, user));
             });
+        } else if (object instanceof AddArenaCardMessage addArenaCardMessage) {
+            int userId = getUserId(connection);
+            database.transaction(() -> userService.addArenaCard(userId, addArenaCardMessage.getCardId()));
+            sendUser(connection);
         }
     }
 

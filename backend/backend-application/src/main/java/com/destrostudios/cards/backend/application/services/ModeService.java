@@ -5,6 +5,7 @@ import com.destrostudios.cards.backend.database.databases.QueryResult;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.ModeDeck;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class ModeService {
                     modeId,
                     result.getString("name"),
                     result.getString("title"),
-                    result.getBoolean("has_user_decks"),
+                    result.getBoolean("has_free_user_decks"),
                     getModeDecks(modeId)
                 );
                 modes.put(mode.getId(), mode);
@@ -52,7 +53,7 @@ public class ModeService {
     }
 
     public List<Mode> getModes() {
-        return new LinkedList<>(modes.values());
+        return new ArrayList<>(modes.values());
     }
 
     public Mode getMode(int modeId) {

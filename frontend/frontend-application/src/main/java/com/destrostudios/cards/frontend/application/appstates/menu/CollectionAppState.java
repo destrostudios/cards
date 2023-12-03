@@ -22,7 +22,7 @@ public class CollectionAppState extends MenuAppState {
         super.initialize(stateManager, application);
         addTitle("Collection");
         addButtons();
-        modeSelector = new ModeSelector(true) {
+        modeSelector = new ModeSelector(Mode::isHasFreeUserDecks) {
 
             @Override
             public void selectMode(Mode mode) {

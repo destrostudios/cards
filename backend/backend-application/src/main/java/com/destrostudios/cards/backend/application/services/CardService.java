@@ -4,8 +4,8 @@ import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.backend.database.databases.QueryResult;
 import com.destrostudios.cards.shared.model.Card;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -29,7 +29,7 @@ public class CardService {
     }
 
     public List<Card> getCards() {
-        return new LinkedList<>(cards.values());
+        return new ArrayList<>(cards.values());
     }
 
     public Card getCard(int cardId) {

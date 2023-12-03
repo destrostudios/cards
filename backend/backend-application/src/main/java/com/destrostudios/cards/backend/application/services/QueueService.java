@@ -4,8 +4,8 @@ import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.backend.database.databases.QueryResult;
 import com.destrostudios.cards.shared.model.Queue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class QueueService {
@@ -32,7 +32,7 @@ public class QueueService {
     }
 
     public List<Queue> getQueues() {
-        return new LinkedList<>(queues.values());
+        return new ArrayList<>(queues.values());
     }
 
     public Queue getQueue(int queueId) {

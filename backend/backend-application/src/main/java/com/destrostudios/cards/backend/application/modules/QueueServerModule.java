@@ -6,6 +6,7 @@ import com.destrostudios.cards.backend.application.services.DeckService;
 import com.destrostudios.cards.backend.application.services.ModeService;
 import com.destrostudios.cards.backend.application.services.QueueService;
 import com.destrostudios.cards.shared.model.CardList;
+import com.destrostudios.cards.shared.model.Deck;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.network.messages.QueueMessage;
@@ -56,8 +57,8 @@ public class QueueServerModule extends NetworkModule {
                 int userId = (int) jwtUser.id;
                 LOG.info(jwtUser.login + " queued up (" + queueMessage + ").");
                 Mode mode = modeService.getMode(queueMessage.getModeId());
-                CardList deck = deckService.getCardList(queueMessage.getModeId(), queueMessage.getDeckId());
-                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, deck);
+                Deck deck = deckService.getDeck(queueMessage.getModeId(), queueMessage.getDeckId());
+                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, deck.getDeckCardList());
                 Queue queue = queueService.getQueue(queueMessage.getQueueId());
                 if (queue.getName().equals(GameConstants.QUEUE_NAME_USER)) {
                     modeQueuePlayers
@@ -67,7 +68,7 @@ public class QueueServerModule extends NetworkModule {
                     startGameIfPossible(mode, queue);
                 } else {
                     CardList botDeck = null;
-                    if (!mode.isHasUserDecks()) {
+                    if (mode.getDecks().size() > 0) {
                         botDeck = mode.getDecks().get((int) (Math.random() * mode.getDecks().size())).getDeckCardList();
                     }
                     UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo(

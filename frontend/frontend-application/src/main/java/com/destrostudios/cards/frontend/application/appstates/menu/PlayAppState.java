@@ -33,7 +33,7 @@ public class PlayAppState extends MenuAppState {
         super.initialize(stateManager, application);
         addTitle("Play");
         addButtons();
-        modeSelector = new ModeSelector(false) {
+        modeSelector = new ModeSelector() {
 
             @Override
             public void selectMode(Mode mode) {

@@ -1,6 +1,5 @@
 package com.destrostudios.cards.shared.model.internal;
 
-import com.destrostudios.cards.shared.model.BaseCardIdentifier;
 import lombok.*;
 
 import java.util.List;

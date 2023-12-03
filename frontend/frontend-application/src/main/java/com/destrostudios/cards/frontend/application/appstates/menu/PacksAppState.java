@@ -41,7 +41,7 @@ public class PacksAppState extends MenuAppState {
     public void update(float tpf) {
         super.update(tpf);
         GameDataClientModule gameDataClientModule = getModule(GameDataClientModule.class);
-        Integer packs = ((gameDataClientModule.getUser() != null) ? gameDataClientModule.getPacks() : null);
+        Integer packs = ((gameDataClientModule.getUser() != null) ? gameDataClientModule.getUser().getPacks() : null);
         if (packs != null) {
             buttonOpen.setText((packs > 0) ? "Open pack (" + packs + ")" : "No packs left");
         }

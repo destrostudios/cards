@@ -68,7 +68,7 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         CardZone collectionZone = new SimpleIntervalZone(new Vector3f(-2, 0, 0), new Vector3f(3.65f, 1, 5));
         CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(collectionGuiNode);
 
-        CardList collection = getModule(GameDataClientModule.class).getCollection();
+        CardList collection = getModule(GameDataClientModule.class).getUser().getCollectionCardList();
         collectionCards = mapCardList(collection);
         HashMap<CardModel, Integer> deck = mapCardList(this.deck.getDeckCardList());
 

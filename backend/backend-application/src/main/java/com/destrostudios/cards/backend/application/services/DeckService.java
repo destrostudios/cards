@@ -12,18 +12,18 @@ public class DeckService {
     private ModeService modeService;
     private UserService userService;
 
-    public CardList getCardList(int modeId, int deckId) {
-        Object deck = getDeck(modeId, deckId);
-        if (deck instanceof ModeDeck modeDeck) {
-            return modeDeck.getDeckCardList();
+    public Deck getDeck(int modeId, int deckId) {
+        Mode mode = modeService.getMode(modeId);
+        if (mode.getDecks().size() > 0) {
+            return mode.getDecks().stream().filter(modeDeck -> modeDeck.getId() == deckId).findAny().orElseThrow();
         } else {
-            return ((UserModeDeck) deck).getDeckCardList();
+            return userService.getUserModeDeck(deckId);
         }
     }
 
     public void createDeck(int userId, int modeId) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserDecks()) {
+        if (mode.isHasFreeUserDecks()) {
             userService.createUserModeDeck(userId, modeId);
         } else {
             throw new UnsupportedOperationException();
@@ -32,7 +32,7 @@ public class DeckService {
 
     public void updateDeck(int modeId, int deckId, String name,List<NewCardListCard> cards) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserDecks()) {
+        if (mode.isHasFreeUserDecks()) {
             userService.updateUserModeDeck(deckId, name, cards);
         } else {
             throw new UnsupportedOperationException();
@@ -41,19 +41,10 @@ public class DeckService {
 
     public void deleteDeck(int modeId, int deckId) {
         Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserDecks()) {
+        if (mode.isHasFreeUserDecks()) {
             userService.deleteUserModeDeck(deckId);
         } else {
             throw new UnsupportedOperationException();
-        }
-    }
-
-    private Object getDeck(int modeId, int deckId) {
-        Mode mode = modeService.getMode(modeId);
-        if (mode.isHasUserDecks()) {
-            return userService.getUserModeDeck(deckId);
-        } else {
-            return mode.getDecks().stream().filter(modeDeck -> modeDeck.getId() == deckId).findAny().orElseThrow();
         }
     }
 }

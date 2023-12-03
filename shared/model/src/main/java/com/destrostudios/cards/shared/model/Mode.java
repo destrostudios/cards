@@ -12,6 +12,6 @@ public class Mode {
     private int id;
     private String name;
     private String title;
-    private boolean hasUserDecks;
+    private boolean hasFreeUserDecks;
     private List<ModeDeck> decks;
 }

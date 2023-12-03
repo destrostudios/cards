@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.model;
 
+import com.destrostudios.cards.shared.model.internal.BaseCardIdentifier;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ public class User {
     private CardList collectionCardList;
     private int packs;
     private int packsOpened;
+    private long arenaSeed;
+    private List<BaseCardIdentifier> arenaDraftCards;
     private LocalDateTime firstLoginDate;
     private LocalDateTime lastLoginDate;
     private List<UserModeDeck> decks;

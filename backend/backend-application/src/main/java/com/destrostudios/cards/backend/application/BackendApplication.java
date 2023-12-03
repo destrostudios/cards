@@ -33,7 +33,8 @@ public class BackendApplication {
         CardListService cardListService = new CardListService(database, cardService, foilService);
         ModeService modeService = new ModeService(database, cardListService);
         QueueService queueService = new QueueService(database);
-        UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService);
+        ArenaService arenaService = new ArenaService(cardService);
+        UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService, arenaService);
         DeckService deckService = new DeckService(modeService, userService);
 
         System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");

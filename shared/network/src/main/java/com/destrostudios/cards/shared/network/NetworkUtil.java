@@ -9,6 +9,7 @@ public class NetworkUtil {
 
     public static void setupSerializer(Kryo kryo) {
         kryo.setDefaultSerializer(JsonSerializer.class);
+        kryo.register(AddArenaCardMessage.class);
         kryo.register(CreateDeckMessage.class);
         kryo.register(DeleteDeckMessage.class);
         kryo.register(GetUserMessage.class);

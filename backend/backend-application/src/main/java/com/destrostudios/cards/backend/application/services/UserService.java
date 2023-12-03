@@ -1,9 +1,11 @@
 package com.destrostudios.cards.backend.application.services;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
+import com.destrostudios.cards.backend.application.services.internal.NewDeck;
 import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.backend.database.databases.QueryResult;
 import com.destrostudios.cards.shared.model.*;
+import com.destrostudios.cards.shared.model.internal.BaseCardIdentifier;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
 import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.rules.GameConstants;
@@ -22,6 +24,7 @@ public class UserService {
     private FoilService foilService;
     private CardListService cardListService;
     private QueueService queueService;
+    private ArenaService arenaService;
 
     public void onLogin(JwtAuthenticationUser jwtUser) {
         String escapedNow = database.getEscapedNow();
@@ -30,7 +33,7 @@ public class UserService {
             database.execute("UPDATE user SET last_login_date = '" + escapedNow + "' WHERE id = " + userId);
         } else {
             int collectionCardListId = cardListService.createCardList();
-            database.execute("INSERT INTO user (id, login, admin, collection_card_list_id, packs, packs_opened, first_login_date, last_login_date) VALUES (" + userId + ", '" + database.escape(jwtUser.login) + "', FALSE, " + collectionCardListId + ", " + GameConstants.PACKS_FOR_NEW_PLAYERS + ", 0, '" + escapedNow + "', '" + escapedNow + "')");
+            database.execute("INSERT INTO user (id, login, admin, collection_card_list_id, packs, packs_opened, arena_seed, first_login_date, last_login_date) VALUES (" + userId + ", '" + database.escape(jwtUser.login) + "', FALSE, " + collectionCardListId + ", " + GameConstants.PACKS_FOR_NEW_PLAYERS + ", 0, " + arenaService.generateSeed() + ", '" + escapedNow + "', '" + escapedNow + "')");
             createIntroductionDeck(userId);
         }
     }
@@ -43,17 +46,18 @@ public class UserService {
 
     private void createIntroductionDeck(int userId) {
         Mode classicMode = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
-        int introductionDeckId = createUserModeDeck(userId, classicMode.getId());
+        NewDeck introductionDeck = createUserModeDeck(userId, classicMode.getId());
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
         List<NewCardListCard> cards = cardService.getCards_Core().stream()
                 .map(card -> new NewCardListCard(card.getId(), foilNone.getId(), 2))
                 .collect(Collectors.toList());
-        updateUserModeDeck(introductionDeckId, "Introduction Deck", cards);
+        updateUserModeDeck(introductionDeck.getId(), "Introduction Deck", cards);
     }
 
     public User getUser(int userId) {
         try (QueryResult result = database.select("SELECT * FROM user WHERE id = " + userId)) {
             result.next();
+            long arenaSeed = result.getLong("arena_seed");
             return new User(
                 result.getInteger("id"),
                 result.getString("login"),
@@ -61,6 +65,8 @@ public class UserService {
                 getCollectionCardList(userId, result.getInteger("collection_card_list_id")),
                 result.getInteger("packs"),
                 result.getInteger("packs_opened"),
+                arenaSeed,
+                getArenaDraftCards(arenaSeed),
                 result.getDateTime("first_login_date"),
                 result.getDateTime("last_login_date"),
                 getUserModeDecks(userId),
@@ -126,6 +132,16 @@ public class UserService {
         }
     }
 
+    private UserModeDeck getArenaDeck(int userId) {
+        Mode arenaMode = modeService.getMode(GameConstants.MODE_NAME_ARENA);
+        try (QueryResult result = database.select("SELECT * FROM user_mode_deck WHERE user_id = " + userId + " AND mode_id = " + arenaMode.getId())) {
+            if (result.next()) {
+                return mapUserModeDeck(result);
+            }
+            return null;
+        }
+    }
+
     private UserModeDeck mapUserModeDeck(QueryResult result) {
         return new UserModeDeck(
             result.getInteger("id"),
@@ -135,11 +151,12 @@ public class UserService {
         );
     }
 
-    public int createUserModeDeck(int userId, int modeId) {
+    public NewDeck createUserModeDeck(int userId, int modeId) {
         int deckCardListId = cardListService.createCardList();
         try (QueryResult result = database.insert("INSERT INTO user_mode_deck (user_id, mode_id, deck_card_list_id) VALUES (" + userId + ", " + modeId + ", " + deckCardListId + ")")) {
             result.next();
-            return result.getInteger(1);
+            int id = result.getInteger(1);
+            return new NewDeck(id, deckCardListId);
         }
     }
 
@@ -212,8 +229,8 @@ public class UserService {
     }
 
     public PackResult openPack(int userId) {
-        User userMode = getUser(userId);
-        if (userMode.getPacks() <= 0) {
+        User user = getUser(userId);
+        if (user.getPacks() <= 0) {
             throw new RuntimeException("User has no packs.");
         }
         database.execute("UPDATE user SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE id = " + userId);
@@ -237,5 +254,34 @@ public class UserService {
             cards.add(new BaseCardIdentifier(card, foil));
         }
         return new PackResult(cards);
+    }
+
+    public void addArenaCard(int userId, int cardId) {
+        User user = getUser(userId);
+        List<BaseCardIdentifier> cardIdentifiers = getArenaDraftCards(user.getArenaSeed());
+        BaseCardIdentifier cardIdentifier = cardIdentifiers.stream().filter(draftCard -> draftCard.getCard().getId() == cardId).findAny().orElse(null);
+        if (cardIdentifier == null) {
+            throw new RuntimeException("Selected card is not a possible choice.");
+        }
+        int deckCardListId = getOrCreateArenaDeckCardListId(userId);
+        cardListService.addCard(deckCardListId, cardIdentifier.getCard().getId(), cardIdentifier.getFoil().getId(), 1);
+        database.execute("UPDATE user SET arena_seed = " + arenaService.generateSeed() + " WHERE id = " + userId);
+    }
+
+    private List<BaseCardIdentifier> getArenaDraftCards(long arenaSeed) {
+        List<Card> cards = arenaService.getDraftCards(arenaSeed);
+        Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
+        return cards.stream().map(card -> new BaseCardIdentifier(card, foilNone)).collect(Collectors.toList());
+    }
+
+    private int getOrCreateArenaDeckCardListId(int userId) {
+        UserModeDeck arenaDeck = getArenaDeck(userId);
+        if (arenaDeck != null) {
+            return arenaDeck.getDeckCardList().getId();
+        } else {
+            Mode arenaMode = modeService.getMode(GameConstants.MODE_NAME_ARENA);
+            NewDeck newArenaDeck = createUserModeDeck(userId, arenaMode.getId());
+            return newArenaDeck.getDeckCardListId();
+        }
     }
 }

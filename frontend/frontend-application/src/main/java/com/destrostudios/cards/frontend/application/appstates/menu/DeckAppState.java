@@ -43,6 +43,7 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
     private Card<CardModel> inspectionCard;
     private Geometry inspectionBackdrop;
     protected BitmapText textTitle;
+    protected Button buttonBack;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application){
@@ -103,6 +104,8 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
             .deckCardOrder(cardOrder)
             .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
             .deckCardsMaximumUnique(cardModel -> cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY)
+            .isAllowedToAddCard(this::isAllowedToAddCard)
+            .cardAddedCallback(this::onCardAdded)
             .boardSettings(BoardSettings.builder()
                 .inputActionPrefix("deckbuilder")
                 .hoverInspectionDelay(0f)
@@ -127,6 +130,14 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
                 })
                 .build())
             .build();
+    }
+
+    protected boolean isAllowedToAddCard(CardModel cardModel) {
+        return true;
+    }
+
+    protected void onCardAdded(CardModel cardModel) {
+
     }
 
     protected void inspect(CardModel cardModel) {
@@ -161,7 +172,7 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
         guiNode.attachChild(textTitle);
 
         // Back
-        Button buttonBack = addButton("Back", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> back());
+        buttonBack = addButton("Back", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> back());
         buttonBack.setLocalTranslation(rightColumnX, 18 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
     }
 

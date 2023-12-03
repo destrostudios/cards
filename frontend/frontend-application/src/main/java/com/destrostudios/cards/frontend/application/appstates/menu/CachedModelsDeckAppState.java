@@ -19,7 +19,7 @@ public abstract class CachedModelsDeckAppState<DBAS extends DeckBuilderAppState<
     private HashMap<String, CardModel> cardsToModels = new HashMap<>();
     private HashMap<CardModel, CardIdentifier> modelsToCards = new HashMap<>();
 
-    protected List<CardModel> mapCards(List<CardIdentifier> cardIdentifiers) {
+    protected List<CardModel> mapCards(List<? extends CardIdentifier> cardIdentifiers) {
         mapAndStoreCardList(cardIdentifiers);
         return cardIdentifiers.stream().map(this::getCardModel).collect(Collectors.toList());
     }

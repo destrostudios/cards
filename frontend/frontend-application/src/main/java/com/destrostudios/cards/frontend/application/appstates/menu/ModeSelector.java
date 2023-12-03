@@ -10,13 +10,18 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class ModeSelector extends GuiComponent {
 
-    public ModeSelector(boolean onlyModesWithUserDecks) {
-        this.onlyModesWithUserDecks = onlyModesWithUserDecks;
+    public ModeSelector() {
+        this(null);
     }
-    private boolean onlyModesWithUserDecks;
+
+    public ModeSelector(Predicate<Mode> modeFilter) {
+        this.modeFilter = modeFilter;
+    }
+    private Predicate<Mode> modeFilter;
     private HashMap<Mode, Button> modeButtons = new HashMap<>();
     @Getter
     private Mode mode;
@@ -34,8 +39,8 @@ public class ModeSelector extends GuiComponent {
         float x = 0;
         float y = -30;
         List<Mode> modes = getModule(GameDataClientModule.class).getModes();
-        if (onlyModesWithUserDecks) {
-            modes = modes.stream().filter(Mode::isHasUserDecks).toList();
+        if (modeFilter != null) {
+            modes = modes.stream().filter(modeFilter).toList();
         }
         for (Mode mode : modes) {
             Button button = GuiUtil.createButton(mode.getTitle(), buttonWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> selectMode(mode));

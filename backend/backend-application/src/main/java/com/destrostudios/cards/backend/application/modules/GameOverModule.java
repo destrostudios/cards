@@ -44,6 +44,7 @@ public class GameOverModule extends NetworkModule {
         Mode mode = startGameInfo.getMode();
         Queue queue = startGameInfo.getQueue();
         int winnerUserId = gameContext.getUserId(gameContext.getWinner());
+        int loserUserId = ((winnerUserId == startGameInfo.getPlayers()[0].getId()) ? startGameInfo.getPlayers()[1].getId() : startGameInfo.getPlayers()[0].getId());
         database.transaction(() -> {
             for (PlayerInfo playerInfo : startGameInfo.getPlayers()) {
                 if (playerInfo.getId() != QueueServerModule.BOT_USER_ID) {
@@ -52,8 +53,17 @@ public class GameOverModule extends NetworkModule {
                 }
             }
             // TODO: Extract mode logic below?
-            if (mode.getName().equals(GameConstants.MODE_NAME_CLASSIC) && (winnerUserId != QueueServerModule.BOT_USER_ID)) {
-                userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER);
+            switch (mode.getName()) {
+                case GameConstants.MODE_NAME_CLASSIC: {
+                    if (winnerUserId != QueueServerModule.BOT_USER_ID) {
+                        userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER);
+                    }
+                }
+                case GameConstants.MODE_NAME_ARENA: {
+                    if (loserUserId != QueueServerModule.BOT_USER_ID) {
+                        userService.onArenaLoss(loserUserId);
+                    }
+                }
             }
         });
     }

@@ -1,26 +1,18 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
-import com.destrostudios.cards.frontend.application.appstates.IngameAppState;
-import com.destrostudios.cards.frontend.application.appstates.services.GameService;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Deck;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
-import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.gametools.network.client.modules.game.ClientGameData;
-import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
-import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.simsilica.lemur.Button;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 public class PlayAppState extends MenuAppState {
 
@@ -105,25 +97,5 @@ public class PlayAppState extends MenuAppState {
     private void onDeckSelected(Deck deck) {
         boolean isDeckSelected = (deck != null);
         buttonsQueue.forEach(buttonQueue -> GuiUtil.setButtonEnabled(buttonQueue, isDeckSelected));
-    }
-
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        switchToActiveGameIfExisting();
-    }
-
-    private void switchToActiveGameIfExisting() {
-        GameClientModule<GameContext, Event> gameClientModule = getModule(GameClientModule.class);
-        List<ClientGameData<GameContext, Event>> joinedGames = gameClientModule.getJoinedGames();
-        if (joinedGames.size() > 0) {
-            UUID gameUUID = joinedGames.get(0).getId();
-            System.out.println("Joined game \"" + gameUUID + "\".");
-
-            JwtClientModule jwtClientModule = getModule(JwtClientModule.class);
-            GameService gameService = new GameService(jwtClientModule, gameClientModule, gameUUID);
-
-            switchTo(new IngameAppState(gameService));
-        }
     }
 }

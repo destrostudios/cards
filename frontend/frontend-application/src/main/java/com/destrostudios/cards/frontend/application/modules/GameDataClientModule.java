@@ -51,6 +51,10 @@ public class GameDataClientModule extends NetworkModule {
         return modes.stream().filter(mode -> mode.getName().equals(name)).findFirst().orElseThrow();
     }
 
+    public Queue getQueue(String name) {
+        return queues.stream().filter(queues -> queues.getName().equals(name)).findFirst().orElseThrow();
+    }
+
     public List<? extends Deck> getDecks(Mode mode) {
         if (mode.getDecks().size() > 0) {
             return mode.getDecks();

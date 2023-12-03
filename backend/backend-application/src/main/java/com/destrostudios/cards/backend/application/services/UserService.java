@@ -284,4 +284,9 @@ public class UserService {
             return newArenaDeck.getDeckCardListId();
         }
     }
+
+    public void onArenaLoss(int userId) {
+        UserModeDeck arenaDeck = getArenaDeck(userId);
+        deleteUserModeDeck(arenaDeck.getId());
+    }
 }

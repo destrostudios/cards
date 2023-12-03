@@ -9,8 +9,11 @@ import com.destrostudios.cards.frontend.application.appstates.services.IngameCar
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
+import com.destrostudios.cards.frontend.application.modules.QueueClientModule;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.model.Deck;
+import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.model.internal.BaseCardIdentifier;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.math.Vector3f;
@@ -25,6 +28,7 @@ public class ArenaAppState extends CachedModelsDeckAppState<DraftDeckBuilderAppS
 
     private Button buttonPlay;
     private boolean waitingForUpdate = true;
+    private boolean waitingForGame;
 
     @Override
     protected String getTitle() {
@@ -94,15 +98,22 @@ public class ArenaAppState extends CachedModelsDeckAppState<DraftDeckBuilderAppS
         return ((deck != null) && (deck.getDeckCardList().getSize() >= GameConstants.MAXIMUM_DECK_SIZE));
     }
 
+    private void play() {
+        if (!waitingForGame) {
+            GameDataClientModule gameDataClientModule = getModule(GameDataClientModule.class);
+            Mode modeArena = gameDataClientModule.getMode(GameConstants.MODE_NAME_ARENA);
+            Queue queueBot = gameDataClientModule.getQueue(GameConstants.QUEUE_NAME_BOT);
+            getModule(QueueClientModule.class).queue(modeArena, getDeck(), queueBot);
+            GuiUtil.setButtonEnabled(buttonPlay, false);
+            waitingForGame = true;
+        }
+    }
+
     private Deck getDeck() {
         return getModule(GameDataClientModule.class).getArenaDeck();
     }
 
     private List<BaseCardIdentifier> getDraftCards() {
         return getModule(GameDataClientModule.class).getUser().getArenaDraftCards();
-    }
-
-    private void play() {
-        System.out.println("Play");
     }
 }

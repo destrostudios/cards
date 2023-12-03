@@ -19,7 +19,7 @@ public class GameOverAppState extends OverlayAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
         super.initialize(stateManager, application);
-        // User might've gotten packs as a result of the game
+        // User might've gotten packs or had an arena reset as a result of the game
         getModule(GameDataClientModule.class).refreshUser();
     }
 

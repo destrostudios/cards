@@ -19,7 +19,7 @@ mv assets "${CLIENT}"
 mv frontend/frontend-application/target/libs "${CLIENT}"
 mv frontend/frontend-application/target/frontend-application-0.0.1.jar "${CLIENT}cards.jar"
 echo -n "./assets/" > "${CLIENT}assets.ini"
-curl https://destrostudios.com:8080/apps/11/updateFiles
+curl -X POST https://destrostudios.com:8080/apps/11/updateFiles
 
 # Deploy (Server)
 mv backend/backend-application/target/backend-application-0.0.1-jar-with-dependencies.jar "${SERVER}cards.jar"

@@ -6,7 +6,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Getter
-@Setter
 public class PlayerInfo {
     private int id;
     private String login;

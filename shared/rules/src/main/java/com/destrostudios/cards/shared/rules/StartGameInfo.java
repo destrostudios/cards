@@ -7,7 +7,6 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Getter
-@Setter
 public class StartGameInfo {
     private Mode mode;
     private Queue queue;

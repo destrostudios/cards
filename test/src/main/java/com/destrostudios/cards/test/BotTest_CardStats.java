@@ -1,5 +1,6 @@
 package com.destrostudios.cards.test;
 
+import com.destrostudios.cards.backend.application.botgame.BotGame_WithCardStats;
 import com.destrostudios.cards.shared.files.FileManager;
 
 import java.util.HashMap;

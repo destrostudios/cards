@@ -1,5 +1,7 @@
 package com.destrostudios.cards.test;
 
+import com.destrostudios.cards.backend.application.botgame.BotGame;
+
 import java.util.*;
 
 public class BotTest_Duration extends BotTest {

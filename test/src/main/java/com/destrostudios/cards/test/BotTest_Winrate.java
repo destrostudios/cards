@@ -1,5 +1,6 @@
 package com.destrostudios.cards.test;
 
+import com.destrostudios.cards.backend.application.botgame.BotGame;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.PlayerInfo;

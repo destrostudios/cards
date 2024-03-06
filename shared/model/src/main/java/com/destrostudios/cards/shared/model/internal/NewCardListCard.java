@@ -5,6 +5,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @Getter
+@Setter
 @ToString
 public class NewCardListCard {
     private int cardId;

@@ -1,4 +1,4 @@
-package com.destrostudios.cards.test;
+package com.destrostudios.cards.backend.application.botgame;
 
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotEval;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotService;

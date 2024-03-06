@@ -1,5 +1,7 @@
 package com.destrostudios.cards.test;
 
+import com.destrostudios.cards.backend.application.botgame.BotGame;
+
 public class BotTest_Single extends BotTest {
 
     public static void main(String[] args) {

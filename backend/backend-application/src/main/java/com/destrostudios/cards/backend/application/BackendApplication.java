@@ -27,6 +27,10 @@ public class BackendApplication {
     public static void main(String[] args) throws IOException {
         ApplicationSetup.setup();
 
+        System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
+        // Log.DEBUG();
+        Log.info(new Date().toString()); // Time reference for kryo logs
+
         Database database = getDatabase();
         CardService cardService = new CardService(database);
         FoilService foilService = new FoilService(database);
@@ -37,9 +41,10 @@ public class BackendApplication {
         UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService, arenaService);
         DeckService deckService = new DeckService(modeService, userService);
 
-        System.setProperty("org.slf4j.simpleLogger.logFile", "System.out");
-        // Log.DEBUG();
-        Log.info(new Date().toString()); // Time reference for kryo logs
+        EntityService entityService = new EntityService(cardService);
+        entityService.load();
+        BotDeckService botDeckService = new BotDeckService(database, cardService, foilService, cardListService, modeService, queueService, entityService);
+        // botDeckService.generateDecks(123);
 
         Server kryoServer = new Server(10_000_000, 10_000_000);
         NetworkUtil.setupSerializer(kryoServer.getKryo());

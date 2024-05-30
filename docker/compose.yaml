@@ -22,6 +22,8 @@ services:
   app:
     build:
       dockerfile: app.Dockerfile
+    environment:
+      DB_ROOT_PASSWORD: $DB_ROOT_PASSWORD
     ports:
       - "33800:33800"
     depends_on:

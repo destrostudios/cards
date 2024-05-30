@@ -5,4 +5,4 @@ COPY assets assets
 RUN echo ./assets/ > assets.ini
 ARG DB_ROOT_PASSWORD
 RUN echo $'//db:3306\nroot\n$DB_ROOT_PASSWORD' > database.ini
-ENTRYPOINT ["java", "-jar", "backend/backend-application/backend-application-0.0.1-jar-with-dependencies.jar"]
+ENTRYPOINT ["java", "-jar", "backend-application-0.0.1-jar-with-dependencies.jar"]

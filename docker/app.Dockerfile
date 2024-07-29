@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:22-jre-alpine
 WORKDIR /home
 COPY target/backend-application-0.0.1-jar-with-dependencies.jar ./
 COPY assets assets

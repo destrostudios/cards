@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
+import com.destrostudios.cards.shared.rules.game.GameOverEvent;
 import com.destrostudios.cards.shared.rules.util.ZoneUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
         } else {
             LOG.debug("Player {} tried to draw a card but has none left", inspect(data, event.player));
             int opponent = data.getComponent(event.player, Components.NEXT_PLAYER);
-            context.onGameOver(opponent);
+            context.getEvents().fire(new GameOverEvent(opponent));
             event.cancel();
         }
     }

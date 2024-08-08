@@ -144,6 +144,8 @@ public class Components {
 
     public static class Spell {
         public static final ComponentDefinition<Void> TARGET_OPTIONAL = create("targetOptional");
+        public static final ComponentDefinition<Integer> MINIMUM_TARGETS = create("minimumTargets");
+        public static final ComponentDefinition<Integer> MAXIMUM_TARGETS = create("maximumTargets");
         public static final ComponentDefinition<Integer> CURRENT_CASTS_PER_TURN = create("currentCastsThisTurn");
         public static final ComponentDefinition<Integer> MAXIMUM_CASTS_PER_TURN = create("maximumCastsPerTurn");
         public static final ComponentDefinition<Void> TAUNTABLE = create("tauntable");

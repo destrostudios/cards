@@ -5,6 +5,8 @@ import com.destrostudios.cardgui.events.*;
 import com.destrostudios.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.application.EntityBoardMap;
 import com.destrostudios.cards.frontend.application.PlayerZones;
+import com.destrostudios.cards.frontend.application.appstates.CardSelectorAppState;
+import com.destrostudios.cards.frontend.application.appstates.ScrollCardSelectorAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
@@ -19,15 +21,17 @@ import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.jme3.math.Vector3f;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class UpdateBoardService {
 
-    public UpdateBoardService(GameService gameService, Board board, CardZone selectionZone, HashMap<Integer, PlayerZones> playerZonesMap, EntityBoardMap entityBoardMap) {
+    public UpdateBoardService(GameService gameService, Board board, CardZone selectionZone, HashMap<Integer, PlayerZones> playerZonesMap, EntityBoardMap entityBoardMap, Consumer<CardSelectorAppState> openCardSelector) {
         this.gameService = gameService;
         this.board = board;
         this.selectionZone = selectionZone;
         this.playerZonesMap = playerZonesMap;
         this.entityBoardMap = entityBoardMap;
+        this.openCardSelector = openCardSelector;
         validSpellTargets = new HashMap<>();
     }
     private GameService gameService;
@@ -35,7 +39,8 @@ public class UpdateBoardService {
     private CardZone selectionZone;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private EntityBoardMap entityBoardMap;
-    private HashMap<Integer, LinkedList<Integer>> validSpellTargets;
+    private Consumer<CardSelectorAppState> openCardSelector;
+    private HashMap<Integer, ArrayList<int[]>> validSpellTargets;
 
     public void update(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
@@ -110,7 +115,7 @@ public class UpdateBoardService {
             } else {
                 for (Event event : possibleEvents) {
                     if (event instanceof CastSpellEvent castSpellEvent) {
-                        LinkedList<Integer> validTargets = validSpellTargets.computeIfAbsent(castSpellEvent.spell, s -> new LinkedList<>());
+                        ArrayList<int[]> validTargets = validSpellTargets.computeIfAbsent(castSpellEvent.spell, _ -> new ArrayList<>());
                         if (validTargets.isEmpty()) {
                             // TODO: Improve?
                             int cardEntity = data.list(Components.SPELLS, currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), castSpellEvent.spell)).get(0);
@@ -118,27 +123,40 @@ public class UpdateBoardService {
 
                             Interactivity interactivity;
                             if (SpellUtil.isTargeted(data, castSpellEvent.spell) && (castSpellEvent.targets.length > 0)) {
-                                interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
+                                if (SpellUtil.isTargetingBoard(data, castSpellEvent.spell)) {
+                                    interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
-                                    @Override
-                                    public boolean isValid(BoardObject boardObject) {
-                                        Integer target = getEntity(boardObject);
-                                        return ((target != null) && validTargets.contains(target));
-                                    }
-
-                                    @Override
-                                    public void trigger(BoardObject source, BoardObject target) {
-                                        int targetEntity = getEntity(target);
-                                        gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, new int[] { targetEntity }));
-                                    }
-
-                                    private Integer getEntity(BoardObject<?> boardObject) {
-                                        if (boardObject instanceof TransformedBoardObject transformedBoardObject) {
-                                            return entityBoardMap.getEntity(transformedBoardObject);
+                                        @Override
+                                        public boolean isValid(BoardObject boardObject) {
+                                            Integer target = getEntity(boardObject);
+                                            return ((target != null) && validTargets.stream().anyMatch(targets -> targets[0] == target));
                                         }
-                                        return null;
-                                    }
-                                };
+
+                                        @Override
+                                        public void trigger(BoardObject source, BoardObject target) {
+                                            int targetEntity = getEntity(target);
+                                            gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, new int[]{ targetEntity }));
+                                        }
+
+                                        private Integer getEntity(BoardObject<?> boardObject) {
+                                            if (boardObject instanceof TransformedBoardObject<?> transformedBoardObject) {
+                                                return entityBoardMap.getEntity(transformedBoardObject);
+                                            }
+                                            return null;
+                                        }
+                                    };
+                                } else {
+                                    interactivity = new DragToPlayInteractivity() {
+
+                                        @Override
+                                        public void trigger(BoardObject boardObject, BoardObject target) {
+                                            String description = data.getComponent(cardEntity, Components.DESCRIPTION);
+                                            openCardSelector.accept(new ScrollCardSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), selectedTargets -> {
+                                                gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, selectedTargets));
+                                            }));
+                                        }
+                                    };
+                                }
                             } else if (data.hasComponent(cardEntity, Components.Zone.HAND)) {
                                 interactivity = new DragToPlayInteractivity() {
 
@@ -161,9 +179,7 @@ public class UpdateBoardService {
                             card.setInteractivity(interactivitySource, interactivity);
                             card.getModel().setPlayable(true);
                         }
-                        for (int target : castSpellEvent.targets) {
-                            validTargets.add(target);
-                        }
+                        validTargets.add(castSpellEvent.targets);
                     }
                 }
             }

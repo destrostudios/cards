@@ -8,6 +8,7 @@ import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.CompositeComparator;
 import com.destrostudios.cards.frontend.application.appstates.BackgroundAppState;
+import com.destrostudios.cards.frontend.application.appstates.services.BoardUtil;
 import com.destrostudios.cards.frontend.application.appstates.services.DeckBuilderCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
@@ -106,8 +107,7 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
             .deckCardsMaximumUnique(cardModel -> cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY)
             .isAllowedToAddCard(this::isAllowedToAddCard)
             .cardAddedCallback(this::onCardAdded)
-            .boardSettings(BoardSettings.builder()
-                .inputActionPrefix("deckbuilder")
+            .boardSettings(BoardUtil.getDefaultSettings("deckbuilder")
                 .hoverInspectionDelay(0f)
                 .isInspectable(transformedBoardObject -> (transformedBoardObject instanceof Card card) && (card.getZonePosition().getZone() == deckZone))
                 .inspector(new Inspector() {

@@ -135,6 +135,8 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Target.TARGET_RANDOM, new ComponentParser_String());
 
         templateManager.registerComponent(Components.Spell.TARGET_OPTIONAL, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Spell.MINIMUM_TARGETS, new ComponentParser_Integer());
+        templateManager.registerComponent(Components.Spell.MAXIMUM_TARGETS, new ComponentParser_Integer());
         templateManager.registerComponent(Components.Spell.CURRENT_CASTS_PER_TURN, new ComponentParser_Integer());
         templateManager.registerComponent(Components.Spell.MAXIMUM_CASTS_PER_TURN, new ComponentParser_Integer());
         templateManager.registerComponent(Components.Spell.TAUNTABLE, new ComponentParser_Void());

@@ -7,7 +7,7 @@
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
-                <targetPrefilters basic="HAND" advanced="ALLY"/>
+                <targetPrefilters basic="HAND" advanced="NOT_SOURCE,ALLY"/>
                 <manaCost>1</manaCost>
                 <castTriggers>
                     <entity>

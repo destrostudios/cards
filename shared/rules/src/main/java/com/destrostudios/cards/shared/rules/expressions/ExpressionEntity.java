@@ -89,6 +89,16 @@ public class ExpressionEntity {
         return SpellUtil.isDefaultCastFromHandSpell(data, entity);
     }
 
+    // [] is parsed as new Object[0], which doesn't call the according String[] methods
+
+    public boolean exists(Object[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
+        return exists(new String[0], targetPrefilterNamesAdvanced);
+    }
+
+    public boolean exists(String[] targetPrefilterNamesBasic, Object[] targetPrefilterNamesAdvanced) {
+        return exists(targetPrefilterNamesBasic, new String[0]);
+    }
+
     public boolean exists(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
         return exists(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, "");
     }
@@ -97,12 +107,28 @@ public class ExpressionEntity {
         return count(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, expression) > 0;
     }
 
+    public int count(Object[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
+        return count(new String[0], targetPrefilterNamesAdvanced);
+    }
+
+    public int count(String[] targetPrefilterNamesBasic, Object[] targetPrefilterNamesAdvanced) {
+        return count(targetPrefilterNamesBasic, new String[0]);
+    }
+
     public int count(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
         return count(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, "");
     }
 
     public int count(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced, String expression) {
         return all(targetPrefilterNamesBasic, targetPrefilterNamesAdvanced, expression).size();
+    }
+
+    public List<ExpressionEntity> all(Object[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {
+        return all(new String[0], targetPrefilterNamesAdvanced);
+    }
+
+    public List<ExpressionEntity> all(String[] targetPrefilterNamesBasic, Object[] targetPrefilterNamesAdvanced) {
+        return all(targetPrefilterNamesBasic, new String[0]);
     }
 
     public List<ExpressionEntity> all(String[] targetPrefilterNamesBasic, String[] targetPrefilterNamesAdvanced) {

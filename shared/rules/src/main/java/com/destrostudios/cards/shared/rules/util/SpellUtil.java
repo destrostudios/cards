@@ -1,5 +1,6 @@
 package com.destrostudios.cards.shared.rules.util;
 
+import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.SimpleTarget;
@@ -8,6 +9,16 @@ public class SpellUtil {
 
     public static boolean isTargeted(EntityData data, int entity) {
         return data.hasComponent(entity, Components.Target.TARGET_PREFILTERS);
+    }
+
+    public static boolean isTargetingBoard(EntityData data, int entity) {
+        Components.Prefilters targetPrefilters = data.getComponent(entity, Components.Target.TARGET_PREFILTERS);
+        for (ComponentDefinition<?> basicComponent : targetPrefilters.getBasicComponents()) {
+            if ((basicComponent == Components.Zone.CREATURE_ZONE) || (basicComponent == Components.BOARD)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isCastable_WithoutSpellCondition(EntityData data, int player, int spell) {
@@ -23,6 +34,14 @@ public class SpellUtil {
 
     public static boolean isCastable_OnlySpellCondition(EntityData data, int card, int spell, int[] targets) {
         return ConditionUtil.isConditionFulfilled(data, spell, card, targets);
+    }
+
+    public record ValidTargetsAmount(int minimum, int maximum) {}
+
+    public static ValidTargetsAmount getValidTargetsAmount(EntityData data, int spell) {
+        int minimum = data.getOptionalComponent(spell, Components.Spell.MINIMUM_TARGETS).orElse(1);
+        int maximum = data.getOptionalComponent(spell, Components.Spell.MAXIMUM_TARGETS).orElse(minimum);
+        return new ValidTargetsAmount(minimum, maximum);
     }
 
     // TODO: Maybe just mark the default spells (cast from hand + attack) as such, saves this whole logic and also performance, especially on conditions

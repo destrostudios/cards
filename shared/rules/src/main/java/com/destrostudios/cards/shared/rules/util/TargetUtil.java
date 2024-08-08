@@ -167,6 +167,9 @@ public class TargetUtil {
             case DEFAULT_CAST_FROM_HAND_SPELL -> {
                 return SpellUtil.isDefaultCastFromHandSpell(data, entity);
             }
+            case SOURCE_DEFAULT_CAST_FROM_HAND_SPELL -> {
+                return SpellUtil.getDefaultCastFromHandSpell(data, source) == entity;
+            }
             case SOURCE_HAND -> {
                 return hasSourceComponent(data, entity, Components.Zone.HAND);
             }

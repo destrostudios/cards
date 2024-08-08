@@ -66,8 +66,12 @@ public class PlayerActionsGenerator {
                 validTargets.retain(target -> data.hasComponent(target, Components.Ability.TAUNT));
             }
             if (validTargets.nonEmpty()) {
-                for (int target : validTargets) {
-                    out.accept(new CastSpellEvent(card, spell, new int[] { target }));
+                SpellUtil.ValidTargetsAmount validTargetAmounts = SpellUtil.getValidTargetsAmount(data, spell);
+                for (int amount = validTargetAmounts.minimum(); amount <= validTargetAmounts.maximum(); amount++) {
+                    List<IntList> targetsSubsets = ArrayUtil.getSubsets(validTargets, amount);
+                    for (IntList targets : targetsSubsets) {
+                        out.accept(new CastSpellEvent(card, spell, targets.toArray()));
+                    }
                 }
                 return;
             }

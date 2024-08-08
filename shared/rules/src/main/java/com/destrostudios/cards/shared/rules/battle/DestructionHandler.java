@@ -22,8 +22,8 @@ public class DestructionHandler extends GameEventHandler<DestructionEvent> {
             LOG.debug("Destroying {}", inspect(data, event.target));
             Optional<Integer> nextPlayer = data.getOptionalComponent(event.target, Components.NEXT_PLAYER);
             if (nextPlayer.isPresent()) {
-                int winner = nextPlayer.get();
-                context.getEvents().fire(new GameOverEvent(winner));
+                int opponent = nextPlayer.get();
+                context.getEvents().fire(new GameOverEvent(opponent));
             } else {
                 context.getEvents().fire(new MoveToGraveyardEvent(event.target));
             }

@@ -9,8 +9,6 @@ import com.destrostudios.cardgui.samples.boardobjects.targetarrow.*;
 import com.destrostudios.cardgui.samples.animations.*;
 import com.destrostudios.cardgui.samples.visualization.*;
 import com.destrostudios.cardgui.transformations.ConstantButTargetedTransformation;
-import com.destrostudios.cardgui.transformations.speeds.TimeBasedRotationTransformationSpeed;
-import com.destrostudios.cardgui.transformations.speeds.TimeBasedVectorTransformationSpeed3f;
 import com.destrostudios.cardgui.zones.*;
 import com.destrostudios.cards.frontend.application.*;
 import com.destrostudios.cards.frontend.application.appstates.boards.*;
@@ -91,11 +89,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
     private void initBoard() {
         // Board
-        board = new Board(BoardSettings.builder()
-                .inputActionPrefix("ingame")
-                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
-                .cardInZoneRotationTransformationSpeed(() -> new TimeBasedRotationTransformationSpeed(0.4f))
-                .cardInZonePositionTransformationSpeed(() -> new TimeBasedVectorTransformationSpeed3f(0.8f))
+        board = new Board(BoardUtil.getDefaultSettings("ingame")
                 .dragProjectionZ(0.996f)
                 .hoverInspectionDelay(0f)
                 .isInspectable(this::isInspectable)
@@ -241,11 +235,14 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 .build()));
 
         // BoardAppState
+
         mainApplication.getStateManager().attach(new BoardAppState(board, mainApplication.getRootNode()));
 
         // Services
 
-        updateBoardService = new UpdateBoardService(gameService, board, selectionZone, playerZonesMap, entityBoardMap);
+        updateBoardService = new UpdateBoardService(gameService, board, selectionZone, playerZonesMap, entityBoardMap, cardSelectorAppState -> {
+            mainApplication.getStateManager().attach(cardSelectorAppState);
+        });
         animationService = new AnimationService(entityBoardMap, board, mainApplication.getAssetManager());
         animationContentService = new AnimationContentService(board, animationService, mainApplication);
 
@@ -287,7 +284,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private boolean isInspectable(TransformedBoardObject<?> transformedBoardObject) {
-        if (transformedBoardObject instanceof Card card) {
+        if (transformedBoardObject instanceof Card<?> card) {
             CardModel cardModel = (CardModel) card.getModel();
             return cardModel.isFront() && (card.getZonePosition().getZone() != selectionZone);
         }
@@ -371,10 +368,13 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if (!gameService.getGameContext().isGameOver()) {
             if ("space".equals(name) && isPressed) {
-                if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
-                    gameService.sendMulliganAction();
-                } else if (sendableEndTurnEvent != null) {
-                    gameService.sendAction(sendableEndTurnEvent);
+                boolean isCardSelectorOpen = mainApplication.getStateManager().getState(CardSelectorAppState.class) != null;
+                if (!isCardSelectorOpen) {
+                    if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
+                        gameService.sendMulliganAction();
+                    } else if (sendableEndTurnEvent != null) {
+                        gameService.sendAction(sendableEndTurnEvent);
+                    }
                 }
             }
         }

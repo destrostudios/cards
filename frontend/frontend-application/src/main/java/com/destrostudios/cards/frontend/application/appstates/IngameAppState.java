@@ -17,18 +17,15 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.EventType;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.battle.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.effects.TriggerEffectImpactEvent;
 import com.destrostudios.cards.shared.rules.effects.TriggerEvent;
 import com.destrostudios.cards.shared.rules.game.*;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -41,7 +38,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class IngameAppState extends MyBaseAppState implements ActionListener {
 
@@ -61,7 +57,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private UpdateBoardService updateBoardService;
     private AnimationService animationService;
     private AnimationContentService animationContentService;
-    private Event sendableEndTurnEvent;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -318,7 +313,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         animationService.removeFinishedAnimationObjects();
         if (initState == 0) {
             // Board is initialized now
-            updateVisuals();
+            updateBoardService.update(true);
             board.finishAllTransformations();
             initState++;
         } else if ((initState == 1) && (!gameService.getGameContext().isGameOver())) {
@@ -335,30 +330,14 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             while (!board.isAnimationPlaying()) {
                 eventQueue.triggerNextEventHandler(gameService.getGameContext());
                 if (board.isAnimationPlaying()) {
-                    updateBoardService.update(null);
+                    updateBoardService.update(false);
                 }
                 if (!eventQueue.hasPendingEventHandler()) {
-                    updateVisuals();
+                    updateBoardService.update(true);
                     break;
                 }
             }
         }
-    }
-
-    private void updateVisuals() {
-        List<Event> possibleEvents;
-        sendableEndTurnEvent = null;
-        if (gameService.getGameContext().isGameOver()) {
-            possibleEvents = null;
-        } else {
-            possibleEvents = PlayerActionsGenerator.generatePossibleActions(gameService.getGameContext().getData(), gameService.getPlayerEntity());
-            for (Event event : possibleEvents) {
-                if (event instanceof EndTurnEvent) {
-                    sendableEndTurnEvent = event;
-                }
-            }
-        }
-        updateBoardService.update(possibleEvents);
     }
 
     @Override
@@ -368,13 +347,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             cameraAppState.setFreeCameraEnabled(!cameraAppState.isFreeCameraEnabled());
         } else if (!gameService.getGameContext().isGameOver()) {
             if ("space".equals(name) && isPressed) {
-                boolean isCardSelectorOpen = mainApplication.getStateManager().getState(CardSelectorAppState.class) != null;
-                if (!isCardSelectorOpen) {
-                    if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
-                        gameService.sendMulliganAction();
-                    } else if (sendableEndTurnEvent != null) {
-                        gameService.sendAction(sendableEndTurnEvent);
-                    }
+                if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
+                    gameService.sendMulliganAction();
+                } else if (updateBoardService.getSendableEndTurnEvent() != null) {
+                    gameService.sendAction(updateBoardService.getSendableEndTurnEvent());
                 }
             }
         }

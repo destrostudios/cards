@@ -14,11 +14,14 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.jme3.math.Vector3f;
+import lombok.Getter;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -40,9 +43,30 @@ public class UpdateBoardService {
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private EntityBoardMap entityBoardMap;
     private Consumer<CardSelectorAppState> openCardSelector;
+    @Getter
+    private Event sendableEndTurnEvent;
     private HashMap<Integer, ArrayList<int[]>> validSpellTargets;
 
-    public void update(List<Event> possibleEvents) {
+    public void update(boolean interactive) {
+        List<Event> possibleEvents = null;
+        sendableEndTurnEvent = null;
+        if (interactive) {
+            if (gameService.getGameContext().isGameOver()) {
+                possibleEvents = null;
+            } else {
+                possibleEvents = PlayerActionsGenerator.generatePossibleActions(gameService.getGameContext().getData(), gameService.getPlayerEntity());
+                for (Event event : possibleEvents) {
+                    if (event instanceof EndTurnEvent) {
+                        sendableEndTurnEvent = event;
+                        break;
+                    }
+                }
+            }
+        }
+        updateBoard(possibleEvents);
+    }
+
+    private void updateBoard(List<Event> possibleEvents) {
         EntityData data = gameService.getGameContext().getData();
         IntList players = data.list(Components.NEXT_PLAYER);
         for (int player : players) {
@@ -151,7 +175,8 @@ public class UpdateBoardService {
                                         @Override
                                         public void trigger(BoardObject boardObject, BoardObject target) {
                                             String description = data.getComponent(cardEntity, Components.DESCRIPTION);
-                                            openCardSelector.accept(new ScrollCardSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), selectedTargets -> {
+                                            update(false);
+                                            openCardSelector.accept(new ScrollCardSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), () -> update(true), selectedTargets -> {
                                                 gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, selectedTargets));
                                             }));
                                         }

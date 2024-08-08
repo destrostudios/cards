@@ -26,15 +26,17 @@ import java.util.stream.Collectors;
 
 public abstract class CardSelectorAppState extends MyBaseAppState {
 
-    public CardSelectorAppState(String description, List<int[]> validTargets, Function<Integer, CardModel> getCardModel, Consumer<int[]> onSubmit) {
+    public CardSelectorAppState(String description, List<int[]> validTargets, Function<Integer, CardModel> getCardModel, Runnable onCancel, Consumer<int[]> onSubmit) {
         this.description = description;
         this.validTargets = validTargets;
         this.getCardModel = getCardModel;
+        this.onCancel = onCancel;
         this.onSubmit = onSubmit;
     }
     private String description;
     private List<int[]> validTargets;
     private Function<Integer, CardModel> getCardModel;
+    private Runnable onCancel;
     private Consumer<int[]> onSubmit;
     protected Node rootNode;
     protected Node guiNode;
@@ -107,20 +109,18 @@ public abstract class CardSelectorAppState extends MyBaseAppState {
         float buttonHeight = 100;
         float buttonGapX = 30;
 
-        float buttonSubmitX = ((width / 2f) + (buttonGapX / 2));
         float buttonCancelX = ((width / 2f) - buttonWidth - (buttonGapX / 2));
+        float buttonSubmitX = ((width / 2f) + (buttonGapX / 2));
         float buttonY = 280;
+
+        Button buttonCancel = GuiUtil.createButton("Cancel", buttonWidth, buttonHeight, _ -> onCancel());
+        buttonCancel.setLocalTranslation(buttonCancelX, buttonY, 0);
+        guiNode.attachChild(buttonCancel);
 
         buttonSubmit = GuiUtil.createButton("", buttonWidth, buttonHeight, _ -> onSubmit());
         buttonSubmit.setLocalTranslation(buttonSubmitX, buttonY, 0);
         guiNode.attachChild(buttonSubmit);
         updateSubmitButton();
-
-        Button buttonCancel = GuiUtil.createButton("Cancel", buttonWidth, buttonHeight, _ -> {
-            mainApplication.getStateManager().detach(this);
-        });
-        buttonCancel.setLocalTranslation(buttonCancelX, buttonY, 0);
-        guiNode.attachChild(buttonCancel);
     }
 
     protected void updateSubmitButton() {
@@ -129,8 +129,17 @@ public abstract class CardSelectorAppState extends MyBaseAppState {
         GuiUtil.setButtonEnabled(buttonSubmit, validTargets.stream().anyMatch(targets -> ArrayUtil.equalsUnsortedAndUnique(targets, selectedTargets)));
     }
 
+    private void onCancel() {
+        onCancel.run();
+        close();
+    }
+
     private void onSubmit() {
         onSubmit.accept(getSelectedTargets());
+        close();
+    }
+
+    private void close() {
         mainApplication.getStateManager().detach(this);
     }
 

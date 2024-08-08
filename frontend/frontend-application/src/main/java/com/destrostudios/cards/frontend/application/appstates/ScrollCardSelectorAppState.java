@@ -16,8 +16,8 @@ import java.util.function.Function;
 
 public class ScrollCardSelectorAppState extends CardSelectorAppState {
 
-    public ScrollCardSelectorAppState(String description, List<int[]> validTargets, Function<Integer, CardModel> getCardModel, Consumer<int[]> onSubmit) {
-        super(description, validTargets, getCardModel, onSubmit);
+    public ScrollCardSelectorAppState(String description, List<int[]> validTargets, Function<Integer, CardModel> getCardModel, Runnable onCancel, Consumer<int[]> onSubmit) {
+        super(description, validTargets, getCardModel, onCancel, onSubmit);
     }
     private ScrollSelectorAppState<CardModel> scrollSelectorAppState;
 

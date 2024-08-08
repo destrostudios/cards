@@ -2,28 +2,20 @@
     <entity id="card">
         <name>Exiled Druid</name>
         <creatureCard/>
-        <attack>5</attack>
-        <health>5</health>
-        <description>Cast: Revive a random ally Beast.</description>
+        <attack>3</attack>
+        <health>4</health>
+        <description>Cast: Revive target random ally Beast.</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="GRAVEYARD,BEAST" advanced="ALLY"/>
                 <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_creature_zone"/>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="GRAVEYARD,BEAST" advanced="ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <moveToCreatureZone/>
-                            </entity>
+                            <entity template="../effects/move_target_to_creature_zone"/>
                         </effects>
                     </entity>
                 </castTriggers>

@@ -11,7 +11,7 @@ public class TestFallOfTheFirstDragons extends TestGame {
         int[] dragons = createCreatures(2, player, Components.Zone.GRAVEYARD);
         forEach(dragons, dragon -> data.setComponent(dragon, Components.Tribe.DRAGON));
         int card = create("spells/fall_of_the_first_dragons", player, Components.Zone.HAND);
-        castFromHand(card);
+        castFromHand(card, dragons);
         assertHasComponent(dragons, Components.Zone.HAND);
     }
 }

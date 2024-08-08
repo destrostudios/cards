@@ -11,7 +11,7 @@ public class TestExiledDruid extends TestGame {
         int beast = createCreature(player, Components.Zone.GRAVEYARD);
         data.setComponent(beast, Components.Tribe.BEAST);
         int card = create("creatures/exiled_druid", player, Components.Zone.HAND);
-        castFromHand(card);
+        castFromHand(card, beast);
         assertHasComponent(beast, Components.Zone.CREATURE_ZONE);
     }
 }

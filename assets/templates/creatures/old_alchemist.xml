@@ -7,26 +7,18 @@
         <creatureCard/>
         <attack>5</attack>
         <health>5</health>
-        <description>Cast: Add a random spell from your graveyard to your hand.</description>
+        <description>Cast: Add target spell from your graveyard to your hand.</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="GRAVEYARD,SPELL_CARD" advanced="ALLY"/>
                 <manaCost>6</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_creature_zone"/>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="GRAVEYARD,SPELL_CARD" advanced="ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <moveToHand/>
-                            </entity>
+                            <entity template="../effects/move_target_to_hand"/>
                         </effects>
                     </entity>
                 </castTriggers>

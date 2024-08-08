@@ -56,10 +56,13 @@ public class GameOverModule extends NetworkModule {
             switch (mode.getName()) {
                 case GameConstants.MODE_NAME_CLASSIC -> {
                     if (winnerUserId != QueueServerModule.BOT_USER_ID) {
-                        userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER);
+                        userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER_CLASSIC);
                     }
                 }
                 case GameConstants.MODE_NAME_ARENA -> {
+                    if (winnerUserId != QueueServerModule.BOT_USER_ID) {
+                        userService.addPacks(winnerUserId, GameConstants.PACKS_FOR_WINNER_ARENA);
+                    }
                     if (loserUserId != QueueServerModule.BOT_USER_ID) {
                         userService.onArenaLoss(loserUserId);
                     }

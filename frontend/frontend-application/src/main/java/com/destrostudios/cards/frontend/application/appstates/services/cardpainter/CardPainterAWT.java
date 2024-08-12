@@ -1,5 +1,6 @@
 package com.destrostudios.cards.frontend.application.appstates.services.cardpainter;
 
+import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualization;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Cost;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.Spell;
@@ -30,7 +31,7 @@ public class CardPainterAWT {
 
     public static void drawCardBack(Graphics2D graphics) {
         graphics = (Graphics2D) graphics.create();
-        graphics.drawImage(CardImages.getCachedImage("images/cardbacks/yugioh.png"), 0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT, null);
+        graphics.drawImage(CardImages.getCachedImage(IngameCardVisualization.CARDBACK_PATH), 0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT, null);
         graphics.dispose();
     }
 

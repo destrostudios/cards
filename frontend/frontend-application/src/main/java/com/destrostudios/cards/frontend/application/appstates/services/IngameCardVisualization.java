@@ -18,7 +18,7 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         this.fullArt = fullArt;
         node = new Node();
         node.setLocalScale(scale);
-        foilModelledCard = new FoilModelledCard(assetManager, "images/cardbacks/yugioh.png", ColorRGBA.Black);
+        foilModelledCard = new FoilModelledCard(assetManager, CARDBACK_PATH, ColorRGBA.Black);
         foilModelledCard.getMaterial_Front().setFloat("Distortion", foilDistortion);
         Node foilModelledCardNode = foilModelledCard.getNode();
         foilModelledCardNode.setShadowMode(shadows ? RenderQueue.ShadowMode.CastAndReceive : RenderQueue.ShadowMode.Off);
@@ -29,6 +29,7 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         divineShieldBox = new ColorBox(assetManager, 0.96f / 2.1f, 0.1f, 1.28f / 2.1f);
         divineShieldBox.setColor(new ColorRGBA(1, 0.9f, 0, 0.2f));
     }
+    public static final String CARDBACK_PATH = "images/cardbacks/hex.png";
     private boolean fullArt;
     private Node node;
     private FoilModelledCard foilModelledCard;

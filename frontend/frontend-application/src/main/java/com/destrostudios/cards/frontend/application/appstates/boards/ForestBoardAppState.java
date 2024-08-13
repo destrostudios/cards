@@ -56,20 +56,20 @@ public class ForestBoardAppState extends MyBaseAppState {
         material.setBoolean("useTriPlanarMapping", true);
         material.setTexture("AlphaMap", assetManager.loadTexture("textures/boards/forest_alpha.png"));
 
-        Texture grass = assetManager.loadTexture("textures/terrain/3dsa_fantasy_forest/green_grass.png");
+        Texture grass = assetManager.loadTexture("textures/terrain/3dsa_fantasy_forest/grass.png");
         grass.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("DiffuseMap", grass);
-        material.setFloat("DiffuseMap_0_scale", getTextureScale(terrain, 16, triPlanarMapping));
+        material.setFloat("DiffuseMap_0_scale", getTextureScale(terrain, 20, triPlanarMapping));
 
         Texture dirt = assetManager.loadTexture("textures/terrain/3dsa_fantasy_forest/soil.png");
         dirt.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("DiffuseMap_1", dirt);
         material.setFloat("DiffuseMap_1_scale", getTextureScale(terrain, 8, triPlanarMapping));
 
-        Texture rock = assetManager.loadTexture("textures/terrain/3dsa_fantasy_forest/dry_leaves.png");
+        Texture rock = assetManager.loadTexture("textures/terrain/3dsa_fantasy_forest/concretetiles.png");
         rock.setWrap(Texture.WrapMode.Repeat);
         material.setTexture("DiffuseMap_2", rock);
-        material.setFloat("DiffuseMap_2_scale", getTextureScale(terrain, 4, triPlanarMapping));
+        material.setFloat("DiffuseMap_2_scale", getTextureScale(terrain, 24, triPlanarMapping));
 
         terrain.setMaterial(material);
         terrain.setLocalTranslation(0, -0.8f, 1.4f);

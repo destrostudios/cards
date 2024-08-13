@@ -104,7 +104,7 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
             .deckCardVisualizer(deckCardVisualizer)
             .deckCardOrder(cardOrder)
             .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
-            .deckCardsMaximumUnique(cardModel -> cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY)
+            .deckCardsMaximumUnique(this::getMaximumUniqueDeckCards)
             .isAllowedToAddCard(this::isAllowedToAddCard)
             .cardAddedCallback(this::onCardAdded)
             .boardSettings(BoardUtil.getDefaultSettings("deckbuilder")
@@ -130,6 +130,10 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
                 })
                 .build())
             .build();
+    }
+
+    protected Integer getMaximumUniqueDeckCards(CardModel cardModel) {
+        return null;
     }
 
     protected boolean isAllowedToAddCard(CardModel cardModel) {

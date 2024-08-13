@@ -13,6 +13,7 @@ import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
 import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.model.internal.NewCardListCard;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
@@ -91,6 +92,11 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
                 setDeck(deck);
             }
         };
+    }
+
+    @Override
+    protected Integer getMaximumUniqueDeckCards(CardModel cardModel) {
+        return cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY;
     }
 
     @Override

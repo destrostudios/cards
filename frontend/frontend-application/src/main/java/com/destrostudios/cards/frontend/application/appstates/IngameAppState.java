@@ -16,6 +16,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
+import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
@@ -35,7 +36,9 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.*;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.simsilica.lemur.Button;
 
 import java.util.HashMap;
 
@@ -57,6 +60,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private UpdateBoardService updateBoardService;
     private AnimationService animationService;
     private AnimationContentService animationContentService;
+    private Node guiNode;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -64,6 +68,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         initCamera();
         mainApplication.getStateManager().attach(new ForestBoardAppState());
         initBoard();
+        initGui();
         initInputListeners();
     }
 
@@ -300,6 +305,24 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         animationContentService.playEffectAnimations(gameService.getGameContext().getData(), source, target, entity, animationsComponent);
     }
 
+    private void initGui() {
+        int width = mainApplication.getContext().getSettings().getWidth();
+        int height = mainApplication.getContext().getSettings().getHeight();
+
+        guiNode = new Node();
+
+        float buttonWidth = 0.12f * width;
+        float buttonHeight = 0.06f * height;
+        float buttonMarginRight = 0.02f * width;
+        float buttonX = width - buttonMarginRight - buttonWidth;
+        float buttonY = 0.605f * height;
+        Button buttonEndTurn = GuiUtil.createButton("End turn", buttonWidth, buttonHeight, _ -> tryEndTurn());
+        buttonEndTurn.setLocalTranslation(buttonX, buttonY, 0);
+        guiNode.attachChild(buttonEndTurn);
+
+        mainApplication.getGuiNode().attachChild(guiNode);
+    }
+
     private void initInputListeners() {
         InputManager inputManager = mainApplication.getInputManager();
         inputManager.addMapping("space", new KeyTrigger(KeyInput.KEY_SPACE));
@@ -349,10 +372,16 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             if ("space".equals(name) && isPressed) {
                 if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
                     gameService.sendMulliganAction();
-                } else if (updateBoardService.getSendableEndTurnEvent() != null) {
-                    gameService.sendAction(updateBoardService.getSendableEndTurnEvent());
+                } else {
+                    tryEndTurn();
                 }
             }
+        }
+    }
+
+    private void tryEndTurn() {
+        if (updateBoardService.getSendableEndTurnEvent() != null) {
+            gameService.sendAction(updateBoardService.getSendableEndTurnEvent());
         }
     }
 
@@ -365,5 +394,6 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         mainApplication.getInputManager().deleteMapping("space");
         mainApplication.getInputManager().deleteMapping("1");
         mainApplication.getInputManager().removeListener(this);
+        mainApplication.getGuiNode().detachChild(guiNode);
     }
 }

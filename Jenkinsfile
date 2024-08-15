@@ -14,8 +14,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'maven:3.9.6-eclipse-temurin-22-alpine'
-                    args '-u root'
+                    image 'destrostudios/maven-java-22'
                     reuseNode true
                 }
             }

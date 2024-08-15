@@ -9,7 +9,10 @@ public class TestUltriiaFlowerOfCorruption extends TestGame {
     @Test
     public void testReduceManaCostOnPlayerDamage() {
         int card = create("creatures/ultriia_flower_of_corruption", player, Components.Zone.HAND);
-        damage(opponent, 1);
-        assertManaCost(card, 7);
+        assertManaCost(card, 8);
+        for (int expectedManaCost : new int[] { 7, 6, 5, 4, 3, 2, 1, 0, 0 }) {
+            damage(opponent, 1);
+            assertManaCost(card, expectedManaCost);
+        }
     }
 }

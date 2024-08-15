@@ -26,14 +26,15 @@ import lombok.Getter;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class UpdateBoardService {
+public class UpdateIngameService {
 
-    public UpdateBoardService(GameService gameService, Board board, CardZone selectionZone, HashMap<Integer, PlayerZones> playerZonesMap, EntityBoardMap entityBoardMap, Consumer<CardSelectorAppState> openCardSelector) {
+    public UpdateIngameService(GameService gameService, Board board, CardZone selectionZone, HashMap<Integer, PlayerZones> playerZonesMap, EntityBoardMap entityBoardMap, IngameGuiService ingameGuiService, Consumer<CardSelectorAppState> openCardSelector) {
         this.gameService = gameService;
         this.board = board;
         this.selectionZone = selectionZone;
         this.playerZonesMap = playerZonesMap;
         this.entityBoardMap = entityBoardMap;
+        this.ingameGuiService = ingameGuiService;
         this.openCardSelector = openCardSelector;
         validSpellTargets = new HashMap<>();
     }
@@ -42,6 +43,7 @@ public class UpdateBoardService {
     private CardZone selectionZone;
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private EntityBoardMap entityBoardMap;
+    private IngameGuiService ingameGuiService;
     private Consumer<CardSelectorAppState> openCardSelector;
     @Getter
     private Event sendableEndTurnEvent;
@@ -64,6 +66,7 @@ public class UpdateBoardService {
             }
         }
         updateBoard(possibleEvents);
+        ingameGuiService.update(sendableEndTurnEvent != null);
     }
 
     private void updateBoard(List<Event> possibleEvents) {
@@ -176,8 +179,13 @@ public class UpdateBoardService {
                                         public void trigger(BoardObject boardObject, BoardObject target) {
                                             String description = data.getComponent(cardEntity, Components.DESCRIPTION);
                                             update(false);
-                                            openCardSelector.accept(new ScrollCardSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), () -> update(true), selectedTargets -> {
+                                            ingameGuiService.setAttached(false);
+                                            openCardSelector.accept(new ScrollCardSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), () -> {
+                                                update(true);
+                                                ingameGuiService.setAttached(true);
+                                            }, selectedTargets -> {
                                                 gameService.sendAction(new CastSpellEvent(cardEntity, castSpellEvent.spell, selectedTargets));
+                                                ingameGuiService.setAttached(true);
                                             }));
                                         }
                                     };

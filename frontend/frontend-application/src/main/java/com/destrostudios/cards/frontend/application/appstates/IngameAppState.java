@@ -16,7 +16,6 @@ import com.destrostudios.cards.frontend.application.appstates.services.*;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
-import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
@@ -36,9 +35,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.math.*;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.simsilica.lemur.Button;
 
 import java.util.HashMap;
 
@@ -57,10 +54,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private Card<CardModel> inspectionCard;
     private HashMap<Integer, PlayerZones> playerZonesMap = new HashMap<>();
     private EntityBoardMap entityBoardMap;
-    private UpdateBoardService updateBoardService;
+    private IngameGuiService ingameGuiService;
+    private UpdateIngameService updateIngameService;
     private AnimationService animationService;
     private AnimationContentService animationContentService;
-    private Node guiNode;
 
     @Override
     public void initialize(AppStateManager stateManager, Application application) {
@@ -240,7 +237,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Services
 
-        updateBoardService = new UpdateBoardService(gameService, board, selectionZone, playerZonesMap, entityBoardMap, cardSelectorAppState -> {
+        ingameGuiService = new IngameGuiService(mainApplication.getGuiNode(), this::tryEndTurn);
+        updateIngameService = new UpdateIngameService(gameService, board, selectionZone, playerZonesMap, entityBoardMap, ingameGuiService, cardSelectorAppState -> {
             mainApplication.getStateManager().attach(cardSelectorAppState);
         });
         animationService = new AnimationService(entityBoardMap, board, mainApplication.getAssetManager());
@@ -248,36 +246,37 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
 
         // Events
 
-        gameService.getGameContext().getEventHandling().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (GameContext context, MoveToCreatureZoneEvent event) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.MOVE_TO_CREATURE_ZONE, (GameContext _, MoveToCreatureZoneEvent event) -> {
             tryPlayAnimation_Entry(event.card);
         });
-        gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (GameContext context, BattleEvent event) -> {
+        gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (GameContext _, BattleEvent event) -> {
             TransformedBoardObject<?> attacker = entityBoardMap.getBoardObject(event.source);
             TransformedBoardObject<?> defender = entityBoardMap.getBoardObject(event.target);
             board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
         });
-        gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (context, event) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (_, _) -> {
             board.playAnimation(new CameraShakeAnimation(mainApplication.getCamera(), 0.4f, 0.005f));
         });
-        gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER, (GameContext context, TriggerEvent event) -> {
+        gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER, (GameContext _, TriggerEvent event) -> {
             tryPlayAnimation_Effect(event.source, null, event.trigger, Components.Effect.PRE_ANIMATIONS);
         });
-        gameService.getGameContext().getEventHandling().resolved().add(EventType.TRIGGER, (GameContext context, TriggerEvent event) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.TRIGGER, (GameContext _, TriggerEvent event) -> {
             tryPlayAnimation_Effect(event.source, null, event.trigger, Components.Effect.POST_ANIMATIONS);
         });
-        gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext context, TriggerEffectImpactEvent event) -> {
+        gameService.getGameContext().getEventHandling().pre().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext _, TriggerEffectImpactEvent event) -> {
             tryPlayAnimation_Effect(event.source, event.target, event.effect, Components.Effect.PRE_ANIMATIONS);
         });
-        gameService.getGameContext().getEventHandling().resolved().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext context, TriggerEffectImpactEvent event) -> {
+        gameService.getGameContext().getEventHandling().resolved().add(EventType.TRIGGER_EFFECT_IMPACT, (GameContext _, TriggerEffectImpactEvent event) -> {
             tryPlayAnimation_Effect(event.source, event.target, event.effect, Components.Effect.POST_ANIMATIONS);
         });
-        /*gameService.getGameContext().getEventHandling().pre().add(EventType.SHUFFLE_LIBRARY, (GameContext context, ShuffleLibraryEvent event) -> {
+        /*gameService.getGameContext().getEventHandling().pre().add(EventType.SHUFFLE_LIBRARY, (GameContext _, ShuffleLibraryEvent event) -> {
             LinkedList<Card> libraryCards = playerZonesMap.get(event.player).getDeckZone().getCards();
             board.playAnimation(new ShuffleAnimation(libraryCards, mainApplication));
         });*/
 
-        gameService.getGameContext().getEventHandling().instant().add(EventType.GAME_OVER, (GameContext context, GameOverEvent event) -> {
+        gameService.getGameContext().getEventHandling().instant().add(EventType.GAME_OVER, (GameContext _, GameOverEvent event) -> {
             gameService.onGameOver();
+            ingameGuiService.setAttached(false);
             boolean isWinner = (gameService.getPlayerEntity() == event.winner);
             mainApplication.getStateManager().attach(new GameOverAppState(isWinner));
         });
@@ -308,19 +307,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     private void initGui() {
         int width = mainApplication.getContext().getSettings().getWidth();
         int height = mainApplication.getContext().getSettings().getHeight();
-
-        guiNode = new Node();
-
-        float buttonWidth = 0.12f * width;
-        float buttonHeight = 0.06f * height;
-        float buttonMarginRight = 0.02f * width;
-        float buttonX = width - buttonMarginRight - buttonWidth;
-        float buttonY = 0.605f * height;
-        Button buttonEndTurn = GuiUtil.createButton("End turn", buttonWidth, buttonHeight, _ -> tryEndTurn());
-        buttonEndTurn.setLocalTranslation(buttonX, buttonY, 0);
-        guiNode.attachChild(buttonEndTurn);
-
-        mainApplication.getGuiNode().attachChild(guiNode);
+        ingameGuiService.init(width, height);
     }
 
     private void initInputListeners() {
@@ -336,7 +323,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         animationService.removeFinishedAnimationObjects();
         if (initState == 0) {
             // Board is initialized now
-            updateBoardService.update(true);
+            updateIngameService.update(true);
             board.finishAllTransformations();
             initState++;
         } else if ((initState == 1) && (!gameService.getGameContext().isGameOver())) {
@@ -353,10 +340,10 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             while (!board.isAnimationPlaying()) {
                 eventQueue.triggerNextEventHandler(gameService.getGameContext());
                 if (board.isAnimationPlaying()) {
-                    updateBoardService.update(false);
+                    updateIngameService.update(false);
                 }
                 if (!eventQueue.hasPendingEventHandler()) {
-                    updateBoardService.update(true);
+                    updateIngameService.update(true);
                     break;
                 }
             }
@@ -371,7 +358,7 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         } else if (!gameService.getGameContext().isGameOver()) {
             if ("space".equals(name) && isPressed) {
                 if (gameService.getGameContext().getData().hasComponent(gameService.getPlayerEntity(), Components.Player.MULLIGAN)) {
-                    gameService.sendMulliganAction();
+                    submitMulligan();
                 } else {
                     tryEndTurn();
                 }
@@ -379,21 +366,26 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
         }
     }
 
+    private void submitMulligan() {
+        gameService.sendMulliganAction();
+        ingameGuiService.setAttached(true);
+    }
+
     private void tryEndTurn() {
-        if (updateBoardService.getSendableEndTurnEvent() != null) {
-            gameService.sendAction(updateBoardService.getSendableEndTurnEvent());
+        if (updateIngameService.getSendableEndTurnEvent() != null) {
+            gameService.sendAction(updateIngameService.getSendableEndTurnEvent());
         }
     }
 
     @Override
     public void cleanup() {
         super.cleanup();
+        ingameGuiService.setAttached(false);
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(CameraAppState.class));
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(ForestBoardAppState.class));
         mainApplication.getStateManager().detach(mainApplication.getStateManager().getState(BoardAppState.class));
         mainApplication.getInputManager().deleteMapping("space");
         mainApplication.getInputManager().deleteMapping("1");
         mainApplication.getInputManager().removeListener(this);
-        mainApplication.getGuiNode().detachChild(guiNode);
     }
 }

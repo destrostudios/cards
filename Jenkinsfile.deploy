@@ -19,7 +19,6 @@ pipeline {
             agent {
                 docker {
                     image 'destrostudios/maven-java-22'
-                    args '-u root'
                     reuseNode true
                 }
             }

@@ -15,13 +15,14 @@ public class EntityService {
     public EntityService(CardService cardService) {
         this.cardService = cardService;
         cardEntities = new HashMap<>();
+        loadEntities();
     }
     private CardService cardService;
     @Getter
     private EntityData data;
     private HashMap<Integer, Integer> cardEntities;
 
-    public void load() {
+    private void loadEntities() {
         data = new SimpleEntityData(Components.ALL);
         for (Card card : cardService.getCards()) {
             int cardEntity = data.createEntity();
@@ -34,7 +35,7 @@ public class EntityService {
         return data.hasComponent(getEntity(cardId), component);
     }
 
-    public int getEntity(int cardId) {
+    private int getEntity(int cardId) {
         return cardEntities.get(cardId);
     }
 }

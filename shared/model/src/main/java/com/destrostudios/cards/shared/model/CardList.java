@@ -19,10 +19,11 @@ public class CardList {
 
     @JsonIgnore
     public int getSize() {
-        int size = 0;
-        for (CardListCard card : cards) {
-            size += card.getAmount();
-        }
-        return size;
+        return cards.stream().mapToInt(CardListCard::getAmount).sum();
+    }
+
+    @JsonIgnore
+    public int getCardAmount(int cardId, int foilId) {
+        return cards.stream().filter(cardListCard -> cardListCard.getCard().getId() == cardId && cardListCard.getFoil().getId() == foilId).findFirst().map(CardListCard::getAmount).orElse(0);
     }
 }

@@ -38,11 +38,11 @@ public class BackendApplication {
         ModeService modeService = new ModeService(database, cardListService);
         QueueService queueService = new QueueService(database);
         ArenaService arenaService = new ArenaService(cardService);
-        UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService, arenaService);
+        EntityService entityService = new EntityService(cardService);
+        PackService packService = new PackService(cardService, foilService, entityService);
+        UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService, arenaService, packService);
         DeckService deckService = new DeckService(modeService, userService);
 
-        EntityService entityService = new EntityService(cardService);
-        entityService.load();
         BotDeckService botDeckService = new BotDeckService(database, cardService, foilService, cardListService, modeService, queueService, entityService);
         // botDeckService.generateDecks(123);
 

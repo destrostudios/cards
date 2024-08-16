@@ -25,6 +25,7 @@ public class UserService {
     private CardListService cardListService;
     private QueueService queueService;
     private ArenaService arenaService;
+    private PackService packService;
 
     public void onLogin(JwtAuthenticationUser jwtUser) {
         String escapedNow = database.getEscapedNow();
@@ -205,57 +206,6 @@ public class UserService {
         );
     }
 
-    public void onGameOver(int userId, int modeId, int queueId, boolean win) {
-        String escapedNow = database.getEscapedNow();
-        UserModeQueue userModeQueue = getUserModeQueue(userId, modeId, queueId);
-        if (userModeQueue == null) {
-            int wins = (win ? 1 : 0);
-            database.execute("INSERT INTO user_mode_queue (user_id, mode_id, queue_id, games, wins, current_win_streak, longest_win_streak, first_game_date, last_game_date) VALUES (" + userId + ", " + modeId + ", " + queueId + ", 1, " + wins + ", " + wins + ", " + wins + ", '" + escapedNow + "', '" + escapedNow + "')");
-        } else {
-            int currentWinStreak = 0;
-            Integer newLongestWinStreak = null;
-            if (win) {
-                currentWinStreak = userModeQueue.getCurrentWinStreak() + 1;
-                if (currentWinStreak > userModeQueue.getLongestWinStreak()) {
-                    newLongestWinStreak = currentWinStreak;
-                }
-            }
-            database.execute("UPDATE user_mode_queue SET games = games + 1" + (win ? ", wins = wins + 1" : "") + ", current_win_streak = " + currentWinStreak + ((newLongestWinStreak != null) ? ", longest_win_streak = " + newLongestWinStreak : "") + ", last_game_date = '" + escapedNow + "' WHERE id = " + userModeQueue.getId());
-        }
-    }
-
-    public void addPacks(int userId, int packs) {
-        database.execute("UPDATE user SET packs = packs + " + packs + " WHERE id = " + userId);
-    }
-
-    public PackResult openPack(int userId) {
-        User user = getUser(userId);
-        if (user.getPacks() <= 0) {
-            throw new RuntimeException("User has no packs.");
-        }
-        database.execute("UPDATE user SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE id = " + userId);
-        PackResult packResult = createPackResult();
-        CardList collectionCardList = getCollectionCardList(userId);
-        for (CardIdentifier cardIdentifier : packResult.getCards()) {
-            cardListService.addCard(collectionCardList.getId(), cardIdentifier.getCard().getId(), cardIdentifier.getFoil().getId(), 1);
-        }
-        return packResult;
-    }
-
-    private PackResult createPackResult() {
-        List<Card> availableCards = cardService.getCards_NonCore();
-        Foil foilArtwork = foilService.getFoil(GameConstants.FOIL_NAME_ARTWORK);
-        Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
-        LinkedList<BaseCardIdentifier> cards = new LinkedList<>();
-        for (int i = 0; i < GameConstants.CARDS_PER_PACK; i++) {
-            int cardIndex = (int) (Math.random() * availableCards.size());
-            Card card = availableCards.get(cardIndex);
-            Foil foil = ((i == 0) ? foilArtwork : foilNone);
-            cards.add(new BaseCardIdentifier(card, foil));
-        }
-        return new PackResult(cards);
-    }
-
     public void addArenaCard(int userId, int cardId) {
         User user = getUser(userId);
         List<BaseCardIdentifier> cardIdentifiers = getArenaDraftCards(user.getArenaSeed());
@@ -288,5 +238,42 @@ public class UserService {
     public void onArenaLoss(int userId) {
         UserModeDeck arenaDeck = getArenaDeck(userId);
         deleteUserModeDeck(arenaDeck.getId());
+    }
+
+    public void onGameOver(int userId, int modeId, int queueId, boolean win) {
+        String escapedNow = database.getEscapedNow();
+        UserModeQueue userModeQueue = getUserModeQueue(userId, modeId, queueId);
+        if (userModeQueue == null) {
+            int wins = (win ? 1 : 0);
+            database.execute("INSERT INTO user_mode_queue (user_id, mode_id, queue_id, games, wins, current_win_streak, longest_win_streak, first_game_date, last_game_date) VALUES (" + userId + ", " + modeId + ", " + queueId + ", 1, " + wins + ", " + wins + ", " + wins + ", '" + escapedNow + "', '" + escapedNow + "')");
+        } else {
+            int currentWinStreak = 0;
+            Integer newLongestWinStreak = null;
+            if (win) {
+                currentWinStreak = userModeQueue.getCurrentWinStreak() + 1;
+                if (currentWinStreak > userModeQueue.getLongestWinStreak()) {
+                    newLongestWinStreak = currentWinStreak;
+                }
+            }
+            database.execute("UPDATE user_mode_queue SET games = games + 1" + (win ? ", wins = wins + 1" : "") + ", current_win_streak = " + currentWinStreak + ((newLongestWinStreak != null) ? ", longest_win_streak = " + newLongestWinStreak : "") + ", last_game_date = '" + escapedNow + "' WHERE id = " + userModeQueue.getId());
+        }
+    }
+
+    public void addPacks(int userId, int packs) {
+        database.execute("UPDATE user SET packs = packs + " + packs + " WHERE id = " + userId);
+    }
+
+    public PackResult openPack(int userId) {
+        User user = getUser(userId);
+        if (user.getPacks() <= 0) {
+            throw new RuntimeException("User has no packs.");
+        }
+        database.execute("UPDATE user SET packs = packs - 1, packs_opened = packs_opened + 1 WHERE id = " + userId);
+        CardList collectionCardList = getCollectionCardList(userId);
+        PackResult packResult = packService.createPackResult(collectionCardList);
+        for (CardIdentifier cardIdentifier : packResult.getCards()) {
+            cardListService.addCard(collectionCardList.getId(), cardIdentifier.getCard().getId(), cardIdentifier.getFoil().getId(), 1);
+        }
+        return packResult;
     }
 }

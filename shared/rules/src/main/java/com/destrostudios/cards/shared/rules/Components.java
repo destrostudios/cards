@@ -129,6 +129,7 @@ public class Components {
             public static final ComponentDefinition<Void> MOVE_TO_HAND = create("moveToHand");
             public static final ComponentDefinition<Void> MOVE_TO_CREATURE_ZONE = create("moveToCreatureZone");
             public static final ComponentDefinition<Void> MOVE_TO_GRAVEYARD = create("moveToGraveyard");
+            public static final ComponentDefinition<Void> MOVE_TO_LIBRARY = create("moveToLibrary");
         }
     }
 

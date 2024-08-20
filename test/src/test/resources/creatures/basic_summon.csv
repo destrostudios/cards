@@ -54,6 +54,7 @@ creatures/grumpy_captain
 creatures/guardian_dragon
 creatures/haranna_udagan
 creatures/high_priestess_llyncis
+creatures/hoarder_troll
 creatures/hobgoblin_cannoneer
 creatures/holy_legion_leader
 creatures/injured_legend
@@ -66,6 +67,7 @@ creatures/landed_elemental_orb
 creatures/leader_of_the_sceleratis
 creatures/legion_angel
 creatures/leviathan
+creatures/library_troll
 creatures/mahabit_shaman
 creatures/mermaid
 creatures/mounted_dwarf_warrior
@@ -78,6 +80,7 @@ creatures/ox_warhero
 creatures/pebble
 creatures/plague_hunter
 creatures/plated_aradon
+creatures/portable_sand_relic
 creatures/priestess_of_valdas
 creatures/relic_guardian
 creatures/river_racoon
@@ -85,6 +88,7 @@ creatures/shieldmaster
 creatures/shrine_specter
 creatures/sir_theodor_the_third
 creatures/siren
+creatures/social_troll
 creatures/spiked_greyhump
 creatures/sun_ornament_dragon
 creatures/tarasque
@@ -103,6 +107,7 @@ creatures/valkyrie
 creatures/walking_mortuary
 creatures/wandering_wizard
 creatures/war_angel
+creatures/wizard_troll
 creatures/wooded_chimera
 creatures/wooded_chimeras_firstborn
 creatures/wooded_chimeras_secondborn

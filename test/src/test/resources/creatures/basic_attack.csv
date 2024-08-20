@@ -32,8 +32,11 @@ creatures/emperor_tamarin,1
 creatures/exiled_druid,1
 creatures/fairy,1
 creatures/fire_dragon,1
+creatures/fire_spirit,1
 creatures/fiulo,1
+creatures/forest_spirit,1
 creatures/forwen_tribe_mage,1
+creatures/frost_spirit,1
 creatures/furious_berserk,1
 creatures/gideas,1
 creatures/goblin,1
@@ -55,6 +58,7 @@ creatures/grumpy_captain,1
 creatures/guardian_dragon,1
 creatures/haranna_udagan,1
 creatures/high_priestess_llyncis,1
+creatures/hoarder_troll,1
 creatures/holy_legion_leader,1
 creatures/injured_legend,1
 creatures/inspiring_angel,1
@@ -66,6 +70,7 @@ creatures/landed_elemental_orb,1
 creatures/leader_of_the_sceleratis,1
 creatures/legion_angel,1
 creatures/leviathan,1
+creatures/library_troll,1
 creatures/mahabit_shaman,1
 creatures/mermaid,1
 creatures/mounted_dwarf_warrior,1
@@ -78,6 +83,7 @@ creatures/ox_warhero,1
 creatures/pebble,1
 creatures/plague_hunter,1
 creatures/plated_aradon,1
+creatures/portable_sand_relic,1
 creatures/priestess_of_valdas,1
 creatures/relic_guardian,1
 creatures/river_racoon,1
@@ -85,12 +91,14 @@ creatures/shieldmaster,1
 creatures/shrine_specter,1
 creatures/sir_theodor_the_third,1
 creatures/siren,1
+creatures/social_troll,1
 creatures/spiked_greyhump,1
 creatures/sun_ornament_dragon,1
 creatures/tarasque,1
 creatures/terror_from_above,1
 creatures/the_ether_dragon,1
 creatures/the_wizard_king,1
+creatures/thunder_spirit,1
 creatures/tiny_dragon,1
 creatures/two_headed_chimera,2
 creatures/ultriia_flower_of_corruption,1
@@ -103,6 +111,7 @@ creatures/valkyrie,1
 creatures/walking_mortuary,1
 creatures/wandering_wizard,1
 creatures/war_angel,1
+creatures/wizard_troll,1
 creatures/wooded_chimera,1
 creatures/wooded_chimeras_firstborn,1
 creatures/wooded_chimeras_secondborn,1

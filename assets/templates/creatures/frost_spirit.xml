@@ -1,0 +1,45 @@
+<template>
+    <values>
+        <maximumAmount>2</maximumAmount>
+        <maximumAttack>2</maximumAttack>
+    </values>
+    <entity id="card">
+        <name>Frost Spirit</name>
+        <creatureCard/>
+        <attack>4</attack>
+        <health>3</health>
+        <description>Cast: Tribute a creature to destroy [maximumAmount] random opponent creatures with [maximumAttack] or less attack.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="CREATURE_ZONE" advanced="ALLY"/>
+                <manaCost>4</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/targets"/>
+                                </targets>
+                                <destroy/>
+                            </entity>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
+                                        <targetAll>target.attack &lt;= [maximumAttack]</targetAll>
+                                        <targetRandom>[maximumAmount]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <destroy/>
+                            </entity>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+</template>

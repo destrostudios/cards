@@ -14,6 +14,7 @@ import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.BuffUtil;
@@ -36,6 +37,8 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             events.fire(new MoveToGraveyardEvent(event.target));
         } else if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_HAND)) {
             events.fire(new MoveToHandEvent(event.target));
+        } else if (data.hasComponent(event.effect, Components.Effect.Zones.MOVE_TO_LIBRARY)) {
+            events.fire(new MoveToLibraryEvent(event.target));
         }
 
         String damageExpression = data.getComponent(event.effect, Components.Effect.DAMAGE);

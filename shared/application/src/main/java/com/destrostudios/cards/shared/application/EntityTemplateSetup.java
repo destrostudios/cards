@@ -125,6 +125,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_HAND, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_CREATURE_ZONE, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_GRAVEYARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.Zones.MOVE_TO_LIBRARY, new ComponentParser_Void());
 
         templateManager.registerComponent(Components.Target.SOURCE_PREFILTERS, new ComponentParser_Prefilters());
         templateManager.registerComponent(Components.Target.TARGET_PREFILTERS, new ComponentParser_Prefilters());

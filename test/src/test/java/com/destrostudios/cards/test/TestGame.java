@@ -13,6 +13,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
@@ -170,9 +171,13 @@ public class TestGame {
         ZoneUtil.addToZone(data, card, owner, cardZone, getCardPlayerZone(cardZone)[owner], getPlayerCardsZone(cardZone));
     }
 
-    protected void setFullMana(int entity, int mana) {
-        data.setComponent(entity, Components.AVAILABLE_MANA, mana);
-        data.setComponent(entity, Components.MANA, mana);
+    protected void setFullMana(int player, int mana) {
+        data.setComponent(player, Components.AVAILABLE_MANA, mana);
+        data.setComponent(player, Components.MANA, mana);
+    }
+
+    protected void draw(int player) {
+        fire(new DrawCardEvent(player));
     }
 
     protected void castFromHand(int card, int... targets) {

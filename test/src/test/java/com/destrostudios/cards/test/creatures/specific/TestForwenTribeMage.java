@@ -4,7 +4,7 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.test.TestGame;
 import org.junit.jupiter.api.Test;
 
-public class TestForwenTribeMange extends TestGame {
+public class TestForwenTribeMage extends TestGame {
 
     @Test
     public void testAddThunderToHandOnDeath() {

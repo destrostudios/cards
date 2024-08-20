@@ -1,0 +1,23 @@
+<template>
+    <entity id="card" template="./templates/vanilla(name=Library Troll,manaCost=20,attack=5,health=5)">
+        <description>Costs (1) less for each draw you've drawn this game.</description>
+        <postDrawCardTriggers>
+            <entity>
+                <targetPrefilters advanced="OWNER"/>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source_default_cast_from_hand_spell"/>
+                        </targets>
+                        <addBuff>
+                            <entity>
+                                <source>#card</source>
+                                <bonusManaCost>-1</bonusManaCost>
+                            </entity>
+                        </addBuff>
+                    </entity>
+                </effects>
+            </entity>
+        </postDrawCardTriggers>
+    </entity>
+</template>

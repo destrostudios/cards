@@ -135,10 +135,18 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         float x = 55;
         int buttonManaFilterWidth = 50;
         buttonFilterManaCost = new Button[11];
+        int highestButtonManaCost = (buttonFilterManaCost.length - 1);
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
             final int manaCost = i;
-            Predicate<CardModel> filter = cardModel -> cardModel.getManaCostDetails() == manaCost;
-            Button button = addButton("" + i, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> {
+            Predicate<CardModel> filter = cardModel -> {
+                if (manaCost < highestButtonManaCost) {
+                    return cardModel.getManaCostDetails() == manaCost;
+                } else {
+                    return cardModel.getManaCostDetails() >= manaCost;
+                }
+            };
+            String buttonText = manaCost + (manaCost < highestButtonManaCost ? "" : "+");
+            Button button = addButton(buttonText, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, _ -> {
                 if (deckBuilderAppState.getCollectionCardFilter() == filter) {
                     deckBuilderAppState.setCollectionCardFilter(null);
                     filteredManaCost = null;

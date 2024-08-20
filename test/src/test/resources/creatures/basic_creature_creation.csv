@@ -55,6 +55,7 @@ creatures/grumpy_captain,Grumpy Captain,false,2,2,2,true,false
 creatures/guardian_dragon,Guardian Dragon,false,6,6,6,false,false
 creatures/haranna_udagan,Haranna Udagan,false,2,2,1,false,false
 creatures/high_priestess_llyncis,High Priestess Llyncis,true,7,7,7,false,false
+creatures/hoarder_troll,Hoarder Troll,false,11,5,5,false,false
 creatures/hobgoblin_cannoneer,Hobgoblin Cannoneer,false,4,3,3,false,false
 creatures/holy_legion_leader,Holy Legion Leader,false,5,4,4,false,false
 creatures/injured_legend,Injured Legend,false,3,3,6,false,false
@@ -67,6 +68,7 @@ creatures/landed_elemental_orb,Landed Elemental Orb,false,4,4,4,false,false
 creatures/leader_of_the_sceleratis,Leader of the Sceleratis,true,3,2,2,false,false
 creatures/legion_angel,Legion Angel,false,6,4,5,true,true
 creatures/leviathan,Leviathan,false,8,6,6,false,false
+creatures/library_troll,Library Troll,false,20,5,5,false,false
 creatures/mahabit_shaman,Mahabit Shaman,false,5,5,4,false,false
 creatures/mermaid,Mermaid,false,2,2,2,false,false
 creatures/mounted_dwarf_warrior,Mounted Dwarf Warrior,false,3,3,3,false,false
@@ -79,6 +81,7 @@ creatures/ox_warhero,Ox Warhero,true,2,3,1,false,false
 creatures/pebble,Pebble,false,0,1,1,false,false
 creatures/plague_hunter,Plague Hunter,false,2,2,2,false,false
 creatures/plated_aradon,Plated Aradon,false,4,3,5,true,false
+creatures/portable_sand_relic,Portable Sand Relic,false,1,1,1,false,false
 creatures/priestess_of_valdas,Priestess of Valdas,false,2,1,3,false,false
 creatures/relic_guardian,Relic Guardian,false,1,1,2,true,false
 creatures/river_racoon,River Racoon,false,2,2,2,false,false
@@ -86,6 +89,7 @@ creatures/shieldmaster,Shieldmaster,false,2,1,3,false,false
 creatures/shrine_specter,Shrine Specter,false,2,2,2,false,false
 creatures/sir_theodor_the_third,Sir Theodor the Third,false,1,1,1,true,false
 creatures/siren,Siren,false,3,2,2,false,false
+creatures/social_troll,Social Troll,false,7,5,5,false,false
 creatures/spiked_greyhump,Spiked Greyhump,false,5,2,5,true,false
 creatures/sun_ornament_dragon,Sun Ornament Dragon,false,4,3,5,false,false
 creatures/tarasque,Tarasque,false,5,5,5,false,false
@@ -104,6 +108,7 @@ creatures/valkyrie,Valkyrie,false,3,3,1,false,true
 creatures/walking_mortuary,Walking Mortuary,false,9,8,8,false,false
 creatures/wandering_wizard,Wandering Wizard,false,5,4,4,false,false
 creatures/war_angel,War Angel,false,6,4,4,false,false
+creatures/wizard_troll,Wizard Troll,false,10,5,5,false,false
 creatures/wooded_chimera,Wooded Chimera,true,9,6,6,false,false
 creatures/wooded_chimeras_firstborn,Wooded Chimera's Firstborn,false,3,3,3,false,false
 creatures/wooded_chimeras_secondborn,Wooded Chimera's Secondborn,false,2,2,2,false,false

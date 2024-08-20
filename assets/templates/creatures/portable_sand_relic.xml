@@ -1,0 +1,13 @@
+<template>
+    <entity template="./templates/vanilla(name=Portable Sand Relic,manaCost=1,attack=1,health=1)">
+        <description>Death: Add a Sandstorm to your hand.</description>
+        <postDestructionTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/create_for_owner(template=spells/sandstorm,location=HAND)"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

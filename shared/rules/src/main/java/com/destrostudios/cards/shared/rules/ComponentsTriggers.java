@@ -7,6 +7,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 
 import java.util.HashMap;
@@ -25,6 +26,7 @@ public class ComponentsTriggers {
             new TriggerRegistration<>(new boolean[] { true }, CastSpellEvent.class, event -> new int[] { event.spell }),
             new TriggerRegistration<>(new boolean[] { true }, DamageEvent.class, event -> new int[] { event.target }),
             new TriggerRegistration<>(new boolean[] { true }, DestructionEvent.class, event -> new int[] { event.target }),
+            new TriggerRegistration<>(new boolean[] { true }, DrawCardEvent.class, event -> new int[] { event.player }),
             new TriggerRegistration<>(new boolean[] { false }, EndTurnEvent.class, event -> new int[] { event.player }),
             new TriggerRegistration<>(new boolean[] { true }, HealEvent.class, event -> new int[] { event.target }),
         };
@@ -33,7 +35,7 @@ public class ComponentsTriggers {
             for (boolean postOrPre : trigger.postOrPres) {
                 String componentName = (postOrPre ? "post" : "pre") + eventClassName.substring(0, eventClassName.length() - "Event".length()) + "Triggers";
                 ComponentDefinition<int[]> component = Components.create(componentName);
-                TRIGGERS.computeIfAbsent(trigger.eventClass, ev -> new HashMap<>()).put(postOrPre, new TriggerDefinition(postOrPre, trigger.eventClass, component, trigger.getTargets));
+                TRIGGERS.computeIfAbsent(trigger.eventClass, _ -> new HashMap<>()).put(postOrPre, new TriggerDefinition(postOrPre, trigger.eventClass, component, trigger.getTargets));
             }
         }
     }
@@ -55,7 +57,8 @@ public class ComponentsTriggers {
     ) {}
 
     public record TriggerDefinition<T extends Event>(
-        boolean postOrPre, Class<T> eventClass,
+        boolean postOrPre,
+        Class<T> eventClass,
         ComponentDefinition<int[]> component,
         Function<T, int[]> getTargets
     ) {}

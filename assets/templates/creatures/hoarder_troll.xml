@@ -1,0 +1,20 @@
+<template>
+    <values>
+        <bonusManaCost>1</bonusManaCost>
+    </values>
+    <entity id="card" template="./templates/vanilla(name=Hoarder Troll,manaCost=11,attack=5,health=5)">
+        <description>Costs ([bonusManaCost]) less for each card in your hand.</description>
+        <auras>
+            <entity>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters advanced="SOURCE_DEFAULT_CAST_FROM_HAND_SPELL"/>
+                <auraBuff>
+                    <entity>
+                        <source>#card</source>
+                        <bonusManaCost>-1 * [bonusManaCost] * source.count(["HAND"], ["ALLY"])</bonusManaCost>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

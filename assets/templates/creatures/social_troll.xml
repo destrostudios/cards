@@ -1,0 +1,20 @@
+<template>
+    <values>
+        <bonusManaCost>1</bonusManaCost>
+    </values>
+    <entity id="card" template="./templates/vanilla(name=Social Troll,manaCost=7,attack=5,health=5)">
+        <description>Costs ([bonusManaCost]) less for each ally creature on board.</description>
+        <auras>
+            <entity>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters advanced="SOURCE_DEFAULT_CAST_FROM_HAND_SPELL"/>
+                <auraBuff>
+                    <entity>
+                        <source>#card</source>
+                        <bonusManaCost>-1 * [bonusManaCost] * source.count(["CREATURE_ZONE"], ["ALLY"])</bonusManaCost>
+                    </entity>
+                </auraBuff>
+            </entity>
+        </auras>
+    </entity>
+</template>

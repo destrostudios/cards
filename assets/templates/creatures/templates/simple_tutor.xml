@@ -1,0 +1,34 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <creatureCard/>
+        <attack>[attack]</attack>
+        <health>[health]</health>
+        <description>Cast: Draw "[targetName]" from your library.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="LIBRARY" advanced="ALLY"/>
+                                        <targetAll>target.name == "[targetName]"</targetAll>
+                                        <targetRandom>1</targetRandom>
+                                    </entity>
+                                </targets>
+                                <moveToHand/>
+                            </entity>
+                            <entity template="../../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+</template>

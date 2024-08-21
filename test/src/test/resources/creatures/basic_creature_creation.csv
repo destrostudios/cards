@@ -31,6 +31,9 @@ creatures/elven_queen,Elven Queen,false,5,3,3,false,false
 creatures/emperor_tamarin,Emperor Tamarin,false,4,4,4,false,false
 creatures/exiled_druid,Exiled Druid,false,7,3,4,false,false
 creatures/fairy,Fairy,false,2,2,1,false,false
+creatures/fascinating_fairytales_part_1,"Fascinating Fairytales, Part 1",false,2,1,1,false,false
+creatures/fascinating_fairytales_part_2,"Fascinating Fairytales, Part 2",false,2,1,1,false,false
+creatures/fascinating_fairytales_part_3,"Fascinating Fairytales, Part 3",false,2,1,1,false,false
 creatures/fire_dragon,Fire Dragon,false,7,5,5,false,false
 creatures/fire_spirit,Fire Spirit,false,4,4,3,false,false
 creatures/fiulo,Fiulo,true,1,1,1,false,false

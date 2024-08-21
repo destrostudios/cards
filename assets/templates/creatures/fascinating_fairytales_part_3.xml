@@ -1,0 +1,9 @@
+<template>
+    <values>
+        <name>Fascinating Fairytales, Part 3</name>
+        <targetName>Fascinating Fairytales, Part 1</targetName>
+    </values>
+    <entity template="./templates/simple_tutor(name=[name],manaCost=2,attack=1,health=1,targetName=[targetName])">
+        <flavourText>"I have to read it again!"</flavourText>
+    </entity>
+</template>

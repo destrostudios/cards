@@ -1,0 +1,32 @@
+<template>
+    <values>
+        <draw>2</draw>
+    </values>
+    <entity id="card">
+        <name>Antique Can</name>
+        <spellCard/>
+        <description>Discard a card and draw [draw] cards.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="HAND" advanced="NOT_SOURCE,ALLY"/>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/discard_target"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <draw>[draw]</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

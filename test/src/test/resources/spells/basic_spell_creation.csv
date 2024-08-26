@@ -1,10 +1,12 @@
 template,name,legendary,manaCost
 spells/a_long_trip,A Long Trip,false,3
 spells/adventure,Adventure,false,2
+spells/antique_can,Antique Can,false,2
 spells/arcane_graveyard,Arcane Graveyard,false,2
 spells/begone_lizard,"Begone, Lizard!",false,4
 spells/blue_lagoon,Blue Lagoon,false,5
 spells/bonfire,Bonfire,false,2
+spells/can_trip,Can Trip,false,2
 spells/conjured_lightning,Conjured Lightning,false,5
 spells/dark_sphere,Dark Sphere,false,2
 spells/dragons_counterattack,Dragon's Counterattack,false,5
@@ -32,5 +34,7 @@ spells/sword_of_the_crusader,Sword of the Crusader,false,2
 spells/technology,Technology,false,3
 spells/the_kings_army,The King's Army,false,4
 spells/thunder,Thunder,false,1
+spells/underworld_rot,Underworld Rot,false,3
+spells/underworld_sparks,Underworld Sparks,false,1
 spells/unprocessed_mana_crystal,Unprocessed Mana Crystal,false,1
 spells/warcry,Warcry,false,2

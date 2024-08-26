@@ -1,10 +1,12 @@
 template
 spells/a_long_trip
 spells/adventure
+spells/antique_can
 spells/arcane_graveyard
 spells/begone_lizard
 spells/blue_lagoon
 spells/bonfire
+spells/can_trip
 spells/conjured_lightning
 spells/dark_sphere
 spells/dragons_counterattack
@@ -32,5 +34,7 @@ spells/sword_of_the_crusader
 spells/technology
 spells/the_kings_army
 spells/thunder
+spells/underworld_rot
+spells/underworld_sparks
 spells/unprocessed_mana_crystal
 spells/warcry

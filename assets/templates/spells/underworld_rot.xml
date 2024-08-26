@@ -1,0 +1,33 @@
+<template>
+    <entity id="card">
+        <name>Underworld Rot</name>
+        <spellCard/>
+        <description>Discard a card and destroy a random opponent creature.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="HAND" advanced="NOT_SOURCE,ALLY"/>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/discard_target"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
+                                        <targetAll/>
+                                        <targetRandom>1</targetRandom>
+                                    </entity>
+                                </targets>
+                                <destroy/>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

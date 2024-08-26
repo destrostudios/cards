@@ -57,6 +57,10 @@ public class GameEventHandling extends EventHandling<GameContext> {
         set(resolved, EventType.DRAW_CARD,
             new CheckTriggersHandler<>(getTriggersComponent(POST, DrawCardEvent.class))
         );
+        set(instant, EventType.DISCARD, new DiscardHandler());
+        set(resolved, EventType.DISCARD,
+            new CheckTriggersHandler<>(getTriggersComponent(POST, DiscardEvent.class))
+        );
         set(pre, EventType.END_TURN,
             new CheckTriggersHandler<>(getTriggersComponent(PRE, EndTurnEvent.class)),
             new RemoveTemporaryBuffsOnEndTurnHandler());

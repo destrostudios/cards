@@ -1,0 +1,13 @@
+<template>
+    <entity template="./templates/vanilla(name=Underworld Sailor,manaCost=2,attack=2,health=2)">
+        <description>After this creature is discarded, summon it.</description>
+        <postDiscardTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/move_target_to_creature_zone"/>
+                </effects>
+            </entity>
+        </postDiscardTriggers>
+    </entity>
+</template>

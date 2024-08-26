@@ -116,6 +116,7 @@ public class Components {
         public static final ComponentDefinition<String> DAMAGE = create("damage");
         public static final ComponentDefinition<String> HEAL = create("heal");
         public static final ComponentDefinition<String> DRAW = create("draw");
+        public static final ComponentDefinition<Void> DISCARD = create("discard");
         public static final ComponentDefinition<String> GAIN_MANA = create("gainMana");
         public static final ComponentDefinition<Void> DESTROY = create("destroy");
         public static final ComponentDefinition<Void> BATTLE = create("battle");

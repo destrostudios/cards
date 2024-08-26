@@ -1,0 +1,27 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <spellCard/>
+        <description>Draw [draw] card/s.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/move_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../../targets/source_owner"/>
+                                </targets>
+                                <draw>[draw]</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -1,0 +1,41 @@
+<template>
+    <values>
+        <bonusAttack>2</bonusAttack>
+    </values>
+    <entity id="card">
+        <name>Underworld Ghoul</name>
+        <creatureCard/>
+        <attack>4</attack>
+        <health>2</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=4)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+            <entity>
+                <source>#card</source>
+                <description>Discard a card and gain +[bonusAttack] attack until end of turn.</description>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="HAND" advanced="ALLY"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/discard_target"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source"/>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                        <untilEndOfTurn/>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

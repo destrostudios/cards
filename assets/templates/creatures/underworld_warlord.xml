@@ -1,0 +1,38 @@
+<template>
+    <values>
+        <amount>2</amount>
+    </values>
+    <entity id="card">
+        <name>Underworld Warlord</name>
+        <legendary/>
+        <creatureCard/>
+        <attack>3</attack>
+        <health>4</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=4)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+            <entity>
+                <source>#card</source>
+                <description>Discard [amount] cards and draw [amount] cards.</description>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="HAND" advanced="ALLY"/>
+                <minimumTargets>[amount]</minimumTargets>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/discard_target"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <draw>[amount]</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

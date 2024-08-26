@@ -1,0 +1,59 @@
+<template>
+    <values>
+        <damage>1</damage>
+        <amountCast>2</amountCast>
+        <amountDiscard>4</amountDiscard>
+    </values>
+    <entity id="card">
+        <name>Underworld Sparks</name>
+        <spellCard/>
+        <description>Deal [damage] damage to [amountCast] random opponents. After this spell is discarded, deal [damage] damage to [amountDiscard] random opponents.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <repeat>[amountCast]</repeat>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
+                                        <targetAll>target.health > 0</targetAll>
+                                        <targetRandom>1</targetRandom>
+                                    </entity>
+                                </targets>
+                                <damage>[damage]</damage>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+        <postDiscardTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <repeat>[amountDiscard]</repeat>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity>
+                                <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
+                                <targetAll>target.health > 0</targetAll>
+                                <targetRandom>1</targetRandom>
+                            </entity>
+                        </targets>
+                        <damage>[damage]</damage>
+                    </entity>
+                </effects>
+            </entity>
+        </postDiscardTriggers>
+    </entity>
+</template>

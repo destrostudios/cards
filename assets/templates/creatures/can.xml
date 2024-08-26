@@ -1,0 +1,31 @@
+<template>
+    <entity id="card">
+        <name>Can</name>
+        <creatureCard/>
+        <attack>1</attack>
+        <health>2</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=3)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+            <entity>
+                <source>#card</source>
+                <description>Discard this and draw a card.</description>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/discard_source"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source_owner"/>
+                                </targets>
+                                <draw>1</draw>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

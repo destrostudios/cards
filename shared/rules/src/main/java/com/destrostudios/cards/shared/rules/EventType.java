@@ -19,6 +19,7 @@ public enum EventType {
     REMOVED_FROM_HAND,
     // cards
     CAST_SPELL,
+    DISCARD,
     DRAW_CARD,
     MULLIGAN,
     PAY_MANA,

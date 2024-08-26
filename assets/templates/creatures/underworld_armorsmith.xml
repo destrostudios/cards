@@ -1,0 +1,42 @@
+<template>
+    <values>
+        <bonusHealth>2</bonusHealth>
+    </values>
+    <entity id="card">
+        <name>Underworld Armorsmith</name>
+        <creatureCard/>
+        <attack>1</attack>
+        <health>5</health>
+        <taunt/>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=3)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+            <entity>
+                <source>#card</source>
+                <description>Discard a card and gain +[bonusHealth] health.</description>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="HAND" advanced="ALLY"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/discard_target"/>
+                            <entity>
+                                <targets>
+                                    <entity template="../targets/source"/>
+                                </targets>
+                                <addBuff>
+                                    <entity>
+                                        <source>#card</source>
+                                        <bonusHealth>[bonusHealth]</bonusHealth>
+                                    </entity>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

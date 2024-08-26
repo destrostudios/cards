@@ -13,6 +13,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
@@ -180,6 +181,10 @@ public class TestGame {
         fire(new DrawCardEvent(player));
     }
 
+    protected void discard(int card) {
+        fire(new DiscardEvent(card));
+    }
+
     protected void castFromHand(int card, int... targets) {
         cast(getDefaultCastFromHandSpell(card), targets);
     }
@@ -226,7 +231,14 @@ public class TestGame {
         assertManaCostSpell(defaultCastFromHandSpell, value);
     }
 
-    protected void assertManaCostSpell(int spell, int value) {
+    protected int getAndAssertSpell(int card, int spellIndex, Integer manaCost, Integer maximumCastsPerTurn) {
+        int spell = data.getComponent(card, Components.SPELLS)[spellIndex];
+        assertManaCostSpell(spell, manaCost);
+        assertComponent(spell, Components.Spell.MAXIMUM_CASTS_PER_TURN, maximumCastsPerTurn);
+        return spell;
+    }
+
+    protected void assertManaCostSpell(int spell, Integer value) {
         assertEquals(value, CostUtil.getEffectiveManaCost(data, spell));
     }
 

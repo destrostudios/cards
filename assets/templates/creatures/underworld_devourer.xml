@@ -1,0 +1,29 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity id="card" template="./templates/vanilla(name=Underworld Devourer,manaCost=3,attack=3,health=2)">
+        <description>After you discard a creature, gain +[bonusAttack]/+[bonusHealth].</description>
+        <postDiscardTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="CREATURE_CARD" advanced="ALLY"/>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source"/>
+                        </targets>
+                        <addBuff>
+                            <entity>
+                                <source>#card</source>
+                                <bonusAttack>[bonusAttack]</bonusAttack>
+                                <bonusHealth>[bonusHealth]</bonusHealth>
+                            </entity>
+                        </addBuff>
+                    </entity>
+                </effects>
+            </entity>
+        </postDiscardTriggers>
+    </entity>
+</template>

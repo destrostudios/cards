@@ -1,0 +1,19 @@
+<template>
+    <entity template="./templates/vanilla(name=Big Can,manaCost=6,attack=4,health=4)">
+        <taunt/>
+        <description>Death: Draw a card.</description>
+        <postDestructionTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/source_owner"/>
+                        </targets>
+                        <draw>1</draw>
+                    </entity>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

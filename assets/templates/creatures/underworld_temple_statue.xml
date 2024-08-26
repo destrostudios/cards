@@ -1,0 +1,27 @@
+<template>
+    <values>
+        <bonusAttack>-2</bonusAttack>
+    </values>
+    <entity id="card" template="./templates/vanilla(name=Underworld Temple Statue,manaCost=6,attack=5,health=6)">
+        <description>After this creature is discarded, all opponent creatures gain [bonusAttack] attack until end of turn.</description>
+        <postDiscardTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/all_opponent_creatures_on_board"/>
+                        </targets>
+                        <addBuff>
+                            <entity>
+                                <source>#card</source>
+                                <bonusAttack>[bonusAttack]</bonusAttack>
+                                <untilEndOfTurn/>
+                            </entity>
+                        </addBuff>
+                    </entity>
+                </effects>
+            </entity>
+        </postDiscardTriggers>
+    </entity>
+</template>

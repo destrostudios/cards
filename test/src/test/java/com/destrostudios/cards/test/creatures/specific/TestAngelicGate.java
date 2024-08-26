@@ -11,8 +11,7 @@ public class TestAngelicGate extends TestGame {
         int target = createVanilla(0, 0, 3, player, Components.Zone.CREATURE_ZONE);
         damage(target, 2);
         int card = create("creatures/angelic_gate", player, Components.Zone.CREATURE_ZONE);
-        int spell = data.getComponent(card, Components.SPELLS)[2];
-        assertManaCostSpell(spell, 1);
+        int spell = getAndAssertSpell(card, 2, 1, null);
         cast(spell, target);
         assertHealthAndDamaged(target, 2);
     }

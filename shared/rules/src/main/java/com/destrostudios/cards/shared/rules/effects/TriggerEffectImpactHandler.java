@@ -10,6 +10,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
+import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
@@ -59,6 +60,10 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             for (int r = 0; r < drawnCards; r++) {
                 events.fire(new DrawCardEvent(event.target));
             }
+        }
+
+        if (data.hasComponent(event.effect, Components.Effect.DISCARD)) {
+            events.fire(new DiscardEvent(event.target));
         }
 
         String gainManaExpression = data.getComponent(event.effect, Components.Effect.GAIN_MANA);

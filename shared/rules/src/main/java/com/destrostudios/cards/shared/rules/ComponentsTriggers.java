@@ -7,6 +7,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 
@@ -26,6 +27,7 @@ public class ComponentsTriggers {
             new TriggerRegistration<>(new boolean[] { true }, CastSpellEvent.class, event -> new int[] { event.spell }),
             new TriggerRegistration<>(new boolean[] { true }, DamageEvent.class, event -> new int[] { event.target }),
             new TriggerRegistration<>(new boolean[] { true }, DestructionEvent.class, event -> new int[] { event.target }),
+            new TriggerRegistration<>(new boolean[] { true }, DiscardEvent.class, event -> new int[] { event.card }),
             new TriggerRegistration<>(new boolean[] { true }, DrawCardEvent.class, event -> new int[] { event.player }),
             new TriggerRegistration<>(new boolean[] { false }, EndTurnEvent.class, event -> new int[] { event.player }),
             new TriggerRegistration<>(new boolean[] { true }, HealEvent.class, event -> new int[] { event.target }),

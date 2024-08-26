@@ -8,12 +8,14 @@ creatures/astral_lich,Astral Lich,false,4,1,6,false,false
 creatures/awakened_succubus,Awakened Succubus,false,4,6,4,false,false
 creatures/baby_turtle,Baby Turtle,false,4,0,5,false,false
 creatures/battle_cleric,Battle Cleric,false,3,2,3,false,false
+creatures/big_can,Big Can,false,6,4,4,true,false
 creatures/blademaster,Blademaster,false,2,3,1,false,false
 creatures/blessed_barbarian,Blessed Barbarian,false,2,1,2,false,true
 creatures/bloodhawk,Bloodhawk,false,6,5,5,false,false
 creatures/bonespirit_fenrir,Bonespirit Fenrir,false,2,4,0,false,false
 creatures/brave_soldier,Brave Soldier,false,1,1,1,false,true
 creatures/bronze_golem,Bronze Golem,false,1,1,2,false,false
+creatures/can,Can,false,3,1,2,false,false
 creatures/cloud_devourer,Cloud Devourer,false,6,5,6,false,false
 creatures/copperfang_tribesman,Copperfang Tribesman,false,3,3,2,false,false
 creatures/crazed_doctor,Crazed Doctor,false,5,2,2,false,false
@@ -110,6 +112,13 @@ creatures/undead_general,Undead General,false,3,2,8,false,false
 creatures/undead_priest,Undead Priest,false,4,3,5,false,false
 creatures/undead_soldier,Undead Soldier,false,1,1,1,false,false
 creatures/underground_knave,Underground Knave,false,1,2,1,false,false
+creatures/underworld_armorsmith,Underworld Armorsmith,false,3,1,5,true,false
+creatures/underworld_devourer,Underworld Devourer,false,3,3,2,false,false
+creatures/underworld_ghoul,Underworld Ghoul,false,4,4,2,false,false
+creatures/underworld_sailor,Underworld Sailor,false,2,2,2,false,false
+creatures/underworld_ship,Underworld Ship,false,6,3,3,false,false
+creatures/underworld_temple_statue,Underworld Temple Statue,false,6,5,6,false,false
+creatures/underworld_warlord,Underworld Warlord,true,4,3,4,false,false
 creatures/unremembered_griffin,Unremembered Griffin,false,4,3,3,false,false
 creatures/valkyrie,Valkyrie,false,3,3,1,false,true
 creatures/walking_mortuary,Walking Mortuary,false,9,8,8,false,false

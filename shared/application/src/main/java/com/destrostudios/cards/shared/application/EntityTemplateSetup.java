@@ -81,6 +81,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Effect.DAMAGE, new ComponentParser_String());
         templateManager.registerComponent(Components.Effect.HEAL, new ComponentParser_String());
         templateManager.registerComponent(Components.Effect.DRAW, new ComponentParser_String());
+        templateManager.registerComponent(Components.Effect.DISCARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.GAIN_MANA, new ComponentParser_String());
         templateManager.registerComponent(Components.Effect.DESTROY, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.BATTLE, new ComponentParser_Void());

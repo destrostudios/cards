@@ -9,19 +9,10 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_SPELL_CARD,SOURCE_ALLY"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source"/>
-                        </targets>
-                        <addBuff>
-                            <entity>
-                                <source>#card</source>
-                                <bonusHealth>[bonusHealth]</bonusHealth>
-                            </entity>
-                        </addBuff>
-                    </entity>
+                    <entity template="../effects/buff_source(buff=#buff)"/>
                 </effects>
             </entity>
         </postCastSpellTriggers>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusHealth=[bonusHealth])"/>
 </template>

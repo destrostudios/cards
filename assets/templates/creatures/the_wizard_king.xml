@@ -25,10 +25,7 @@
                                     <entity template="../targets/targets_default_cast_from_hand_spell"/>
                                 </targets>
                                 <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <setManaCost>[setManaCost]</setManaCost>
-                                    </entity>
+                                    <entity template="../buffs/simple(source=#card,setManaCost=[setManaCost])"/>
                                 </addBuff>
                             </entity>
                         </effects>

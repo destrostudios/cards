@@ -18,18 +18,8 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_creature_zone"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source_owner"/>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source_owner"/>
-                                </targets>
-                                <heal>[heal]</heal>
-                            </entity>
+                            <entity template="../effects/damage_source_owner(damage=[damage])"/>
+                            <entity template="../effects/heal_source_owner(heal=[heal])"/>
                         </effects>
                     </entity>
                 </castTriggers>

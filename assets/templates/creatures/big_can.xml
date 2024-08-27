@@ -6,12 +6,7 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source_owner"/>
-                        </targets>
-                        <draw>1</draw>
-                    </entity>
+                    <entity template="../effects/draw_for_owner(draw=1)"/>
                 </effects>
             </entity>
         </postDestructionTriggers>

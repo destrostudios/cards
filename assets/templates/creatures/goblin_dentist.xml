@@ -8,9 +8,5 @@
         <description>Cast: Target creature on board gains [bonusAttack]/+[bonusHealth].</description>
         <flavourText>"Let's see those pearly whites!"</flavourText>
     </entity>
-    <entity id="buff">
-        <source>#card</source>
-        <bonusAttack>[bonusAttack]</bonusAttack>
-        <bonusHealth>[bonusHealth]</bonusHealth>
-    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

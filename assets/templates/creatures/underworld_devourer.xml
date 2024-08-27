@@ -10,20 +10,10 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters basic="CREATURE_CARD" advanced="ALLY"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source"/>
-                        </targets>
-                        <addBuff>
-                            <entity>
-                                <source>#card</source>
-                                <bonusAttack>[bonusAttack]</bonusAttack>
-                                <bonusHealth>[bonusHealth]</bonusHealth>
-                            </entity>
-                        </addBuff>
-                    </entity>
+                    <entity template="../effects/buff_source(buff=#buff)"/>
                 </effects>
             </entity>
         </postDiscardTriggers>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

@@ -10,11 +10,7 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters basic="CREATURE_ZONE" advanced="ALLY"/>
                 <auraBuff>
-                    <entity>
-                        <source>#card</source>
-                        <bonusAttack>[bonusAttack]</bonusAttack>
-                        <bonusHealth>[bonusHealth]</bonusHealth>
-                    </entity>
+                    <entity template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
                 </auraBuff>
             </entity>
         </auras>

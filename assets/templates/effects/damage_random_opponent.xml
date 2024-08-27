@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/random_opponent"/>
+        </targets>
+        <damage>[damage]</damage>
+    </entity>
+</template>

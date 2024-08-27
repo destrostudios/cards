@@ -1,0 +1,7 @@
+<template>
+    <entity>
+        <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
+        <targetAll>target.health > 0</targetAll>
+        <targetRandom>1</targetRandom>
+    </entity>
+</template>

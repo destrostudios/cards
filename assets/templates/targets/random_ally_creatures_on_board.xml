@@ -1,0 +1,7 @@
+<template>
+    <entity>
+        <targetPrefilters basic="CREATURE_ZONE" advanced="ALLY"/>
+        <targetAll/>
+        <targetRandom>[amount]</targetRandom>
+    </entity>
+</template>

@@ -15,12 +15,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source_owner_opponent"/>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
+                            <entity template="../effects/damage_source_owner_opponent(damage=[damage])"/>
                         </effects>
                     </entity>
                 </castTriggers>

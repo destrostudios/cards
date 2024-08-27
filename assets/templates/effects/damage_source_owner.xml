@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/source_owner"/>
+        </targets>
+        <damage>[damage]</damage>
+    </entity>
+</template>

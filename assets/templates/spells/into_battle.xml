@@ -16,22 +16,12 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/all_ally_creatures_in_hand"/>
-                                </targets>
-                                <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <bonusAttack>[bonusAttack]</bonusAttack>
-                                        <bonusHealth>[bonusHealth]</bonusHealth>
-                                    </entity>
-                                </addBuff>
-                            </entity>
+                            <entity template="../effects/buff_all_ally_creatures_in_hand(buff=#buff)"/>
                         </effects>
                     </entity>
                 </castTriggers>
             </entity>
         </spells>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

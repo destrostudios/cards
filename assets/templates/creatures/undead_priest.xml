@@ -9,12 +9,7 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters basic="CREATURE_ZONE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/targets"/>
-                        </targets>
-                        <damage>[damage]</damage>
-                    </entity>
+                    <entity template="../effects/damage_target(damage=[damage])"/>
                 </effects>
             </entity>
         </postHealTriggers>

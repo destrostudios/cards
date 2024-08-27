@@ -1,3 +1,3 @@
 <template>
-    <entity template="./templates/simple_draw(name=Technology,manaCost=3,draw=2)"/>
+    <entity template="./templates/simple_drawer(name=Technology,manaCost=3,draw=2)"/>
 </template>

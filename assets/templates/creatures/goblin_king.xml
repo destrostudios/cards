@@ -20,8 +20,7 @@
                                     <entity template="../targets/source"/>
                                 </targets>
                                 <addBuff constant="true">
-                                    <entity>
-                                        <source>#card</source>
+                                    <entity template="../buffs/simple(source=#card)">
                                         <bonusAttack>source.count(["CREATURE_ZONE","GOBLIN"], ["ALLY"])</bonusAttack>
                                     </entity>
                                 </addBuff>

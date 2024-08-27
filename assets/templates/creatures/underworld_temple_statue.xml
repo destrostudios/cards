@@ -8,20 +8,12 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/all_opponent_creatures_on_board"/>
-                        </targets>
-                        <addBuff>
-                            <entity>
-                                <source>#card</source>
-                                <bonusAttack>[bonusAttack]</bonusAttack>
-                                <untilEndOfTurn/>
-                            </entity>
-                        </addBuff>
-                    </entity>
+                    <entity template="../effects/buff_all_opponent_creatures_on_board(buff=#buff)"/>
                 </effects>
             </entity>
         </postDiscardTriggers>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
+        <untilEndOfTurn/>
     </entity>
 </template>

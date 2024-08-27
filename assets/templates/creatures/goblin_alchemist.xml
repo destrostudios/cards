@@ -6,8 +6,5 @@
         <goblin/>
         <description>Cast: Set health of target creature to [setHealth].</description>
     </entity>
-    <entity id="buff">
-        <source>#card</source>
-        <setHealth>[setHealth]</setHealth>
-    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,setHealth=[setHealth])"/>
 </template>

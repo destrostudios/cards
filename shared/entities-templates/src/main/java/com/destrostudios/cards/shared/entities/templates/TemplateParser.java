@@ -116,6 +116,13 @@ public class TemplateParser<NODE> {
     }
 
     private boolean isNodeEnabled(NODE node) {
+        String ifdefCondition = format.getAttribute(node, TemplateKeyword.IFDEF);
+        if (ifdefCondition != null) {
+            HashMap<String, Object> values = cachedValues.lastElement();
+            if (!values.containsKey(ifdefCondition)) {
+                return false;
+            }
+        }
         String ifCondition = format.getAttribute(node, TemplateKeyword.IF);
         return ((ifCondition == null) || parseBoolean(ifCondition));
     }

@@ -16,11 +16,7 @@
                             <entity template="../targets/source"/>
                         </targets>
                         <addBuff>
-                            <entity>
-                                <source>#card</source>
-                                <bonusAttack>[bonusAttack]</bonusAttack>
-                                <bonusHealth>[bonusHealth]</bonusHealth>
-                            </entity>
+                            <entity template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
                         </addBuff>
                     </entity>
                 </effects>

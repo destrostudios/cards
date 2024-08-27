@@ -19,18 +19,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <bonusAttack>[bonusAttack]</bonusAttack>
-                                        <bonusHealth>[bonusHealth]</bonusHealth>
-                                    </entity>
-                                </addBuff>
-                            </entity>
+                            <entity template="../effects/buff_target(buff=#buff)"/>
                             <entity template="../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>
@@ -39,4 +28,5 @@
             <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

@@ -14,22 +14,8 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <destroy/>
-                            </entity>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <destroy/>
-                            </entity>
+                            <entity template="../effects/destroy_target"/>
+                            <entity template="../effects/destroy_random_opponent_creature"/>
                             <entity template="../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

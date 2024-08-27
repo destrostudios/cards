@@ -10,12 +10,7 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/all_opponent_creatures_on_board"/>
-                        </targets>
-                        <damage>[damage]</damage>
-                    </entity>
+                    <entity template="../effects/damage_all_opponent_creatures(damage=[damage])"/>
                 </effects>
             </entity>
         </postDamageTriggers>

@@ -1,0 +1,12 @@
+<template>
+    <entity>
+        <targets>
+            <entity>
+                <targetPrefilters basic="LIBRARY" advanced="ALLY"/>
+                <targetAll>target.name == "[targetName]"</targetAll>
+                <targetRandom>1</targetRandom>
+            </entity>
+        </targets>
+        <moveToHand/>
+    </entity>
+</template>

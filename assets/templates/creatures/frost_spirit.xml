@@ -18,12 +18,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <destroy/>
-                            </entity>
+                            <entity template="../effects/destroy_target"/>
                             <entity>
                                 <targets>
                                     <entity>

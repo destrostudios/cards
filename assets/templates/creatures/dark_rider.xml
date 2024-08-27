@@ -8,12 +8,7 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source_owner_opponent"/>
-                        </targets>
-                        <damage>[damage]</damage>
-                    </entity>
+                    <entity template="../effects/damage_source_owner_opponent(damage=[damage])"/>
                 </effects>
             </entity>
         </postDestructionTriggers>

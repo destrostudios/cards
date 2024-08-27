@@ -10,12 +10,7 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_ALLY"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source_owner_opponent"/>
-                        </targets>
-                        <damage>[damage]</damage>
-                    </entity>
+                    <entity template="../effects/damage_source_owner_opponent(damage=[damage])"/>
                 </effects>
             </entity>
         </postCastSpellTriggers>

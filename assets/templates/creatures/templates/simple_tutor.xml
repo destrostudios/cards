@@ -13,16 +13,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="LIBRARY" advanced="ALLY"/>
-                                        <targetAll>target.name == "[targetName]"</targetAll>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <moveToHand/>
-                            </entity>
+                            <entity template="../../effects/tutor_for_owner(targetName=[targetName])"/>
                             <entity template="../../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

@@ -20,22 +20,14 @@
                     <entity>
                         <effects>
                             <entity template="../effects/discard_target"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source"/>
-                                </targets>
-                                <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <bonusAttack>[bonusAttack]</bonusAttack>
-                                        <untilEndOfTurn/>
-                                    </entity>
-                                </addBuff>
-                            </entity>
+                            <entity template="../effects/buff_source(buff=#buff)"/>
                         </effects>
                     </entity>
                 </castTriggers>
             </entity>
         </spells>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
+        <untilEndOfTurn/>
     </entity>
 </template>

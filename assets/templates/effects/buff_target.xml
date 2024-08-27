@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/targets"/>
+        </targets>
+        <addBuff>[buff]</addBuff>
+    </entity>
+</template>

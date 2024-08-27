@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/all_opponent_creatures_on_board"/>
+        </targets>
+        <damage>[damage]</damage>
+    </entity>
+</template>

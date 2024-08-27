@@ -15,10 +15,7 @@
                             <entity template="../targets/source_default_cast_from_hand_spell"/>
                         </targets>
                         <addBuff>
-                            <entity>
-                                <source>#card</source>
-                                <bonusManaCost>-1</bonusManaCost>
-                            </entity>
+                            <entity template="../buffs/simple(source=#card,bonusManaCost=-1)"/>
                         </addBuff>
                     </entity>
                 </effects>

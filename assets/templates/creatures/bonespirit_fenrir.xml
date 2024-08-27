@@ -11,10 +11,7 @@
                 <targetPrefilters advanced="SOURCE"/>
                 <condition>source.exists(["CREATURE_ZONE"], ["NOT_SOURCE","ALLY"])</condition>
                 <auraBuff>
-                    <entity>
-                        <source>#card</source>
-                        <bonusHealth>[bonusHealth]</bonusHealth>
-                    </entity>
+                    <entity template="../buffs/simple(source=#card,bonusHealth=[bonusHealth])"/>
                 </auraBuff>
             </entity>
         </auras>

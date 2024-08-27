@@ -15,12 +15,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/all_creatures_on_board"/>
-                                </targets>
-                                <heal>[heal]</heal>
-                            </entity>
+                            <entity template="../effects/heal_all_creatures(heal=[heal])"/>
                         </effects>
                     </entity>
                 </castTriggers>

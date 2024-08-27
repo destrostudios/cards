@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/all_ally_creatures_on_board"/>
+        </targets>
+        <heal>[heal]</heal>
+    </entity>
+</template>

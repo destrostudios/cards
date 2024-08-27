@@ -8,12 +8,7 @@
             <entity>
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source"/>
-                        </targets>
-                        <heal>[heal]</heal>
-                    </entity>
+                    <entity template="../effects/heal_source(heal=[heal])"/>
                 </effects>
             </entity>
         </preEndTurnTriggers>

@@ -13,12 +13,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../../targets/source_owner"/>
-                                </targets>
-                                <draw>[draw]</draw>
-                            </entity>
+                            <entity template="../../effects/draw_for_owner(draw=[draw])"/>
                             <entity template="../../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

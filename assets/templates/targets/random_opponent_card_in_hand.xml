@@ -1,0 +1,7 @@
+<template>
+    <entity>
+        <targetPrefilters basic="HAND" advanced="NOT_ALLY"/>
+        <targetAll/>
+        <targetRandom>1</targetRandom>
+    </entity>
+</template>

@@ -16,12 +16,8 @@
                     <entity>
                         <preAnimations>CAMERA_SHAKE,FIRE1</preAnimations>
                         <effects>
-                            <entity>
+                            <entity template="../effects/destroy_all_creatures">
                                 <preAnimations/>
-                                <targets>
-                                    <entity template="../targets/all_creatures_on_board"/>
-                                </targets>
-                                <destroy/>
                             </entity>
                             <entity template="../effects/move_source_to_creature_zone"/>
                         </effects>

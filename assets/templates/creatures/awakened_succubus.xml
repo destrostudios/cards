@@ -14,16 +14,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_creature_zone"/>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="HAND" advanced="ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <moveToGraveyard/>
-                            </entity>
+                            <entity template="../effects/discard_random_card_for_owner"/>
                         </effects>
                     </entity>
                 </castTriggers>

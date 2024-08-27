@@ -20,12 +20,8 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
+                            <entity template="../effects/heal_target(heal=[heal])">
                                 <preAnimations>AQUA</preAnimations>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <heal>[heal]</heal>
                             </entity>
                         </effects>
                     </entity>

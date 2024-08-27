@@ -20,12 +20,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
+                            <entity template="../effects/damage_target(damage=[damage])"/>
                         </effects>
                     </entity>
                 </castTriggers>

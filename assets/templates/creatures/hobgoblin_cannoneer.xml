@@ -14,16 +14,7 @@
                     <entity>
                         <repeat>[amount]</repeat>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="BOARD" advanced="NOT_ALLY"/>
-                                        <targetAll>target.health > 0</targetAll>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
+                            <entity template="../effects/damage_random_opponent_with_health(damage=[damage])"/>
                         </effects>
                     </entity>
                     <entity>

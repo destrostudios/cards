@@ -24,10 +24,7 @@
                                     </entity>
                                 </targets>
                                 <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <bonusHealth>[bonusHealth]</bonusHealth>
-                                    </entity>
+                                    <entity template="../buffs/simple(source=#card,bonusHealth=[bonusHealth])"/>
                                 </addBuff>
                             </entity>
                             <entity template="../effects/move_source_to_creature_zone"/>

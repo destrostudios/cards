@@ -14,19 +14,10 @@
                 <castTriggers>
                     <entity>
                         <effects>
+                            <entity template="../effects/destroy_target"/>
                             <entity>
                                 <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <destroy/>
-                            </entity>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
+                                    <entity template="../targets/random_opponent_creature_on_board"/>
                                 </targets>
                                 <moveToLibrary/>
                             </entity>

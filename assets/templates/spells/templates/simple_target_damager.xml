@@ -2,21 +2,19 @@
     <entity id="card">
         <name>[name]</name>
         <spellCard/>
-        <description>Draw [draw] card/s.</description>
+        <description>Deal [damage] damage to target character.</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="BOARD"/>
                 <manaCost>[manaCost]</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../../targets/source_owner"/>
-                                </targets>
-                                <draw>[draw]</draw>
+                            <entity template="../../effects/damage_target(damage=[damage])">
+                                <preAnimations ifdef="preAnimations">[preAnimations]</preAnimations>
                             </entity>
                         </effects>
                     </entity>

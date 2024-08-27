@@ -6,10 +6,7 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_HAND,SOURCE_CREATURE_CARD,SOURCE_ALLY"/>
                 <auraBuff>
-                    <entity>
-                        <source>#card</source>
-                        <bonusManaCost>-1</bonusManaCost>
-                    </entity>
+                    <entity template="../buffs/simple(source=#card,bonusManaCost=-1)"/>
                 </auraBuff>
             </entity>
         </auras>

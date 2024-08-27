@@ -15,12 +15,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../../targets/targets"/>
-                                </targets>
-                                <heal>[heal]</heal>
-                            </entity>
+                            <entity template="../../effects/heal_target(heal=[heal])"/>
                             <entity template="../../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

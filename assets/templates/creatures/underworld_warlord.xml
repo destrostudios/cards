@@ -23,12 +23,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/discard_target"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source_owner"/>
-                                </targets>
-                                <draw>[amount]</draw>
-                            </entity>
+                            <entity template="../effects/draw_for_owner(draw=[amount])"/>
                         </effects>
                     </entity>
                 </castTriggers>

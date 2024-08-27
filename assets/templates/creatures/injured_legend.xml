@@ -17,12 +17,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_creature_zone"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source"/>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
+                            <entity template="../effects/damage_source(damage=[damage])"/>
                         </effects>
                     </entity>
                 </castTriggers>

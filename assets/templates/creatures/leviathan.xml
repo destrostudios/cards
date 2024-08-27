@@ -16,12 +16,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/all_creatures_on_board"/>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
+                            <entity template="../effects/damage_all_creatures(damage=[damage])"/>
                             <entity template="../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

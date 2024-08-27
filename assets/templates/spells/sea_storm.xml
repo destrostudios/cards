@@ -15,12 +15,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/all_characters_on_board"/>
-                                </targets>
-                                <damage>[damage]</damage>
-                            </entity>
+                            <entity template="../effects/damage_all_characters(damage=[damage])"/>
                         </effects>
                     </entity>
                 </castTriggers>

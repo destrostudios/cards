@@ -13,12 +13,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/all_creatures_on_board"/>
-                                </targets>
-                                <moveToHand/>
-                            </entity>
+                            <entity template="../effects/move_all_creatures_on_board_to_hand"/>
                         </effects>
                     </entity>
                 </castTriggers>

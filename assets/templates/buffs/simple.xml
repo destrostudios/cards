@@ -1,0 +1,10 @@
+<template>
+    <entity>
+        <source>[source]</source>
+        <bonusAttack ifdef="bonusAttack">[bonusAttack]</bonusAttack>
+        <bonusHealth ifdef="bonusHealth">[bonusHealth]</bonusHealth>
+        <bonusManaCost ifdef="bonusManaCost">[bonusManaCost]</bonusManaCost>
+        <setHealth ifdef="setHealth">[setHealth]</setHealth>
+        <setManaCost ifdef="setManaCost">[setManaCost]</setManaCost>
+    </entity>
+</template>

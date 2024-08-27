@@ -19,11 +19,7 @@
                             <entity template="../effects/move_source_to_graveyard"/>
                             <entity>
                                 <targets>
-                                    <entity>
-                                        <targetPrefilters basic="CREATURE_ZONE" advanced="ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>[sacrifices]</targetRandom>
-                                    </entity>
+                                    <entity template="../targets/random_ally_creatures_on_board(amount=[sacrifices])"/>
                                 </targets>
                                 <destroy/>
                             </entity>

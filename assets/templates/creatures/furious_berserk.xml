@@ -8,19 +8,10 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source"/>
-                        </targets>
-                        <addBuff>
-                            <entity>
-                                <source>#card</source>
-                                <bonusAttack>[bonusAttack]</bonusAttack>
-                            </entity>
-                        </addBuff>
-                    </entity>
+                    <entity template="../effects/buff_source(buff=#buff)"/>
                 </effects>
             </entity>
         </postDamageTriggers>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])"/>
 </template>

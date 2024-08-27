@@ -14,22 +14,8 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <destroy/>
-                            </entity>
-                            <entity>
-                                <targets>
-                                    <entity>
-                                        <targetPrefilters basic="HAND" advanced="NOT_ALLY"/>
-                                        <targetAll/>
-                                        <targetRandom>1</targetRandom>
-                                    </entity>
-                                </targets>
-                                <moveToGraveyard/>
-                            </entity>
+                            <entity template="../effects/destroy_target"/>
+                            <entity template="../effects/discard_random_card_for_opponent"/>
                             <entity template="../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

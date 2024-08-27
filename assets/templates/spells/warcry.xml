@@ -23,9 +23,7 @@
                                     </entity>
                                 </targets>
                                 <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <bonusAttack>[bonusAttack]</bonusAttack>
+                                    <entity template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
                                         <untilEndOfTurn/>
                                     </entity>
                                 </addBuff>

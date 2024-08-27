@@ -23,18 +23,7 @@
                     <entity>
                         <condition>source.exists(["HAND","DRAGON"], ["ALLY"])</condition>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/source"/>
-                                </targets>
-                                <addBuff>
-                                    <entity>
-                                        <source>#card</source>
-                                        <bonusAttack>[bonusAttack]</bonusAttack>
-                                        <bonusHealth>[bonusHealth]</bonusHealth>
-                                    </entity>
-                                </addBuff>
-                            </entity>
+                            <entity template="../effects/buff_source(buff=#buff)"/>
                         </effects>
                     </entity>
                 </castTriggers>
@@ -42,4 +31,5 @@
             <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

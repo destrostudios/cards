@@ -6,9 +6,5 @@
     <entity id="card" template="./templates/simple_target_buffer(name=Divine Justicar,manaCost=9,attack=7,health=7,buff=#buff)">
         <description>Cast: Target creature on board gains +[bonusAttack]/+[bonusHealth].</description>
     </entity>
-    <entity id="buff">
-        <source>#card</source>
-        <bonusAttack>[bonusAttack]</bonusAttack>
-        <bonusHealth>[bonusHealth]</bonusHealth>
-    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

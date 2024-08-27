@@ -14,12 +14,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity>
-                                <targets>
-                                    <entity template="../../targets/targets"/>
-                                </targets>
-                                <addBuff>[buff]</addBuff>
-                            </entity>
+                            <entity template="../../effects/buff_target(buff=[buff])"/>
                             <entity template="../../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>

@@ -26,24 +26,16 @@
                     <entity>
                         <targetPrefilters advanced="DAMAGED"/>
                         <effects>
-                            <entity>
+                            <entity template="../effects/heal_target(heal=[heal])">
                                 <preAnimations>LANCE</preAnimations>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <heal>[heal]</heal>
                             </entity>
                         </effects>
                     </entity>
                     <entity>
                         <targetPrefilters advanced="NOT_DAMAGED"/>
                         <effects>
-                            <entity>
+                            <entity template="../effects/damage_target(damage=[damage])">
                                 <preAnimations>LANCE</preAnimations>
-                                <targets>
-                                    <entity template="../targets/targets"/>
-                                </targets>
-                                <damage>[damage]</damage>
                             </entity>
                         </effects>
                     </entity>

@@ -10,24 +10,27 @@ import org.apache.commons.jexl3.JexlContext;
 public class TriggerEffectImpactEvent extends Event implements ExpressionContextProvider {
 
     public final int source;
+    public final int[] baseTargets;
     public final int target;
     public final int effect;
 
-    public TriggerEffectImpactEvent(int source, int target, int effect) {
+    public TriggerEffectImpactEvent(int source, int[] baseTargets, int target, int effect) {
         super(EventType.TRIGGER_EFFECT_IMPACT);
         this.source = source;
+        this.baseTargets = baseTargets;
         this.target = target;
         this.effect = effect;
     }
 
     @Override
     public String toString() {
-        return "TriggerEffectImpactEvent{" + "source=" + source + ", target=" + target + ", effect=" + effect + '}';
+        return "TriggerEffectImpactEvent{" + "source=" + source + ", baseTargets=" + baseTargets + ", target=" + target + ", effect=" + effect + '}';
     }
 
     @Override
-    public void fillMinimalRequiredExpressionContext(EntityData data, JexlContext context) {
+    public void fillExpressionContext(EntityData data, JexlContext context) {
         context.set("source", ExpressionEntity.wrap(data, source));
+        context.set("baseTargets", ExpressionEntity.wrap(data, baseTargets));
         context.set("target", ExpressionEntity.wrap(data, target));
     }
 }

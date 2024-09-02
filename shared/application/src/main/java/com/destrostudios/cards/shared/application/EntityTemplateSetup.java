@@ -74,6 +74,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Tribe.BEAST, new ComponentParser_Void());
         templateManager.registerComponent(Components.Tribe.DRAGON, new ComponentParser_Void());
         templateManager.registerComponent(Components.Tribe.GOBLIN, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Tribe.MACHINE, new ComponentParser_Void());
 
         templateManager.registerComponent(Components.Trigger.EFFECTS, new ComponentParser_Entities());
 
@@ -92,7 +93,7 @@ public class EntityTemplateSetup {
             @Override
             public AddBuffProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
                 Object buff = parseOrCreateChildEntity(parser, format, node, 0, "buff");
-                boolean constant = "true".equals(format.getAttribute(node, "constant"));
+                boolean constant = "true".equals(parser.parseTextNullable(format.getAttribute(node, "constant")));
                 return new AddBuffProxy(buff, constant);
             }
 
@@ -119,6 +120,7 @@ public class EntityTemplateSetup {
                 return new Components.Create(resolveTemplate(proxiedEntities, recordedValue.template).getAsResolvedText(), recordedValue.location);
             }
         });
+        templateManager.registerComponent(Components.Effect.SHUFFLE_LIBRARY, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.END_TURN, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.PRE_ANIMATIONS, new ComponentParser_StringArray());
         templateManager.registerComponent(Components.Effect.POST_ANIMATIONS, new ComponentParser_StringArray());

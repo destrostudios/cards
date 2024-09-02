@@ -25,7 +25,7 @@ public class TriggerEffectHandler extends GameEventHandler<TriggerEffectEvent> {
         IntList affectedTargets = TargetUtil.getAffectedTargets(data, targetDefinitions, event.source, event.targets, event, context.getRandom());
         for (int i = 0; i < repetitions; i++) {
             for (int target : affectedTargets) {
-                context.getEvents().fire(new TriggerEffectImpactEvent(event.source, target, event.effect));
+                context.getEvents().fire(new TriggerEffectImpactEvent(event.source, event.targets, target, event.effect));
             }
         }
     }

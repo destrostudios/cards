@@ -81,12 +81,21 @@ public class ExpressionEntity {
         return data.hasComponent(entity, Components.Tribe.GOBLIN);
     }
 
+    public boolean getIsMachine() {
+        return data.hasComponent(entity, Components.Tribe.MACHINE);
+    }
+
     public boolean isAlly(ExpressionEntity other) {
         return ConditionUtil.isAlly(data, entity, other.entity);
     }
 
     public boolean getIsDefaultCastFromHandSpell() {
         return SpellUtil.isDefaultCastFromHandSpell(data, entity);
+    }
+
+    public boolean hasBuff(int buff) {
+        int[] buffs = data.getComponent(entity, Components.BUFFS);
+        return ArrayUtil.contains(buffs, buff);
     }
 
     // [] is parsed as new Object[0], which doesn't call the according String[] methods

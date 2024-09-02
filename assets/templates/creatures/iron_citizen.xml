@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/vanilla(name=Iron Citizen,manaCost=4,attack=4,health=4)">
+        <machine/>
+    </entity>
+</template>

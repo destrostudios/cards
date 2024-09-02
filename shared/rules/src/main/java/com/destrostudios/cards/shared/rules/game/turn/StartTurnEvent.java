@@ -3,10 +3,6 @@ package com.destrostudios.cards.shared.rules.game.turn;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.EventType;
 
-/**
- *
- * @author Philipp
- */
 public class StartTurnEvent extends Event {
 
     public int player;

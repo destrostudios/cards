@@ -29,7 +29,7 @@ public class BotTest_Winrate_Deck extends BotTest_Winrate {
     }
 
     @Override
-    protected String getWinnerName(PlayerInfo winner) {
-        return winner.getDeck().getName();
+    protected String getPlayerKey(PlayerInfo playerInfo) {
+        return playerInfo.getDeck().getName();
     }
 }

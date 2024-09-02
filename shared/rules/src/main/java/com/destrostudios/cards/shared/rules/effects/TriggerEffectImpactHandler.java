@@ -12,6 +12,7 @@ import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
 import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
+import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
@@ -82,7 +83,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         Components.AddBuff addBuff = data.getComponent(event.effect, Components.Effect.ADD_BUFF);
         if (addBuff != null) {
-            int buff = (addBuff.isConstant() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event.source, event.target) : addBuff.getBuff());
+            int buff = (addBuff.isConstant() ? BuffUtil.createEvaluatedBuffCopy(data, addBuff.getBuff(), event) : addBuff.getBuff());
             events.fire(new AddBuffEvent(event.target, buff));
         }
 
@@ -91,9 +92,18 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation()));
         }
 
-        if (data.hasComponent(event.effect, Components.Effect.END_TURN)) {
+        boolean shuffleLibrary = data.hasComponent(event.effect, Components.Effect.SHUFFLE_LIBRARY);
+        boolean endTurn = data.hasComponent(event.effect, Components.Effect.END_TURN);
+        if (shuffleLibrary || endTurn) {
             int activePlayer = data.unique(Components.Player.ACTIVE_PLAYER);
-            events.fire(new EndTurnEvent(activePlayer));
+
+            if (shuffleLibrary) {
+                events.fire(new ShuffleLibraryEvent(activePlayer));
+            }
+
+            if (endTurn) {
+                events.fire(new EndTurnEvent(activePlayer));
+            }
         }
     }
 

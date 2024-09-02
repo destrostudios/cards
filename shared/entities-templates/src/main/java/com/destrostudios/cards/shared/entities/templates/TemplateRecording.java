@@ -36,6 +36,9 @@ public class TemplateRecording<COMPONENT> implements EntityFramework<COMPONENT> 
                 Object recordedValue = componentProxy.recordedValue();
                 ComponentParser componentParser = templateManager.getComponentParser(component);
                 Object actualValue = componentParser.resolve(proxiedEntities, recordedValue);
+                if (actualValue instanceof String actualValueString) {
+                    actualValue = EntityProxy.resolveEntitiesInText(proxiedEntities, actualValueString);
+                }
                 framework.setComponent(proxiedEntities[i], component, actualValue);
             }
         }

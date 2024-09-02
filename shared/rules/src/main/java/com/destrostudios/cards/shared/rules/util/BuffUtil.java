@@ -4,6 +4,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.expressions.ExpressionContextProvider;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,12 @@ public class BuffUtil {
         ArrayUtil.add(data, entity, Components.BUFFS, buff);
     }
 
-    public static int createEvaluatedBuffCopy(EntityData data, int buff, int source, int target) {
+    public static void remove(EntityData data, int entity, int buff) {
+        ArrayUtil.remove(data, entity, Components.BUFFS, buff);
+        // TODO: Remove buff entity if it was an evaluated copy? Overkill for now?
+    }
+
+    public static int createEvaluatedBuffCopy(EntityData data, int buff, ExpressionContextProvider expressionContextProvider) {
         int buffCopy = data.createEntity();
         // TODO: Good enough for now
         for (ComponentDefinition component : Components.ALL) {
@@ -31,7 +37,7 @@ public class BuffUtil {
                  || (component == Components.Stats.BONUS_HEALTH)
                  || (component == Components.Stats.SET_HEALTH)
                 ) {
-                    value = Expressions.evaluate(value.toString(), Expressions.getContext_Source_Target(data, source, target)).toString();
+                    value = Expressions.evaluate(value.toString(), Expressions.getContext_Provider(data, expressionContextProvider)).toString();
                 }
                 data.setComponent(buffCopy, component, value);
             }

@@ -1,0 +1,19 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity template="./templates/vanilla(name=Scrap Collector,manaCost=4,attack=3,health=3)">
+        <description>After an ally Machine dies, gain +[bonusAttack]/+[bonusHealth].</description>
+        <postDestructionTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="MACHINE" advanced="ALLY"/>
+                <effects>
+                    <entity template="../effects/buff_source(buff=#buff)"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
+</template>

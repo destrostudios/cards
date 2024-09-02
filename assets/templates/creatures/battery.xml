@@ -1,0 +1,25 @@
+<template>
+    <values>
+        <heal>2</heal>
+    </values>
+    <entity template="./templates/vanilla(name=Battery,manaCost=2,attack=0,health=2)">
+        <machine/>
+        <description>End of turn: Heal [heal] health of all other ally Machines.</description>
+        <preEndTurnTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity>
+                                <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="NOT_SOURCE,ALLY"/>
+                                <targetAll/>
+                            </entity>
+                        </targets>
+                        <heal>[heal]</heal>
+                    </entity>
+                </effects>
+            </entity>
+        </preEndTurnTriggers>
+    </entity>
+</template>

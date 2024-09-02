@@ -5,10 +5,6 @@ import java.util.Optional;
 import java.util.PrimitiveIterator;
 import java.util.function.IntConsumer;
 
-/**
- *
- * @author Philipp
- */
 public class IntMap<T> implements Iterable<Integer> {
 
     private static final int FREE_KEY = 0;

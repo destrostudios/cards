@@ -11,16 +11,10 @@
                 <sourcePrefilters basic="CREATURE_ZONE"/>
                 <targetPrefilters basic="BEAST" advanced="ALLY"/>
                 <effects>
-                    <entity>
-                        <targets>
-                            <entity template="../targets/source"/>
-                        </targets>
-                        <addBuff>
-                            <entity template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
-                        </addBuff>
-                    </entity>
+                    <entity template="../effects/buff_source(buff=#buff)"/>
                 </effects>
             </entity>
         </postDestructionTriggers>
     </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

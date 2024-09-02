@@ -1,5 +1,6 @@
 <template>
     <entity template="./templates/vanilla(name=Bronze Golem,manaCost=1,attack=1,health=2)">
+        <machine/>
         <flavourText>"Why are there mushrooms?"</flavourText>
     </entity>
 </template>

@@ -11,8 +11,6 @@ public class BotTest_Single extends BotTest {
     @Override
     public void run() {
         super.run();
-        new BotGame(allCards, getDefaultStartGameInfo(), 123, true, false, (botSettings, player) -> {
-            botSettings.maxThreads = 1;
-        }).play();
+        new BotGame(allCards, getDefaultStartGameInfo(), 123, true, false, (botSettings, player) -> {}).play();
     }
 }

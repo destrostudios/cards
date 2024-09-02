@@ -27,7 +27,7 @@ public class Expressions {
 
     public static JexlContext getContext_Provider(EntityData data, ExpressionContextProvider provider) {
         JexlContext context = new MapContext();
-        provider.fillMinimalRequiredExpressionContext(data, context);
+        provider.fillExpressionContext(data, context);
         return context;
     }
 

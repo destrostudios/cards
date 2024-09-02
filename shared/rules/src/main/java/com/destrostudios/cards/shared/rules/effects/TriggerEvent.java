@@ -9,24 +9,24 @@ import org.apache.commons.jexl3.JexlContext;
 
 public class TriggerEvent extends Event implements ExpressionContextProvider {
 
+    public final int trigger;
     public final int source;
     public final int[] targets;
-    public final int trigger;
 
-    public TriggerEvent(int source, int[] targets, int trigger) {
+    public TriggerEvent(int trigger, int source, int[] targets) {
         super(EventType.TRIGGER);
+        this.trigger = trigger;
         this.source = source;
         this.targets = targets;
-        this.trigger = trigger;
     }
 
     @Override
     public String toString() {
-        return "TriggerEvent{" + "source=" + source + ", targets=" + targets + ", trigger=" + trigger + '}';
+        return "TriggerEvent{" + "trigger=" + trigger + ", source=" + source + ", targets=" + targets + '}';
     }
 
     @Override
-    public void fillMinimalRequiredExpressionContext(EntityData data, JexlContext context) {
+    public void fillExpressionContext(EntityData data, JexlContext context) {
         context.set("source", ExpressionEntity.wrap(data, source));
         context.set("targets", ExpressionEntity.wrap(data, targets));
     }

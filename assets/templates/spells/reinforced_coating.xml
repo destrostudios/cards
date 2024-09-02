@@ -1,0 +1,35 @@
+<template>
+    <values>
+        <bonusHealth>2</bonusHealth>
+    </values>
+    <entity id="card">
+        <name>Reinforced Coating</name>
+        <spellCard/>
+        <description>Your Machines gain +[bonusHealth] health.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="ALLY"/>
+                                        <targetAll/>
+                                    </entity>
+                                </targets>
+                                <addBuff>
+                                    <entity template="../buffs/simple(source=#card,bonusHealth=[bonusHealth])"/>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

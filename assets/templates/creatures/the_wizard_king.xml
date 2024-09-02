@@ -12,8 +12,8 @@
         <spells>
             <entity>
                 <source>#card</source>
-                <targetOptional/>
                 <sourcePrefilters basic="HAND"/>
+                <targetOptional/>
                 <targetPrefilters basic="HAND,SPELL_CARD" advanced="ALLY"/>
                 <manaCost>9</manaCost>
                 <castTriggers>

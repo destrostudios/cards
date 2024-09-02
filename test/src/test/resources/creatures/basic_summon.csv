@@ -7,6 +7,7 @@ creatures/artificial_guardian
 creatures/astral_lich
 creatures/awakened_succubus
 creatures/baby_turtle
+creatures/battery,Battery,false,2,0,2,false,false
 creatures/battle_cleric
 creatures/blademaster
 creatures/blessed_barbarian
@@ -56,12 +57,15 @@ creatures/good_boy
 creatures/grumpy_captain
 creatures/guardian_dragon
 creatures/haranna_udagan
+creatures/heroic_gadget
 creatures/high_priestess_llyncis
 creatures/hoarder_troll
 creatures/hobgoblin_cannoneer
 creatures/holy_legion_leader
 creatures/injured_legend
 creatures/inspiring_angel
+creatures/iron_citizen
+creatures/iron_youngling
 creatures/ixius
 creatures/jungle_tiger
 creatures/khazar_merchant
@@ -79,6 +83,7 @@ creatures/novice_paladin
 creatures/old_alchemist
 creatures/old_archer
 creatures/old_rhino
+creatures/oven
 creatures/ox_warhero
 creatures/pebble
 creatures/plague_hunter
@@ -87,6 +92,9 @@ creatures/portable_sand_relic
 creatures/priestess_of_valdas
 creatures/relic_guardian
 creatures/river_racoon
+creatures/scrap_collector
+creatures/scrap_golem
+creatures/scrap_part
 creatures/shieldmaster
 creatures/shrine_specter
 creatures/sir_theodor_the_third
@@ -114,6 +122,7 @@ creatures/underworld_temple_statue
 creatures/underworld_warlord
 creatures/unremembered_griffin
 creatures/valkyrie
+creatures/vending_machine
 creatures/walking_mortuary
 creatures/wandering_wizard
 creatures/war_angel

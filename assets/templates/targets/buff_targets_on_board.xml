@@ -1,0 +1,6 @@
+<template>
+    <entity>
+        <targetPrefilters basic="BUFFS,CREATURE_ZONE"/>
+        <targetAll>target.hasBuff([buff])</targetAll>
+    </entity>
+</template>

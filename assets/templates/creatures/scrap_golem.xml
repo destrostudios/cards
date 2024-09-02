@@ -1,0 +1,16 @@
+<template>
+    <entity template="./templates/vanilla(name=Scrap Golem,manaCost=6,attack=3,health=3)">
+        <machine/>
+        <description>Death: Summon 3 1/1 Scrap Parts.</description>
+        <postDestructionTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                    <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                    <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

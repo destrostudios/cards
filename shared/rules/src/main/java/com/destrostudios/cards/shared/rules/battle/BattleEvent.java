@@ -3,10 +3,6 @@ package com.destrostudios.cards.shared.rules.battle;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.EventType;
 
-/**
- *
- * @author Philipp
- */
 public class BattleEvent extends Event {
 
     public int source, target;

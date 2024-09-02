@@ -1,0 +1,38 @@
+<template>
+    <entity id="card">
+        <name>Vending Machine</name>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>3</health>
+        <machine/>
+        <description>Cast: Tribute an ally Machine and gain its stats.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <targetOptional/>
+                <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="ALLY"/>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <condition>target != null</condition>
+                        <effects>
+                            <entity template="../effects/destroy_target"/>
+                            <entity template="../effects/buff_source(buff=#buff,constant=true)"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card)">
+        <bonusAttack>baseTargets[0].attack</bonusAttack>
+        <bonusHealth>baseTargets[0].health</bonusHealth>
+    </entity>
+</template>

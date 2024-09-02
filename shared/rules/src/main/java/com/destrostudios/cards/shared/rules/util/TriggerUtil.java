@@ -11,7 +11,7 @@ public class TriggerUtil {
         if (triggers != null) {
             for (int trigger : triggers) {
                 if (ConditionUtil.isConditionFulfilled(data, trigger, source, targets)) {
-                    events.fire(new TriggerEvent(source, targets, trigger));
+                    events.fire(new TriggerEvent(trigger, source, targets));
                 }
             }
         }

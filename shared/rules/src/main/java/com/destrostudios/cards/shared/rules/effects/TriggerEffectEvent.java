@@ -26,7 +26,7 @@ public class TriggerEffectEvent extends Event implements ExpressionContextProvid
     }
 
     @Override
-    public void fillMinimalRequiredExpressionContext(EntityData data, JexlContext context) {
+    public void fillExpressionContext(EntityData data, JexlContext context) {
         context.set("source", ExpressionEntity.wrap(data, source));
         context.set("targets", ExpressionEntity.wrap(data, targets));
     }

@@ -18,6 +18,8 @@ public class ComponentsParsing {
         BASIC_COMPONENTS.put("BEAST", Components.Tribe.BEAST);
         BASIC_COMPONENTS.put("DRAGON", Components.Tribe.DRAGON);
         BASIC_COMPONENTS.put("GOBLIN", Components.Tribe.GOBLIN);
+        BASIC_COMPONENTS.put("MACHINE", Components.Tribe.MACHINE);
+        BASIC_COMPONENTS.put("BUFFS", Components.BUFFS);
     }
 
     public static Components.Prefilters parsePrefilters(String[] basicNames, String[] advancedNames) {

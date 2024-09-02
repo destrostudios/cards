@@ -1,0 +1,34 @@
+<template>
+    <values>
+        <bonusAttack>2</bonusAttack>
+    </values>
+    <entity id="card">
+        <name>Heroic Gadget</name>
+        <creatureCard/>
+        <attack>1</attack>
+        <health>1</health>
+        <machine/>
+        <description>Cast: Target ally Machine gains +[bonusAttack] attack until end of turn.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <targetOptional/>
+                <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="ALLY"/>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/buff_target(buff=#buff)"/>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
+        <untilEndOfTurn/>
+    </entity>
+</template>

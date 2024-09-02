@@ -18,6 +18,8 @@ import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -95,10 +97,10 @@ public class BotGame_WithCardStats extends BotGame {
         return cardStats.computeIfAbsent(card, c -> new CardStatsGame());
     }
 
-    public void addToTotalStats(HashMap<String, CardStatsTotal> totalCardStats) {
+    public void addToTotalStats(Map<String, CardStatsTotal> totalCardStats) {
         cardStats.forEach((card, stats) -> {
             String name =  gameContext.getData().getComponent(card, Components.NAME);
-            CardStatsTotal totalStats = totalCardStats.computeIfAbsent(name, n -> new CardStatsTotal());
+            CardStatsTotal totalStats = totalCardStats.computeIfAbsent(name, _ -> new CardStatsTotal());
             totalStats.games.add(stats);
         });
     }
@@ -128,7 +130,7 @@ public class BotGame_WithCardStats extends BotGame {
     }
 
     public static class CardStatsTotal {
-        private List<CardStatsGame> games = new ArrayList<>();
+        private ConcurrentLinkedQueue<CardStatsGame> games = new ConcurrentLinkedQueue<>();
 
         public Float getWinrateWhenDrawn() {
             return getRatio(getGamesCount(game -> game.inHand && game.win), getGamesWhereDrawn());

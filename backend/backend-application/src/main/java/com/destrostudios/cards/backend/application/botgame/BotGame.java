@@ -78,7 +78,6 @@ public class BotGame {
         botSettings = new MctsBotSettings[playerCount];
         for (int i = 0; i < bots.length; i++) {
             MctsBotSettings<CardsBotState, Event> settings = new MctsBotSettings<>();
-            settings.maxThreads = 8;
             settings.termination = TerminationType.NODE_COUNT;
             settings.strength = 100;
             settings.evaluation = CardsBotEval::eval;

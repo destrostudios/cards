@@ -1,0 +1,18 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity template="./templates/vanilla(name=Oven,manaCost=3,attack=1,health=4)">
+        <taunt/>
+        <machine/>
+        <description>End of turn: Deal [damage] damage to a random opponent.</description>
+        <preEndTurnTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <effects>
+                    <entity template="../effects/damage_random_opponent(damage=[damage])"/>
+                </effects>
+            </entity>
+        </preEndTurnTriggers>
+    </entity>
+</template>

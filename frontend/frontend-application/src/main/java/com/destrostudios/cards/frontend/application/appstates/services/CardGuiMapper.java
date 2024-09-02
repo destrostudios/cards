@@ -23,6 +23,7 @@ public class CardGuiMapper {
         tribeComponents.put(Components.Tribe.BEAST, "Beast");
         tribeComponents.put(Components.Tribe.DRAGON, "Dragon");
         tribeComponents.put(Components.Tribe.GOBLIN, "Goblin");
+        tribeComponents.put(Components.Tribe.MACHINE, "Machine");
     }
 
     public static CardModel createModel(EntityData data, CardIdentifier cardIdentifier) {

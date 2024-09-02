@@ -6,6 +6,26 @@ import java.util.List;
 
 public class TestUtil {
 
+    public static void runOnAllProcessors(Runnable runnable) {
+        int processors = Runtime.getRuntime().availableProcessors();
+        for (int i = 0; i < processors / 2; i++) {
+            new Thread(runnable).start();
+        }
+    }
+
+    public static void runInterval(Runnable runnable, int interval) {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(interval);
+                    runnable.run();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }).start();
+    }
+
     public static Float getMedian_Int(List<Integer> values) {
         if (values.isEmpty()) {
             return null;

@@ -3,10 +3,11 @@ package com.destrostudios.cards.test;
 import com.destrostudios.cards.backend.application.botgame.BotGame_WithCardStats;
 import com.destrostudios.cards.shared.files.FileManager;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.destrostudios.cards.test.TestUtil.*;
 
@@ -19,23 +20,24 @@ public class BotTest_CardStats extends BotTest {
     @Override
     public void run() {
         super.run();
-        int games = 0;
-        Random actualRandom = new Random();
-        HashMap<String, BotGame_WithCardStats.CardStatsTotal> totalCardStats = new HashMap<>();
-        while (true) {
-            long seed = actualRandom.nextLong();
-            System.out.println("Playing game " + (games + 1) + "... (seed = " + seed + ")");
-            BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, getDefaultStartGameInfo(), seed, false, false, (botSettings, player) -> {});
-            botGame.play();
-            botGame.addToTotalStats(totalCardStats);
-            games++;
-            if ((games % 50) == 0) {
-                FileManager.putFileContent("./stats.csv", getCsv(totalCardStats));
+        AtomicInteger games = new AtomicInteger();
+        ConcurrentHashMap<String, BotGame_WithCardStats.CardStatsTotal> totalCardStats = new ConcurrentHashMap<>();
+        TestUtil.runOnAllProcessors(() -> {
+            Random actualRandom = new Random();
+            while (true) {
+                long seed = actualRandom.nextLong();
+                System.out.println("Playing game " + games.incrementAndGet() + "... (seed = " + seed + ")");
+                BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, getDefaultStartGameInfo(), seed, false, false, (botSettings, player) -> {});
+                botGame.play();
+                botGame.addToTotalStats(totalCardStats);
             }
-        }
+        });
+        TestUtil.runInterval(() -> {
+            FileManager.putFileContent("./stats.csv", getCsv(totalCardStats));
+        }, 5000);
     }
 
-    private String getCsv(HashMap<String, BotGame_WithCardStats.CardStatsTotal> cardStats) {
+    private String getCsv(Map<String, BotGame_WithCardStats.CardStatsTotal> cardStats) {
         String csv = "card";
         csv += ",wr-when-drawn";
         csv += ",games-where-drawn";

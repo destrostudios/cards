@@ -173,6 +173,10 @@ public class TemplateParser<NODE> {
         return null;
     }
 
+    public String parseTextNullable(String text) {
+        return ((text != null) ? parseText(text) : null);
+    }
+
     public String parseText(String text) {
         HashMap<String, Object> values = cachedValues.lastElement();
         for (Entry<String, Object> valueEntry : values.entrySet()) {

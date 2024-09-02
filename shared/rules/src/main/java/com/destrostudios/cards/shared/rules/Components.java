@@ -105,6 +105,7 @@ public class Components {
         public static final ComponentDefinition<Void> BEAST = create("beast");
         public static final ComponentDefinition<Void> DRAGON = create("dragon");
         public static final ComponentDefinition<Void> GOBLIN = create("goblin");
+        public static final ComponentDefinition<Void> MACHINE = create("machine");
     }
 
     public static class Trigger {
@@ -122,6 +123,7 @@ public class Components {
         public static final ComponentDefinition<Void> BATTLE = create("battle");
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
         public static final ComponentDefinition<Create> CREATE = create("create");
+        public static final ComponentDefinition<Void> SHUFFLE_LIBRARY = create("shuffleLibrary");
         public static final ComponentDefinition<Void> END_TURN = create("endTurn");
         public static final ComponentDefinition<String[]> PRE_ANIMATIONS = create("preAnimations");
         public static final ComponentDefinition<String[]> POST_ANIMATIONS = create("postAnimations");

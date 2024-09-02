@@ -1,0 +1,38 @@
+<template>
+    <values>
+        <amount>3</amount>
+    </values>
+    <entity id="card">
+        <name>Recycling</name>
+        <spellCard/>
+        <description>Shuffle [amount] random Machines from your graveyard into your library and draw [amount] cards.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <condition>source.count(["GRAVEYARD","MACHINE"], ["ALLY"]) >= [amount]</condition>
+                <minimumTargets>[amount]</minimumTargets>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="GRAVEYARD,MACHINE" advanced="ALLY"/>
+                                        <targetAll/>
+                                        <targetRandom>[amount]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <moveToLibrary/>
+                            </entity>
+                            <entity template="../effects/shuffle_library_for_owner"/>
+                            <entity template="../effects/draw_for_owner(draw=[amount])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

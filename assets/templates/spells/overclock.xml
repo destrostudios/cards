@@ -1,0 +1,47 @@
+<template>
+    <values>
+        <bonusAttack>2</bonusAttack>
+    </values>
+    <entity id="card">
+        <name>Overclock</name>
+        <spellCard/>
+        <description>Your Machines gain +[bonusAttack] attack and are destroyed at the end of turn.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="ALLY"/>
+                                        <targetAll/>
+                                    </entity>
+                                </targets>
+                                <addBuff>
+                                    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])"/>
+                                </addBuff>
+                            </entity>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+        <preEndTurnTriggers>
+            <entity>
+                <effects>
+                    <entity>
+                        <targets>
+                            <entity template="../targets/buff_targets_on_board(buff=#buff)"/>
+                        </targets>
+                        <destroy/>
+                    </entity>
+                </effects>
+            </entity>
+        </preEndTurnTriggers>
+    </entity>
+</template>

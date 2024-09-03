@@ -1,13 +1,13 @@
 template,name,legendary,manaCost,attack,health,taunt,divine_shield
 creatures/ancient_tree,Ancient Tree,false,7,4,7,true,false
-creatures/angelic_gate,Angelic Gate,true,1,0,2,false,false
+creatures/angelic_gate,Angelic Gate,true,1,0,3,false,false
 creatures/arandir,Arandir,false,5,3,4,false,false
 creatures/army_commander,Army Commander,false,4,1,1,false,false
 creatures/artificial_guardian,Artificial Guardian,false,2,1,1,false,false
 creatures/astral_lich,Astral Lich,false,4,1,6,false,false
 creatures/awakened_succubus,Awakened Succubus,false,4,6,4,false,false
 creatures/baby_turtle,Baby Turtle,false,4,0,5,false,false
-creatures/battery,Battery,false,2,0,2,false,false
+creatures/battery,Battery,false,2,0,3,false,false
 creatures/battle_cleric,Battle Cleric,false,3,2,3,false,false
 creatures/big_can,Big Can,false,6,4,4,true,false
 creatures/blademaster,Blademaster,false,2,3,1,false,false
@@ -32,7 +32,7 @@ creatures/dragons_knight,Dragon's Knight,false,2,2,2,false,false
 creatures/elven_guard,Elven Guard,false,1,1,1,true,false
 creatures/elven_queen,Elven Queen,false,5,3,3,false,false
 creatures/emperor_tamarin,Emperor Tamarin,false,4,4,4,false,false
-creatures/exiled_druid,Exiled Druid,false,7,3,4,false,false
+creatures/exiled_druid,Exiled Druid,false,7,3,3,false,false
 creatures/fairy,Fairy,false,2,2,1,false,false
 creatures/fascinating_fairytales_part_1,"Fascinating Fairytales, Part 1",false,2,1,1,false,false
 creatures/fascinating_fairytales_part_2,"Fascinating Fairytales, Part 2",false,2,1,1,false,false
@@ -46,7 +46,7 @@ creatures/frost_spirit,Frost Spirit,false,4,4,3,false,false
 creatures/furious_berserk,Furious Berserk,false,3,1,6,false,false
 creatures/gideas,Gideas,false,7,4,4,false,false
 creatures/goblin,Goblin,false,1,1,1,false,false
-creatures/goblin_alchemist,Goblin Alchemist,false,3,2,2,false,false
+creatures/goblin_alchemist,Goblin Alchemist,false,3,1,1,false,false
 creatures/goblin_commander,Goblin Commander,false,3,2,2,false,false
 creatures/goblin_dentist,Goblin Dentist,false,3,2,4,false,false
 creatures/goblin_drinking_buddy,Goblin Drinking Buddy,false,2,2,1,false,false
@@ -63,7 +63,7 @@ creatures/good_boy,Good Boy,false,1,2,1,false,false
 creatures/grumpy_captain,Grumpy Captain,false,2,2,2,true,false
 creatures/guardian_dragon,Guardian Dragon,false,6,6,6,false,false
 creatures/haranna_udagan,Haranna Udagan,false,2,2,1,false,false
-creatures/heroic_gadget,Heroic Gadget,false,1,1,1,false,false
+creatures/heroic_gadget,Heroic Gadget,false,1,2,1,false,false
 creatures/high_priestess_llyncis,High Priestess Llyncis,true,7,7,7,false,false
 creatures/hoarder_troll,Hoarder Troll,false,11,5,5,false,false
 creatures/hobgoblin_cannoneer,Hobgoblin Cannoneer,false,4,3,3,false,false
@@ -77,19 +77,21 @@ creatures/jungle_tiger,Jungle Tiger,false,5,5,5,false,false
 creatures/khazar_merchant,Khazar Merchant,false,3,2,2,false,false
 creatures/kings_soldier,King's Soldier,false,2,2,2,false,false
 creatures/landed_elemental_orb,Landed Elemental Orb,false,4,4,4,false,false
-creatures/leader_of_the_sceleratis,Leader of the Sceleratis,true,3,2,2,false,false
+creatures/leader_of_the_sceleratis,Leader of the Sceleratis,true,3,2,3,false,false
 creatures/legion_angel,Legion Angel,false,6,4,5,true,true
 creatures/leviathan,Leviathan,false,8,6,6,false,false
 creatures/library_troll,Library Troll,false,20,5,5,false,false
+creatures/machine_polisher,Machine Polisher,false,2,2,2,false,false
 creatures/mahabit_shaman,Mahabit Shaman,false,5,5,4,false,false
 creatures/mermaid,Mermaid,false,2,2,2,false,false
 creatures/mounted_dwarf_warrior,Mounted Dwarf Warrior,false,3,3,3,false,false
 creatures/nightmare_demon,Nightmare Demon,false,3,3,2,false,false
-creatures/novice_paladin,Novice Paladin,false,1,1,1,false,false
+creatures/novice_paladin,Novice Paladin,false,1,1,2,false,false
 creatures/old_alchemist,Old Alchemist,false,6,5,5,false,false
 creatures/old_archer,Old Archer,false,1,1,1,false,false
 creatures/old_rhino,Old Rhino,false,2,1,3,true,false
-creatures/oven,Oven,false,3,1,4,true,false
+creatures/outer_world_colonizer,Outer World Colonizer,false,7,7,7,false,false
+creatures/oven,Oven,false,3,2,4,true,false
 creatures/ox_warhero,Ox Warhero,true,2,3,1,false,false
 creatures/pebble,Pebble,false,0,1,1,false,false
 creatures/plague_hunter,Plague Hunter,false,2,2,2,false,false
@@ -114,7 +116,7 @@ creatures/the_ether_dragon,The Ether Dragon,true,10,10,10,false,false
 creatures/the_wizard_king,The Wizard King,true,9,6,9,false,false
 creatures/thunder_spirit,Thunder Spirit,false,4,4,3,false,false
 creatures/tiny_dragon,Tiny Dragon,false,2,2,2,false,false
-creatures/two_headed_chimera,Two-headed Chimera,false,3,2,4,false,false
+creatures/two_headed_chimera,Two-headed Chimera,false,3,2,3,false,false
 creatures/ultriia_flower_of_corruption,"Ultriia, Flower of Corruption",true,8,5,3,false,false
 creatures/undead_general,Undead General,false,3,2,8,false,false
 creatures/undead_priest,Undead Priest,false,4,3,5,false,false

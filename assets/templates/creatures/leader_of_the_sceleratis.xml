@@ -2,7 +2,7 @@
     <values>
         <damage>1</damage>
     </values>
-    <entity template="./templates/vanilla(name=Leader of the Sceleratis,manaCost=3,attack=2,health=2)">
+    <entity template="./templates/vanilla(name=Leader of the Sceleratis,manaCost=3,attack=2,health=3)">
         <legendary/>
         <description>After you play a card, deal [damage] damage to your opponent.</description>
         <postCastSpellTriggers>

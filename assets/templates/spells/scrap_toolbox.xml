@@ -1,0 +1,24 @@
+<template>
+    <entity id="card">
+        <name>Scrap Toolbox</name>
+        <spellCard/>
+        <description>Summon 3 1/1 Scrap Parts.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                            <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

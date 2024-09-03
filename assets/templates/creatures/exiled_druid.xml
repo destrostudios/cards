@@ -3,8 +3,8 @@
         <name>Exiled Druid</name>
         <creatureCard/>
         <attack>3</attack>
-        <health>4</health>
-        <description>Cast: Revive target random ally Beast.</description>
+        <health>3</health>
+        <description>Cast: Revive target ally Beast.</description>
         <spells>
             <entity>
                 <source>#card</source>

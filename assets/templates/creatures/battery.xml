@@ -2,7 +2,7 @@
     <values>
         <heal>2</heal>
     </values>
-    <entity template="./templates/vanilla(name=Battery,manaCost=2,attack=0,health=2)">
+    <entity template="./templates/vanilla(name=Battery,manaCost=2,attack=0,health=3)">
         <machine/>
         <description>End of turn: Heal [heal] health of all other ally Machines.</description>
         <preEndTurnTriggers>

@@ -1,11 +1,15 @@
 <template>
+    <values>
+        <maximumHandSize>3</maximumHandSize>
+    </values>
     <entity template="./templates/vanilla(name=Fiulo,manaCost=1,attack=1,health=1)">
         <legendary/>
         <goblin/>
-        <description>End of turn: Put this card from your graveyard to your hand.</description>
+        <description>End of turn: If you have [maximumHandSize] or less cards in your hand, put this card from your graveyard to your hand.</description>
         <preEndTurnTriggers>
             <entity>
                 <sourcePrefilters basic="GRAVEYARD"/>
+                <condition>source.count(["HAND"], ["ALLY"]) &lt;= [maximumHandSize]</condition>
                 <effects>
                     <entity template="../effects/move_source_to_hand"/>
                 </effects>

@@ -8,12 +8,12 @@ public class TestConjuredLightning extends TestGame {
 
     @Test
     public void testDamageAndHealCreaturesOnCast() {
-        int[] allyCreatures = createVanillas(2, 0, 0, 4, player, Components.Zone.CREATURE_ZONE);
-        damage(allyCreatures, 3);
-        int[] opponentCreatures = createVanillas(2, 0, 0, 3, opponent, Components.Zone.CREATURE_ZONE);
+        int[] allyCreatures = createVanillas(2, 0, 0, 5, player, Components.Zone.CREATURE_ZONE);
+        damage(allyCreatures, 4);
+        int[] opponentCreatures = createVanillas(2, 0, 0, 4, opponent, Components.Zone.CREATURE_ZONE);
         int card = create("spells/conjured_lightning", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealthAndDamaged(allyCreatures, 3);
+        assertHealthAndDamaged(allyCreatures, 4);
         assertHealthAndDamaged(opponentCreatures, 1);
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <entity id="card" template="./templates/vanilla(name=Two-headed Chimera,attack=2,health=4)">
+    <entity id="card" template="./templates/vanilla(name=Two-headed Chimera,attack=2,health=3)">
         <beast/>
         <description>Can attack twice per turn.</description>
         <spells>

@@ -11,6 +11,6 @@ public class TestNightmareDemon extends TestGame {
     public void testDamageOpponentOnDamageTaken() {
         int card = create("creatures/nightmare_demon", player, Components.Zone.CREATURE_ZONE);
         damage(card, 1);
-        assertHealth(opponent, GameConstants.PLAYER_HEALTH - 2);
+        assertHealth(opponent, GameConstants.PLAYER_HEALTH - 1);
     }
 }

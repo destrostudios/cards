@@ -2,7 +2,7 @@
     <values>
         <damage>1</damage>
     </values>
-    <entity template="./templates/vanilla(name=Oven,manaCost=3,attack=1,health=4)">
+    <entity template="./templates/vanilla(name=Oven,manaCost=3,attack=2,health=4)">
         <taunt/>
         <machine/>
         <description>End of turn: Deal [damage] damage to a random opponent.</description>

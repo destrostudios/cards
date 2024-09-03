@@ -2,7 +2,7 @@
     <values>
         <setHealth>1</setHealth>
     </values>
-    <entity id="card" template="./templates/simple_target_buffer(name=Goblin Alchemist,manaCost=3,attack=2,health=2,buff=#buff)">
+    <entity id="card" template="./templates/simple_target_buffer(name=Goblin Alchemist,manaCost=3,attack=1,health=1,buff=#buff)">
         <goblin/>
         <description>Cast: Set health of target creature to [setHealth].</description>
     </entity>

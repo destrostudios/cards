@@ -1,7 +1,7 @@
 <template>
     <values>
-        <damage>2</damage>
-        <heal>2</heal>
+        <damage>3</damage>
+        <heal>3</heal>
     </values>
     <entity id="card">
         <name>Conjured Lightning</name>

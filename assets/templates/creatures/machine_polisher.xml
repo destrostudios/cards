@@ -1,21 +1,21 @@
 <template>
     <values>
         <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
     </values>
     <entity id="card">
-        <name>Heroic Gadget</name>
+        <name>Machine Polisher</name>
         <creatureCard/>
         <attack>2</attack>
-        <health>1</health>
-        <machine/>
-        <description>Cast: Target ally Machine gains +[bonusAttack] attack until end of turn.</description>
+        <health>2</health>
+        <description>Cast: Target ally Machine in hand gains +[bonusAttack]/+[bonusHealth].</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
                 <targetOptional/>
-                <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="ALLY"/>
-                <manaCost>1</manaCost>
+                <targetPrefilters basic="HAND,MACHINE" advanced="ALLY"/>
+                <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>
@@ -28,7 +28,5 @@
             <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
-    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
-        <untilEndOfTurn/>
-    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
 </template>

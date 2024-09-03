@@ -48,7 +48,7 @@ public class TargetUtil {
             if (maxRandomTargetsExpression != null) {
                 int maxRandomTargets = Expressions.evaluate(maxRandomTargetsExpression, Expressions.getContext_Provider(data, expressionContextProvider));
                 while (affectedTargets.size() > maxRandomTargets) {
-                    affectedTargets.removeAt(random.nextInt(affectedTargets.size() - 1));
+                    affectedTargets.removeAt(random.nextInt(affectedTargets.size()));
                 }
             }
         }

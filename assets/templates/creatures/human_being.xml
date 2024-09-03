@@ -1,0 +1,28 @@
+<template>
+    <values>
+        <heal>1</heal>
+    </values>
+    <entity id="card">
+        <name>Human Being</name>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>2</health>
+        <description>Cast: Heal [heal] health of all characters.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/heal_all_characters(heal=[heal])"/>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+</template>

@@ -1,11 +1,12 @@
 <template>
     <values>
         <amount>3</amount>
+        <minimumManaCost>2</minimumManaCost>
     </values>
     <entity id="card">
         <name>Recycling</name>
         <spellCard/>
-        <description>Shuffle [amount] random Machines from your graveyard into your library and draw [amount] cards.</description>
+        <description>Shuffle [amount] random Machines that cost ([minimumManaCost]) or more from your graveyard into your library and draw [amount] cards.</description>
         <spells>
             <entity>
                 <source>#card</source>
@@ -21,7 +22,7 @@
                                 <targets>
                                     <entity>
                                         <targetPrefilters basic="GRAVEYARD,MACHINE" advanced="ALLY"/>
-                                        <targetAll/>
+                                        <targetAll>target.manaCost &gt;= [minimumManaCost]</targetAll>
                                         <targetRandom>[amount]</targetRandom>
                                     </entity>
                                 </targets>

@@ -8,7 +8,7 @@ public class TestRecycling extends TestGame {
 
     @Test
     public void testShuffleMachinesFromGraveyardIntoLibraryAndDrawOnCast() {
-        int[] machines = createCreatures(3, player, Components.Zone.GRAVEYARD);
+        int[] machines = createVanillas(3, 2, 0, 1, player, Components.Zone.GRAVEYARD);
         forEach(machines, machine -> data.setComponent(machine, Components.Tribe.MACHINE));
         int card = create("spells/recycling", player, Components.Zone.HAND);
         castFromHand(card);

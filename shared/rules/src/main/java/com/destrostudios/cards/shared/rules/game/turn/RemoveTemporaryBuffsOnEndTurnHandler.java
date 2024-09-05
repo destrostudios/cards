@@ -6,7 +6,6 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.GameEventHandler;
 import com.destrostudios.cards.shared.rules.buffs.RemoveBuffEvent;
-import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +20,8 @@ public class RemoveTemporaryBuffsOnEndTurnHandler extends GameEventHandler<EndTu
         IntList targets = data.list(Components.BUFFS);
         for (int buff : buffs) {
             for (int target : targets) {
-                if (ArrayUtil.contains(data, target, Components.BUFFS, buff)) {
+                IntList targetBuffs = data.getComponent(target, Components.BUFFS);
+                if (targetBuffs.contains(buff)) {
                     LOG.debug("Removing temporary buff {} from {} at end of turn", inspect(data, buff), inspect(data, target));
                     context.getEvents().fire(new RemoveBuffEvent(target, buff));
                 }

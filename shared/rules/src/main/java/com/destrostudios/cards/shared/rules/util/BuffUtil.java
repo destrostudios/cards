@@ -61,11 +61,9 @@ public class BuffUtil {
     public static IntList getAffectingBuffs(EntityData data, int target) {
         IntList affectingBuffs = new IntList();
         // Direct buffs
-        int[] buffs = data.getComponent(target, Components.BUFFS);
+        IntList buffs = data.getComponent(target, Components.BUFFS);
         if (buffs != null) {
-            for (int buff : buffs) {
-                affectingBuffs.add(buff);
-            }
+            affectingBuffs.addAll(buffs);
         }
         // Auras
         int[] targets = new int[] { target };

@@ -168,11 +168,11 @@ public class IntList implements Iterable<Integer> {
     }
 
     public boolean isEmpty() {
-        return size() == 0;
+        return size == 0;
     }
 
     public boolean nonEmpty() {
-        return size() != 0;
+        return size != 0;
     }
 
     @Override
@@ -187,7 +187,7 @@ public class IntList implements Iterable<Integer> {
 
             @Override
             public boolean hasNext() {
-                return i < size();
+                return i < size;
             }
 
             @Override
@@ -202,10 +202,19 @@ public class IntList implements Iterable<Integer> {
     }
 
     public void addAll(IntList intList) {
+        addAll(intList.data, intList.size);
+    }
+
+    public void addAll(int[] values) {
+        addAll(values, values.length);
+    }
+
+    public void addAll(int[] values, int valuesLength) {
         int oldSize = size;
-        grow(size + intList.size);
-        size += intList.size;
-        System.arraycopy(intList.data, 0, data, oldSize, intList.size);
+        int newSize = size + valuesLength;
+        grow(newSize);
+        size = newSize;
+        System.arraycopy(values, 0, data, oldSize, valuesLength);
     }
 
     public void removeFirst(int value) {

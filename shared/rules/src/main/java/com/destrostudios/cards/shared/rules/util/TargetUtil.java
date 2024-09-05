@@ -35,9 +35,7 @@ public class TargetUtil {
             String targetExpression = data.getComponent(targetDefinition, Components.Target.TARGET_CUSTOM);
             if (targetExpression != null) {
                 int[] evaluatedTargets = Expressions.evaluateEntities(targetExpression, Expressions.getContext_Provider(data, expressionContextProvider));
-                for (int target : evaluatedTargets) {
-                    affectedTargets.add(target);
-                }
+                affectedTargets.addAll(evaluatedTargets);
             }
             String targetAllCondition = data.getComponent(targetDefinition, Components.Target.TARGET_ALL);
             if (targetAllCondition != null) {

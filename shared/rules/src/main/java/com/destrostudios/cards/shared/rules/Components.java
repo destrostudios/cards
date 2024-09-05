@@ -41,7 +41,7 @@ public class Components {
     public static final ComponentDefinition<Integer> NEXT_PLAYER = create("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = create("ownedBy");
     public static final ComponentDefinition<int[]> AURAS = create("auras");
-    public static final ComponentDefinition<int[]> BUFFS = create("buffs");
+    public static final ComponentDefinition<IntList> BUFFS = create("buffs");
     public static final ComponentDefinition<String> CONDITION = create("condition");
     public static final ComponentDefinition<Void> SPELL_CARD = create("spellCard");
     public static final ComponentDefinition<int[]> SPELLS = create("spells");

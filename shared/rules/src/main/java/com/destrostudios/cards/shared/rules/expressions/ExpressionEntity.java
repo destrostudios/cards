@@ -1,6 +1,7 @@
 package com.destrostudios.cards.shared.rules.expressions;
 
 import com.destrostudios.cards.shared.entities.EntityData;
+import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.ComponentsParsing;
 import com.destrostudios.cards.shared.rules.util.*;
@@ -94,8 +95,8 @@ public class ExpressionEntity {
     }
 
     public boolean hasBuff(int buff) {
-        int[] buffs = data.getComponent(entity, Components.BUFFS);
-        return ArrayUtil.contains(buffs, buff);
+        IntList buffs = data.getComponent(entity, Components.BUFFS);
+        return buffs.contains(buff);
     }
 
     // [] is parsed as new Object[0], which doesn't call the according String[] methods

@@ -25,7 +25,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.NEXT_PLAYER, new ComponentParser_Entity());
         // Components.OWNED_BY
         templateManager.registerComponent(Components.AURAS, new ComponentParser_Entities());
-        templateManager.registerComponent(Components.BUFFS, new ComponentParser_Entities());
+        // Components.BUFFS
         templateManager.registerComponent(Components.CONDITION, new ComponentParser_String());
         templateManager.registerComponent(Components.SPELL_CARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.SPELLS, new ComponentParser_Entities());

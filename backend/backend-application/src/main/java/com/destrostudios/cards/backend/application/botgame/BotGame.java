@@ -11,6 +11,7 @@ import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.DebugUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -101,7 +102,7 @@ public class BotGame {
             }
             applyAction(action, random);
             for (MctsBot bot : bots) {
-                bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
+                bot.stepRoot(new BotActionReplay<>(action, ArrayUtil.EMPTY)); // TODO: Randomness?
             }
             actionIndex++;
         }

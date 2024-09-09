@@ -18,10 +18,7 @@ import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
-import com.destrostudios.cards.shared.rules.util.CostUtil;
-import com.destrostudios.cards.shared.rules.util.SpellUtil;
-import com.destrostudios.cards.shared.rules.util.StatsUtil;
-import com.destrostudios.cards.shared.rules.util.ZoneUtil;
+import com.destrostudios.cards.shared.rules.util.*;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -62,8 +59,8 @@ public class TestGame {
         random = mock(NetworkRandom.class);
         setupGame();
         fire(new GameStartEvent());
-        fire(new MulliganEvent(new int[0]));
-        fire(new MulliganEvent(new int[0]));
+        fire(new MulliganEvent(ArrayUtil.EMPTY));
+        fire(new MulliganEvent(ArrayUtil.EMPTY));
     }
 
     protected void setupGame() {

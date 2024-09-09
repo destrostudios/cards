@@ -4,6 +4,7 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
+import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.BotGameState;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
@@ -38,7 +39,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
     @Override
     public BotActionReplay<Event> applyAction(Event action) {
         gameContext.fireAndResolveEvent(action, botRandom);
-        return new BotActionReplay<>(action, new int[0]); // TODO: Randomness?
+        return new BotActionReplay<>(action, ArrayUtil.EMPTY); // TODO: Randomness?
     }
 
     @Override

@@ -10,19 +10,21 @@ import java.util.List;
 
 public class ArrayUtil {
 
+    public static final int[] EMPTY = new int[0];
+
     public static void add(EntityData data, int entity, ComponentDefinition<IntList> component, int value) {
-        IntList values = data.getOptionalComponent(entity, Components.BUFFS).orElseGet(IntList::new);
-        values.add(value);
-        data.setComponent(entity, component, values);
+        IntList newValues = data.getOptionalComponent(entity, Components.BUFFS).map(IntList::copy).orElseGet(IntList::new);
+        newValues.add(value);
+        data.setComponent(entity, component, newValues);
     }
 
     public static void remove(EntityData data, int entity, ComponentDefinition<IntList> component, int value) {
-        IntList values = data.getComponent(entity, component);
-        values.removeFirst(value);
-        if (values.isEmpty()) {
+        IntList newValues = data.getComponent(entity, component).copy();
+        newValues.removeFirst(value);
+        if (newValues.isEmpty()) {
             data.removeComponent(entity, component);
         } else {
-            data.setComponent(entity, component, values);
+            data.setComponent(entity, component, newValues);
         }
     }
 

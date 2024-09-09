@@ -16,8 +16,6 @@ import java.util.function.Consumer;
 
 public class PlayerActionsGenerator {
 
-    private static final int[] NO_TARGETS = new int[0];
-
     public static List<Event> generatePossibleActions(EntityData data, int player) {
         List<Event> possibleEvents = new ArrayList<>(64);
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
@@ -80,8 +78,8 @@ public class PlayerActionsGenerator {
                 return;
             }
         }
-        if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, NO_TARGETS)) {
-            out.accept(new CastSpellEvent(card, spell, NO_TARGETS));
+        if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, ArrayUtil.EMPTY)) {
+            out.accept(new CastSpellEvent(card, spell, ArrayUtil.EMPTY));
         }
     }
 }

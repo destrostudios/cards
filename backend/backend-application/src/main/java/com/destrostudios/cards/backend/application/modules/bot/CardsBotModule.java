@@ -5,6 +5,7 @@ import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
@@ -72,7 +73,7 @@ public class CardsBotModule extends NetworkModule {
     private void onAction(UUID gameId, Object action) {
         MctsBot bot = bots.get(gameId);
         if (bot != null) {
-            bot.stepRoot(new BotActionReplay<>(action, new int[0])); // TODO: Randomness?
+            bot.stepRoot(new BotActionReplay<>(action, ArrayUtil.EMPTY)); // TODO: Randomness?
             if (gameModule.getGame(gameId).state.isGameOver()) {
                 bots.remove(gameId);
             }

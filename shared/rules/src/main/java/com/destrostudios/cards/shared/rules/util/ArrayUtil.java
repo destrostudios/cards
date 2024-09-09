@@ -70,7 +70,7 @@ public class ArrayUtil {
     private static void addAllSubsets(IntList list, int offset, int[] offsetSubset, List<int[]> subsets) {
         int[] subset;
         if (offset == -1) {
-            subset = new int[0];
+            subset = EMPTY;
         } else {
             subset = new int[offsetSubset.length + 1];
             System.arraycopy(offsetSubset, 0, subset, 0, offsetSubset.length);

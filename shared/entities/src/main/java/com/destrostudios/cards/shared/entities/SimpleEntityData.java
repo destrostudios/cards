@@ -8,6 +8,7 @@ public class SimpleEntityData implements EntityData {
 
     public SimpleEntityData(List<ComponentDefinition<?>> componentDefinitions) {
         components = new IntMap[componentDefinitions.size()];
+        mutable = new boolean[components.length];
         cacheList = new IntList[components.length];
         for (int i = 0; i < components.length; i++) {
             components[i] = new IntMap(16); // Picking this optimally greatly improves performance by doing less resizes (important for bot!)
@@ -15,6 +16,7 @@ public class SimpleEntityData implements EntityData {
         nextEntity = 0;
     }
     private IntMap[] components;
+    private boolean[] mutable;
     private IntList[] cacheList;
     private int nextEntity;
 
@@ -25,23 +27,23 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public boolean hasComponent(int entity, ComponentDefinition<?> component) {
-        return getComponentMap(component).hasKey(entity);
+        return getComponentMapForRead(component).hasKey(entity);
     }
 
     @Override
     public <T> T getComponent(int entity, ComponentDefinition<T> component) {
-        return getComponentMap(component).get(entity);
+        return ((IntMap<T>) getComponentMapForRead(component)).get(entity);
     }
 
     @Override
     public <T> void setComponent(int entity, ComponentDefinition<T> component, T value) {
-        getComponentMap(component).set(entity, value);
+        ((IntMap<T>) getComponentMapForWrite(component)).set(entity, value);
         cacheList[component.getId()] = null;
     }
 
     @Override
     public <T> void removeComponent(int entity, ComponentDefinition<T> component) {
-        getComponentMap(component).remove(entity);
+        getComponentMapForWrite(component).remove(entity);
         cacheList[component.getId()] = null;
     }
 
@@ -49,7 +51,7 @@ public class SimpleEntityData implements EntityData {
     public IntList list(ComponentDefinition<?> component) {
         IntList result = cacheList[component.getId()];
         if (result == null) {
-            IntMap<?> componentMap = components[component.getId()];
+            IntMap<?> componentMap = getComponentMapForRead(component);
             result = new IntList(componentMap.size());
             componentMap.foreachKey(result::add);
             result.sort();
@@ -60,7 +62,7 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public IntList list(ComponentDefinition<?> component, IntPredicate predicate) {
-        IntMap<?> componentMap = components[component.getId()];
+        IntMap<?> componentMap = getComponentMapForRead(component);
         IntList result = new IntList(componentMap.size());
         componentMap.foreachKey(value -> {
             if (predicate.test(value)) {
@@ -89,7 +91,7 @@ public class SimpleEntityData implements EntityData {
     private IntList listAllUnsorted(ComponentDefinition<?>... components) {
         IntMap<?>[] componentMaps = new IntMap[components.length];
         for (int i = 0; i < components.length; i++) {
-            componentMaps[i] = getComponentMap(components[i]);
+            componentMaps[i] = getComponentMapForRead(components[i]);
         }
         IntList result = new IntList(componentMaps[0].size());
         componentMaps[0].foreachKey(key -> {
@@ -105,18 +107,18 @@ public class SimpleEntityData implements EntityData {
 
     @Override
     public int unique(ComponentDefinition<?> component) {
-        return getComponentMap(component).iterator().next();
+        return getComponentMapForRead(component).iterator().next();
     }
 
     @Override
     public int count(ComponentDefinition<?> component) {
-        return getComponentMap(component).size();
+        return getComponentMapForRead(component).size();
     }
 
     @Override
     public int count(ComponentDefinition<?> component, IntPredicate predicate) {
         AtomicInteger count = new AtomicInteger();
-        getComponentMap(component).foreachKey(value -> {
+        getComponentMapForRead(component).foreachKey(value -> {
             if (predicate.test(value)) {
                 count.getAndIncrement();
             }
@@ -124,8 +126,18 @@ public class SimpleEntityData implements EntityData {
         return count.get();
     }
 
-    private <T> IntMap<T> getComponentMap(ComponentDefinition<T> component) {
-        return (IntMap<T>) components[component.getId()];
+    private IntMap<?> getComponentMapForWrite(ComponentDefinition<?> component) {
+        if (!mutable[component.getId()]) {
+            IntMap<?> componentMap = new IntMap(components[component.getId()]);
+            components[component.getId()] = componentMap;
+            mutable[component.getId()] = true;
+            return componentMap;
+        }
+        return components[component.getId()];
+    }
+
+    private IntMap<?> getComponentMapForRead(ComponentDefinition<?> component) {
+        return components[component.getId()];
     }
 
     public IntMap[] getComponents() {
@@ -141,9 +153,8 @@ public class SimpleEntityData implements EntityData {
     }
 
     public void copyFrom(SimpleEntityData source) {
-        for (int i = 0; i < components.length; i++) {
-            components[i].copyFrom(source.components[i]);
-        }
+        System.arraycopy(source.components, 0, components, 0, components.length);
+        Arrays.fill(mutable, false);
         System.arraycopy(source.cacheList, 0, cacheList, 0, components.length);
         nextEntity = source.nextEntity;
     }

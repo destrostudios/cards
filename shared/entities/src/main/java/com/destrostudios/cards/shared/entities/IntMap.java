@@ -34,6 +34,19 @@ public class IntMap<T> implements Iterable<Integer> {
         updateFillLimit(capacity);
     }
 
+    public IntMap(IntMap<T> other) {
+        fillFactor = other.fillFactor;
+        mask = other.mask;
+        keys = new int[other.keys.length];
+        values = new Object[other.keys.length];
+        fillLimit = other.fillLimit;
+        System.arraycopy(other.keys, 0, keys, 0, keys.length);
+        System.arraycopy(other.values, 0, values, 0, values.length);
+        hasFreeKey = other.hasFreeKey;
+        freeValue = other.freeValue;
+        count = other.count;
+    }
+
     public void foreachKey(IntConsumer consumer) {
         if (hasFreeKey) {
             consumer.accept(FREE_KEY);
@@ -262,20 +275,5 @@ public class IntMap<T> implements Iterable<Integer> {
                 return remaining != 0;
             }
         };
-    }
-
-    public void copyFrom(IntMap<T> other) {
-        if (keys.length != other.keys.length) {
-            fillFactor = other.fillFactor;
-            mask = other.mask;
-            keys = new int[other.keys.length];
-            values = new Object[other.keys.length];
-            fillLimit = other.fillLimit;
-        }
-        System.arraycopy(other.keys, 0, keys, 0, keys.length);
-        System.arraycopy(other.values, 0, values, 0, values.length);
-        hasFreeKey = other.hasFreeKey;
-        freeValue = other.freeValue;
-        count = other.count;
     }
 }

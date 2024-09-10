@@ -153,6 +153,7 @@ public class SimpleEntityData implements EntityData {
     }
 
     public void copyFrom(SimpleEntityData source) {
+        // The source.components don't need to be lazy copied on modification, since they are not expected to be modified while the target.components is used
         System.arraycopy(source.components, 0, components, 0, components.length);
         Arrays.fill(mutable, false);
         System.arraycopy(source.cacheList, 0, cacheList, 0, components.length);

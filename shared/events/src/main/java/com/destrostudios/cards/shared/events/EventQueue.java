@@ -16,6 +16,7 @@ public class EventQueue<C> {
     }
     private EventHandling<C> handling;
     private Event parentEvent;
+    // LinkedList performs better than ArrayList here
     private LinkedList<PendingEventHandler<Event, C>> pendingEventHandlers;
 
     public void fire(Event event) {
@@ -47,7 +48,7 @@ public class EventQueue<C> {
     }
 
     public PendingEventHandler getNextPendingEventHandler() {
-        return pendingEventHandlers.get(0);
+        return pendingEventHandlers.getFirst();
     }
 
     public void triggerNextEventHandler(C context) {

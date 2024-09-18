@@ -12,17 +12,14 @@
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>entities-templates</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>files</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>rules</artifactId>
-            <version>0.0.1</version>
         </dependency>
     </dependencies>
 </project>

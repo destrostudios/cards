@@ -1,14 +1,15 @@
 package com.destrostudios.cards.test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 public class TestUtil {
 
-    public static void runOnAllProcessors(Runnable runnable) {
-        int processors = Runtime.getRuntime().availableProcessors();
-        for (int i = 0; i < processors / 2; i++) {
+    public static void runOnManyProcessors(Runnable runnable) {
+        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        int processors = Math.min(1, availableProcessors / 4);
+        for (int i = 0; i < processors; i++) {
             new Thread(runnable).start();
         }
     }
@@ -26,7 +27,7 @@ public class TestUtil {
         }).start();
     }
 
-    public static Float getMedian_Int(List<Integer> values) {
+    public static Float getMedian_Int(Collection<Integer> values) {
         if (values.isEmpty()) {
             return null;
         }
@@ -41,7 +42,7 @@ public class TestUtil {
         }
     }
 
-    public static Float getMedian_Float(List<Float> values) {
+    public static Float getMedian_Float(Collection<Float> values) {
         if (values.isEmpty()) {
             return null;
         }
@@ -56,7 +57,7 @@ public class TestUtil {
         }
     }
 
-    public static Long getMedian_Long(List<Long> values) {
+    public static Long getMedian_Long(Collection<Long> values) {
         if (values.isEmpty()) {
             return null;
         }
@@ -71,27 +72,27 @@ public class TestUtil {
         }
     }
 
-    public static Float getAverage_Int(List<Integer> values) {
+    public static Float getAverage_Int(Collection<Integer> values) {
         return (values.isEmpty() ? null : ((((float) getSum_Int(values)) / values.size())));
     }
 
-    public static Float getAverage_Float(List<Float> values) {
+    public static Float getAverage_Float(Collection<Float> values) {
         return (values.isEmpty() ? null : (getSum_Float(values) / values.size()));
     }
 
-    public static Long getAverage_Long(List<Long> values) {
+    public static Long getAverage_Long(Collection<Long> values) {
         return (values.isEmpty() ? null : (getSum_Long(values) / values.size()));
     }
 
-    public static int getSum_Int(List<Integer> values) {
+    public static int getSum_Int(Collection<Integer> values) {
         return values.stream().reduce(0, Integer::sum);
     }
 
-    public static float getSum_Float(List<Float> values) {
+    public static float getSum_Float(Collection<Float> values) {
         return values.stream().reduce(0f, Float::sum);
     }
 
-    public static long getSum_Long(List<Long> values) {
+    public static long getSum_Long(Collection<Long> values) {
         return values.stream().reduce(0L, Long::sum);
     }
 }

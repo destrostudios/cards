@@ -29,7 +29,7 @@ public abstract class BotTest_Winrate extends BotTest {
         super.run();
         AtomicInteger games = new AtomicInteger();
         ConcurrentHashMap<String, ConcurrentHashMap<String, Matchup>> matchups = new ConcurrentHashMap<>();
-        TestUtil.runOnAllProcessors(() -> {
+        TestUtil.runOnManyProcessors(() -> {
             Random actualRandom = new Random();
             while (true) {
                 long seed = actualRandom.nextLong();

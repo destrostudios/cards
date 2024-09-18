@@ -9,63 +9,48 @@
     <artifactId>backend-application</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <version.maven-assembly-plugin>3.3.0</version.maven-assembly-plugin>
+        <version.maven-assembly-plugin>3.7.1</version.maven-assembly-plugin>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>application</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>entities</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>entities-templates</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>events</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>model</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>network</artifactId>
-            <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.destrostudios.cards</groupId>
-            <artifactId>rules</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.destrostudios.cards</groupId>
             <artifactId>database</artifactId>
-            <version>0.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>entities</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>entities-templates</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>events</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.destrostudios.cards</groupId>
+            <artifactId>network</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>network-server</artifactId>
-            <version>${version.game-tools}</version>
         </dependency>
         <dependency>
             <groupId>com.github.destrostudios.game-tools</groupId>
             <artifactId>bot</artifactId>
-            <version>${version.game-tools}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <version>1.7.25</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

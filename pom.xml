@@ -14,22 +14,25 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.card-gui>9b585d646c0f9889fffd3d25e218988edfb6ab9a</version.card-gui>
-        <version.game-tools>76bd23e029824acdbf2596f2030a95a48beeefbb</version.game-tools>
+        <version.card-gui>f959ea6b81c7871b93cf76063887f6c88f7cdc1a</version.card-gui>
+        <version.cards>0.0.1</version.cards>
+        <version.game-tools>cc02ca8ca6b2fddcde26ccb9ee10c2be724ec88a</version.game-tools>
         <version.groovy>3.0.22</version.groovy>
         <version.jackson>2.17.2</version.jackson>
         <version.javax.activation>1.1.1</version.javax.activation>
         <version.jaxb>2.3.1</version.jaxb>
-        <version.jexl>3.2.1</version.jexl>
+        <version.jexl>3.4.0</version.jexl>
+        <version.jdom>2.0.6.1</version.jdom>
         <version.jme>3.6.1-stable</version.jme>
-        <version.junit>5.10.3</version.junit>
+        <version.junit>5.11.0</version.junit>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
         <version.lombok>1.18.34</version.lombok>
         <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
-        <version.maven-surefire-plugin>3.3.1</version.maven-surefire-plugin>
-        <version.mockito>5.12.0</version.mockito>
+        <version.maven-surefire-plugin>3.5.0</version.maven-surefire-plugin>
+        <version.mockito>5.13.0</version.mockito>
         <version.mysql>8.0.33</version.mysql>
+        <version.slf4j>2.0.16</version.slf4j>
     </properties>
     <repositories>
         <repository>
@@ -43,6 +46,91 @@
     </repositories>
     <dependencyManagement>
         <dependencies>
+            <!--Cards-->
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>application</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>backend-application</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>database</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>entities</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>entities-templates</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>events</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>files</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>model</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>network</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.destrostudios.cards</groupId>
+                <artifactId>rules</artifactId>
+                <version>${version.cards}</version>
+            </dependency>
+            <!--CardGui-->
+            <dependency>
+                <groupId>com.github.destrostudios.card-gui</groupId>
+                <artifactId>card-gui</artifactId>
+                <version>${version.card-gui}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.card-gui</groupId>
+                <artifactId>card-gui-samples</artifactId>
+                <version>${version.card-gui}</version>
+            </dependency>
+            <!--GameTools-->
+            <dependency>
+                <groupId>com.github.destrostudios.game-tools</groupId>
+                <artifactId>bot</artifactId>
+                <scope>system</scope>
+                <systemPath>C:/Users/Carl/.m2/repository/com/destrostudios/game-tools/bot/0.1.0-SNAPSHOT/bot-0.1.0-SNAPSHOT.jar</systemPath>
+                <version>snapshot</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.game-tools</groupId>
+                <artifactId>network-client</artifactId>
+                <version>${version.game-tools}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.game-tools</groupId>
+                <artifactId>network-server</artifactId>
+                <version>${version.game-tools}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.destrostudios.game-tools</groupId>
+                <artifactId>network-shared</artifactId>
+                <version>${version.game-tools}</version>
+            </dependency>
             <!--JEXL-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -120,6 +208,34 @@
                 <groupId>org.jmonkeyengine</groupId>
                 <artifactId>jme3-terrain</artifactId>
                 <version>${version.jme}</version>
+            </dependency>
+            <!--Lemur-->
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>lemur</artifactId>
+                <version>${version.lemur}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.simsilica</groupId>
+                <artifactId>lemur-proto</artifactId>
+                <version>${version.lemur-proto}</version>
+            </dependency>
+            <!--JDOM-->
+            <dependency>
+                <groupId>org.jdom</groupId>
+                <artifactId>jdom2</artifactId>
+                <version>${version.jdom}</version>
+            </dependency>
+            <!--SLF4J-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${version.slf4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${version.slf4j}</version>
             </dependency>
             <!--JUnit-->
             <dependency>

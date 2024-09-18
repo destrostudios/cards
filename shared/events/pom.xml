@@ -10,14 +10,8 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.github.destrostudios.game-tools</groupId>
-            <artifactId>network-shared</artifactId>
-            <version>${version.game-tools}</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

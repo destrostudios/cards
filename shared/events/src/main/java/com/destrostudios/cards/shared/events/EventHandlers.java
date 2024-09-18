@@ -1,10 +1,10 @@
 package com.destrostudios.cards.shared.events;
 
-import com.esotericsoftware.kryo.util.IntMap;
+import java.util.HashMap;
 
 public class EventHandlers<C> {
 
-    private IntMap<EventHandler[]> handlers = new IntMap<>();
+    private HashMap<Integer, EventHandler[]> handlers = new HashMap<>();
 
     public <T extends Event, C> void add(Enum<?> eventType, EventHandler<T, C> handler) {
         EventHandler[] oldHandlers = get(eventType);

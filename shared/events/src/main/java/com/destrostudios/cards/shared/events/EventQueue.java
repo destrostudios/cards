@@ -20,6 +20,14 @@ public class EventQueue<C> {
     private LinkedList<PendingEventHandler<Event, C>> pendingEventHandlers;
 
     public void fire(Event event) {
+        fire(event, parentEvent);
+    }
+
+    public void fireWithoutParent(Event event) {
+        fire(event, null);
+    }
+
+    private void fire(Event event, Event parentEvent) {
         event.setParent(parentEvent);
         Event root = event.getRoot();
         triggerHandlers(handling.pre(), event, (otherEvent) -> otherEvent.getParent() != parentEvent);

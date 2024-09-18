@@ -2,6 +2,7 @@ package com.destrostudios.cards.shared.rules.expressions;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import org.apache.commons.jexl3.*;
+import org.apache.commons.jexl3.introspection.JexlPermissions;
 
 public class Expressions {
 
@@ -12,6 +13,7 @@ public class Expressions {
             .silent(false)
             .strict(true)
             .debug(false)
+            .permissions(JexlPermissions.UNRESTRICTED)
             .cache(512)
             .cacheThreshold(Integer.MAX_VALUE)
             // .namespaces(Collections.singletonMap(null, ExpressionGlobals.class))

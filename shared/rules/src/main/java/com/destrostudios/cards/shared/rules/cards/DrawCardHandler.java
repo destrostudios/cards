@@ -24,7 +24,7 @@ public class DrawCardHandler extends GameEventHandler<DrawCardEvent> {
         } else {
             LOG.debug("Player {} tried to draw a card but has none left", inspect(data, event.player));
             int opponent = data.getComponent(event.player, Components.NEXT_PLAYER);
-            context.getEvents().fire(new GameOverEvent(opponent));
+            context.getEvents().fireWithoutParent(new GameOverEvent(opponent));
             event.cancel();
         }
     }

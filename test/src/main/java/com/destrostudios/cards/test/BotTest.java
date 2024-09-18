@@ -11,7 +11,6 @@ import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
-import org.slf4j.impl.SimpleLogger;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class BotTest {
 
     public void run() {
         ApplicationSetup.setup();
-        System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "ERROR");
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "ERROR");
 
         database = BackendApplication.getDatabase();
         cardService = new CardService(database);

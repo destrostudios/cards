@@ -39,8 +39,8 @@ public class SpellUtil {
     public record ValidTargetsAmount(int minimum, int maximum) {}
 
     public static ValidTargetsAmount getValidTargetsAmount(EntityData data, int spell) {
-        int minimum = data.getOptionalComponent(spell, Components.Spell.MINIMUM_TARGETS).orElse(1);
-        int maximum = data.getOptionalComponent(spell, Components.Spell.MAXIMUM_TARGETS).orElse(minimum);
+        int minimum = data.getComponentOrElse(spell, Components.Spell.MINIMUM_TARGETS, 1);
+        int maximum = data.getComponentOrElse(spell, Components.Spell.MAXIMUM_TARGETS, minimum);
         return new ValidTargetsAmount(minimum, maximum);
     }
 

@@ -1,7 +1,6 @@
 package com.destrostudios.cards.shared.entities;
 
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.PrimitiveIterator;
 import java.util.function.IntConsumer;
 
@@ -76,23 +75,7 @@ public class IntMap<T> implements Iterable<Integer> {
     }
 
     public T get(int key) {
-        if (key == FREE_KEY) {
-            if (hasFreeKey) {
-                return freeValue;
-            }
-            return null;
-        }
-        int index = key & mask;
-        while (true) {
-            int keyCandidate = keys[index];
-            if (keyCandidate == key) {
-                return (T) values[index];
-            }
-            if (keyCandidate == FREE_KEY) {
-                return null;
-            }
-            index = (index + 1) & mask;
-        }
+        return getOrElse(key, null);
     }
 
     public T getOrElse(int key, T defaultValue) {
@@ -239,10 +222,6 @@ public class IntMap<T> implements Iterable<Integer> {
         }
         builder.append('}');
         return builder.toString();
-    }
-
-    public Optional<T> getOptional(int key) {
-        return hasKey(key) ? Optional.of(get(key)) : Optional.empty();
     }
 
     public boolean isEmpty() {

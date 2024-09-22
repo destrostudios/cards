@@ -13,7 +13,7 @@ public class ArrayUtil {
     public static final int[] EMPTY = new int[0];
 
     public static void add(EntityData data, int entity, ComponentDefinition<IntList> component, int value) {
-        IntList newValues = data.getOptionalComponent(entity, Components.BUFFS).map(IntList::copy).orElseGet(IntList::new);
+        IntList newValues = data.getComponentOrElse(entity, Components.BUFFS, IntList.EMPTY).copy();
         newValues.add(value);
         data.setComponent(entity, component, newValues);
     }

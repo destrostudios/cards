@@ -78,8 +78,8 @@ public class UpdateIngameService {
             playerBoardObject.getModel().setName(data.getComponent(player, Components.NAME));
             playerBoardObject.getModel().setCurrentHealth(StatsUtil.getEffectiveHealth(data, player));
             playerBoardObject.getModel().setMaxHealth(data.getComponent(player, Components.Stats.HEALTH));
-            playerBoardObject.getModel().setCurrentMana(data.getOptionalComponent(player, Components.MANA).orElse(0));
-            playerBoardObject.getModel().setMaxMana(data.getOptionalComponent(player, Components.AVAILABLE_MANA).orElse(0));
+            playerBoardObject.getModel().setCurrentMana(data.getComponentOrElse(player, Components.MANA, 0));
+            playerBoardObject.getModel().setMaxMana(data.getComponentOrElse(player, Components.AVAILABLE_MANA, 0));
 
             PlayerZones playerZones = playerZonesMap.get(player);
             updateZoneCards(data, player, Components.Player.LIBRARY_CARDS, playerZones.getDeckZone());

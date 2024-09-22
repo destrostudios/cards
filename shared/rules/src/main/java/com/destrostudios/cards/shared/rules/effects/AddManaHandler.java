@@ -14,7 +14,7 @@ public class AddManaHandler extends GameEventHandler<AddManaEvent> {
     @Override
     public void handle(GameContext context, AddManaEvent event) {
         EntityData data = context.getData();
-        int currentMana = data.getOptionalComponent(event.player, Components.MANA).orElse(0);
+        int currentMana = data.getComponentOrElse(event.player, Components.MANA, 0);
         int newMana = currentMana + event.manaAmount;
         LOG.debug("Adding {} mana to player {} (current mana = {}, new mana = {})", event.manaAmount, inspect(data, event.player), currentMana, newMana);
         context.getEvents().fire(new SetManaEvent(event.player, newMana));

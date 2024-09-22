@@ -14,9 +14,6 @@ public class ZoneUtil {
         }*/
         data.setComponent(card, cardZone);
         data.setComponent(card, cardPlayerZone);
-        if (cardZone == Components.Zone.CREATURE_ZONE) {
-            data.setComponent(card, Components.BOARD);
-        }
         IntList newPlayerCards = data.getComponent(owner, playerZone).copy();
         newPlayerCards.add(card);
         data.setComponent(owner, playerZone, newPlayerCards);

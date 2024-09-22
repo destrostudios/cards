@@ -46,6 +46,9 @@ public abstract class BaseMoveToZoneHandler<T extends Event> extends GameEventHa
         }
 
         ZoneUtil.addToZone(data, card, owner, cardZone, cardPlayerZone[owner], playerZoneCards);
+        if (cardZone == Components.Zone.CREATURE_ZONE) {
+            data.setComponent(card, Components.BOARD);
+        }
 
         context.getEvents().fire(new ConditionsAffectedEvent());
     }

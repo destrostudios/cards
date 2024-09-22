@@ -16,6 +16,10 @@ import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
+import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.*;
@@ -126,13 +130,13 @@ public class TestGame {
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);
-        addToZone(spellCard, owner, cardZone);
+        addToZone(spellCard, cardZone);
         return spellCard;
     }
 
     protected int create(String template, int owner, ComponentDefinition<Void> cardZone) {
         int card = create(template, owner);
-        addToZone(card, owner, cardZone);
+        addToZone(card, cardZone);
         return card;
     }
 
@@ -165,8 +169,18 @@ public class TestGame {
         return entities;
     }
 
-    private void addToZone(int card, int owner, ComponentDefinition<Void> cardZone) {
-        ZoneUtil.addToZone(data, card, owner, cardZone, getCardPlayerZone(cardZone)[owner], getPlayerCardsZone(cardZone));
+    private void addToZone(int card, ComponentDefinition<Void> cardZone) {
+        if (cardZone == Components.Zone.LIBRARY) {
+            fire(new MoveToLibraryEvent(card));
+        } else if (cardZone == Components.Zone.HAND) {
+            fire(new MoveToHandEvent(card));
+        } else if (cardZone == Components.Zone.CREATURE_ZONE) {
+            fire(new MoveToCreatureZoneEvent(card));
+        } else if (cardZone == Components.Zone.GRAVEYARD) {
+            fire(new MoveToGraveyardEvent(card));
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     protected void setFullMana(int player, int mana) {

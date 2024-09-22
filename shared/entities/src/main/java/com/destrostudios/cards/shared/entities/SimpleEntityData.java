@@ -36,6 +36,11 @@ public class SimpleEntityData implements EntityData {
     }
 
     @Override
+    public <T> T getComponentOrElse(int entity, ComponentDefinition<T> component, T defaultValue) {
+        return ((IntMap<T>) getComponentMapForRead(component)).getOrElse(entity, defaultValue);
+    }
+
+    @Override
     public <T> void setComponent(int entity, ComponentDefinition<T> component, T value) {
         ((IntMap<T>) getComponentMapForWrite(component)).set(entity, value);
         cacheList[component.getId()] = null;

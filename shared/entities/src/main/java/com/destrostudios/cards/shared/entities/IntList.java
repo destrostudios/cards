@@ -11,6 +11,8 @@ import java.util.stream.IntStream;
 
 public class IntList implements Iterable<Integer> {
 
+    // Initialize the empty list with default capacity so that copying it results in a standard new list with default capacity
+    public static final IntList EMPTY = new IntList();
     private static final int DEFAULT_CAPACITY = 8;
 
     private int size = 0;

@@ -59,12 +59,9 @@ public class BuffUtil {
     }
 
     public static IntList getAffectingBuffs(EntityData data, int target) {
-        IntList affectingBuffs = new IntList();
         // Direct buffs
-        IntList buffs = data.getComponent(target, Components.BUFFS);
-        if (buffs != null) {
-            affectingBuffs.addAll(buffs);
-        }
+        IntList directBuffs = data.getComponentOrElse(target, Components.BUFFS, IntList.EMPTY);
+        IntList affectingBuffs = directBuffs;
         // Auras
         int[] targets = new int[] { target };
         for (int source : data.list(Components.AURAS)) {
@@ -72,6 +69,10 @@ public class BuffUtil {
             for (int aura : auras) {
                 if (ConditionUtil.isConditionFulfilled(data, aura, source, targets)) {
                     int buff = data.getComponent(aura, Components.Aura.AURA_BUFF);
+                    // TODO: Introduce generic IntList copy mechanism that creates a mutable copy on modification and otherwise returns the initial list instance
+                    if (affectingBuffs == directBuffs) {
+                        affectingBuffs = new IntList(affectingBuffs);
+                    }
                     affectingBuffs.add(buff);
                 }
             }

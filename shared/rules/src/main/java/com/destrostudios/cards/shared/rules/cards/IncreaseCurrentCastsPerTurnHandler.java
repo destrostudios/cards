@@ -14,7 +14,7 @@ public class IncreaseCurrentCastsPerTurnHandler extends GameEventHandler<CastSpe
     @Override
     public void handle(GameContext context, CastSpellEvent event) {
         EntityData data = context.getData();
-        int currentCasts = data.getOptionalComponent(event.spell, Components.Spell.CURRENT_CASTS_PER_TURN).orElse(0) + 1;
+        int currentCasts = data.getComponentOrElse(event.spell, Components.Spell.CURRENT_CASTS_PER_TURN, 0) + 1;
         LOG.debug("Increasing current spell casts per turn of {} to {}", inspect(data, event.spell), currentCasts);
         data.setComponent(event.spell, Components.Spell.CURRENT_CASTS_PER_TURN, currentCasts);
     }

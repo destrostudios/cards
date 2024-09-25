@@ -14,7 +14,7 @@
                     <entity>
                         <effects>
                             <entity template="../../effects/move_source_to_creature_zone"/>
-                            <entity template="../../effects/spawn_for_owner(template=[summonTemplate])"/>
+                            <entity template="../../effects/spawn_for_source_owner(template=[summonTemplate])"/>
                         </effects>
                     </entity>
                 </castTriggers>

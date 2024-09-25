@@ -38,32 +38,33 @@ public class GameEventHandling extends EventHandling<GameContext> {
         set(instant, EventType.SET_MANA, new SetManaHandler());
         set(instant, EventType.BATTLE, new BattleHandler());
         set(resolved, EventType.BATTLE,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, BattleEvent.class))
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, BattleEvent.class))
         );
         set(instant, EventType.DAMAGE, new DamageHandler());
         set(resolved, EventType.DAMAGE,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, DamageEvent.class)),
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, DamageEvent.class)),
             new CheckDestructionAfterDamageHandler()
         );
         set(instant, EventType.HEAL, new HealHandler());
         set(resolved, EventType.HEAL,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, HealEvent.class))
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, HealEvent.class))
         );
         set(instant, EventType.DESTRUCTION, new DestructionHandler());
         set(resolved, EventType.DESTRUCTION,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, DestructionEvent.class))
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, DestructionEvent.class))
         );
         set(instant, EventType.DRAW_CARD, new DrawCardHandler());
         set(resolved, EventType.DRAW_CARD,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, DrawCardEvent.class))
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, DrawCardEvent.class))
         );
         set(instant, EventType.DISCARD, new DiscardHandler());
         set(resolved, EventType.DISCARD,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, DiscardEvent.class))
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, DiscardEvent.class))
         );
         set(pre, EventType.END_TURN,
-            new CheckTriggersHandler<>(getTriggersComponent(PRE, EndTurnEvent.class)),
-            new RemoveTemporaryBuffsOnEndTurnHandler());
+            new CheckTriggersHandler<>(getTriggerDefinition(PRE, EndTurnEvent.class)),
+            new CheckTriggeredTriggersHandler<>(getTriggeredTriggerDefinition(PRE, EndTurnEvent.class))
+        );
         set(instant, EventType.END_TURN,
             new EndTurnHandler(),
             new ResetCurrentCastsPerTurnOnEndTurnHandler()
@@ -79,7 +80,7 @@ public class GameEventHandling extends EventHandling<GameContext> {
             new IncreaseCurrentCastsPerTurnHandler()
         );
         set(resolved, EventType.CAST_SPELL,
-            new CheckTriggersHandler<>(getTriggersComponent(POST, CastSpellEvent.class))
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, CastSpellEvent.class))
         );
         set(instant, EventType.REMOVED_FROM_CREATURE_ZONE,
             new RemoveDamageOnRemovedFromCreatureZoneHandler(),

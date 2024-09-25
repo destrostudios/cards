@@ -372,8 +372,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void tryEndTurn() {
-        if (updateIngameService.getSendableEndTurnEvent() != null) {
-            gameService.sendAction(updateIngameService.getSendableEndTurnEvent());
+        if (updateIngameService.getSendableEndTurnAction() != null) {
+            gameService.sendAction(updateIngameService.getSendableEndTurnAction());
         }
     }
 

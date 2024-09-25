@@ -42,6 +42,8 @@ creatures/fire_spirit,Fire Spirit,false,4,4,3,false,false
 creatures/fiulo,Fiulo,true,1,1,1,false,false
 creatures/forest_spirit,Forest Spirit,false,4,4,3,false,false
 creatures/forwen_tribe_mage,Forwen Tribe Mage,false,4,3,5,false,false
+creatures/freezing_ghost,Freezing Ghost,false,2,1,1,false,false
+creatures/freezing_pedestant,Freezing Pedestant,false,2,1,1,false,false
 creatures/frost_spirit,Frost Spirit,false,4,4,3,false,false
 creatures/furious_berserk,Furious Berserk,false,3,1,6,false,false
 creatures/gideas,Gideas,false,7,4,4,false,false

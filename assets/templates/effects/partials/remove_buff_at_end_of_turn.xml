@@ -1,0 +1,11 @@
+<template>
+    <entity>
+        <triggerDelayed at="preEndTurn">
+            <entity>
+                <effects>
+                    <entity template="../remove_buff_from_target(buff=[buff])"/>
+                </effects>
+            </entity>
+        </triggerDelayed>
+    </entity>
+</template>

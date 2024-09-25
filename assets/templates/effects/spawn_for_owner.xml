@@ -1,3 +1,0 @@
-<template>
-    <entity template="./create_for_owner(template=[template],location=CREATURE_ZONE)"/>
-</template>

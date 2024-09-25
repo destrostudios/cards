@@ -25,6 +25,13 @@
                                 <addBuff>
                                     <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])"/>
                                 </addBuff>
+                                <triggerDelayed at="preEndTurn">
+                                    <entity>
+                                        <effects>
+                                            <entity template="../effects/destroy_target"/>
+                                        </effects>
+                                    </entity>
+                                </triggerDelayed>
                             </entity>
                         </effects>
                     </entity>

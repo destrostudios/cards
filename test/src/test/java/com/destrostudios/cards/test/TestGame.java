@@ -128,6 +128,7 @@ public class TestGame {
         data.setComponent(spell, Components.SOURCE, spellCard);
         data.setComponent(spell, Components.Target.SOURCE_PREFILTERS, new Components.Prefilters(new ComponentDefinition[] { Components.Zone.HAND }, new AdvancedPrefilter[0]));
         data.setComponent(spell, Components.Cost.MANA_COST, manaCost);
+        data.setComponent(spell, Components.Spell.CAST_TRIGGERS, ArrayUtil.EMPTY);
         data.setComponent(spellCard, Components.SPELLS, new int[] { spell });
         data.setComponent(spellCard, Components.OWNED_BY, owner);
         addToZone(spellCard, cardZone);
@@ -278,6 +279,10 @@ public class TestGame {
 
     protected int getCardsCount(int player, ComponentDefinition<Void> zone) {
         return data.count(getCardPlayerZone(zone)[player]);
+    }
+
+    protected void assertNoCard(int player, ComponentDefinition<Void> zone, String name) {
+        assertCardsCount(player, zone, name, 0);
     }
 
     protected void assertOneCard(int player, ComponentDefinition<Void> zone, String name) {

@@ -16,7 +16,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/spawn_for_owner(template=creatures/goblin)"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/goblin)"/>
                         </effects>
                     </entity>
                 </castTriggers>

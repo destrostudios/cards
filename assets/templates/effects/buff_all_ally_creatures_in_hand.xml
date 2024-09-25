@@ -1,8 +1,11 @@
 <template>
+    <values>
+        <constant>false</constant>
+    </values>
     <entity>
         <targets>
             <entity template="../targets/all_ally_creatures_in_hand"/>
         </targets>
-        <addBuff>[buff]</addBuff>
+        <addBuff constant="[constant]">[buff]</addBuff>
     </entity>
 </template>

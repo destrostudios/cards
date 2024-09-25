@@ -4,9 +4,11 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.templates.*;
 import com.destrostudios.cards.shared.entities.templates.components.*;
 import com.destrostudios.cards.shared.entities.templates.formats.*;
+import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.cards.Foil;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 
 public class EntityTemplateSetup {
 
@@ -69,8 +71,6 @@ public class EntityTemplateSetup {
 
         templateManager.registerComponent(Components.Aura.AURA_BUFF, new ComponentParser_Entity());
 
-        templateManager.registerComponent(Components.Buff.UNTIL_END_OF_TURN, new ComponentParser_Void());
-
         templateManager.registerComponent(Components.Tribe.BEAST, new ComponentParser_Void());
         templateManager.registerComponent(Components.Tribe.DRAGON, new ComponentParser_Void());
         templateManager.registerComponent(Components.Tribe.GOBLIN, new ComponentParser_Void());
@@ -86,9 +86,8 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Effect.GAIN_MANA, new ComponentParser_String());
         templateManager.registerComponent(Components.Effect.DESTROY, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.BATTLE, new ComponentParser_Void());
-        templateManager.registerComponent(Components.Effect.ADD_BUFF, new ComponentParser<>() {
-
-            record AddBuffProxy(Object buff, boolean constant) {}
+        record AddBuffProxy(Object buff, boolean constant) {}
+        templateManager.registerComponent(Components.Effect.ADD_BUFF, new ComponentParser<Object, AddBuffProxy, Components.AddBuff>() {
 
             @Override
             public AddBuffProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
@@ -98,14 +97,13 @@ public class EntityTemplateSetup {
             }
 
             @Override
-            public Object resolve(int[] proxiedEntities, Object _recordedValue) {
-                AddBuffProxy recordedValue = (AddBuffProxy) _recordedValue;
+            public Components.AddBuff resolve(int[] proxiedEntities, AddBuffProxy recordedValue) {
                 return new Components.AddBuff(resolveEntity(proxiedEntities, recordedValue.buff), recordedValue.constant);
             }
         });
-        templateManager.registerComponent(Components.Effect.CREATE, new ComponentParser<>() {
-
-            record CreateProxy(Template template, CreateLocation location) {}
+        templateManager.registerComponent(Components.Effect.REMOVE_BUFF, new ComponentParser_Entity());
+        record CreateProxy(Template template, CreateLocation location) {}
+        templateManager.registerComponent(Components.Effect.CREATE, new ComponentParser<Object, CreateProxy, Components.Create>() {
 
             @Override
             public CreateProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
@@ -115,13 +113,38 @@ public class EntityTemplateSetup {
             }
 
             @Override
-            public Object resolve(int[] proxiedEntities, Object _recordedValue) {
-                CreateProxy recordedValue = (CreateProxy) _recordedValue;
+            public Components.Create resolve(int[] proxiedEntities, CreateProxy recordedValue) {
                 return new Components.Create(resolveTemplate(proxiedEntities, recordedValue.template).getAsResolvedText(), recordedValue.location);
             }
         });
         templateManager.registerComponent(Components.Effect.SHUFFLE_LIBRARY, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.END_TURN, new ComponentParser_Void());
+        record TriggerDelayedProxy(ComponentDefinition<Components.TriggeredTrigger[]> triggeredTriggersComponent, Object[] triggers) {}
+        templateManager.registerComponent(Components.Effect.TRIGGER_DELAYED, new ComponentParser<Object, TriggerDelayedProxy, Components.TriggerDelayed>() {
+
+            private static final String POST = "post";
+            private static final String PRE = "pre";
+
+            @Override
+            public TriggerDelayedProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
+                String at = parser.parseText(format.getAttribute(node, "at"));
+                boolean postOrPre = at.equals(POST);
+                String eventClassName = at.substring((postOrPre ? POST : PRE).length());
+                Class<? extends Event> eventClass;
+                switch (eventClassName) {
+                    case "EndTurn" -> eventClass = EndTurnEvent.class;
+                    default -> throw new IllegalArgumentException(eventClassName);
+                }
+                ComponentsTriggers.TriggeredTriggerDefinition<Event> triggeredTriggerDefinition = ComponentsTriggers.getTriggeredTriggerDefinition(postOrPre, eventClass);
+                Object[] triggers = parseOrCreateChildEntities(parser, format, node, TemplateKeyword.ENTITIES);
+                return new TriggerDelayedProxy(triggeredTriggerDefinition.component(), triggers);
+            }
+
+            @Override
+            public Components.TriggerDelayed resolve(int[] proxiedEntities, TriggerDelayedProxy recordedValue) {
+                return new Components.TriggerDelayed(recordedValue.triggeredTriggersComponent, resolveEntities(proxiedEntities, recordedValue.triggers));
+            }
+        });
         templateManager.registerComponent(Components.Effect.PRE_ANIMATIONS, new ComponentParser_StringArray());
         templateManager.registerComponent(Components.Effect.POST_ANIMATIONS, new ComponentParser_StringArray());
 
@@ -146,7 +169,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Spell.TAUNTABLE, new ComponentParser_Void());
         templateManager.registerComponent(Components.Spell.CAST_TRIGGERS, new ComponentParser_Entities());
 
-        for (ComponentDefinition<int[]> component : ComponentsTriggers.getAllComponents()) {
+        for (ComponentDefinition<int[]> component : ComponentsTriggers.getAllTriggerComponents()) {
             templateManager.registerComponent(component, new ComponentParser_Entities());
         }
 

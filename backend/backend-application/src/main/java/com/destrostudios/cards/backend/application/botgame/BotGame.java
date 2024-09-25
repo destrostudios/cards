@@ -7,10 +7,7 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.rules.*;
-import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
-import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
-import com.destrostudios.cards.shared.rules.game.GameStartEvent;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.actions.*;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.DebugUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
@@ -29,7 +26,7 @@ import java.util.function.BiConsumer;
 
 public class BotGame {
 
-    public BotGame(List<Card> cards, StartGameInfo startGameInfo, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
+    public BotGame(List<Card> cards, StartGameInfo startGameInfo, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Action>, Integer> modifyBotSettings) {
         this.cards = cards;
         this.startGameInfo = startGameInfo;
         this.seed = seed;
@@ -42,7 +39,7 @@ public class BotGame {
     private long seed;
     private boolean verbose;
     private boolean botPerPlayer;
-    private BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings;
+    private BiConsumer<MctsBotSettings<CardsBotState, Action>, Integer> modifyBotSettings;
     protected GameContext gameContext;
     private MctsBotSettings[] botSettings;
     private MctsBot[] bots;
@@ -72,13 +69,13 @@ public class BotGame {
         };
         GameSetup.apply(gameContext.getData(), startGameInfo, cards, _random);
 
-        applyAction(new GameStartEvent(), random);
+        applyAction(new GameStartAction(), random);
 
         int playerCount = (botPerPlayer ? 2 : 1);
         bots = new MctsBot[playerCount];
         botSettings = new MctsBotSettings[playerCount];
         for (int i = 0; i < bots.length; i++) {
-            MctsBotSettings<CardsBotState, Event> settings = new MctsBotSettings<>();
+            MctsBotSettings<CardsBotState, Action> settings = new MctsBotSettings<>();
             settings.termination = TerminationType.NODE_COUNT;
             settings.strength = 100;
             settings.evaluation = CardsBotEval::eval;
@@ -94,9 +91,9 @@ public class BotGame {
         int actionIndex = 0;
         while (!gameContext.isGameOver()) {
             long actionStartNanos = System.nanoTime();
-            List<Event> actions = bots[getActiveBotIndex()].sortedActions(botState, botState.activeTeam());
+            List<Action> actions = bots[getActiveBotIndex()].sortedActions(botState, botState.activeTeam());
             long actionDurationNanos = (System.nanoTime() - actionStartNanos);
-            Event action = actions.get(0);
+            Action action = actions.get(0);
             if (verbose) {
                 System.out.println(getActionSummaryDebugText(actionIndex, action, actions.size(), actionDurationNanos));
             }
@@ -117,7 +114,7 @@ public class BotGame {
     }
 
     protected float getActiveBotActivePlayerEval() {
-        MctsBotSettings<CardsBotState, Event> settings = botSettings[getActiveBotIndex()];
+        MctsBotSettings<CardsBotState, Action> settings = botSettings[getActiveBotIndex()];
         return settings.evaluation.apply(botState)[botState.activeTeam()];
     }
 
@@ -125,7 +122,7 @@ public class BotGame {
         return (botPerPlayer ? botState.activeTeam() : 0);
     }
 
-    private String getActionSummaryDebugText(int actionIndex, Event action, int actionsCount, long actionDurationNanos) {
+    private String getActionSummaryDebugText(int actionIndex, Action action, int actionsCount, long actionDurationNanos) {
         int player = botState.activeTeam();
         String text = "Action #" + actionIndex + ": Player #" + player;
         text += " { health = " + StatsUtil.getEffectiveHealth(gameContext.getData(), player);
@@ -136,13 +133,13 @@ public class BotGame {
         return text;
     }
 
-    private String getActionDebugText(Event action) {
-        if (action instanceof CastSpellEvent castSpellEvent) {
-            return "CastSpellEvent { source = " + getEntityDebugText(castSpellEvent.source) + ", spell = " + getEntityDebugText_Spell(castSpellEvent.spell) + ", targets = " + getEntityDebugText(castSpellEvent.targets) + " }";
-        } else if (action instanceof EndTurnEvent) {
+    private String getActionDebugText(Action action) {
+        if (action instanceof CastSpellAction castSpellAction) {
+            return "CastSpellEvent { source = " + getEntityDebugText(castSpellAction.getSource()) + ", spell = " + getEntityDebugText_Spell(castSpellAction.getSpell()) + ", targets = " + getEntityDebugText(castSpellAction.getTargets()) + " }";
+        } else if (action instanceof EndTurnAction) {
             return "EndTurnEvent";
-        } else if (action instanceof MulliganEvent mulliganEvent){
-            return "MulliganEvent { cards = " + getEntityDebugText(mulliganEvent.cards) + " }";
+        } else if (action instanceof MulliganAction mulliganAction) {
+            return "MulliganEvent { cards = " + getEntityDebugText(mulliganAction.getCards()) + " }";
         }
         return action.toString();
     }
@@ -160,8 +157,8 @@ public class BotGame {
         return new DebugUtil.EntityDebugText_Array(gameContext.getData(), entities).toString();
     }
 
-    protected void applyAction(Event action, NetworkRandom random) {
-        gameContext.fireAndResolveEvent(action, random);
+    protected void applyAction(Action action, NetworkRandom random) {
+        gameContext.fireAndResolveAction(action, random);
     }
 
     public PlayerInfo getWinner() {

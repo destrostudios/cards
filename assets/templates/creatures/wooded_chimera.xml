@@ -16,9 +16,9 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_creature_zone"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_firstborn)"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_secondborn)"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/wooded_chimeras_thirdborn)"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/wooded_chimeras_firstborn)"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/wooded_chimeras_secondborn)"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/wooded_chimeras_thirdborn)"/>
                         </effects>
                     </entity>
                 </castTriggers>

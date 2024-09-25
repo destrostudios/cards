@@ -4,12 +4,8 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.IntMap;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.actions.*;
 import com.destrostudios.cards.shared.rules.cards.Foil;
-import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
-import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
-import com.destrostudios.cards.shared.rules.game.GameStartEvent;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.gametools.network.shared.modules.game.GameService;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import com.destrostudios.gametools.network.shared.serializers.EnumSerializer;
@@ -21,7 +17,7 @@ import com.esotericsoftware.kryo.serializers.FieldSerializer;
 
 import java.time.LocalDateTime;
 
-public class CardsNetworkService implements GameService<GameContext, Event> {
+public class CardsNetworkService implements GameService<GameContext, Action> {
 
     public CardsNetworkService(boolean resolveActions) {
         this.resolveActions = resolveActions;
@@ -70,6 +66,7 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
         kryo.register(SimpleTarget[].class);
         kryo.register(Components.AddBuff.class);
         kryo.register(Components.Create.class);
+        kryo.register(Components.TriggerDelayed.class, new FieldSerializer<>(kryo, Components.TriggerDelayed.class));
         kryo.register(ComponentDefinition.class, new Serializer<ComponentDefinition>() {
 
             @Override
@@ -131,16 +128,15 @@ public class CardsNetworkService implements GameService<GameContext, Event> {
                 return new GameContext(startGameInfo, eventHandling, data);
             }
         });
-        kryo.register(EventType.class);
-        kryo.register(GameStartEvent.class, new FieldSerializer<>(kryo, GameStartEvent.class));
-        kryo.register(MulliganEvent.class, new FieldSerializer<>(kryo, MulliganEvent.class));
-        kryo.register(CastSpellEvent.class, new FieldSerializer<>(kryo, CastSpellEvent.class));
-        kryo.register(EndTurnEvent.class, new FieldSerializer<>(kryo, EndTurnEvent.class));
+        kryo.register(GameStartAction.class);
+        kryo.register(MulliganAction.class);
+        kryo.register(CastSpellAction.class);
+        kryo.register(EndTurnAction.class);
     }
 
     @Override
-    public GameContext applyAction(GameContext state, Event action, NetworkRandom random) {
-        state.fireEvent(action, random);
+    public GameContext applyAction(GameContext state, Action action, NetworkRandom random) {
+        state.fireAction(action, random);
         if (resolveActions) {
             state.resolveEvents();
         }

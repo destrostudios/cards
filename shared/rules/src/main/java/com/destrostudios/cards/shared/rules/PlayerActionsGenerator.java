@@ -2,10 +2,10 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
-import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
-import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
+import com.destrostudios.cards.shared.rules.actions.Action;
+import com.destrostudios.cards.shared.rules.actions.CastSpellAction;
+import com.destrostudios.cards.shared.rules.actions.EndTurnAction;
+import com.destrostudios.cards.shared.rules.actions.MulliganAction;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
@@ -16,43 +16,43 @@ import java.util.function.Consumer;
 
 public class PlayerActionsGenerator {
 
-    public static List<Event> generatePossibleActions(EntityData data, int player) {
-        List<Event> possibleEvents = new ArrayList<>(64);
+    public static List<Action> generatePossibleActions(EntityData data, int player) {
+        List<Action> possibleActions = new ArrayList<>(64);
         if (data.hasComponent(player, Components.Player.ACTIVE_PLAYER)) {
             if (data.hasComponent(player, Components.Player.MULLIGAN)) {
-                generateMulligans(data, player, possibleEvents::add);
+                generateMulligans(data, player, possibleActions::add);
             } else {
-                generateSpellCasts(data, player, possibleEvents::add);
-                possibleEvents.add(new EndTurnEvent(player));
+                generateSpellCasts(data, player, possibleActions::add);
+                possibleActions.add(new EndTurnAction(player));
             }
         }
-        return possibleEvents;
+        return possibleActions;
     }
 
-    private static void generateMulligans(EntityData data, int player, Consumer<Event> out) {
+    private static void generateMulligans(EntityData data, int player, Consumer<Action> out) {
         IntList handCards = data.list(Components.Zone.PLAYER_HAND[player]);
         List<int[]> handCardsSubsets = ArrayUtil.getAllSubsets(handCards);
         for (int[] handCardsSubset : handCardsSubsets) {
-            out.accept(new MulliganEvent(handCardsSubset));
+            out.accept(new MulliganAction(handCardsSubset));
         }
     }
 
-    private static void generateSpellCasts(EntityData data, int player, Consumer<Event> out) {
+    private static void generateSpellCasts(EntityData data, int player, Consumer<Action> out) {
         // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
         generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_HAND[player]), out);
         generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_CREATURE_ZONE[player]), out);
     }
 
-    private static void generateSpellCasts(EntityData data, int player, IntList ownedCards, Consumer<Event> out) {
+    private static void generateSpellCasts(EntityData data, int player, IntList ownedCards, Consumer<Action> out) {
         for (int card : ownedCards) {
             int[] spells = data.getComponent(card, Components.SPELLS);
             for (int spell : spells) {
-                generateCastSpellEvents(data, player, card, spell, out);
+                generateCastSpellActions(data, player, card, spell, out);
             }
         }
     }
 
-    private static void generateCastSpellEvents(EntityData data, int player, int card, int spell, Consumer<Event> out) {
+    private static void generateCastSpellActions(EntityData data, int player, int card, int spell, Consumer<Action> out) {
         if (!SpellUtil.isCastable_WithoutSpellCondition(data, player, spell)) {
             return;
         }
@@ -68,7 +68,7 @@ public class PlayerActionsGenerator {
                 for (int amount = validTargetAmounts.minimum(); amount <= validTargetAmounts.maximum(); amount++) {
                     List<IntList> targetsSubsets = ArrayUtil.getSubsets(validTargets, amount);
                     for (IntList targets : targetsSubsets) {
-                        out.accept(new CastSpellEvent(card, spell, targets.toArray()));
+                        out.accept(new CastSpellAction(card, spell, targets.toArray()));
                     }
                 }
                 return;
@@ -79,7 +79,7 @@ public class PlayerActionsGenerator {
             }
         }
         if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, ArrayUtil.EMPTY)) {
-            out.accept(new CastSpellEvent(card, spell, ArrayUtil.EMPTY));
+            out.accept(new CastSpellAction(card, spell, ArrayUtil.EMPTY));
         }
     }
 }

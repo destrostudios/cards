@@ -15,14 +15,14 @@ public class CheckTriggersHandler<T extends Event> extends GameEventHandler<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(CheckTriggersHandler.class);
 
-    private ComponentsTriggers.TriggerDefinition<T> trigger;
+    private ComponentsTriggers.TriggerDefinition<T> triggerDefinition;
 
     @Override
     public void handle(GameContext context, T event) {
         EntityData data = context.getData();
-        LOG.debug("Checking triggers of type {} for {}", trigger, event);
-        for (int entity : data.list(trigger.component())) {
-            TriggerUtil.triggerIfPossible(data, data.getComponent(entity, trigger.component()), entity, trigger.getTargets().apply(event), context.getEvents());
+        LOG.debug("Checking triggers of type {} for {}", triggerDefinition.component().getName(), event);
+        for (int entity : data.list(triggerDefinition.component())) {
+            TriggerUtil.triggerIfPossible(data, data.getComponent(entity, triggerDefinition.component()), entity, triggerDefinition.getTargets().apply(event), context.getEvents());
         }
     }
 }

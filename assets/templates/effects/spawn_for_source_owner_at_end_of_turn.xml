@@ -1,0 +1,14 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/source"/>
+        </targets>
+        <triggerDelayed at="preEndTurn">
+            <entity>
+                <effects>
+                    <entity template="./spawn_for_source_owner(template=[template])"/>
+                </effects>
+            </entity>
+        </triggerDelayed>
+    </entity>
+</template>

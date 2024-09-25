@@ -19,12 +19,15 @@ public class ArrayUtil {
     }
 
     public static void remove(EntityData data, int entity, ComponentDefinition<IntList> component, int value) {
-        IntList newValues = data.getComponent(entity, component).copy();
-        newValues.removeFirst(value);
-        if (newValues.isEmpty()) {
-            data.removeComponent(entity, component);
-        } else {
-            data.setComponent(entity, component, newValues);
+        IntList oldValues = data.getComponent(entity, component);
+        if (oldValues != null) {
+            IntList newValues = oldValues.copy();
+            newValues.removeFirst(value);
+            if (newValues.isEmpty()) {
+                data.removeComponent(entity, component);
+            } else {
+                data.setComponent(entity, component, newValues);
+            }
         }
     }
 

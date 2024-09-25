@@ -23,10 +23,9 @@
                                     </entity>
                                 </targets>
                                 <addBuff>
-                                    <entity template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
-                                        <untilEndOfTurn/>
-                                    </entity>
+                                    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])"/>
                                 </addBuff>
+                                <partial template="../effects/partials/remove_buff_at_end_of_turn(buff=#buff)"/>
                             </entity>
                         </effects>
                     </entity>

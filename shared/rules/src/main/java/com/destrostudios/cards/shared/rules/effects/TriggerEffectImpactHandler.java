@@ -10,6 +10,7 @@ import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
+import com.destrostudios.cards.shared.rules.buffs.RemoveBuffEvent;
 import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEvent;
@@ -20,6 +21,7 @@ import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.BuffUtil;
+import com.destrostudios.cards.shared.rules.util.TriggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,9 +89,19 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
             events.fire(new AddBuffEvent(event.target, buff));
         }
 
+        Integer buffToRemove = data.getComponent(event.effect, Components.Effect.REMOVE_BUFF);
+        if (buffToRemove != null) {
+            events.fire(new RemoveBuffEvent(event.target, buffToRemove));
+        }
+
         Components.Create create = data.getComponent(event.effect, Components.Effect.CREATE);
         if (create != null) {
             events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation()));
+        }
+
+        Components.TriggerDelayed triggerDelayed = data.getComponent(event.effect, Components.Effect.TRIGGER_DELAYED);
+        if (triggerDelayed != null) {
+            TriggerUtil.triggerDelayed(data, event.source, event.target, triggerDelayed);
         }
 
         boolean shuffleLibrary = data.hasComponent(event.effect, Components.Effect.SHUFFLE_LIBRARY);

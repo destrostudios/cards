@@ -15,7 +15,7 @@ public class Components {
     public static final ArrayList<ComponentDefinition<?>> ALL = new ArrayList<>();
 
     public static void setup() {
-        // TODO: Cleanup the components setup - For the tests, we need to ensure these nested ones are initalized, otherwise Components.ALL does not include them yet when the tests run
+        // TODO: Cleanup the components setup - For the tests, we need to ensure these nested ones are initialized, otherwise Components.ALL does not include them yet when the tests run
         Object initializedNestedStaticInnerClassArrayField = Components.Zone.PLAYER_LIBRARY;
     }
 
@@ -97,10 +97,6 @@ public class Components {
         public static final ComponentDefinition<Integer> AURA_BUFF = create("auraBuff");
     }
 
-    public static class Buff {
-        public static final ComponentDefinition<Void> UNTIL_END_OF_TURN = create("untilEndOfTurn");
-    }
-
     public static class Tribe {
         public static final ComponentDefinition<Void> BEAST = create("beast");
         public static final ComponentDefinition<Void> DRAGON = create("dragon");
@@ -122,9 +118,11 @@ public class Components {
         public static final ComponentDefinition<Void> DESTROY = create("destroy");
         public static final ComponentDefinition<Void> BATTLE = create("battle");
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
+        public static final ComponentDefinition<Integer> REMOVE_BUFF = create("removeBuff");
         public static final ComponentDefinition<Create> CREATE = create("create");
         public static final ComponentDefinition<Void> SHUFFLE_LIBRARY = create("shuffleLibrary");
         public static final ComponentDefinition<Void> END_TURN = create("endTurn");
+        public static final ComponentDefinition<TriggerDelayed> TRIGGER_DELAYED = create("triggerDelayed");
         public static final ComponentDefinition<String[]> PRE_ANIMATIONS = create("preAnimations");
         public static final ComponentDefinition<String[]> POST_ANIMATIONS = create("postAnimations");
 
@@ -178,5 +176,21 @@ public class Components {
     public static class Create {
         private String template;
         private CreateLocation location;
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
+    @Getter
+    public static class TriggerDelayed {
+        private ComponentDefinition<TriggeredTrigger[]> triggeredTriggersComponent;
+        private int[] triggers;
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
+    @Getter
+    public static class TriggeredTrigger {
+        private int trigger;
+        private int target;
     }
 }

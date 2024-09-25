@@ -2,6 +2,11 @@ package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.events.*;
+import com.destrostudios.cards.shared.rules.actions.*;
+import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
+import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
+import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import lombok.Getter;
 
@@ -47,6 +52,27 @@ public class GameContext {
         data.copyFrom(source.data);
         events.clear();
         winner = null;
+    }
+
+    public void fireAndResolveAction(Action action, NetworkRandom random) {
+        fireAndResolveEvent(getActionEvent(action), random);
+    }
+
+    public void fireAction(Action action, NetworkRandom random) {
+        fireEvent(getActionEvent(action), random);
+    }
+
+    private Event getActionEvent(Action action) {
+        if (action instanceof CastSpellAction castSpellAction) {
+            return new CastSpellEvent(castSpellAction.getSource(), castSpellAction.getSpell(), castSpellAction.getTargets());
+        } else if (action instanceof EndTurnAction endTurnAction) {
+            return new EndTurnEvent(endTurnAction.getPlayer());
+        } else if (action instanceof MulliganAction mulliganAction) {
+            return new MulliganEvent(mulliganAction.getCards());
+        } else if (action instanceof GameStartAction) {
+            return new GameStartEvent();
+        }
+        throw new IllegalArgumentException(action.toString());
     }
 
     public void fireAndResolveEvent(Event event, NetworkRandom random) {

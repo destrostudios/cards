@@ -2,13 +2,13 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.backend.application.services.UserService;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Mode;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.gametools.network.shared.modules.NetworkModule;
@@ -23,7 +23,7 @@ public class GameOverModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
-    private GameServerModule<GameContext, Event> gameModule;
+    private GameServerModule<GameContext, Action> gameModule;
     private Database database;
     private UserService userService;
 

@@ -7,10 +7,11 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.cards.shared.rules.actions.Action;
+import com.destrostudios.cards.shared.rules.actions.CastSpellAction;
+import com.destrostudios.cards.shared.rules.actions.EndTurnAction;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
-import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
-import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
@@ -26,7 +27,7 @@ import java.util.function.Predicate;
 
 public class BotGame_WithCardStats extends BotGame {
 
-    public BotGame_WithCardStats(List<Card> cards, StartGameInfo startGameInfo, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Event>, Integer> modifyBotSettings) {
+    public BotGame_WithCardStats(List<Card> cards, StartGameInfo startGameInfo, long seed, boolean verbose, boolean botPerPlayer, BiConsumer<MctsBotSettings<CardsBotState, Action>, Integer> modifyBotSettings) {
         super(cards, startGameInfo, seed, verbose, botPerPlayer, modifyBotSettings);
     }
     private HashMap<Integer, CardStatsGame> cardStats = new HashMap<>();
@@ -45,16 +46,16 @@ public class BotGame_WithCardStats extends BotGame {
     }
 
     @Override
-    protected void applyAction(Event action, NetworkRandom random) {
+    protected void applyAction(Action action, NetworkRandom random) {
         EntityData data = gameContext.getData();
-        if (action instanceof CastSpellEvent castSpellEvent) {
-            if (SpellUtil.isDefaultCastFromHandSpell(data, castSpellEvent.spell)) {
+        if (action instanceof CastSpellAction castSpellAction) {
+            if (SpellUtil.isDefaultCastFromHandSpell(data, castSpellAction.getSpell())) {
                 PlayedCardThisTurn playedCardThisTurn = new PlayedCardThisTurn();
-                playedCardThisTurn.card = castSpellEvent.source;
+                playedCardThisTurn.card = castSpellAction.getSource();
                 playedCardThisTurn.evalBeforePlayed = getActiveBotActivePlayerEval();
                 playedCardsThisTurn.add(playedCardThisTurn);
             }
-        } else if (action instanceof EndTurnEvent) {
+        } else if (action instanceof EndTurnAction) {
             playedCardsThisTurn.forEach(playedCard -> {
                 CardStatsGame stats = getStats(playedCard.card);
                 CardStatsAction actionStats = new CardStatsAction();
@@ -71,9 +72,9 @@ public class BotGame_WithCardStats extends BotGame {
         for (int handCard : handCards) {
             CardStatsGame stats = getStats(handCard);
             stats.inHand = true;
-            if (action instanceof EndTurnEvent endTurnEvent) {
+            if (action instanceof EndTurnAction endTurnAction) {
                 int owner = data.getComponent(handCard, Components.OWNED_BY);
-                if (endTurnEvent.player == owner) {
+                if (endTurnAction.getPlayer() == owner) {
                     stats.endOfTurnsInHand++;
                 }
             }

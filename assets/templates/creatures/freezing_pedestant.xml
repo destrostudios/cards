@@ -1,0 +1,14 @@
+<template>
+    <entity template="./templates/vanilla(name=Freezing Pedestant,manaCost=2,attack=1,health=1)">
+        <beast/>
+        <description>Death: Summon a 1/1 Freezing Ghost at the end of the turn.</description>
+        <postDestructionTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/spawn_for_source_owner_at_end_of_turn(template=creatures/freezing_ghost)"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

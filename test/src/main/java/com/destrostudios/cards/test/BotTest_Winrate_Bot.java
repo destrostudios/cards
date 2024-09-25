@@ -2,7 +2,7 @@ package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotEval;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
-import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 
 public class BotTest_Winrate_Bot extends BotTest_Winrate {
@@ -16,7 +16,7 @@ public class BotTest_Winrate_Bot extends BotTest_Winrate {
     }
 
     @Override
-    protected void modifyBotSettings(MctsBotSettings<CardsBotState, Event> settings, int player) {
+    protected void modifyBotSettings(MctsBotSettings<CardsBotState, Action> settings, int player) {
         super.modifyBotSettings(settings, player);
         CardsBotEval.Weights weights = CardsBotEval.getDefaultWeights();
         if (player == 1) {

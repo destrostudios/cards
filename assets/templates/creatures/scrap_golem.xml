@@ -6,9 +6,9 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
-                    <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
-                    <entity template="../effects/spawn_for_owner(template=creatures/scrap_part)"/>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/scrap_part)"/>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/scrap_part)"/>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/scrap_part)"/>
                 </effects>
             </entity>
         </postDestructionTriggers>

@@ -1,8 +1,13 @@
 <template>
+    <values>
+        <constant>false</constant>
+        <untilEndOfTurn>false</untilEndOfTurn>
+    </values>
     <entity>
         <targets>
             <entity template="../targets/all_ally_creatures_on_board"/>
         </targets>
-        <addBuff>[buff]</addBuff>
+        <addBuff constant="[constant]">[buff]</addBuff>
+        <partial if="untilEndOfTurn" template="./partials/remove_buff_at_end_of_turn(buff=[buff])"/>
     </entity>
 </template>

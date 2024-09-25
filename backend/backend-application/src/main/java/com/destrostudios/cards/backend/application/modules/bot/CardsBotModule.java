@@ -2,9 +2,9 @@ package com.destrostudios.cards.backend.application.modules.bot;
 
 import com.destrostudios.cards.backend.application.modules.QueueServerModule;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
@@ -27,17 +27,17 @@ public class CardsBotModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(CardsBotModule.class);
 
-    public CardsBotModule(GameServerModule<GameContext, Event> gameModule) {
+    public CardsBotModule(GameServerModule<GameContext, Action> gameModule) {
         this.gameModule = gameModule;
         bots = new HashMap<>();
     }
-    private GameServerModule<GameContext, Event> gameModule;
+    private GameServerModule<GameContext, Action> gameModule;
     private HashMap<UUID, MctsBot> bots;
 
     @Override
     public void received(Connection connection, Object object) {
         if (object instanceof GameActionRequest request) {
-            onAction(request.game(), request.action());
+            onAction(request.game(), (Action) request.action());
             checkBotTurn(request.game());
         }
     }
@@ -51,8 +51,8 @@ public class CardsBotModule extends NetworkModule {
             if (!data.getComponent(activePlayer, Components.NAME).equals(QueueServerModule.BOT_USER_NAME) || game.state.isGameOver()) {
                 break;
             }
-            MctsBot bot = bots.computeIfAbsent(gameId, gid -> {
-                MctsBotSettings<CardsBotState, Event> botSettings = new MctsBotSettings<>();
+            MctsBot bot = bots.computeIfAbsent(gameId, _ -> {
+                MctsBotSettings<CardsBotState, Action> botSettings = new MctsBotSettings<>();
                 botSettings.maxThreads = 3;
                 botSettings.termination = TerminationType.MILLIS_ELAPSED;
                 botSettings.strength = 3000;
@@ -62,15 +62,15 @@ public class CardsBotModule extends NetworkModule {
             CardsBotState botState = new CardsBotState(game.state, new Random());
             LOG.debug("Bot started calculating... (gameId = {})", game.id);
             long startNanos = System.nanoTime();
-            List<Event> actions = bot.sortedActions(botState, botState.activeTeam());
+            List<Action> actions = bot.sortedActions(botState, botState.activeTeam());
             LOG.debug("Bot finished calculating after {} ns. (gameId = {})", (System.nanoTime() - startNanos), game.id);
-            Event action = actions.get(0);
+            Action action = actions.get(0);
             gameModule.applyAction(game.id, action);
             onAction(gameId, action);
         }
     }
 
-    private void onAction(UUID gameId, Object action) {
+    private void onAction(UUID gameId, Action action) {
         MctsBot bot = bots.get(gameId);
         if (bot != null) {
             bot.stepRoot(new BotActionReplay<>(action, ArrayUtil.EMPTY)); // TODO: Randomness?

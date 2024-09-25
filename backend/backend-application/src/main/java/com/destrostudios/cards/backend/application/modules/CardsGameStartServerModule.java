@@ -2,9 +2,9 @@ package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.CardService;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.*;
-import com.destrostudios.cards.shared.rules.game.GameStartEvent;
+import com.destrostudios.cards.shared.rules.actions.Action;
+import com.destrostudios.cards.shared.rules.actions.GameStartAction;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.GameStartServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
@@ -18,8 +18,8 @@ import java.util.UUID;
 
 public class CardsGameStartServerModule extends GameStartServerModule<StartGameInfo> {
 
-    public CardsGameStartServerModule(Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule, CardService cardService) {
-        super(kryo -> {});
+    public CardsGameStartServerModule(Server kryoServer, JwtServerModule jwtModule, GameServerModule<GameContext, Action> gameModule, CardService cardService) {
+        super(_ -> {});
         this.kryoServer = kryoServer;
         this.jwtModule = jwtModule;
         this.gameModule = gameModule;
@@ -27,7 +27,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
     }
     private Server kryoServer;
     private JwtServerModule jwtModule;
-    private GameServerModule<GameContext, Event> gameModule;
+    private GameServerModule<GameContext, Action> gameModule;
     private CardService cardService;
 
     @Override
@@ -42,7 +42,7 @@ public class CardsGameStartServerModule extends GameStartServerModule<StartGameI
         UUID gameId = UUID.randomUUID();
         System.out.println("Start game \"" + gameId + "\".");
         gameModule.registerGame(new ServerGameData<>(gameId, gameContext, new SecureRandom()));
-        gameModule.applyAction(gameId, new GameStartEvent());
+        gameModule.applyAction(gameId, new GameStartAction());
 
         for (Connection other : kryoServer.getConnections()) {
             JwtAuthenticationUser user = jwtModule.getUser(other.getID());

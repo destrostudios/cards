@@ -1,9 +1,9 @@
 package com.destrostudios.cards.backend.application.modules.bot;
 
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.BotGameState;
@@ -12,7 +12,7 @@ import lombok.Getter;
 
 import java.util.*;
 
-public class CardsBotState implements BotGameState<Event, Integer> {
+public class CardsBotState implements BotGameState<Action, Integer> {
 
     // Used to create a new bot worker thread needing an own instance, will be set up immediately via copyFrom
     public CardsBotState() {
@@ -37,8 +37,8 @@ public class CardsBotState implements BotGameState<Event, Integer> {
     }
 
     @Override
-    public BotActionReplay<Event> applyAction(Event action) {
-        gameContext.fireAndResolveEvent(action, botRandom);
+    public BotActionReplay<Action> applyAction(Action action) {
+        gameContext.fireAndResolveAction(action, botRandom);
         return new BotActionReplay<>(action, ArrayUtil.EMPTY); // TODO: Randomness?
     }
 
@@ -48,7 +48,7 @@ public class CardsBotState implements BotGameState<Event, Integer> {
     }
 
     @Override
-    public List<Event> generateActions(Integer team) {
+    public List<Action> generateActions(Integer team) {
         return PlayerActionsGenerator.generatePossibleActions(gameContext.getData(), team);
     }
 

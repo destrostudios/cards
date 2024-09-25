@@ -1,9 +1,9 @@
 package com.destrostudios.cards.backend.application.modules;
 
 import com.destrostudios.authtoken.JwtAuthenticationUser;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.GameContext;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.gametools.network.server.modules.game.GameServerModule;
 import com.destrostudios.gametools.network.server.modules.game.ServerGameData;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
@@ -14,9 +14,9 @@ import com.esotericsoftware.kryonet.Connection;
 public class AutoRejoinModule extends NetworkModule {
 
     private final JwtServerModule jwtModule;
-    private final GameServerModule<GameContext, Event> gameModule;
+    private final GameServerModule<GameContext, Action> gameModule;
 
-    public AutoRejoinModule(JwtServerModule jwtModule, GameServerModule<GameContext, Event> gameModule) {
+    public AutoRejoinModule(JwtServerModule jwtModule, GameServerModule<GameContext, Action> gameModule) {
         this.jwtModule = jwtModule;
         this.gameModule = gameModule;
     }

@@ -1,9 +1,9 @@
 package com.destrostudios.cards.backend.application.modules.bot;
 
-import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.gametools.bot.BotGameService;
 
-public class CardsBotService implements BotGameService<CardsBotState, Event, Integer, CardsBotState> {
+public class CardsBotService implements BotGameService<CardsBotState, Action, Integer, CardsBotState> {
 
     @Override
     public CardsBotState serialize(CardsBotState state) {

@@ -19,7 +19,7 @@
                 <castTriggers>
                     <entity>
                         <effects>
-                            <entity template="../effects/buff_target(buff=#buff)"/>
+                            <entity template="../effects/buff_target(buff=#buff,untilEndOfTurn=true)"/>
                             <entity template="../effects/move_source_to_creature_zone"/>
                         </effects>
                     </entity>
@@ -28,7 +28,5 @@
             <entity template="../spells/templates/simple_attack(source=#card)"/>
         </spells>
     </entity>
-    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])">
-        <untilEndOfTurn/>
-    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack])"/>
 </template>

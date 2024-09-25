@@ -86,17 +86,26 @@ public class TemplateParser<NODE> {
     }
 
     private void loadEntity(EntityProxy entityProxy, NODE entityNode) {
-        String templateText = format.getAttribute(entityNode, TemplateKeyword.TEMPLATE);
+        loadTemplateAttribue(entityProxy, entityNode);
+        for (NODE childNode : format.getChildren(entityNode)) {
+            if (isNodeEnabled(childNode)) {
+                String childNodeName = format.getName(childNode);
+                if (childNodeName.equals(TemplateKeyword.PARTIAL)) {
+                    loadTemplateAttribue(entityProxy, childNode);
+                } else {
+                    Object component = templateManager.getComponent(childNodeName);
+                    ComponentParser componentParser = templateManager.getComponentParser(component);
+                    Object value = componentParser.parse(this, format, childNode);
+                    recording.setComponent(entityProxy.entity(), component, value);
+                }
+            }
+        }
+    }
+
+    private void loadTemplateAttribue(EntityProxy entityProxy, NODE nodeWithTemplateAttribute) {
+        String templateText = format.getAttribute(nodeWithTemplateAttribute, TemplateKeyword.TEMPLATE);
         if (templateText != null) {
             EntityTemplate.loadTemplate(recording, entityProxy.entity(), parseTemplate(templateText));
-        }
-        for (NODE componentNode : format.getChildren(entityNode)) {
-            if (isNodeEnabled(componentNode)) {
-                Object component = templateManager.getComponent(format.getName(componentNode));
-                ComponentParser componentParser = templateManager.getComponentParser(component);
-                Object value = componentParser.parse(this, format, componentNode);
-                recording.setComponent(entityProxy.entity(), component, value);
-            }
         }
     }
 

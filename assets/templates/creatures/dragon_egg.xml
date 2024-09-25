@@ -16,7 +16,7 @@
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity template="../effects/spawn_for_owner(template=creatures/dragon)"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/dragon)"/>
                         </effects>
                     </entity>
                 </castTriggers>

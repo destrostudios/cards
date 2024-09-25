@@ -5,7 +5,7 @@
             <entity>
                 <targetPrefilters advanced="SOURCE"/>
                 <effects>
-                    <entity template="../effects/create_for_owner(template=spells/sandstorm,location=HAND)"/>
+                    <entity template="../effects/create_for_source_owner(template=spells/sandstorm,location=HAND)"/>
                 </effects>
             </entity>
         </postDestructionTriggers>

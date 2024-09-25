@@ -5,8 +5,8 @@ import com.destrostudios.cards.frontend.application.appstates.services.GameServi
 import com.destrostudios.cards.frontend.application.gui.GuiComponent;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.appstates.MyBaseAppState;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.gametools.network.client.modules.game.ClientGameData;
 import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
@@ -79,8 +79,8 @@ public class MenuAppState extends MyBaseAppState {
     }
 
     private void switchToActiveGameIfExisting() {
-        GameClientModule<GameContext, Event> gameClientModule = getModule(GameClientModule.class);
-        List<ClientGameData<GameContext, Event>> joinedGames = gameClientModule.getJoinedGames();
+        GameClientModule<GameContext, Action> gameClientModule = getModule(GameClientModule.class);
+        List<ClientGameData<GameContext, Action>> joinedGames = gameClientModule.getJoinedGames();
         if (joinedGames.size() > 0) {
             UUID gameUUID = joinedGames.get(0).getId();
             System.out.println("Joined game \"" + gameUUID + "\".");

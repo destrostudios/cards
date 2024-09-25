@@ -1,10 +1,10 @@
 package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cards.shared.entities.templates.Util;
-import com.destrostudios.cards.shared.events.Event;
+import com.destrostudios.cards.shared.rules.actions.Action;
+import com.destrostudios.cards.shared.rules.actions.MulliganAction;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.cards.MulliganEvent;
 import com.destrostudios.gametools.network.client.modules.game.GameClientModule;
 import com.destrostudios.gametools.network.client.modules.jwt.JwtClientModule;
 import lombok.Getter;
@@ -14,14 +14,14 @@ import java.util.UUID;
 
 public class GameService {
 
-    public GameService(JwtClientModule jwtClientModule, GameClientModule<GameContext, Event> gameClientModule, UUID gameUUID) {
+    public GameService(JwtClientModule jwtClientModule, GameClientModule<GameContext, Action> gameClientModule, UUID gameUUID) {
         this.gameClientModule = gameClientModule;
         this.gameUUID = gameUUID;
         gameContext = gameClientModule.getJoinedGame(gameUUID).getState();
         playerEntity = gameContext.getData().list(Components.NEXT_PLAYER, player -> gameContext.getData().getComponent(player, Components.NAME).equals(jwtClientModule.getOwnAuthentication().user.login)).get(0);
         mulliganCards = new HashSet<>();
     }
-    private GameClientModule<GameContext, Event> gameClientModule;
+    private GameClientModule<GameContext, Action> gameClientModule;
     private UUID gameUUID;
     @Getter
     private GameContext gameContext;
@@ -44,10 +44,10 @@ public class GameService {
     }
 
     public void sendMulliganAction() {
-        sendAction(new MulliganEvent(Util.convertToArray_Integer(mulliganCards)));
+        sendAction(new MulliganAction(Util.convertToArray_Integer(mulliganCards)));
     }
 
-    public void sendAction(Event action) {
+    public void sendAction(Action action) {
         gameClientModule.sendAction(gameUUID, action);
     }
 

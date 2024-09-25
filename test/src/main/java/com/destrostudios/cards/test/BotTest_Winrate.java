@@ -2,10 +2,10 @@ package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.backend.application.botgame.BotGame;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
-import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
+import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 import lombok.AllArgsConstructor;
 
@@ -68,7 +68,7 @@ public abstract class BotTest_Winrate extends BotTest {
         return playerInfo.getLogin();
     }
 
-    protected void modifyBotSettings(MctsBotSettings<CardsBotState, Event> settings, int player) {
+    protected void modifyBotSettings(MctsBotSettings<CardsBotState, Action> settings, int player) {
 
     }
 

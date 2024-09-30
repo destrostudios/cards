@@ -1,0 +1,17 @@
+<template>
+    <values>
+        <name>Sewer Rat</name>
+    </values>
+    <entity template="./templates/vanilla(name=[name],manaCost=2,attack=1,health=2)">
+        <beast/>
+        <description>Death: Summon a Sewer Rat from your library.</description>
+        <postDestructionTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/move_named_ally_card_from_library_to_creature_zone(name=[name])"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

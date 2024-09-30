@@ -1,0 +1,11 @@
+<template>
+    <values>
+        <amount>1</amount>
+    </values>
+    <entity>
+        <targets>
+            <entity template="../targets/named_ally_card_in_library(name=[name],amount=[amount])"/>
+        </targets>
+        <moveToCreatureZone/>
+    </entity>
+</template>

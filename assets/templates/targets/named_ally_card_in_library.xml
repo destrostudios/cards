@@ -1,0 +1,11 @@
+
+<template>
+    <values>
+        <amount>1</amount>
+    </values>
+    <entity>
+        <targetPrefilters basic="LIBRARY" advanced="ALLY"/>
+        <targetAll>target.name == "[name]"</targetAll>
+        <targetRandom>[amount]</targetRandom>
+    </entity>
+</template>

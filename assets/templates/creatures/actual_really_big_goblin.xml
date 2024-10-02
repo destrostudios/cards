@@ -1,0 +1,16 @@
+<template>
+    <entity template="./templates/vanilla(name=Actual Really Big Goblin,manaCost=4,attack=1,health=3)">
+        <goblin/>
+        <description>Death: Summon 3 1/1 Goblins.</description>
+        <postDestructionTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/goblin)"/>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/goblin)"/>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/goblin)"/>
+                </effects>
+            </entity>
+        </postDestructionTriggers>
+    </entity>
+</template>

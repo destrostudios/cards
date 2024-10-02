@@ -1,4 +1,5 @@
 template,name,legendary,manaCost,attack,health,taunt,divine_shield
+creatures/actual_really_big_goblin,Actual Really Big Goblin,false,4,1,3,false,false
 creatures/ancient_tree,Ancient Tree,false,7,4,7,true,false
 creatures/angelic_gate,Angelic Gate,true,1,0,3,false,false
 creatures/arandir,Arandir,false,5,3,4,false,false

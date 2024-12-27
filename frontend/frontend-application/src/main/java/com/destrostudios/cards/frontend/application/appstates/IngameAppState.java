@@ -250,8 +250,8 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             tryPlayAnimation_Entry(event.card);
         });
         gameService.getGameContext().getEventHandling().pre().add(EventType.BATTLE, (GameContext _, BattleEvent event) -> {
-            TransformedBoardObject<?> attacker = entityBoardMap.getBoardObject(event.source);
-            TransformedBoardObject<?> defender = entityBoardMap.getBoardObject(event.target);
+            TransformedBoardObject<?> attacker = entityBoardMap.getOrCreateBoardObject(event.source);
+            TransformedBoardObject<?> defender = entityBoardMap.getOrCreateBoardObject(event.target);
             board.playAnimation(new AttackAnimation(attacker, defender, 0.5f));
         });
         gameService.getGameContext().getEventHandling().resolved().add(EventType.BATTLE, (_, _) -> {

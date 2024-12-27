@@ -8,14 +8,20 @@ creatures/artificial_guardian
 creatures/astral_lich
 creatures/awakened_succubus
 creatures/baby_turtle
-creatures/battery,Battery,false,2,0,2,false,false
+creatures/backstabbing_servant
+creatures/bandaged_troll
+creatures/barbed_wire_flinger
+creatures/battery
 creatures/battle_cleric
+creatures/beer_tap
 creatures/blademaster
 creatures/blessed_barbarian
 creatures/bloodhawk
+creatures/bloodstone_monolith
 creatures/brave_soldier
 creatures/bronze_golem
 creatures/cloud_devourer
+creatures/cloud_of_revenge
 creatures/copperfang_tribesman
 creatures/crazed_doctor
 creatures/dam
@@ -40,6 +46,7 @@ creatures/fiulo
 creatures/forwen_tribe_mage
 creatures/freezing_ghost
 creatures/freezing_pedestant
+creatures/full_leech
 creatures/furious_berserk
 creatures/gideas
 creatures/goblin
@@ -65,6 +72,7 @@ creatures/high_priestess_llyncis
 creatures/hoarder_troll
 creatures/hobgoblin_cannoneer
 creatures/holy_legion_leader
+creatures/hungry_leech
 creatures/injured_legend
 creatures/inspiring_angel
 creatures/iron_citizen
@@ -80,6 +88,7 @@ creatures/leviathan
 creatures/library_troll
 creatures/machine_polisher
 creatures/mahabit_shaman
+creatures/medical_supply_waggon
 creatures/mermaid
 creatures/mounted_dwarf_warrior
 creatures/nightmare_demon
@@ -96,6 +105,7 @@ creatures/plated_aradon
 creatures/portable_sand_relic
 creatures/priestess_of_valdas
 creatures/relic_guardian
+creatures/returning_hero
 creatures/river_racoon
 creatures/scrap_collector
 creatures/scrap_golem

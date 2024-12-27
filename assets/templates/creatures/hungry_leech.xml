@@ -1,0 +1,16 @@
+<template>
+    <entity template="./templates/vanilla(name=Hungry Leech,manaCost=2,attack=2,health=2)">
+        <beast/>
+        <description>After you take damage during your own turn, transform into a 4/4 Full Leech.</description>
+        <postDamageTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters advanced="OWNER_WHILE_ACTIVE"/>
+                <effects>
+                    <entity template="../effects/move_source_to_graveyard"/>
+                    <entity template="../effects/spawn_for_source_owner(template=creatures/full_leech)"/>
+                </effects>
+            </entity>
+        </postDamageTriggers>
+    </entity>
+</template>

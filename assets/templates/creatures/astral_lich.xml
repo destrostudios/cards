@@ -3,7 +3,7 @@
         <damage>2</damage>
     </values>
     <entity template="./templates/vanilla(name=Astral Lich,manaCost=4,attack=1,health=6)">
-        <description>After this creature is healed, deal [damage] to a random opponent.</description>
+        <description>After this creature is healed, deal [damage] damage to a random opponent.</description>
         <postHealTriggers>
             <entity>
                 <targetPrefilters advanced="SOURCE"/>

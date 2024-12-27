@@ -55,8 +55,8 @@ public class AnimationService {
     }
 
     private void shootBoardObject(int source, int target, TransformedBoardObject<?> transformedBoardObject) {
-        TransformedBoardObject<?> sourceObject = entityBoardMap.getBoardObject(source);
-        TransformedBoardObject<?> targetObject = entityBoardMap.getBoardObject(target);
+        TransformedBoardObject<?> sourceObject = entityBoardMap.getOrCreateBoardObject(source);
+        TransformedBoardObject<?> targetObject = entityBoardMap.getOrCreateBoardObject(target);
         transformedBoardObject.position().setTransformation(new ConstantButTargetedTransformation<>(sourceObject.position().getCurrentValue()));
         board.register(transformedBoardObject);
         TargetedArcAnimation animation = new TargetedArcAnimation(transformedBoardObject, targetObject, 1, 0.6f);
@@ -66,7 +66,7 @@ public class AnimationService {
 
     public void playParticleEffect(int target, String particleEffectName, Transform transform) {
         StaticSpatial staticSpatial = playParticleEffect(particleEffectName, transform);
-        staticSpatial.getModel().setFollowTarget(entityBoardMap.getBoardObject(target));
+        staticSpatial.getModel().setFollowTarget(entityBoardMap.getOrCreateBoardObject(target));
     }
 
     public StaticSpatial playParticleEffect(String particleEffectName, Transform transform) {

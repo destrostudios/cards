@@ -11,13 +11,13 @@ public class TestUnderworldSparks extends TestGame {
     public void testDamageRandomOpponentsOnCast() {
         int card = create("spells/underworld_sparks", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealth(opponent, GameConstants.PLAYER_HEALTH - 2);
+        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 2);
     }
 
     @Test
     public void testDamageRandomOpponentsOnDiscard() {
         int card = create("spells/underworld_sparks", player, Components.Zone.HAND);
         discard(card);
-        assertHealth(opponent, GameConstants.PLAYER_HEALTH - 4);
+        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 4);
     }
 }

@@ -8,17 +8,23 @@ creatures/artificial_guardian,1
 creatures/astral_lich,1
 creatures/awakened_succubus,1
 creatures/baby_turtle,1
+creatures/backstabbing_servant,1
+creatures/bandaged_troll,1
+creatures/barbed_wire_flinger,1
 creatures/battery,1
 creatures/battle_cleric,1
+creatures/beer_tap,1
 creatures/big_can,1
 creatures/blademaster,1
 creatures/blessed_barbarian,1
 creatures/bloodhawk,1
+creatures/bloodstone_monolith,1
 creatures/bonespirit_fenrir,1
 creatures/brave_soldier,1
 creatures/bronze_golem,1
 creatures/can,1
 creatures/cloud_devourer,1
+creatures/cloud_of_revenge,1
 creatures/copperfang_tribesman,1
 creatures/crazed_doctor,1
 creatures/dam,1
@@ -46,6 +52,7 @@ creatures/forwen_tribe_mage,1
 creatures/freezing_ghost,1
 creatures/freezing_pedestant,1
 creatures/frost_spirit,1
+creatures/full_leech,1
 creatures/furious_berserk,1
 creatures/gideas,1
 creatures/goblin,1
@@ -70,6 +77,7 @@ creatures/heroic_gadget,1
 creatures/high_priestess_llyncis,1
 creatures/hoarder_troll,1
 creatures/holy_legion_leader,1
+creatures/hungry_leech,1
 creatures/injured_legend,1
 creatures/inspiring_angel,1
 creatures/iron_citizen,1
@@ -85,6 +93,7 @@ creatures/leviathan,1
 creatures/library_troll,1
 creatures/machine_polisher,1
 creatures/mahabit_shaman,1
+creatures/medical_supply_waggon,1
 creatures/mermaid,1
 creatures/mounted_dwarf_warrior,1
 creatures/nightmare_demon,1
@@ -101,6 +110,7 @@ creatures/plated_aradon,1
 creatures/portable_sand_relic,1
 creatures/priestess_of_valdas,1
 creatures/relic_guardian,1
+creatures/returning_hero,1
 creatures/river_racoon,1
 creatures/scrap_collector,1
 creatures/scrap_golem,1

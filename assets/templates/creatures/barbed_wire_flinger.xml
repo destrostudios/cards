@@ -1,0 +1,32 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity id="card">
+        <name>Barbed Wire Flinger</name>
+        <legendary/>
+        <creatureCard/>
+        <attack>2</attack>
+        <health>2</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=3)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+            <entity>
+                <source>#card</source>
+                <description>Deal [damage] damage to yourself and target character.</description>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="BOARD"/>
+                <minimumTargets>1</minimumTargets>
+                <maximumCastsPerTurn>2</maximumCastsPerTurn>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/damage_source_owner(damage=[damage])"/>
+                            <entity template="../effects/damage_target(damage=[damage])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -1,0 +1,18 @@
+<template>
+    <values>
+        <heal>2</heal>
+    </values>
+    <entity template="./templates/vanilla(name=Medical Supply Waggon,manaCost=5,attack=4,health=4)">
+        <taunt/>
+        <description>After you take damage, gain [heal] health.</description>
+        <postDamageTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters advanced="OWNER"/>
+                <effects>
+                    <entity template="../effects/heal_source_owner(heal=[heal])"/>
+                </effects>
+            </entity>
+        </postDamageTriggers>
+    </entity>
+</template>

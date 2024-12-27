@@ -11,6 +11,7 @@ import com.destrostudios.cards.shared.rules.battle.DestructionEvent;
 import com.destrostudios.cards.shared.rules.battle.HealEvent;
 import com.destrostudios.cards.shared.rules.buffs.AddBuffEvent;
 import com.destrostudios.cards.shared.rules.buffs.RemoveBuffEvent;
+import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.ShuffleLibraryEvent;
@@ -21,6 +22,7 @@ import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.BuffUtil;
+import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TriggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +79,11 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         if (data.hasComponent(event.effect, Components.Effect.DESTROY)) {
             events.fire(new DestructionEvent(event.target));
+        }
+
+        if (data.hasComponent(event.effect, Components.Effect.CAST_ATTACK)) {
+            int sourceDefaultAttackSpell = SpellUtil.getDefaultAttackSpell(data, event.source);
+            events.fire(new CastSpellEvent(event.source, sourceDefaultAttackSpell, new int[] { event.target }));
         }
 
         if (data.hasComponent(event.effect, Components.Effect.BATTLE)) {

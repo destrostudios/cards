@@ -1,0 +1,34 @@
+<template>
+    <values>
+        <minimumHealthDifference>10</minimumHealthDifference>
+    </values>
+    <entity id="card">
+        <name>Cloud of Revenge</name>
+        <legendary/>
+        <creatureCard/>
+        <attack>4</attack>
+        <health>3</health>
+        <description>Cast: If your opponent has [minimumHealthDifference] or more health than you, destroy a random opponent creature.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>4</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <condition>source.owner.opponent.health &gt;= (source.owner.health + [minimumHealthDifference])</condition>
+                        <effects>
+                            <entity template="../effects/destroy_random_opponent_creature"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+</template>

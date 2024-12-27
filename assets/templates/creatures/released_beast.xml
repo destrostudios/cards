@@ -1,0 +1,14 @@
+<template>
+    <entity template="./templates/vanilla(name=Released Beast,manaCost=5,attack=4,health=5)">
+        <beast/>
+        <description>When this creature enters the board, it attacks its owner.</description>
+        <postMoveToCreatureZoneTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/attack_source_owner"/>
+                </effects>
+            </entity>
+        </postMoveToCreatureZoneTriggers>
+    </entity>
+</template>

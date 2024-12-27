@@ -11,6 +11,6 @@ public class TestHobgoblinCannoneer extends TestGame {
     public void testDamageRandomOpponentsOnAttack() {
         int card = create("creatures/hobgoblin_cannoneer", player, Components.Zone.CREATURE_ZONE);
         attack(card, opponent);
-        assertHealth(opponent, GameConstants.PLAYER_HEALTH - 6);
+        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 6);
     }
 }

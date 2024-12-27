@@ -85,6 +85,7 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Effect.DISCARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.GAIN_MANA, new ComponentParser_String());
         templateManager.registerComponent(Components.Effect.DESTROY, new ComponentParser_Void());
+        templateManager.registerComponent(Components.Effect.CAST_ATTACK, new ComponentParser_Void());
         templateManager.registerComponent(Components.Effect.BATTLE, new ComponentParser_Void());
         record AddBuffProxy(Object buff, boolean constant) {}
         templateManager.registerComponent(Components.Effect.ADD_BUFF, new ComponentParser<Object, AddBuffProxy, Components.AddBuff>() {

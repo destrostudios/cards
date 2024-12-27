@@ -1,0 +1,25 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity id="card">
+        <name>Nail Storm</name>
+        <spellCard/>
+        <description>Deal [damage] damage to all characters.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/damage_all_characters(damage=[damage])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

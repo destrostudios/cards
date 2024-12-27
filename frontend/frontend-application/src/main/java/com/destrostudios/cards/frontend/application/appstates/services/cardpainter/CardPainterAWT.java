@@ -174,11 +174,9 @@ public class CardPainterAWT {
 
     private static void drawSpellDescription(Graphics2D graphics, Cost cost, String description, int lineWidth, int startX, int followingX, int y){
         graphics.setFont(fontDescription);
-        String text = "";
-        if ((cost != null) && (cost.getManaCost() != null)) {
-            text += "(" + cost.getManaCost() + "): ";
-        }
-        text += description;
+        Integer manaCost = ((cost != null) ? cost.getManaCost() : null);
+        int displayedManaCost = (manaCost != null) ? manaCost : 0;
+        String text = "(" + displayedManaCost + "): " + description;
         drawStringMultiLine(graphics, text, lineWidth, startX, followingX, y, -2);
     }
 

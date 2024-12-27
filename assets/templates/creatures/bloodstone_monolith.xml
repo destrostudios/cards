@@ -1,0 +1,37 @@
+<template>
+    <values>
+        <damage>8</damage>
+        <heal>4</heal>
+    </values>
+    <entity id="card">
+        <name>Bloodstone Monolith</name>
+        <creatureCard/>
+        <attack>8</attack>
+        <health>8</health>
+        <description>Cast: Deal [damage] damage to yourself. After this creature attacks, heal [heal] health of yourself.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>8</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                            <entity template="../effects/damage_source_owner(damage=[damage])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+        <postBattleTriggers>
+            <entity>
+                <targetPrefilters advanced="SOURCE"/>
+                <effects>
+                    <entity template="../effects/heal_source_owner(heal=[heal])"/>
+                </effects>
+            </entity>
+        </postBattleTriggers>
+    </entity>
+</template>

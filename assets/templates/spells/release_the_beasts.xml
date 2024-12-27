@@ -1,0 +1,23 @@
+<template>
+    <entity id="card">
+        <name>Release the Beasts</name>
+        <spellCard/>
+        <description>Summon 2 4/5 Released Beasts that attack you.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>6</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/released_beast)"/>
+                            <entity template="../effects/spawn_for_source_owner(template=creatures/released_beast)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

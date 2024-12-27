@@ -4,7 +4,7 @@
         <creatureCard/>
         <attack>4</attack>
         <health>3</health>
-        <description>Cast: Tribute a creature to put a random opponent creature on top of its owners deck.</description>
+        <description>Cast: Tribute a creature to put a random opponent creature on top of its owners library.</description>
         <spells>
             <entity>
                 <source>#card</source>

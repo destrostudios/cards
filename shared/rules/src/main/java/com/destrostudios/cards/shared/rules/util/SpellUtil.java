@@ -5,14 +5,16 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.SimpleTarget;
 
+import java.util.function.Predicate;
+
 public class SpellUtil {
 
-    public static boolean isTargeted(EntityData data, int entity) {
-        return data.hasComponent(entity, Components.Target.TARGET_PREFILTERS);
+    public static boolean isTargeted(EntityData data, int spell) {
+        return data.hasComponent(spell, Components.Target.TARGET_PREFILTERS);
     }
 
-    public static boolean isTargetingBoard(EntityData data, int entity) {
-        Components.Prefilters targetPrefilters = data.getComponent(entity, Components.Target.TARGET_PREFILTERS);
+    public static boolean isTargetingBoard(EntityData data, int spell) {
+        Components.Prefilters targetPrefilters = data.getComponent(spell, Components.Target.TARGET_PREFILTERS);
         for (ComponentDefinition<?> basicComponent : targetPrefilters.getBasicComponents()) {
             if ((basicComponent == Components.Zone.CREATURE_ZONE) || (basicComponent == Components.BOARD)) {
                 return true;
@@ -47,9 +49,17 @@ public class SpellUtil {
     // TODO: Maybe just mark the default spells (cast from hand + attack) as such, saves this whole logic and also performance, especially on conditions
 
     public static Integer getDefaultCastFromHandSpell(EntityData data, int card) {
+        return findSpell(data, card, spell -> isDefaultCastFromHandSpell(data, spell));
+    }
+
+    public static Integer getDefaultAttackSpell(EntityData data, int card) {
+        return findSpell(data, card, spell -> isDefaultAttackSpell(data, spell));
+    }
+
+    private static Integer findSpell(EntityData data, int card, Predicate<Integer> condition) {
         int[] spells = data.getComponent(card, Components.SPELLS);
         for (int spell : spells) {
-            if (isDefaultCastFromHandSpell(data, spell)) {
+            if (condition.test(spell)) {
                 return spell;
             }
         }

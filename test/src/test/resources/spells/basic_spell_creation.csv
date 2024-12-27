@@ -22,11 +22,15 @@ spells/hardware_upgrade,Hardware Upgrade,false,5
 spells/into_battle,Into Battle,false,6
 spells/medusa_shield,Medusa Shield,false,2
 spells/murder,Murder,false,5
+spells/nail_storm,Nail Storm,false,2
 spells/overclock,Overclock,false,1
 spells/peaceful_death,Peaceful Death,false,4
+spells/plague,Plague,false,8
 spells/power_of_the_eclipse,Power of the Eclipse,false,3
+spells/reckless_charge,Reckless Charge,false,2
 spells/recycling,Recycling,false,3
 spells/reinforced_coating,Reinforced Coating,false,1
+spells/release_the_beasts,Release the Beasts,false,6
 spells/relic_guardians,Relic Guardians,false,2
 spells/rimefire_bolt,Rimefire Bolt,false,2
 spells/sand_gust,Sand Gust,false,2

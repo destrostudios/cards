@@ -1,0 +1,30 @@
+<template>
+    <values>
+        <damage>2</damage>
+    </values>
+    <entity id="card">
+        <name>Beer Tap</name>
+        <creatureCard/>
+        <attack>0</attack>
+        <health>3</health>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=1)"/>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+            <entity>
+                <source>#card</source>
+                <description>Take [damage] damage and draw a card.</description>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/damage_source_owner(damage=[damage])"/>
+                            <entity template="../effects/draw_for_owner(draw=1)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -1,0 +1,36 @@
+<template>
+    <values>
+        <maximumHealth>20</maximumHealth>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity id="card">
+        <name>Returning Hero</name>
+        <creatureCard/>
+        <attack>3</attack>
+        <health>4</health>
+        <description>Cast: If you have [maximumHealth] or less health, gain +[bonusAttack]/+[bonusHealth].</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>4</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_creature_zone"/>
+                        </effects>
+                    </entity>
+                    <entity>
+                        <condition>source.owner.health &lt;= [maximumHealth]</condition>
+                        <effects>
+                            <entity template="../effects/buff_source(buff=#buff)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
+</template>

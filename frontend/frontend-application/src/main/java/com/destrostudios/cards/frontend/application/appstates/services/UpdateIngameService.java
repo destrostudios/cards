@@ -149,8 +149,8 @@ public class UpdateIngameService {
                             Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
 
                             Interactivity interactivity;
-                            if (SpellUtil.isTargeted(data, castSpellAction.getSpell()) && (castSpellAction.getTargets().length > 0)) {
-                                if (SpellUtil.isTargetingBoard(data, castSpellAction.getSpell())) {
+                            if ((castSpellAction.getTargets().length > 0) && SpellUtil.isTargeted(data, castSpellAction.getSpell())) {
+                                if ((castSpellAction.getTargets().length == 1) && SpellUtil.isTargetingBoard(data, castSpellAction.getSpell())) {
                                     interactivity = new AimToTargetInteractivity(TargetSnapMode.VALID) {
 
                                         @Override

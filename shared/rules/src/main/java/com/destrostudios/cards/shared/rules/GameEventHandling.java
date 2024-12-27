@@ -9,10 +9,7 @@ import com.destrostudios.cards.shared.rules.buffs.RemoveBuffHandler;
 import com.destrostudios.cards.shared.rules.buffs.RemoveBuffsOnRemovedFromCreatureZoneHandler;
 import com.destrostudios.cards.shared.rules.buffs.RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler;
 import com.destrostudios.cards.shared.rules.cards.*;
-import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandHandler;
-import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryHandler;
+import com.destrostudios.cards.shared.rules.cards.zones.*;
 import com.destrostudios.cards.shared.rules.conditions.CheckBonusDamageHandler;
 import com.destrostudios.cards.shared.rules.conditions.CheckDestructionAfterConditionsAffectedHandler;
 import com.destrostudios.cards.shared.rules.effects.*;
@@ -29,7 +26,11 @@ public class GameEventHandling extends EventHandling<GameContext> {
     public GameEventHandling() {
         set(instant, EventType.MOVE_TO_CREATURE_ZONE,
             new MoveToCreatureZoneHandler(),
-            new ActivateDivineShieldOnMoveToCreatureZoneHandler());
+            new ActivateDivineShieldOnMoveToCreatureZoneHandler()
+        );
+        set(resolved, EventType.MOVE_TO_CREATURE_ZONE,
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, MoveToCreatureZoneEvent.class))
+        );
         set(instant, EventType.MOVE_TO_GRAVEYARD, new MoveToGraveyardHandler());
         set(instant, EventType.MOVE_TO_HAND, new MoveToHandHandler());
         set(instant, EventType.MOVE_TO_LIBRARY, new MoveToLibraryHandler());

@@ -1,0 +1,29 @@
+<template>
+    <values>
+        <damage>2</damage>
+        <amount>2</amount>
+    </values>
+    <entity id="card">
+        <name>Reckless Charge</name>
+        <spellCard/>
+        <description>Deal [damage] damage to yourself and to [amount] opponent creatures.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
+                <minimumTargets>[amount]</minimumTargets>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                            <entity template="../effects/damage_source_owner(damage=[damage])"/>
+                            <entity template="../effects/damage_target(damage=[damage])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

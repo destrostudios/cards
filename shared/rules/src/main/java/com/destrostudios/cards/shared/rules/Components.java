@@ -116,6 +116,7 @@ public class Components {
         public static final ComponentDefinition<Void> DISCARD = create("discard");
         public static final ComponentDefinition<String> GAIN_MANA = create("gainMana");
         public static final ComponentDefinition<Void> DESTROY = create("destroy");
+        public static final ComponentDefinition<Void> CAST_ATTACK = create("castAttack");
         public static final ComponentDefinition<Void> BATTLE = create("battle");
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
         public static final ComponentDefinition<Integer> REMOVE_BUFF = create("removeBuff");

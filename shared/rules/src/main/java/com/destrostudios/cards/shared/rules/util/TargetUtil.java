@@ -157,6 +157,10 @@ public class TargetUtil {
             case OWNER -> {
                 return entity == data.getComponent(source, Components.OWNED_BY);
             }
+            case OWNER_WHILE_ACTIVE -> {
+                int sourceOwner = data.getComponent(source, Components.OWNED_BY);
+                return entity == sourceOwner && data.hasComponent(sourceOwner, Components.Player.ACTIVE_PLAYER);
+            }
             case OPPONENT -> {
                 int sourceOwner = data.getComponent(source, Components.OWNED_BY);
                 int sourceOpponent = data.getComponent(sourceOwner, Components.NEXT_PLAYER);

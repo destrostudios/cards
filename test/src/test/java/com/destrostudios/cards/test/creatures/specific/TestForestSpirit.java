@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class TestForestSpirit extends TestGame {
 
     @Test
-    public void testPutRandomOpponentCreatureOnTopOfDeckOnSummon() {
+    public void testPutRandomOpponentCreatureOnTopOfLibraryOnSummon() {
         int allyCreature = createCreature(player, Components.Zone.CREATURE_ZONE);
         int opponentCreature = createCreature(opponent, Components.Zone.CREATURE_ZONE);
         int card = create("creatures/forest_spirit", player, Components.Zone.HAND);

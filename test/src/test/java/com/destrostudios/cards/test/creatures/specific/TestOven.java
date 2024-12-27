@@ -11,6 +11,6 @@ public class TestOven extends TestGame {
     public void testDamageRandomOpponentOnTurnEnd() {
         create("creatures/oven", player, Components.Zone.CREATURE_ZONE);
         endTurn(player);
-        assertHealth(opponent, GameConstants.PLAYER_HEALTH - 1);
+        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 1);
     }
 }

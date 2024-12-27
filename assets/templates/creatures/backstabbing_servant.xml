@@ -1,0 +1,21 @@
+<template>
+    <entity id="card" template="./templates/vanilla(name=Backstabbing Servant,attack=1,health=2)">
+        <description>Can attack anyone.</description>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=1)"/>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="BOARD"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/battle_target"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

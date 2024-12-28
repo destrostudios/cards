@@ -1,5 +1,5 @@
 <template>
-    <entity id="card" template="./templates/vanilla(name=Siren,manaCost=3,attack=2,health=2)">
+    <entity id="card" template="./templates/vanilla(name=Siren,manaCost=3,attack=2,health=3)">
         <description>Your spells cost (1) less.</description>
         <auras>
             <entity>

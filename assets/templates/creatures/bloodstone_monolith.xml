@@ -1,6 +1,6 @@
 <template>
     <values>
-        <damage>8</damage>
+        <damage>6</damage>
         <heal>4</heal>
     </values>
     <entity id="card">

@@ -10,7 +10,7 @@ public class TestMedicalSupplyWaggon extends TestGame {
     @Test
     public void testHealOnDamageTaken() {
         create("creatures/medical_supply_waggon", player, Components.Zone.CREATURE_ZONE);
-        damage(player, 3);
+        damage(player, 4);
         assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 1);
     }
 }

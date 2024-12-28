@@ -1,16 +1,16 @@
 <template>
     <values>
-        <bonusHealth>3</bonusHealth>
+        <draw>2</draw>
     </values>
     <entity id="card">
-        <name>Reinforced Coating</name>
+        <name>Goblin Tribe Gathering</name>
         <spellCard/>
-        <description>Your Machines gain +[bonusHealth] health.</description>
+        <description>Shuffle all Goblins from your graveyard into your library and draw [draw] cards.</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
-                <manaCost>1</manaCost>
+                <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>
@@ -18,14 +18,14 @@
                             <entity>
                                 <targets>
                                     <entity>
-                                        <targetPrefilters basic="CREATURE_ZONE,MACHINE" advanced="ALLY"/>
+                                        <targetPrefilters basic="GRAVEYARD,GOBLIN" advanced="ALLY"/>
                                         <targetAll/>
                                     </entity>
                                 </targets>
-                                <addBuff>
-                                    <entity template="../buffs/simple(source=#card,bonusHealth=[bonusHealth])"/>
-                                </addBuff>
+                                <moveToLibrary/>
                             </entity>
+                            <entity template="../effects/shuffle_library_for_owner"/>
+                            <entity template="../effects/draw_for_owner(draw=[draw])"/>
                         </effects>
                     </entity>
                 </castTriggers>

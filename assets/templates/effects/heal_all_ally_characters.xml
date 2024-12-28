@@ -1,7 +1,7 @@
 <template>
     <entity>
         <targets>
-            <entity template="../targets/all_ally_creatures_on_board"/>
+            <entity template="../targets/all_ally_characters_on_board"/>
         </targets>
         <heal>[heal]</heal>
     </entity>

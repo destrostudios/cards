@@ -9,7 +9,7 @@ public class TestSunOrnamentDragon extends TestGame {
 
     @Test
     public void testHealOnSummon() {
-        damage(player, 5);
+        damage(player, 7);
         int[] dragons = createCreatures(2, player, Components.Zone.HAND);
         forEach(dragons, dragon -> data.setComponent(dragon, Components.Tribe.DRAGON));
         int card = create("creatures/sun_ornament_dragon", player, Components.Zone.HAND);

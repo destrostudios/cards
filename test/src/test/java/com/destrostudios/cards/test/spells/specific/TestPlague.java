@@ -12,7 +12,7 @@ public class TestPlague extends TestGame {
         int[] creatures = createCreaturesForBothPlayers(2, Components.Zone.CREATURE_ZONE);
         int card = create("spells/plague", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 8);
+        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 3);
         assertHasComponent(creatures, Components.Zone.GRAVEYARD);
     }
 }

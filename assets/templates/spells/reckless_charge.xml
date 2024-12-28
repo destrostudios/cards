@@ -1,18 +1,19 @@
 <template>
     <values>
         <damage>2</damage>
-        <amount>2</amount>
+        <maximumTargets>2</maximumTargets>
     </values>
     <entity id="card">
         <name>Reckless Charge</name>
         <spellCard/>
-        <description>Deal [damage] damage to yourself and to [amount] opponent creatures.</description>
+        <description>Deal [damage] damage to yourself and to up to [maximumTargets] opponent creatures.</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
                 <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_ALLY"/>
-                <minimumTargets>[amount]</minimumTargets>
+                <minimumTargets>1</minimumTargets>
+                <maximumTargets>[maximumTargets]</maximumTargets>
                 <manaCost>2</manaCost>
                 <castTriggers>
                     <entity>

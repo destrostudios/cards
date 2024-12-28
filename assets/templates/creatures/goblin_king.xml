@@ -4,7 +4,7 @@
         <legendary/>
         <creatureCard/>
         <attack>4</attack>
-        <health>5</health>
+        <health>4</health>
         <goblin/>
         <description>Cast: Gain +1 attack for each ally Goblin on board.</description>
         <spells>

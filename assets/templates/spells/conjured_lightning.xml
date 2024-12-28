@@ -6,7 +6,7 @@
     <entity id="card">
         <name>Conjured Lightning</name>
         <spellCard/>
-        <description>Deal [damage] damage to all opponent creatures and heal [heal] health of all ally creatures.</description>
+        <description>Deal [damage] damage to all opponent characters and heal [heal] health of all ally characters.</description>
         <spells>
             <entity>
                 <source>#card</source>
@@ -17,10 +17,10 @@
                         <preAnimations>BENEDICTION</preAnimations>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity template="../effects/damage_all_opponent_creatures(damage=[damage])">
+                            <entity template="../effects/damage_all_opponent_characters(damage=[damage])">
                                 <preAnimations/>
                             </entity>
-                            <entity template="../effects/heal_all_ally_creatures(heal=[heal])">
+                            <entity template="../effects/heal_all_ally_characters(heal=[heal])">
                                 <preAnimations/>
                             </entity>
                         </effects>

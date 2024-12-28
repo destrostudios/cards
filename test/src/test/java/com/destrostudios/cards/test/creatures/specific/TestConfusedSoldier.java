@@ -11,7 +11,7 @@ public class TestConfusedSoldier extends TestGame {
     public void testDamageOnSummon() {
         int card = create("creatures/confused_soldier", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 2);
-        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 2);
+        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 1);
+        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 1);
     }
 }

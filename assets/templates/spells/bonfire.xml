@@ -1,6 +1,6 @@
 <template>
     <values>
-        <heal>6</heal>
+        <heal>8</heal>
     </values>
     <entity id="card">
         <name>Bonfire</name>

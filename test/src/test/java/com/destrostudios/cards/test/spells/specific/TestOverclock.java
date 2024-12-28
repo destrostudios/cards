@@ -12,7 +12,7 @@ public class TestOverclock extends TestGame {
         forEach(machines, machine -> data.setComponent(machine, Components.Tribe.MACHINE));
         int card = create("spells/overclock", player, Components.Zone.HAND);
         castFromHand(card);
-        assertAttack(machines, 2);
+        assertAttack(machines, 3);
         endTurn(player);
         assertHasComponent(machines, Components.Zone.GRAVEYARD);
     }

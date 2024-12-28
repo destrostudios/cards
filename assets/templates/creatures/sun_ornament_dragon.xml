@@ -1,6 +1,6 @@
 <template>
     <values>
-        <heal>2</heal>
+        <heal>3</heal>
     </values>
     <entity id="card">
         <name>Sun Ornament Dragon</name>

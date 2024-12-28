@@ -1,6 +1,6 @@
 <template>
     <values>
-        <damage>8</damage>
+        <damage>3</damage>
     </values>
     <entity id="card">
         <name>Plague</name>
@@ -10,7 +10,7 @@
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
-                <manaCost>8</manaCost>
+                <manaCost>7</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

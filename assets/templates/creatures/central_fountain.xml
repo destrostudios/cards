@@ -1,0 +1,18 @@
+<template>
+    <values>
+        <heal>3</heal>
+    </values>
+    <entity template="./templates/vanilla(name=Central Fountain,manaCost=6,attack=5,health=5)">
+        <taunt/>
+        <description>End of turn: If you have less health than your opponent, heal [heal] health of yourself.</description>
+        <preEndTurnTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <condition>source.owner.health &lt; source.owner.opponent.health</condition>
+                <effects>
+                    <entity template="../effects/heal_source_owner(heal=[heal])"/>
+                </effects>
+            </entity>
+        </preEndTurnTriggers>
+    </entity>
+</template>

@@ -1,6 +1,6 @@
 <template>
     <values>
-        <damage>2</damage>
+        <damage>1</damage>
     </values>
     <entity id="card">
         <name>Confused Soldier</name>

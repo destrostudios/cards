@@ -1,0 +1,6 @@
+<template>
+    <entity>
+        <targetPrefilters basic="BOARD" advanced="ALLY"/>
+        <targetAll/>
+    </entity>
+</template>

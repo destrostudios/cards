@@ -9,7 +9,7 @@ public class TestCloudOfRevenge extends TestGame {
     @Test
     public void testDestroyRandomOpponentCreatureOnSummonWhenLargeHealthDifference() {
         int opponentCreature = createCreature(opponent, Components.Zone.CREATURE_ZONE);
-        damage(player, 10);
+        damage(player, 8);
         int card = create("creatures/cloud_of_revenge", player, Components.Zone.HAND);
         castFromHand(card);
         assertHasComponent(opponentCreature, Components.Zone.GRAVEYARD);
@@ -18,7 +18,7 @@ public class TestCloudOfRevenge extends TestGame {
     @Test
     public void testDestroyNoCreatureOnSummonWhenLowHealthDifference() {
         int opponentCreature = createCreature(opponent, Components.Zone.CREATURE_ZONE);
-        damage(player, 9);
+        damage(player, 7);
         int card = create("creatures/cloud_of_revenge", player, Components.Zone.HAND);
         castFromHand(card);
         assertHasComponent(opponentCreature, Components.Zone.CREATURE_ZONE);

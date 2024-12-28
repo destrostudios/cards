@@ -1,17 +1,17 @@
-package com.destrostudios.cards.test.spells.specific;
+package com.destrostudios.cards.test.creatures.specific;
 
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.test.TestGame;
 import org.junit.jupiter.api.Test;
 
-public class TestBonfire extends TestGame {
+public class TestCentralFountain extends TestGame {
 
     @Test
-    public void testHealOnCast() {
-        damage(player, 9);
-        int card = create("spells/bonfire", player, Components.Zone.HAND);
-        castFromHand(card);
+    public void testHealOnTurnEnd() {
+        damage(player, 4);
+        create("creatures/central_fountain", player, Components.Zone.CREATURE_ZONE);
+        endTurn(player);
         assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 1);
     }
 }

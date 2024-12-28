@@ -1,0 +1,41 @@
+<template>
+    <values>
+        <amountCreatures>2</amountCreatures>
+        <amountSpells>1</amountSpells>
+    </values>
+    <entity id="card">
+        <name>Holy Burial Site</name>
+        <spellCard/>
+        <description>Put [amountCreatures] random creatures and [amountSpells] random spell from your graveyard to your hand.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <condition>source.count(["GRAVEYARD","CREATURE_CARD"], ["ALLY"]) >= [amountCreatures] &amp;&amp; source.count(["GRAVEYARD","SPELL_CARD"], ["ALLY"]) >= [amountSpells]</condition>
+                <manaCost>5</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity>
+                                <targets>
+                                    <entity>
+                                        <targetPrefilters basic="GRAVEYARD,CREATURE_CARD" advanced="ALLY"/>
+                                        <targetAll/>
+                                        <targetRandom>[amountCreatures]</targetRandom>
+                                    </entity>
+                                    <entity>
+                                        <targetPrefilters basic="GRAVEYARD,SPELL_CARD" advanced="ALLY"/>
+                                        <targetAll/>
+                                        <targetRandom>[amountSpells]</targetRandom>
+                                    </entity>
+                                </targets>
+                                <moveToHand/>
+                            </entity>
+                            <entity template="../effects/move_source_to_graveyard"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

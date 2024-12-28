@@ -1,6 +1,6 @@
 <template>
     <values>
-        <minimumHealthDifference>10</minimumHealthDifference>
+        <minimumHealthDifference>8</minimumHealthDifference>
     </values>
     <entity id="card">
         <name>Cloud of Revenge</name>

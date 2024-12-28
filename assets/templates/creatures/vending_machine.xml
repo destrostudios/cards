@@ -2,7 +2,7 @@
     <entity id="card">
         <name>Vending Machine</name>
         <creatureCard/>
-        <attack>2</attack>
+        <attack>3</attack>
         <health>3</health>
         <machine/>
         <description>Cast: Tribute an ally Machine and gain its stats.</description>

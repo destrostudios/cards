@@ -12,7 +12,7 @@ public class TestVendingMachine extends TestGame {
         int card = create("creatures/vending_machine", player, Components.Zone.HAND);
         castFromHand(card, machine);
         assertHasComponent(machine, Components.Zone.GRAVEYARD);
-        assertAttack(card, 3);
+        assertAttack(card, 4);
         assertHealth(card, 4);
     }
 }

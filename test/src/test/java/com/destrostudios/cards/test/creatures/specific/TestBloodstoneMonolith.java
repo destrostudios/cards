@@ -11,8 +11,8 @@ public class TestBloodstoneMonolith extends TestGame {
     public void testDamageOnSummonAndHealOnAttack() {
         int card = create("creatures/bloodstone_monolith", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 8);
+        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 6);
         attack(card, opponent);
-        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 4);
+        assertHealthAndDamaged(player, GameConstants.PLAYER_HEALTH - 2);
     }
 }

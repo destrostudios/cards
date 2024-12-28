@@ -1,6 +1,6 @@
 <template>
     <values>
-        <bonusAttack>2</bonusAttack>
+        <bonusAttack>3</bonusAttack>
     </values>
     <entity id="card">
         <name>Overclock</name>

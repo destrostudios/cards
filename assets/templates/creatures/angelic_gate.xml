@@ -1,6 +1,6 @@
 <template>
     <values>
-        <heal>1</heal>
+        <heal>2</heal>
     </values>
     <entity id="card">
         <name>Angelic Gate</name>

@@ -12,6 +12,6 @@ public class TestReinforcedCoating extends TestGame {
         forEach(machines, machine -> data.setComponent(machine, Components.Tribe.MACHINE));
         int card = create("spells/reinforced_coating", player, Components.Zone.HAND);
         castFromHand(card);
-        assertHealth(machines, 3);
+        assertHealth(machines, 4);
     }
 }

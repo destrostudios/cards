@@ -8,11 +8,11 @@ public class TestAngelicGate extends TestGame {
 
     @Test
     public void testHealSpell() {
-        int target = createVanilla(0, 0, 3, player, Components.Zone.CREATURE_ZONE);
-        damage(target, 2);
+        int target = createVanilla(0, 0, 4, player, Components.Zone.CREATURE_ZONE);
+        damage(target, 3);
         int card = create("creatures/angelic_gate", player, Components.Zone.CREATURE_ZONE);
         int spell = getAndAssertSpell(card, 2, 1, null);
         cast(spell, target);
-        assertHealthAndDamaged(target, 2);
+        assertHealthAndDamaged(target, 3);
     }
 }

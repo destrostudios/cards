@@ -1,6 +1,6 @@
 <template>
     <values>
-        <heal>2</heal>
+        <heal>3</heal>
     </values>
     <entity template="./templates/vanilla(name=Medical Supply Waggon,manaCost=5,attack=4,health=4)">
         <taunt/>

@@ -13,18 +13,20 @@ public class TriggerEffectImpactEvent extends Event implements ExpressionContext
     public final int[] baseTargets;
     public final int target;
     public final int effect;
+    public final EffectOptions options;
 
-    public TriggerEffectImpactEvent(int source, int[] baseTargets, int target, int effect) {
+    public TriggerEffectImpactEvent(int source, int[] baseTargets, int target, int effect, EffectOptions options) {
         super(EventType.TRIGGER_EFFECT_IMPACT);
         this.source = source;
         this.baseTargets = baseTargets;
         this.target = target;
         this.effect = effect;
+        this.options = options;
     }
 
     @Override
     public String toString() {
-        return "TriggerEffectImpactEvent{" + "source=" + source + ", baseTargets=" + baseTargets + ", target=" + target + ", effect=" + effect + '}';
+        return "TriggerEffectImpactEvent{" + "source=" + source + ", baseTargets=" + baseTargets + ", target=" + target + ", effect=" + effect + ", options=" + options + "}";
     }
 
     @Override

@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/simple_discoverer(name=Exaggerating Storyteller,manaCost=4,attack=2,health=2,pool=LEGENDARY_CREATURE,poolDescription=legendary creature)"/>
+</template>

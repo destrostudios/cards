@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules;
 public class GameConstants {
     public static final int CARDS_PER_ARENA_DRAFT = 3;
     public static final int CARDS_PER_PACK = 5;
+    public static final int DISCOVER_OPTIONS = 3;
     public static final String FOIL_NAME_ARTWORK = "artwork";
     public static final String FOIL_NAME_FULL = "full";
     public static final String FOIL_NAME_NONE = "none";

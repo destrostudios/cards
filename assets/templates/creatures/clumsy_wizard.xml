@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/simple_discoverer(name=Clumsy Wizard,manaCost=2,attack=2,health=2,pool=SPELL_THAT_COSTS_1)">
+        <description>Cast: Discover a spell that costs (1).</description>
+    </entity>
+</template>

@@ -27,6 +27,7 @@ public enum EventType {
     // effects
     ADD_MANA,
     CREATE,
+    DISCOVER,
     SET_AVAILABLE_MANA,
     SET_MANA,
     TRIGGER_EFFECT,

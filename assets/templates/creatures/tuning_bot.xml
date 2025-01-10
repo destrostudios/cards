@@ -1,0 +1,16 @@
+<template>
+    <values>
+        <bonusAttack>1</bonusAttack>
+        <bonusHealth>1</bonusHealth>
+    </values>
+    <entity id="card" template="./templates/simple_discoverer_with_trigger(name=Tuning Bot,manaCost=5,attack=3,health=3,pool=MACHINE,trigger=#trigger)">
+        <machine/>
+        <description>Cast: Discover a Machine and give it +[bonusAttack]/+[bonusAttack].</description>
+    </entity>
+    <entity id="trigger">
+        <effects>
+            <entity template="../effects/buff_target(buff=#buff)"/>
+        </effects>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=[bonusAttack],bonusHealth=[bonusHealth])"/>
+</template>

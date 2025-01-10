@@ -1,0 +1,13 @@
+<template>
+    <entity id="card" template="./templates/simple_discoverer_with_trigger(name=Goblin Tourguide,manaCost=3,attack=1,health=2,pool=GOBLIN_THAT_COSTS_2_OR_LESS,trigger=#trigger)">
+        <goblin/>
+        <description>Cast: Discover a Goblin that costs (2) or less. If you control another Goblin, summon it.</description>
+        <flavourText>"Two for the price of one!"</flavourText>
+    </entity>
+    <entity id="trigger">
+        <condition>source.count(["CREATURE_ZONE","GOBLIN"], ["ALLY"]) &gt; 1</condition>
+        <effects>
+            <entity template="../effects/move_target_to_creature_zone"/>
+        </effects>
+    </entity>
+</template>

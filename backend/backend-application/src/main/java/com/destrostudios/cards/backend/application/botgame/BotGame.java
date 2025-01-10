@@ -3,8 +3,8 @@ package com.destrostudios.cards.backend.application.botgame;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotEval;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotService;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
+import com.destrostudios.cards.backend.application.modules.bot.SimpleRandom;
 import com.destrostudios.cards.shared.events.Event;
-import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.model.Card;
 import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.actions.*;
@@ -16,7 +16,6 @@ import com.destrostudios.gametools.bot.BotActionReplay;
 import com.destrostudios.gametools.bot.mcts.MctsBot;
 import com.destrostudios.gametools.bot.mcts.MctsBotSettings;
 import com.destrostudios.gametools.bot.mcts.TerminationType;
-import com.destrostudios.gametools.network.server.modules.game.MasterRandom;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 
 import java.util.HashSet;
@@ -47,7 +46,7 @@ public class BotGame {
 
     public void play() {
         Random _random = new Random(seed);
-        MasterRandom random = new MasterRandom(_random);
+        NetworkRandom random = new SimpleRandom(_random);
         Random _botRandomInternal = new Random(seed + 1);
         Random _botRandomGame = new Random(seed + 2);
 
@@ -56,14 +55,13 @@ public class BotGame {
             private HashSet<Event> triggeredEvents = new HashSet<>();
 
             @Override
-            public void resolveEvents() {
-                EventQueue<GameContext> events = getEvents();
-                while (events.hasPendingEventHandler()) {
-                    Event event = events.getNextPendingEventHandler().event();
+            protected void resolveEvents() {
+                while (hasPendingEventHandler()) {
+                    Event event = getEvents().getNextPendingEventHandler().event();
                     if (triggeredEvents.add(event)) {
                         onEventTrigger(event);
                     }
-                    events.triggerNextEventHandler(this);
+                    triggerNextEventHandler();
                 }
             }
         };
@@ -135,7 +133,7 @@ public class BotGame {
 
     private String getActionDebugText(Action action) {
         if (action instanceof CastSpellAction castSpellAction) {
-            return "CastSpellEvent { source = " + getEntityDebugText(castSpellAction.getSource()) + ", spell = " + getEntityDebugText_Spell(castSpellAction.getSpell()) + ", targets = " + getEntityDebugText(castSpellAction.getTargets()) + " }";
+            return "CastSpellEvent { source = " + getEntityDebugText(castSpellAction.getSource()) + ", spell = " + getEntityDebugText_Spell(castSpellAction.getSpell()) + ", targets = " + getEntityDebugText(castSpellAction.getTargets()) + ", options = " + castSpellAction.getOptions() + " }";
         } else if (action instanceof EndTurnAction) {
             return "EndTurnEvent";
         } else if (action instanceof MulliganAction mulliganAction) {

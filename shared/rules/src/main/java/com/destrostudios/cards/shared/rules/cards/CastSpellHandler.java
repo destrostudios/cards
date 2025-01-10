@@ -24,6 +24,6 @@ public class CastSpellHandler extends GameEventHandler<CastSpellEvent> {
             context.getEvents().fire(new PayManaEvent(owner, manaCost));
         }
 
-        TriggerUtil.triggerIfPossible(data, data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, context.getEvents());
+        TriggerUtil.triggerIfPossible(data, data.getComponent(event.spell, Components.Spell.CAST_TRIGGERS), event.source, event.targets, event.options, context.getEvents());
     }
 }

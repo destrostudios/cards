@@ -193,7 +193,7 @@ public class TargetUtil {
                 return !ConditionUtil.isAlly(data, entitySource, source);
             }
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(advancedPrefilter.name());
     }
 
     private static boolean hasSourceComponent(EntityData data, int entity, ComponentDefinition<?> component) {

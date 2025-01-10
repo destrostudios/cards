@@ -12,11 +12,16 @@ import com.destrostudios.cards.frontend.application.appstates.services.players.P
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
+import com.destrostudios.cards.shared.entities.SimpleEntityData;
+import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
 import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.cards.shared.rules.actions.CastSpellAction;
 import com.destrostudios.cards.shared.rules.actions.EndTurnAction;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
+import com.destrostudios.cards.shared.rules.effects.EffectOptions;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
@@ -142,11 +147,45 @@ public class UpdateIngameService {
             } else {
                 for (Action action : possibleActions) {
                     if (action instanceof CastSpellAction castSpellAction) {
-                        ArrayList<int[]> validTargets = validSpellTargets.computeIfAbsent(castSpellAction.getSpell(), _ -> new ArrayList<>());
+                        int spell = castSpellAction.getSpell();
+                        int[] targets = castSpellAction.getTargets();
+
+                        ArrayList<int[]> validTargets = validSpellTargets.computeIfAbsent(spell, _ -> new ArrayList<>());
                         if (validTargets.isEmpty()) {
                             // TODO: Improve?
-                            int cardEntity = data.list(Components.SPELLS, currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), castSpellAction.getSpell())).get(0);
+                            int cardEntity = data.list(Components.SPELLS, currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), spell)).get(0);
                             Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
+
+                            DiscoverPool discoverPool = SpellUtil.getDiscoverEffectPool(data, spell);
+                            Runnable openDiscoverSelector = () -> {
+
+                                EntityData discoverData = new SimpleEntityData(Components.ALL);
+                                String[] templates = gameService.getGameContext().getDiscoverTemplates(discoverPool);
+
+                                ArrayList<int[]> validDiscoverTargets = new ArrayList<>();
+                                HashMap<Integer, Card<CardModel>> discoverCardModelsByEntity = new HashMap<>();
+                                HashMap<Integer, Integer> discoverIndicesByEntity = new HashMap<>();
+                                for (int i = 0; i < GameConstants.DISCOVER_OPTIONS; i++) {
+                                    String template = templates[i];
+                                    int discoverCardEntity = discoverData.createEntity();
+                                    EntityTemplate.loadTemplate(discoverData, discoverCardEntity, template);
+                                    Card<CardModel> discoverCard = new Card<>(new CardModel());
+                                    CardGuiMapper.updateModel(discoverData, discoverCardEntity, discoverCard.getModel(), true);
+
+                                    validDiscoverTargets.add(new int[] { discoverCardEntity });
+                                    discoverCardModelsByEntity.put(discoverCardEntity, discoverCard);
+                                    discoverIndicesByEntity.put(discoverCardEntity, i);
+                                }
+
+                                String description = data.getComponent(cardEntity, Components.DESCRIPTION);
+                                update(false);
+                                ingameGuiService.setAttached(false);
+                                openCardSelector.accept(new ScrollCardSelectorAppState(description, validDiscoverTargets, t -> discoverCardModelsByEntity.get(t).getModel(), null, selectedTargets -> {
+                                    int discoverIndex = discoverIndicesByEntity.get(selectedTargets[0]);
+                                    gameService.sendAction(new CastSpellAction(cardEntity, spell, selectedTargets, EffectOptions.builder().discoverIndex(discoverIndex).build()));
+                                    ingameGuiService.setAttached(true);
+                                }));
+                            };
 
                             Interactivity interactivity;
                             if ((castSpellAction.getTargets().length > 0) && SpellUtil.isTargeted(data, castSpellAction.getSpell())) {
@@ -162,7 +201,7 @@ public class UpdateIngameService {
                                         @Override
                                         public void trigger(BoardObject source, BoardObject target) {
                                             int targetEntity = getEntity(target);
-                                            gameService.sendAction(new CastSpellAction(cardEntity, castSpellAction.getSpell(), new int[]{ targetEntity }));
+                                            gameService.sendAction(new CastSpellAction(cardEntity, spell, new int[]{ targetEntity }, null));
                                         }
 
                                         private Integer getEntity(BoardObject<?> boardObject) {
@@ -184,7 +223,7 @@ public class UpdateIngameService {
                                                 update(true);
                                                 ingameGuiService.setAttached(true);
                                             }, selectedTargets -> {
-                                                gameService.sendAction(new CastSpellAction(cardEntity, castSpellAction.getSpell(), selectedTargets));
+                                                gameService.sendAction(new CastSpellAction(cardEntity, spell, selectedTargets, null));
                                                 ingameGuiService.setAttached(true);
                                             }));
                                         }
@@ -195,7 +234,11 @@ public class UpdateIngameService {
 
                                     @Override
                                     public void trigger(BoardObject boardObject, BoardObject target) {
-                                        gameService.sendAction(castSpellAction);
+                                        if (discoverPool != null) {
+                                            openDiscoverSelector.run();
+                                        } else {
+                                            gameService.sendAction(castSpellAction);
+                                        }
                                     }
                                 };
                             } else {
@@ -203,16 +246,20 @@ public class UpdateIngameService {
 
                                     @Override
                                     public void trigger(BoardObject boardObject, BoardObject target) {
-                                        gameService.sendAction(castSpellAction);
+                                        if (discoverPool != null) {
+                                            openDiscoverSelector.run();
+                                        } else {
+                                            gameService.sendAction(castSpellAction);
+                                        }
                                     }
                                 };
                             }
-                            boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, castSpellAction.getSpell()) || SpellUtil.isDefaultAttackSpell(data, castSpellAction.getSpell()));
+                            boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, spell) || SpellUtil.isDefaultAttackSpell(data, spell));
                             InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
                             card.setInteractivity(interactivitySource, interactivity);
                             card.getModel().setPlayable(true);
                         }
-                        validTargets.add(castSpellAction.getTargets());
+                        validTargets.add(targets);
                     }
                 }
             }

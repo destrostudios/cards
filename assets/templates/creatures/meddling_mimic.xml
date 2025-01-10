@@ -1,0 +1,12 @@
+<template>
+    <entity id="card" template="./templates/simple_discoverer_with_trigger(name=Meddling Mimic,manaCost=7,attack=0,health=0,pool=CREATURE,trigger=#trigger)">
+        <legendary/>
+        <description>Cast: Discover a creature and gain its stats.</description>
+    </entity>
+    <entity id="trigger">
+        <effects>
+            <entity template="../effects/buff_source(buff=#buff,constant=true)"/>
+        </effects>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusAttack=baseTargets[0].attack,bonusHealth=baseTargets[0].health)"/>
+</template>

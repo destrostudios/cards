@@ -1,0 +1,25 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <creatureCard/>
+        <attack>[attack]</attack>
+        <health>[health]</health>
+        <description if="[poolDescription]">Cast: Discover a [poolDescription].</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <sourcePrefilters basic="HAND"/>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/move_source_to_creature_zone"/>
+                            <entity template="../../effects/discover_for_owner(pool=[pool])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+            <entity template="../../spells/templates/simple_attack(source=#card)"/>
+        </spells>
+    </entity>
+</template>

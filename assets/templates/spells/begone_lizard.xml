@@ -2,7 +2,7 @@
     <entity id="card">
         <name>Begone, Lizard!</name>
         <spellCard/>
-        <description>Destroy target dragon.</description>
+        <description>Destroy target Dragon.</description>
         <spells>
             <entity>
                 <source>#card</source>

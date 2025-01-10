@@ -25,7 +25,7 @@ public class CheckTriggeredTriggersHandler<T extends Event> extends GameEventHan
         for (int entity : data.list(triggeredTriggerDefinition.component())) {
             Components.TriggeredTrigger[] triggeredTriggers = data.getComponent(entity, triggeredTriggerDefinition.component());
             for (Components.TriggeredTrigger triggeredTrigger : triggeredTriggers) {
-                TriggerUtil.triggerIfPossible(data, triggeredTrigger.getTrigger(), entity, new int[] { triggeredTrigger.getTarget() }, context.getEvents());
+                TriggerUtil.triggerIfPossible(data, triggeredTrigger.getTrigger(), entity, new int[] { triggeredTrigger.getTarget() }, null, context.getEvents());
             }
             data.removeComponent(entity, triggeredTriggerDefinition.component());
         }

@@ -12,17 +12,19 @@ public class TriggerEffectEvent extends Event implements ExpressionContextProvid
     public final int source;
     public final int[] targets;
     public final int effect;
+    public final EffectOptions options;
 
-    public TriggerEffectEvent(int source, int[] targets, int effect) {
+    public TriggerEffectEvent(int source, int[] targets, int effect, EffectOptions options) {
         super(EventType.TRIGGER_EFFECT);
         this.source = source;
         this.targets = targets;
         this.effect = effect;
+        this.options = options;
     }
 
     @Override
     public String toString() {
-        return "TriggerEffectEvent{" + "source=" + source + ", targets=" + targets + ", effect=" + effect + '}';
+        return "TriggerEffectEvent{" + "source=" + source + ", targets=" + targets + ", effect=" + effect + ", options=" + options + "}";
     }
 
     @Override

@@ -1,0 +1,10 @@
+<template>
+    <entity template="./templates/simple_discoverer_with_trigger(name=Frozen Excavation,manaCost=8,pool=CREATURE_THAT_COSTS_8_OR_MORE,trigger=#trigger)">
+        <description>Cast: Discover a creature that costs (8) or more and summon it.</description>
+    </entity>
+    <entity id="trigger">
+        <effects>
+            <entity template="../effects/move_target_to_creature_zone"/>
+        </effects>
+    </entity>
+</template>

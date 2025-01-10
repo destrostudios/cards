@@ -3,6 +3,7 @@ spells/a_long_trip,A Long Trip,false,3
 spells/adventure,Adventure,false,2
 spells/antique_can,Antique Can,false,2
 spells/arcane_graveyard,Arcane Graveyard,false,2
+spells/arcane_spellbook,Arcane Spellbook,false,2
 spells/begone_lizard,"Begone, Lizard!",false,4
 spells/blue_lagoon,Blue Lagoon,false,5
 spells/bonfire,Bonfire,false,2
@@ -15,6 +16,7 @@ spells/eruption,Eruption,false,10
 spells/fall_of_the_first_dragons,Fall of the First Dragons,false,4
 spells/fiery_obliteration,Fiery Obliteration,false,7
 spells/fire_altar,Fire Altar,false,1
+spells/frozen_excavation,Frozen Excavation,false,8
 spells/goblin_assault_squad,Goblin Assault Squad,false,3
 spells/goblin_tribe_gathering,Goblin Tribe Gathering,false,4
 spells/golden_fractal_plant,Golden Fractal Plant,false,2

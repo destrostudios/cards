@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/simple_discoverer(name=Dracologist,manaCost=3,attack=2,health=1,pool=DRAGON,poolDescription=Dragon)"/>
+</template>

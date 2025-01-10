@@ -3,6 +3,7 @@ package com.destrostudios.cards.shared.rules;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.rules.cards.Foil;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -121,6 +122,7 @@ public class Components {
         public static final ComponentDefinition<AddBuff> ADD_BUFF = create("addBuff");
         public static final ComponentDefinition<Integer> REMOVE_BUFF = create("removeBuff");
         public static final ComponentDefinition<Create> CREATE = create("create");
+        public static final ComponentDefinition<Discover> DISCOVER = create("discover");
         public static final ComponentDefinition<Void> SHUFFLE_LIBRARY = create("shuffleLibrary");
         public static final ComponentDefinition<Void> END_TURN = create("endTurn");
         public static final ComponentDefinition<TriggerDelayed> TRIGGER_DELAYED = create("triggerDelayed");
@@ -177,6 +179,14 @@ public class Components {
     public static class Create {
         private String template;
         private CreateLocation location;
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
+    @Getter
+    public static class Discover {
+        private DiscoverPool pool;
+        private int[] triggers;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

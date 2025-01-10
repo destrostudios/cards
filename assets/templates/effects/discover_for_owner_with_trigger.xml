@@ -1,0 +1,8 @@
+<template>
+    <entity>
+        <targets>
+            <entity template="../targets/source_owner"/>
+        </targets>
+        <discover pool="[pool]" entities0="[trigger]"/>
+    </entity>
+</template>

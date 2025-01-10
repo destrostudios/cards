@@ -21,9 +21,7 @@ import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
 import com.destrostudios.cards.shared.rules.expressions.Expressions;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
-import com.destrostudios.cards.shared.rules.util.BuffUtil;
-import com.destrostudios.cards.shared.rules.util.SpellUtil;
-import com.destrostudios.cards.shared.rules.util.TriggerUtil;
+import com.destrostudios.cards.shared.rules.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +81,7 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         if (data.hasComponent(event.effect, Components.Effect.CAST_ATTACK)) {
             int sourceDefaultAttackSpell = SpellUtil.getDefaultAttackSpell(data, event.source);
-            events.fire(new CastSpellEvent(event.source, sourceDefaultAttackSpell, new int[] { event.target }));
+            events.fire(new CastSpellEvent(event.source, sourceDefaultAttackSpell, new int[] { event.target }, null));
         }
 
         if (data.hasComponent(event.effect, Components.Effect.BATTLE)) {
@@ -103,7 +101,12 @@ public class TriggerEffectImpactHandler extends GameEventHandler<TriggerEffectIm
 
         Components.Create create = data.getComponent(event.effect, Components.Effect.CREATE);
         if (create != null) {
-            events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation()));
+            events.fire(new CreateEvent(event.source, event.target, create.getTemplate(), create.getLocation(), ArrayUtil.EMPTY));
+        }
+
+        Components.Discover discover = data.getComponent(event.effect, Components.Effect.DISCOVER);
+        if (discover != null) {
+            events.fire(new DiscoverEvent(event.source, event.target, discover.getPool(), event.options.discoverIndex, discover.getTriggers()));
         }
 
         Components.TriggerDelayed triggerDelayed = data.getComponent(event.effect, Components.Effect.TRIGGER_DELAYED);

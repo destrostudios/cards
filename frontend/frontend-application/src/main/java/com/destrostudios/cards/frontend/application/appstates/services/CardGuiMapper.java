@@ -93,10 +93,10 @@ public class CardGuiMapper {
         cardModel.setFoil(data.getComponent(card, Components.FOIL));
     }
 
-    private static <T> List<T> createListBasedOnComponents(EntityData entityData, int entity, Map<ComponentDefinition, T> componentValueMap) {
+    private static <T> List<T> createListBasedOnComponents(EntityData data, int entity, Map<ComponentDefinition, T> componentValueMap) {
         List<T> list = new LinkedList<>();
         for (Map.Entry<ComponentDefinition, T> componentValueEntry : componentValueMap.entrySet()) {
-            if (entityData.hasComponent(entity, componentValueEntry.getKey())) {
+            if (data.hasComponent(entity, componentValueEntry.getKey())) {
                 list.add(componentValueEntry.getValue());
             }
         }

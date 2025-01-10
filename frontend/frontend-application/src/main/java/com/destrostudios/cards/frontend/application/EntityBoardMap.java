@@ -11,10 +11,10 @@ import java.util.HashMap;
 
 public class EntityBoardMap {
 
-    public EntityBoardMap(EntityData entityData) {
-        this.entityData = entityData;
+    public EntityBoardMap(EntityData data) {
+        this.data = data;
     }
-    private EntityData entityData;
+    private EntityData data;
     private HashMap<Integer, TransformedBoardObject<?>> boardObjects = new HashMap<>();
     private HashMap<TransformedBoardObject<?>, Integer> entities = new HashMap<>();
 
@@ -29,7 +29,7 @@ public class EntityBoardMap {
     public TransformedBoardObject<?> getOrCreateBoardObject(int entity) {
         TransformedBoardObject boardObject = boardObjects.get(entity);
         if (boardObject == null) {
-            if (entityData.hasComponent(entity, Components.NEXT_PLAYER)) {
+            if (data.hasComponent(entity, Components.NEXT_PLAYER)) {
                 boardObject = new PlayerBoardObject();
             } else {
                 Card<CardModel> card = new Card<>(new CardModel());

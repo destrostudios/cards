@@ -22,7 +22,7 @@ public class TriggerHandler extends GameEventHandler<TriggerEvent> {
         int[] effects = data.getComponent(event.trigger, Components.Trigger.EFFECTS);
         for (int effect : effects) {
             for (int i = 0; i < repetitions; i++) {
-                context.getEvents().fire(new TriggerEffectEvent(event.source, event.targets, effect));
+                context.getEvents().fire(new TriggerEffectEvent(event.source, event.targets, effect, event.options));
             }
         }
     }

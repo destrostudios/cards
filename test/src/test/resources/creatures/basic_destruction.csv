@@ -26,12 +26,15 @@ creatures/can
 creatures/central_fountain
 creatures/cloud_devourer
 creatures/cloud_of_revenge
+creatures/clumsy_wizard
 creatures/copperfang_tribesman
 creatures/crazed_doctor
+creatures/curve_builder
 creatures/dam
 creatures/dark_rider
 creatures/demon_samurai
 creatures/divine_justicar
+creatures/dracologist
 creatures/dragon
 creatures/dragon_egg
 creatures/dragon_rider
@@ -40,6 +43,7 @@ creatures/dragons_knight
 creatures/elven_guard
 creatures/elven_queen
 creatures/emperor_tamarin
+creatures/exaggerating_storyteller
 creatures/exiled_druid
 creatures/fairy
 creatures/fascinating_fairytales_part_1
@@ -68,6 +72,7 @@ creatures/goblin_pillager
 creatures/goblin_poacher
 creatures/goblin_recruiter
 creatures/goblin_technician
+creatures/goblin_tourguide
 creatures/goblin_warhead_launcher
 creatures/golden_emperor
 creatures/good_boy
@@ -95,10 +100,13 @@ creatures/leviathan
 creatures/library_troll
 creatures/machine_polisher
 creatures/mahabit_shaman
+creatures/mahabit_tracker
+creatures/meddling_mimic
 creatures/medical_supply_waggon
 creatures/mermaid
 creatures/mounted_dwarf_warrior
 creatures/nightmare_demon
+creatures/northford_castle_guard
 creatures/novice_paladin
 creatures/old_alchemist
 creatures/old_archer
@@ -106,11 +114,14 @@ creatures/old_rhino
 creatures/outer_world_colonizer
 creatures/oven
 creatures/ox_warhero
+creatures/patent_issuer
 creatures/pebble
 creatures/plague_hunter
 creatures/plated_aradon
 creatures/portable_sand_relic
 creatures/priestess_of_valdas
+creatures/promising_explorer
+creatures/promising_student
 creatures/relic_guardian
 creatures/returning_hero
 creatures/river_racoon
@@ -131,6 +142,7 @@ creatures/the_ether_dragon
 creatures/the_wizard_king
 creatures/thunder_spirit
 creatures/tiny_dragon
+creatures/tuning_bot
 creatures/two_headed_chimera
 creatures/ultriia_flower_of_corruption
 creatures/undead_general
@@ -147,6 +159,7 @@ creatures/underworld_warlord
 creatures/unremembered_griffin
 creatures/valkyrie
 creatures/vending_machine
+creatures/versatile_chef
 creatures/walking_mortuary
 creatures/wandering_wizard
 creatures/war_angel

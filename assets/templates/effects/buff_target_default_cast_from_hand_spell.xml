@@ -1,0 +1,13 @@
+<template>
+    <values>
+        <constant>false</constant>
+        <untilEndOfTurn>false</untilEndOfTurn>
+    </values>
+    <entity>
+        <targets>
+            <entity template="../targets/targets_default_cast_from_hand_spell"/>
+        </targets>
+        <addBuff constant="[constant]">[buff]</addBuff>
+        <partial if="[untilEndOfTurn]" template="./partials/remove_buff_at_end_of_turn(buff=[buff])"/>
+    </entity>
+</template>

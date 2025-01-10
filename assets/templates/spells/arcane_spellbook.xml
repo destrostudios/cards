@@ -1,0 +1,11 @@
+<template>
+    <entity template="./templates/simple_discoverer_with_trigger(name=Arcane Spellbook,manaCost=2,pool=SPELL,trigger=#trigger)">
+        <description>Cast: Discover a spell and reduce its cost by (2).</description>
+    </entity>
+    <entity id="trigger">
+        <effects>
+            <entity template="../effects/buff_target_default_cast_from_hand_spell(buff=#buff)"/>
+        </effects>
+    </entity>
+    <entity id="buff" template="../buffs/simple(source=#card,bonusManaCost=-2)"/>
+</template>

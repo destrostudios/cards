@@ -109,13 +109,19 @@ public abstract class CardSelectorAppState extends MyBaseAppState {
         float buttonHeight = 100;
         float buttonGapX = 30;
 
-        float buttonCancelX = ((width / 2f) - buttonWidth - (buttonGapX / 2));
-        float buttonSubmitX = ((width / 2f) + (buttonGapX / 2));
+        float buttonSubmitX = (width / 2f);
         float buttonY = 280;
 
-        Button buttonCancel = GuiUtil.createButton("Cancel", buttonWidth, buttonHeight, _ -> onCancel());
-        buttonCancel.setLocalTranslation(buttonCancelX, buttonY, 0);
-        guiNode.attachChild(buttonCancel);
+        if (onCancel != null) {
+            float buttonCancelX = ((width / 2f) - (buttonGapX / 2) - buttonWidth);
+            buttonSubmitX += (buttonGapX / 2);
+
+            Button buttonCancel = GuiUtil.createButton("Cancel", buttonWidth, buttonHeight, _ -> onCancel());
+            buttonCancel.setLocalTranslation(buttonCancelX, buttonY, 0);
+            guiNode.attachChild(buttonCancel);
+        } else {
+            buttonSubmitX -= (buttonWidth / 2);
+        }
 
         buttonSubmit = GuiUtil.createButton("", buttonWidth, buttonHeight, _ -> onSubmit());
         buttonSubmit.setLocalTranslation(buttonSubmitX, buttonY, 0);

@@ -6,6 +6,8 @@ import com.destrostudios.cards.shared.rules.actions.Action;
 import com.destrostudios.cards.shared.rules.actions.CastSpellAction;
 import com.destrostudios.cards.shared.rules.actions.EndTurnAction;
 import com.destrostudios.cards.shared.rules.actions.MulliganAction;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
+import com.destrostudios.cards.shared.rules.effects.EffectOptions;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.TargetUtil;
@@ -68,7 +70,7 @@ public class PlayerActionsGenerator {
                 for (int amount = validTargetAmounts.minimum(); amount <= validTargetAmounts.maximum(); amount++) {
                     List<IntList> targetsSubsets = ArrayUtil.getSubsets(validTargets, amount);
                     for (IntList targets : targetsSubsets) {
-                        out.accept(new CastSpellAction(card, spell, targets.toArray()));
+                        out.accept(new CastSpellAction(card, spell, targets.toArray(), null));
                     }
                 }
                 return;
@@ -79,7 +81,14 @@ public class PlayerActionsGenerator {
             }
         }
         if (SpellUtil.isCastable_OnlySpellCondition(data, card, spell, ArrayUtil.EMPTY)) {
-            out.accept(new CastSpellAction(card, spell, ArrayUtil.EMPTY));
+            DiscoverPool discoverPool = SpellUtil.getDiscoverEffectPool(data, spell);
+            if (discoverPool != null) {
+                for (int i = 0; i < GameConstants.DISCOVER_OPTIONS; i++) {
+                    out.accept(new CastSpellAction(card, spell, ArrayUtil.EMPTY, EffectOptions.builder().discoverIndex(i).build()));
+                }
+            } else {
+                out.accept(new CastSpellAction(card, spell, ArrayUtil.EMPTY, null));
+            }
         }
     }
 }

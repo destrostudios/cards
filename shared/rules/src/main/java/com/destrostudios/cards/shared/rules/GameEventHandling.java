@@ -1,20 +1,14 @@
 package com.destrostudios.cards.shared.rules;
 
 import com.destrostudios.cards.shared.events.*;
-import com.destrostudios.cards.shared.rules.abilities.ActivateDivineShieldOnMoveToCreatureZoneHandler;
-import com.destrostudios.cards.shared.rules.abilities.DeactivateDivineShieldOnRemovedFromCreatureZoneHandler;
+import com.destrostudios.cards.shared.rules.abilities.*;
 import com.destrostudios.cards.shared.rules.battle.*;
-import com.destrostudios.cards.shared.rules.buffs.AddBuffHandler;
-import com.destrostudios.cards.shared.rules.buffs.RemoveBuffHandler;
-import com.destrostudios.cards.shared.rules.buffs.RemoveBuffsOnRemovedFromCreatureZoneHandler;
-import com.destrostudios.cards.shared.rules.buffs.RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler;
+import com.destrostudios.cards.shared.rules.buffs.*;
 import com.destrostudios.cards.shared.rules.cards.*;
 import com.destrostudios.cards.shared.rules.cards.zones.*;
-import com.destrostudios.cards.shared.rules.conditions.CheckBonusDamageHandler;
-import com.destrostudios.cards.shared.rules.conditions.CheckDestructionAfterConditionsAffectedHandler;
+import com.destrostudios.cards.shared.rules.conditions.*;
 import com.destrostudios.cards.shared.rules.effects.*;
-import com.destrostudios.cards.shared.rules.game.GameOverHandler;
-import com.destrostudios.cards.shared.rules.game.SetStartingPlayerHandler;
+import com.destrostudios.cards.shared.rules.game.*;
 import com.destrostudios.cards.shared.rules.game.turn.*;
 
 import static com.destrostudios.cards.shared.rules.ComponentsTriggers.*;
@@ -104,6 +98,10 @@ public class GameEventHandling extends EventHandling<GameContext> {
         set(instant, EventType.ADD_BUFF, new AddBuffHandler());
         set(instant, EventType.REMOVE_BUFF, new RemoveBuffHandler());
         set(instant, EventType.CREATE, new CreateHandler());
+        set(instant, EventType.DISCOVER, new DiscoverHandler());
+        set(resolved, EventType.DISCOVER,
+            new CheckTriggersHandler<>(getTriggerDefinition(POST, DiscoverEvent.class))
+        );
         set(instant, EventType.CONDITIONS_AFFECTED,
             new CheckBonusDamageHandler(),
             new CheckDestructionAfterConditionsAffectedHandler()
@@ -111,7 +109,7 @@ public class GameEventHandling extends EventHandling<GameContext> {
         set(instant, EventType.GAME_OVER, new GameOverHandler());
     }
 
-    private <T extends Event> void set(EventHandlers<GameContext> eventHandlers, EventType eventType, GameEventHandler... handlers) {
+    private void set(EventHandlers<GameContext> eventHandlers, EventType eventType, GameEventHandler... handlers) {
         eventHandlers.put(eventType, handlers);
     }
 }

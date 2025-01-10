@@ -8,6 +8,6 @@
             <entity template="../targets/targets"/>
         </targets>
         <addBuff constant="[constant]">[buff]</addBuff>
-        <partial if="untilEndOfTurn" template="./partials/remove_buff_at_end_of_turn(buff=[buff])"/>
+        <partial if="[untilEndOfTurn]" template="./partials/remove_buff_at_end_of_turn(buff=[buff])"/>
     </entity>
 </template>

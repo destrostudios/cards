@@ -17,7 +17,6 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerVisualizer;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
-import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.EventType;
 import com.destrostudios.cards.shared.rules.GameContext;
@@ -332,17 +331,17 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
     }
 
     private void processNextEvents() {
-        EventQueue<GameContext> eventQueue = gameService.getGameContext().getEvents();
-        if (!eventQueue.hasPendingEventHandler()) {
+        GameContext gameContext = gameService.getGameContext();
+        if (!gameContext.hasPendingEventHandler()) {
             gameService.applyNextActionIfExisting();
         }
-        if (eventQueue.hasPendingEventHandler()) {
+        if (gameContext.hasPendingEventHandler()) {
             while (!board.isAnimationPlaying()) {
-                eventQueue.triggerNextEventHandler(gameService.getGameContext());
+                gameContext.triggerNextEventHandler();
                 if (board.isAnimationPlaying()) {
                     updateIngameService.update(false);
                 }
-                if (!eventQueue.hasPendingEventHandler()) {
+                if (!gameContext.hasPendingEventHandler()) {
                     updateIngameService.update(true);
                     break;
                 }

@@ -52,7 +52,7 @@ public class TemplateManager implements TemplateLoader {
     public Object getComponent(String componentName) {
         Object component = componentsByName.get(componentName);
         if (component == null) {
-            throw new RuntimeException("Unregistered component '" + componentName + "'");
+            throw new RuntimeException("Unregistered component '" + componentName + "'.");
         }
         return component;
     }

@@ -10,6 +10,7 @@ import com.destrostudios.cards.shared.rules.cards.CastSpellEvent;
 import com.destrostudios.cards.shared.rules.cards.DiscardEvent;
 import com.destrostudios.cards.shared.rules.cards.DrawCardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
+import com.destrostudios.cards.shared.rules.effects.DiscoverEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class ComponentsTriggers {
             new TriggerRegistration<>(new boolean[] { false }, new boolean[] { false }, EndTurnEvent.class, event -> new int[] { event.player }),
             new TriggerRegistration<>(new boolean[] { true }, new boolean[] {}, HealEvent.class, event -> new int[] { event.target }),
             new TriggerRegistration<>(new boolean[] { true }, new boolean[] {}, MoveToCreatureZoneEvent.class, event -> new int[] { event.card }),
+            new TriggerRegistration<>(new boolean[] { true }, new boolean[] {}, DiscoverEvent.class, event -> new int[] { event.player }),
         };
         for (TriggerRegistration<?> trigger : triggers) {
             String eventClassName = trigger.eventClass.getSimpleName();

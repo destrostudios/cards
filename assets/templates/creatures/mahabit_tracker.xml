@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/simple_discoverer(name=Mahabit Tracker,manaCost=3,attack=2,health=1,pool=BEAST,poolDescription=Beast)"/>
+</template>

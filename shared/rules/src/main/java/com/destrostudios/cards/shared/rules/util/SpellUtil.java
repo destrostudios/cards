@@ -4,6 +4,7 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.SimpleTarget;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
 
 import java.util.function.Predicate;
 
@@ -67,29 +68,49 @@ public class SpellUtil {
     }
 
     public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
-        // Currently, all spells with a hand prefilter are defaultCastFromHandSpells
+        // Currently, all spells with a hand prefilter are defaultCastFromHandSpells (FIXME: Doesn't cover discard effects like Can)
         Components.Prefilters prefilters = data.getComponent(spell, Components.Target.SOURCE_PREFILTERS);
         return ((prefilters != null) && (prefilters.getBasicComponents()[0] == Components.Zone.HAND));
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {
+        return getMatchingSpellEffect(data, spell, effect -> {
+            if (data.hasComponent(effect, Components.Effect.BATTLE)) {
+                int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);
+                for (int targetDefinition : targetDefinitions) {
+                    SimpleTarget[] simpleTargets = data.getComponent(targetDefinition, Components.Target.TARGET_SIMPLE);
+                    if (simpleTargets[0] == SimpleTarget.TARGETS) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }) != null;
+    }
+
+    public static DiscoverPool getDiscoverEffectPool(EntityData data, int spell) {
+        Integer effect = getMatchingSpellEffect(data, spell, e -> data.hasComponent(e, Components.Effect.DISCOVER));
+        if (effect != null) {
+            Components.Discover discover = data.getComponent(effect, Components.Effect.DISCOVER);
+            if (discover != null) {
+                return discover.getPool();
+            }
+        }
+        return null;
+    }
+
+    private static Integer getMatchingSpellEffect(EntityData data, int spell, Predicate<Integer> isEffectMatching) {
         int[] castTriggers = data.getComponent(spell, Components.Spell.CAST_TRIGGERS);
         if (castTriggers != null) {
             for (int castTrigger : castTriggers) {
                 int[] effects = data.getComponent(castTrigger, Components.Trigger.EFFECTS);
                 for (int effect : effects) {
-                    if (data.hasComponent(effect, Components.Effect.BATTLE)) {
-                        int[] targetDefinitions = data.getComponent(effect, Components.Target.TARGETS);
-                        for (int targetDefinition : targetDefinitions) {
-                            SimpleTarget[] simpleTargets = data.getComponent(targetDefinition, Components.Target.TARGET_SIMPLE);
-                            if (simpleTargets[0] == SimpleTarget.TARGETS) {
-                                return true;
-                            }
-                        }
+                    if (isEffectMatching.test(effect)) {
+                        return effect;
                     }
                 }
             }
         }
-        return false;
+        return null;
     }
 }

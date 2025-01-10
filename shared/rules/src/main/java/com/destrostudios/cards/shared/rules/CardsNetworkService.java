@@ -6,6 +6,8 @@ import com.destrostudios.cards.shared.entities.IntMap;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
 import com.destrostudios.cards.shared.rules.actions.*;
 import com.destrostudios.cards.shared.rules.cards.Foil;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
+import com.destrostudios.cards.shared.rules.effects.EffectOptions;
 import com.destrostudios.gametools.network.shared.modules.game.GameService;
 import com.destrostudios.gametools.network.shared.modules.game.NetworkRandom;
 import com.destrostudios.gametools.network.shared.serializers.EnumSerializer;
@@ -66,6 +68,8 @@ public class CardsNetworkService implements GameService<GameContext, Action> {
         kryo.register(SimpleTarget[].class);
         kryo.register(Components.AddBuff.class);
         kryo.register(Components.Create.class);
+        kryo.register(Components.Discover.class);
+        kryo.register(DiscoverPool.class, new EnumSerializer<>(DiscoverPool.class));
         kryo.register(Components.TriggerDelayed.class, new FieldSerializer<>(kryo, Components.TriggerDelayed.class));
         kryo.register(ComponentDefinition.class, new Serializer<ComponentDefinition>() {
 
@@ -117,6 +121,8 @@ public class CardsNetworkService implements GameService<GameContext, Action> {
             public void write(Kryo kryo, Output output, GameContext gameContext) {
                 kryo.writeObject(output, gameContext.getStartGameInfo());
                 kryo.writeObject(output, gameContext.getData());
+                output.writeLong(gameContext.getActionsHash());
+                output.writeLong(gameContext.getLastActionHash());
             }
 
             @Override
@@ -125,20 +131,24 @@ public class CardsNetworkService implements GameService<GameContext, Action> {
                 // Create an own instance, so the frontend can add custom handlers
                 GameEventHandling eventHandling = new GameEventHandling();
                 SimpleEntityData data = kryo.readObject(input, SimpleEntityData.class);
-                return new GameContext(startGameInfo, eventHandling, data);
+                long actionsHash = input.readLong();
+                long lastActionHash = input.readLong();
+                return new GameContext(startGameInfo, eventHandling, data, actionsHash, lastActionHash);
             }
         });
         kryo.register(GameStartAction.class);
         kryo.register(MulliganAction.class);
         kryo.register(CastSpellAction.class);
+        kryo.register(EffectOptions.class);
         kryo.register(EndTurnAction.class);
     }
 
     @Override
     public GameContext applyAction(GameContext state, Action action, NetworkRandom random) {
-        state.fireAction(action, random);
         if (resolveActions) {
-            state.resolveEvents();
+            state.fireAndResolveAction(action, random);
+        } else {
+            state.fireAction(action, random);
         }
         return state;
     }

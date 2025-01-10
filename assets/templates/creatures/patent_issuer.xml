@@ -1,0 +1,14 @@
+<template>
+    <entity template="./templates/vanilla(name=Patent Issuer,manaCost=1,attack=1,health=2)">
+        <description>After you discover a card, draw a card.</description>
+        <postDiscoverTriggers>
+            <entity>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters advanced="OWNER"/>
+                <effects>
+                    <entity template="../effects/draw_for_owner(draw=1)"/>
+                </effects>
+            </entity>
+        </postDiscoverTriggers>
+    </entity>
+</template>

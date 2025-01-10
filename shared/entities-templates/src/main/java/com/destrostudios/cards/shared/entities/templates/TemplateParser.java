@@ -159,7 +159,7 @@ public class TemplateParser<NODE> {
     public Object parseEntity(String text) {
         Object entity = parseEntityNullable(text);
         if (entity == null) {
-            throw new RuntimeException("Invalid entity text '" + text + "'");
+            throw new RuntimeException("Invalid entity text '" + text + "'.");
         }
         return entity;
     }

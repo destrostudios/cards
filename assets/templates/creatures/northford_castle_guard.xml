@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/simple_discoverer(name=Northford Castle Guard,manaCost=3,attack=1,health=3,pool=TAUNT,poolDescription=creature with Taunt)">
+        <taunt/>
+    </entity>
+</template>

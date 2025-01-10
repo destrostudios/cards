@@ -22,7 +22,7 @@ public class CheckTriggersHandler<T extends Event> extends GameEventHandler<T> {
         EntityData data = context.getData();
         LOG.debug("Checking triggers of type {} for {}", triggerDefinition.component().getName(), event);
         for (int entity : data.list(triggerDefinition.component())) {
-            TriggerUtil.triggerIfPossible(data, data.getComponent(entity, triggerDefinition.component()), entity, triggerDefinition.getTargets().apply(event), context.getEvents());
+            TriggerUtil.triggerIfPossible(data, data.getComponent(entity, triggerDefinition.component()), entity, triggerDefinition.getTargets().apply(event), null, context.getEvents());
         }
     }
 }

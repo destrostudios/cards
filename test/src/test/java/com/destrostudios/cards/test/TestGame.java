@@ -20,6 +20,8 @@ import com.destrostudios.cards.shared.rules.cards.zones.MoveToCreatureZoneEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToGraveyardEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToHandEvent;
 import com.destrostudios.cards.shared.rules.cards.zones.MoveToLibraryEvent;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
+import com.destrostudios.cards.shared.rules.effects.EffectOptions;
 import com.destrostudios.cards.shared.rules.game.GameStartEvent;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 import com.destrostudios.cards.shared.rules.util.*;
@@ -39,6 +41,9 @@ public class TestGame {
     static {
         ApplicationSetup.setup();
     }
+
+    protected static final EffectOptions DISCOVER_OPTIONS = EffectOptions.builder().discoverIndex(0).build();
+
     private StartGameInfo startGameInfo;
     protected SimpleEntityData data;
     private GameContext gameContext;
@@ -58,7 +63,13 @@ public class TestGame {
                 new PlayerInfo(2, "Opponent", null),
             }
         );
-        gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE);
+        gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE) {
+
+            @Override
+            public String[] getDiscoverTemplates(DiscoverPool pool) {
+                return new String[] { getDiscoveredCardTemplate(pool) };
+            }
+        };
         data = gameContext.getData();
         random = mock(NetworkRandom.class);
         setupGame();
@@ -198,7 +209,15 @@ public class TestGame {
     }
 
     protected void castFromHand(int card, int... targets) {
-        cast(getDefaultCastFromHandSpell(card), targets);
+        castFromHand(card, targets, null);
+    }
+
+    protected void castFromHand(int card, EffectOptions options) {
+        cast(getDefaultCastFromHandSpell(card), ArrayUtil.EMPTY, options);
+    }
+
+    protected void castFromHand(int card, int[] targets, EffectOptions options) {
+        cast(getDefaultCastFromHandSpell(card), targets, options);
     }
 
     protected void attack(int card, int target) {
@@ -206,8 +225,12 @@ public class TestGame {
     }
 
     protected void cast(int spell, int... targets) {
+        cast(spell, targets, null);
+    }
+
+    protected void cast(int spell, int[] targets, EffectOptions options) {
         int source = data.getComponent(spell, Components.SOURCE);
-        fire(new CastSpellEvent(source, spell, targets));
+        fire(new CastSpellEvent(source, spell, targets, options));
     }
 
     protected void damage(int[] entities, int damage) {
@@ -293,12 +316,23 @@ public class TestGame {
         assertEquals(count, getCards(player, zone, name).size());
     }
 
-    protected int getCard(int player, ComponentDefinition<Void> zone, String name) {
-        IntList cards = getCards(player, zone, name);
-        if (cards.size() != 1) {
-            fail("More than one matching card found.");
-        }
-        return cards.get(0);
+    protected int getAndAssertFirstCard(int player, ComponentDefinition<Void> zone, String name) {
+        return getAndAssertCard(player, zone, 0, name);
+    }
+
+    protected int getAndAssertCard(int player, ComponentDefinition<Void> zone, int index, String name) {
+        int card = getCard(player, zone, index);
+        assertComponent(card, Components.NAME, name);
+        return card;
+    }
+
+    protected int getCard(int player, ComponentDefinition<Void> zone, int index) {
+        IntList cards = getCards(player, zone);
+        return cards.get(index);
+    }
+
+    protected IntList getCards(int player, ComponentDefinition<Void> zone) {
+        return data.list(getCardPlayerZone(zone)[player]);
     }
 
     protected IntList getCards(int player, ComponentDefinition<Void> zone, String name) {
@@ -426,7 +460,7 @@ public class TestGame {
         } else if (cardZone == Components.Zone.GRAVEYARD) {
             return Components.Zone.PLAYER_GRAVEYARD;
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(cardZone.getName());
     }
 
     private static ComponentDefinition<IntList> getPlayerCardsZone(ComponentDefinition<Void> cardZone) {
@@ -440,5 +474,34 @@ public class TestGame {
             return Components.Player.GRAVEYARD_CARDS;
         }
         throw new IllegalArgumentException();
+    }
+
+    private String getDiscoveredCardTemplate(DiscoverPool pool) {
+        return getDiscoveredCard(pool)[0];
+    }
+
+    protected String getDiscoveredCardName(DiscoverPool pool) {
+        return getDiscoveredCard(pool)[1];
+    }
+
+    private String[] getDiscoveredCard(DiscoverPool pool) {
+        switch (pool) {
+            // General
+            case CREATURE: return new String[] { "creatures/elven_queen", "Elven Queen" };
+            case SPELL: return new String[] { "spells/grand_fireball", "Grand Fireball" };
+            // Tribes
+            case BEAST: return new String[] { "creatures/bloodhawk", "Bloodhawk" };
+            case GOBLIN: return new String[] { "creatures/goblin_commander", "Goblin Commander" };
+            case DRAGON: return new String[] { "creatures/guardian_dragon", "Guardian Dragon" };
+            case MACHINE: return new String[] { "creatures/oven", "Oven" };
+            // Other
+            case CREATURE_THAT_COSTS_2: return new String[] { "creatures/river_racoon", "River Racoon" };
+            case CREATURE_THAT_COSTS_8_OR_MORE: return new String[] { "creatures/the_wizard_king", "The Wizard King" };
+            case GOBLIN_THAT_COSTS_2_OR_LESS: return new String[] { "creatures/goblin_drinking_buddy", "Goblin Drinking Buddy" };
+            case LEGENDARY_CREATURE: return new String[] { "creatures/terror_from_above", "Terror from Above" };
+            case SPELL_THAT_COSTS_1: return new String[] { "spells/thunder", "Thunder" };
+            case TAUNT: return new String[] { "creatures/ancient_tree", "Ancient Tree" };
+        }
+        throw new IllegalArgumentException(pool.toString());
     }
 }

@@ -4,19 +4,20 @@ import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.events.EventQueue;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameContext;
+import com.destrostudios.cards.shared.rules.effects.EffectOptions;
 import com.destrostudios.cards.shared.rules.effects.TriggerEvent;
 
 public class TriggerUtil {
 
-    public static void triggerIfPossible(EntityData data, int[] triggers, int source, int[] targets, EventQueue<GameContext> events) {
+    public static void triggerIfPossible(EntityData data, int[] triggers, int source, int[] targets, EffectOptions options, EventQueue<GameContext> events) {
         for (int trigger : triggers) {
-            triggerIfPossible(data, trigger, source, targets, events);
+            triggerIfPossible(data, trigger, source, targets, options, events);
         }
     }
 
-    public static void triggerIfPossible(EntityData data, int trigger, int source, int[] targets, EventQueue<GameContext> events) {
+    public static void triggerIfPossible(EntityData data, int trigger, int source, int[] targets, EffectOptions options, EventQueue<GameContext> events) {
         if (ConditionUtil.isConditionFulfilled(data, trigger, source, targets)) {
-            events.fire(new TriggerEvent(trigger, source, targets));
+            events.fire(new TriggerEvent(trigger, source, targets, options));
         }
     }
 

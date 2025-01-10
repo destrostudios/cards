@@ -1,0 +1,5 @@
+<template>
+    <entity template="./templates/simple_discoverer(name=Curve Builder,manaCost=1,attack=1,health=1,pool=CREATURE_THAT_COSTS_2)">
+        <description>Cast: Discover a creature that costs (2).</description>
+    </entity>
+</template>

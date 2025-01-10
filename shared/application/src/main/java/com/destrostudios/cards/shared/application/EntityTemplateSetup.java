@@ -8,6 +8,7 @@ import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.files.FileAssets;
 import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.cards.Foil;
+import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
 import com.destrostudios.cards.shared.rules.game.turn.EndTurnEvent;
 
 public class EntityTemplateSetup {
@@ -116,6 +117,21 @@ public class EntityTemplateSetup {
             @Override
             public Components.Create resolve(int[] proxiedEntities, CreateProxy recordedValue) {
                 return new Components.Create(resolveTemplate(proxiedEntities, recordedValue.template).getAsResolvedText(), recordedValue.location);
+            }
+        });
+        record DiscoverProxy(DiscoverPool pool, Object[] triggers) {}
+        templateManager.registerComponent(Components.Effect.DISCOVER, new ComponentParser<Object, DiscoverProxy, Components.Discover>() {
+
+            @Override
+            public DiscoverProxy parse(TemplateParser parser, TemplateFormat format, Object node) {
+                DiscoverPool pool = DiscoverPool.valueOf(parser.parseText(format.getAttribute(node, "pool")));
+                Object[] triggers = parseOrCreateChildEntities(parser, format, node, TemplateKeyword.ENTITIES);
+                return new DiscoverProxy(pool, triggers);
+            }
+
+            @Override
+            public Components.Discover resolve(int[] proxiedEntities, DiscoverProxy recordedValue) {
+                return new Components.Discover(recordedValue.pool, resolveEntities(proxiedEntities, recordedValue.triggers));
             }
         });
         templateManager.registerComponent(Components.Effect.SHUFFLE_LIBRARY, new ComponentParser_Void());

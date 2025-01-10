@@ -12,17 +12,19 @@ public class TriggerEvent extends Event implements ExpressionContextProvider {
     public final int trigger;
     public final int source;
     public final int[] targets;
+    public final EffectOptions options;
 
-    public TriggerEvent(int trigger, int source, int[] targets) {
+    public TriggerEvent(int trigger, int source, int[] targets, EffectOptions options) {
         super(EventType.TRIGGER);
         this.trigger = trigger;
         this.source = source;
         this.targets = targets;
+        this.options = options;
     }
 
     @Override
     public String toString() {
-        return "TriggerEvent{" + "trigger=" + trigger + ", source=" + source + ", targets=" + targets + '}';
+        return "TriggerEvent{" + "trigger=" + trigger + ", source=" + source + ", targets=" + targets + ", options=" + options + "}";
     }
 
     @Override

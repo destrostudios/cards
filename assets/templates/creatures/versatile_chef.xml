@@ -1,0 +1,10 @@
+<template>
+    <entity id="card" template="./templates/simple_discoverer_with_trigger(name=Versatile Chef,manaCost=6,attack=2,health=5,pool=CREATURE,trigger=#trigger)">
+        <description>Cast: Discover a creature and  heal yourself equal to its cost.</description>
+    </entity>
+    <entity id="trigger">
+        <effects>
+            <entity template="../effects/heal_source_owner(heal=baseTargets[0].manaCost)"/>
+        </effects>
+    </entity>
+</template>

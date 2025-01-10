@@ -26,12 +26,15 @@ creatures/can,1
 creatures/central_fountain,1
 creatures/cloud_devourer,1
 creatures/cloud_of_revenge,1
+creatures/clumsy_wizard,1
 creatures/copperfang_tribesman,1
 creatures/crazed_doctor,1
+creatures/curve_builder,1
 creatures/dam,1
 creatures/dark_rider,1
 creatures/demon_samurai,1
 creatures/divine_justicar,1
+creatures/dracologist,1
 creatures/dragon,1
 creatures/dragon_egg,1
 creatures/dragon_rider,1
@@ -40,6 +43,7 @@ creatures/dragons_knight,1
 creatures/elven_guard,1
 creatures/elven_queen,1
 creatures/emperor_tamarin,1
+creatures/exaggerating_storyteller,1
 creatures/exiled_druid,1
 creatures/fairy,1
 creatures/fascinating_fairytales_part_1,1
@@ -68,6 +72,7 @@ creatures/goblin_pillager,1
 creatures/goblin_poacher,1
 creatures/goblin_recruiter,1
 creatures/goblin_technician,1
+creatures/goblin_tourguide,1
 creatures/goblin_warhead_launcher,1
 creatures/golden_emperor,1
 creatures/good_boy,1
@@ -94,10 +99,13 @@ creatures/leviathan,1
 creatures/library_troll,1
 creatures/machine_polisher,1
 creatures/mahabit_shaman,1
+creatures/mahabit_tracker,1
+creatures/meddling_mimic,1
 creatures/medical_supply_waggon,1
 creatures/mermaid,1
 creatures/mounted_dwarf_warrior,1
 creatures/nightmare_demon,1
+creatures/northford_castle_guard,1
 creatures/novice_paladin,1
 creatures/old_alchemist,1
 creatures/old_archer,1
@@ -105,11 +113,14 @@ creatures/old_rhino,1
 creatures/outer_world_colonizer,1
 creatures/oven,1
 creatures/ox_warhero,1
+creatures/patent_issuer,1
 creatures/pebble,1
 creatures/plague_hunter,1
 creatures/plated_aradon,1
 creatures/portable_sand_relic,1
 creatures/priestess_of_valdas,1
+creatures/promising_explorer,1
+creatures/promising_student,1
 creatures/relic_guardian,1
 creatures/returning_hero,1
 creatures/river_racoon,1
@@ -130,6 +141,7 @@ creatures/the_ether_dragon,1
 creatures/the_wizard_king,1
 creatures/thunder_spirit,1
 creatures/tiny_dragon,1
+creatures/tuning_bot,1
 creatures/two_headed_chimera,2
 creatures/ultriia_flower_of_corruption,1
 creatures/undead_general,1
@@ -146,6 +158,7 @@ creatures/underworld_warlord,1
 creatures/unremembered_griffin,1
 creatures/valkyrie,1
 creatures/vending_machine,1
+creatures/versatile_chef,1
 creatures/walking_mortuary,1
 creatures/wandering_wizard,1
 creatures/war_angel,1

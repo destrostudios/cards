@@ -15,7 +15,8 @@ public class AssetPreloader {
         preloadDirectory(assetManager, "textures/");
         // Preload bundled card-gui assets
         assetManager.loadModel("card-gui/samples/models/card/card.j3o");
-        assetManager.loadAsset("card-gui/samples/materials/foil_card/foil_card.j3md");
+        assetManager.loadModel("card-gui/samples/models/circle/circle.j3o");
+        assetManager.loadAsset("card-gui/samples/materials/foil/foil.j3md");
         assetManager.loadAsset("card-gui/samples/materials/glow_quad/glow_quad.j3md");
         assetManager.loadTexture("card-gui/samples/textures/card_glow.png");
         assetManager.loadTexture("card-gui/samples/textures/target_arrow.png");

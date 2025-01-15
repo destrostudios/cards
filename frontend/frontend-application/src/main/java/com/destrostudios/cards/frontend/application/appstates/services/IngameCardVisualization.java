@@ -2,7 +2,7 @@ package com.destrostudios.cards.frontend.application.appstates.services;
 
 import com.destrostudios.cardgui.samples.visualization.CustomAttachmentVisualization;
 import com.destrostudios.cardgui.samples.visualization.background.*;
-import com.destrostudios.cardgui.samples.visualization.cards.modelled.FoilModelledCard;
+import com.destrostudios.cardgui.samples.visualization.cards.modelled.FoilSimpleModelledCard;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.CardPainter;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.jme3.asset.AssetManager;
@@ -18,9 +18,9 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         this.fullArt = fullArt;
         node = new Node();
         node.setLocalScale(scale);
-        foilModelledCard = new FoilModelledCard(assetManager, CARDBACK_PATH, ColorRGBA.Black);
-        foilModelledCard.getMaterial_Front().setFloat("Distortion", foilDistortion);
-        Node foilModelledCardNode = foilModelledCard.getNode();
+        modelledCard = new FoilSimpleModelledCard(assetManager, CARDBACK_PATH, ColorRGBA.Black);
+        modelledCard.getMaterial_Front().setFloat("Distortion", foilDistortion);
+        Node foilModelledCardNode = modelledCard.getNode();
         foilModelledCardNode.setShadowMode(shadows ? RenderQueue.ShadowMode.CastAndReceive : RenderQueue.ShadowMode.Off);
         this.node.attachChild(foilModelledCardNode);
         glowQuad = new GlowQuad(assetManager, 0.96f, 1.28f);
@@ -32,13 +32,13 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
     public static final String CARDBACK_PATH = "images/cardbacks/hex.png";
     private boolean fullArt;
     private Node node;
-    private FoilModelledCard foilModelledCard;
+    private FoilSimpleModelledCard modelledCard;
     private GlowQuad glowQuad;
     private TextureQuad tauntBox;
     private ColorBox divineShieldBox;
 
     public void updateCardFront(CardModel cardModel) {
-        Material material = foilModelledCard.getMaterial_Front();
+        Material material = modelledCard.getMaterial_Front();
         Texture2D[] textures = CardPainter.getAll(cardModel, fullArt);
         for (int i = 0; i < textures.length; i++) {
             String parameterName = ((i < (textures.length - 1)) ? "DiffuseMap" + (i + 1) : "FoilMap");

@@ -14,7 +14,7 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.card-gui>f959ea6b81c7871b93cf76063887f6c88f7cdc1a</version.card-gui>
+        <version.card-gui>1d06717f0e64265a7a0df63bdd0774168ed023aa</version.card-gui>
         <version.cards>0.0.1</version.cards>
         <version.game-tools>cc02ca8ca6b2fddcde26ccb9ee10c2be724ec88a</version.game-tools>
         <version.groovy>3.0.22</version.groovy>

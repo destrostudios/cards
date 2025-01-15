@@ -27,7 +27,7 @@
         <version.junit>5.11.0</version.junit>
         <version.lemur>1.16.0</version.lemur>
         <version.lemur-proto>1.13.0</version.lemur-proto>
-        <version.lombok>1.18.34</version.lombok>
+        <version.lombok>1.18.36</version.lombok>
         <version.maven-compiler-plugin>3.13.0</version.maven-compiler-plugin>
         <version.maven-surefire-plugin>3.5.0</version.maven-surefire-plugin>
         <version.mockito>5.13.0</version.mockito>

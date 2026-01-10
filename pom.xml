@@ -112,9 +112,7 @@
             <dependency>
                 <groupId>com.github.destrostudios.game-tools</groupId>
                 <artifactId>bot</artifactId>
-                <scope>system</scope>
-                <systemPath>C:/Users/Carl/.m2/repository/com/destrostudios/game-tools/bot/0.1.0-SNAPSHOT/bot-0.1.0-SNAPSHOT.jar</systemPath>
-                <version>snapshot</version>
+                <version>${version.game-tools}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.destrostudios.game-tools</groupId>

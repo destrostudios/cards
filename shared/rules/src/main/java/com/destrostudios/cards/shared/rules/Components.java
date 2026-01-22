@@ -38,13 +38,14 @@ public class Components {
     public static final ComponentDefinition<Integer> SOURCE = create("source");
     public static final ComponentDefinition<Void> BOARD = create("board");
     public static final ComponentDefinition<Void> CREATURE_CARD = create("creatureCard");
+    public static final ComponentDefinition<Void> SPELL_CARD = create("spellCard");
+    public static final ComponentDefinition<Void> POWER_CARD = create("powerCard");
     public static final ComponentDefinition<String> FLAVOUR_TEXT = create("flavourText");
     public static final ComponentDefinition<Integer> NEXT_PLAYER = create("nextPlayer");
     public static final ComponentDefinition<Integer> OWNED_BY = create("ownedBy");
     public static final ComponentDefinition<int[]> AURAS = create("auras");
     public static final ComponentDefinition<IntList> BUFFS = create("buffs");
     public static final ComponentDefinition<String> CONDITION = create("condition");
-    public static final ComponentDefinition<Void> SPELL_CARD = create("spellCard");
     public static final ComponentDefinition<int[]> SPELLS = create("spells");
     public static final ComponentDefinition<Integer> AVAILABLE_MANA = create("availableMana");
     public static final ComponentDefinition<Integer> MANA = create("mana");
@@ -83,6 +84,7 @@ public class Components {
     public static class Player {
         public static final ComponentDefinition<Void> MULLIGAN = create("mulligan");
         public static final ComponentDefinition<Void> ACTIVE_PLAYER = create("activePlayer");
+        public static final ComponentDefinition<IntList> POWER_CARDS = create("powerCards");
         public static final ComponentDefinition<IntList> LIBRARY_CARDS = create("libraryCards");
         public static final ComponentDefinition<IntList> HAND_CARDS = create("handCards");
         public static final ComponentDefinition<IntList> CREATURE_ZONE_CARDS = create("creatureZoneCards");

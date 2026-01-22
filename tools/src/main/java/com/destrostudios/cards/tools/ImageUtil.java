@@ -24,10 +24,10 @@ public class ImageUtil {
         return target;
     }
 
-    public static BufferedImage extractHorizontalCenter(BufferedImage source, int width) {
+    public static BufferedImage extractHorizontalCenter(BufferedImage source, int width, int offsetX) {
         BufferedImage target = new BufferedImage(width, source.getHeight(), source.getType());
         Graphics2D graphics = target.createGraphics();
-        graphics.drawImage(source, ((source.getWidth() - width) / -2), 0, null);
+        graphics.drawImage(source, ((source.getWidth() - width) / -2) + offsetX, 0, null);
         graphics.dispose();
         return target;
     }

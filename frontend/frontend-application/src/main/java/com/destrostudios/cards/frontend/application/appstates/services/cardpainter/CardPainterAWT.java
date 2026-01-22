@@ -8,6 +8,7 @@ import com.destrostudios.cards.frontend.application.appstates.services.cardpaint
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,13 +40,13 @@ public class CardPainterAWT {
         graphics = (Graphics2D) graphics.create();
         List<String> drawnKeywords = new LinkedList<>();
         drawnKeywords.addAll(cardModel.getKeywords());
-        graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType() + ".png"), 0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT, null);
+        graphics.drawImage(CardImages.getCachedImage("images/templates/template_" + cardModel.getType().name().toLowerCase() + ".png"), 0, 0, CardPainter.TEXTURE_WIDTH, CardPainter.TEXTURE_HEIGHT, null);
         graphics.setFont(fontTitle);
         graphics.setColor(Color.BLACK);
-        String title = cardModel.getTitle();
+        String name = cardModel.getName();
         int textStartX = 43;
-        if (title != null) {
-            graphics.drawString(title, textStartX, 60);
+        if (name != null) {
+            graphics.drawString(name, textStartX, 60);
         }
         tmpY = 350;
         if(drawnKeywords.size() > 0){
@@ -98,7 +99,7 @@ public class CardPainterAWT {
         graphics.setColor(Color.WHITE);
         graphics.fillRect(35, 68, CardPainter.ARTWORK_WIDTH, CardPainter.ARTWORK_HEIGHT);
         String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-        Image cachedImage = CardImages.getCachedImage(imageFilePath, CardPainter.ARTWORK_WIDTH, CardPainter.ARTWORK_HEIGHT);
+        BufferedImage cachedImage = CardImages.getCachedImage(imageFilePath, CardPainter.ARTWORK_WIDTH, CardPainter.ARTWORK_HEIGHT);
         graphics.drawImage(cachedImage, 35, 68, null);
         graphics.dispose();
     }

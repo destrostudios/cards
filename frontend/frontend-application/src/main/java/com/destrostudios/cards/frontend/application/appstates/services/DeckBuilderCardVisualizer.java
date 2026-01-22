@@ -22,7 +22,7 @@ public class DeckBuilderCardVisualizer extends SimpleDeckBuilderDeckCardVisualiz
         PaintableImage image = new PaintableImage(400, 57);
         image.setBackground(Color.BLACK);
         String imageFilePath = CardImages.getCardImageFilePath(cardModel);
-        PaintableImage artwork = new PaintableImage((BufferedImage) CardImages.getCachedImage(imageFilePath));
+        PaintableImage artwork = new PaintableImage(CardImages.getCachedImage(imageFilePath));
         int srcX = 0;
         int srcWidth = artwork.getWidth();
         int dstX = amountPixelWidth;
@@ -33,7 +33,7 @@ public class DeckBuilderCardVisualizer extends SimpleDeckBuilderDeckCardVisualiz
         int srcHeight = (int) (srcWidth / dstRatio);
         int srcY = ((artwork.getHeight() / 2) - (srcHeight / 2));
         image.paintImage(artwork, srcX, srcY, srcWidth, srcHeight, dstX, dstY, dstWidth, dstHeight);
-        paintText(image, amountPixelWidth + 20, (image.getHeight() / 2), false, true, cardModel.getTitle());
+        paintText(image, amountPixelWidth + 20, (image.getHeight() / 2), false, true, cardModel.getName());
         return image;
     }
 

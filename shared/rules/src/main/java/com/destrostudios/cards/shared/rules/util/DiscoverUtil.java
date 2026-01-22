@@ -2,7 +2,6 @@ package com.destrostudios.cards.shared.rules.util;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.rules.Cards;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
@@ -19,13 +18,12 @@ public class DiscoverUtil {
     public static void setup() {
         EntityData data = new SimpleEntityData(Components.ALL);
         for (String template : Cards.COLLECTIBLE) {
-            int card = data.createEntity();
-            EntityTemplate.loadTemplate(data, card, template);
+            int card = CardUtil.createCard(data, template);
 
             Integer manaCost = null;
-            Integer defaultCastFromHandSpell = SpellUtil.getDefaultCastFromHandSpell(data, card);
-            if (defaultCastFromHandSpell != null) {
-                manaCost = CostUtil.getEffectiveManaCost(data, defaultCastFromHandSpell);
+            Integer defaultPlaySpell = SpellUtil.getDefaultPlaySpell(data, card);
+            if (defaultPlaySpell != null) {
+                manaCost = CostUtil.getEffectiveManaCost(data, defaultPlaySpell);
             }
 
             if (data.hasComponent(card, Components.CREATURE_CARD)) {

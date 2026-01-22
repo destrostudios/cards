@@ -44,6 +44,14 @@ public class EntityBoardMap {
 
     // TODO: Extract to better place. Pass as initializer interface?
     private void initialCardConfiguration(int cardEntity, Card<CardModel> card) {
+        /*if (data.hasComponent(cardEntity, Components.POWER_CARD)) {
+            float flipDuration = 0.25f;
+            card.rotation().addRelativeTransformation(new ConditionalRelativeTransformation<>(
+                new LinearTargetRotationTransformation(new Quaternion(), new TimeBasedRotationTransformationSpeed(flipDuration)),
+                new LinearTargetRotationTransformation(new Quaternion().fromAngleAxis(-1 * FastMath.PI, Vector3f.UNIT_X), new TimeBasedRotationTransformationSpeed(flipDuration)),
+                () -> card.getModel().isFront()
+            ));
+        }*/
         // card.position().addRelativeTransformation(new HoveringTransformation(0.3f, 2), () -> entityData.hasComponent(cardEntity, Components.Ability.FLYING) && entityData.hasComponent(cardEntity, Components.BOARD));
         // card.rotation().addRelativeTransformation(new SimpleTargetRotationTransformation(JMonkeyUtil.getQuaternion_Y(-90)), () -> entityData.hasComponent(cardEntity, Components.TAPPED));
     }

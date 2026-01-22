@@ -1,0 +1,5 @@
+<template>
+    <entity>
+        <targetSimple>TARGETS_DEFAULT_PLAY_SPELL</targetSimple>
+    </entity>
+</template>

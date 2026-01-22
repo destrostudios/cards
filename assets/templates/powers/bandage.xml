@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/simple_target_healer(name=Bandage,manaCost=1,heal=2)"/>
+</template>

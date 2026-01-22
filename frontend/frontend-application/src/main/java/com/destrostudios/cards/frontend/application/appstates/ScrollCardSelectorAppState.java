@@ -7,32 +7,37 @@ import com.destrostudios.cards.frontend.application.appstates.services.BoardUtil
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
+import com.jme3.app.Application;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.simsilica.lemur.Button;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
-public class ScrollCardSelectorAppState extends CardSelectorAppState {
+public abstract class ScrollCardSelectorAppState extends SelectorAppState {
 
-    public ScrollCardSelectorAppState(String description, List<int[]> validTargets, Function<Integer, CardModel> getCardModel, Runnable onCancel, Consumer<int[]> onSubmit) {
-        super(description, validTargets, getCardModel, onCancel, onSubmit);
+    public ScrollCardSelectorAppState(String description, Runnable onCancel) {
+        super(description, onCancel, true);
     }
     private ScrollSelectorAppState<CardModel> scrollSelectorAppState;
 
     @Override
-    protected void initSelector(List<CardModel> cardModels) {
+    public void initialize(AppStateManager stateManager, Application application) {
+        super.initialize(stateManager, application);
         ScrollSelectorSettings<CardModel> settings = ScrollSelectorSettings.<CardModel>builder()
-                .cards(cardModels)
-                .cardZone(new SimpleIntervalZone(new Vector3f(0, 3.8f, 1.12f), new Vector3f(0.5f, 0.01f, 0)))
+                .cards(createCardModels())
+                .cardZone(new SimpleIntervalZone(getCenter(), new Vector3f(0.5f, 0.01f, 0)))
                 .cardVisualizer(IngameCardVisualizer.forIngame_InspectOrSelect())
                 .cardSelectionChangeCallback(this::onCardSelectionChange)
                 .boardSettings(BoardUtil.getDefaultSettings("scroll_card_selector").build())
                 .build();
         scrollSelectorAppState = new ScrollSelectorAppState<>(rootNode, settings);
         mainApplication.getStateManager().attach(scrollSelectorAppState);
+
+        updateSubmitButton();
     }
+
+    protected abstract List<CardModel> createCardModels();
 
     @Override
     protected void initGui(int width, int height) {
@@ -64,9 +69,18 @@ public class ScrollCardSelectorAppState extends CardSelectorAppState {
         updateSubmitButton();
     }
 
-    @Override
-    protected List<CardModel> getSelectedTargetsCardModels() {
+    private void updateSubmitButton() {
+        List<CardModel> selectedCardModels = getSelectedCardModels();
+        buttonSubmit.setText("Submit (" + selectedCardModels.size() + ")");
+        GuiUtil.setButtonEnabled(buttonSubmit, isValidSelection(selectedCardModels));
+    }
+
+    protected List<CardModel> getSelectedCardModels() {
         return scrollSelectorAppState.getSelectedCards();
+    }
+
+    protected boolean isValidSelection(List<CardModel> selectedCardModels) {
+        return true;
     }
 
     @Override

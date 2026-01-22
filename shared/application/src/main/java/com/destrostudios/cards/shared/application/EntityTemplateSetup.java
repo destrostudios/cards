@@ -24,13 +24,14 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.SOURCE, new ComponentParser_Entity());
         templateManager.registerComponent(Components.BOARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.CREATURE_CARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.SPELL_CARD, new ComponentParser_Void());
+        templateManager.registerComponent(Components.POWER_CARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.FLAVOUR_TEXT, new ComponentParser_String());
         templateManager.registerComponent(Components.NEXT_PLAYER, new ComponentParser_Entity());
         // Components.OWNED_BY
         templateManager.registerComponent(Components.AURAS, new ComponentParser_Entities());
         // Components.BUFFS
         templateManager.registerComponent(Components.CONDITION, new ComponentParser_String());
-        templateManager.registerComponent(Components.SPELL_CARD, new ComponentParser_Void());
         templateManager.registerComponent(Components.SPELLS, new ComponentParser_Entities());
         templateManager.registerComponent(Components.AVAILABLE_MANA, new ComponentParser_Integer());
         templateManager.registerComponent(Components.MANA, new ComponentParser_Integer());
@@ -60,8 +61,9 @@ public class EntityTemplateSetup {
         templateManager.registerComponent(Components.Stats.DAMAGED, new ComponentParser_Integer());
         templateManager.registerComponent(Components.Stats.BONUS_DAMAGED, new ComponentParser_Integer());
 
-        templateManager.registerComponent(Components.Player.MULLIGAN, new ComponentParser_Void());
-        templateManager.registerComponent(Components.Player.ACTIVE_PLAYER, new ComponentParser_Void());
+        // Components.Player.MULLIGAN
+        // Components.Player.ACTIVE_PLAYER
+        // Components.Player.POWER_CARDS
         // Components.Player.LIBRARY_CARDS
         // Components.Player.HAND_CARDS
         // Components.Player.CREATURE_ZONE_CARDS

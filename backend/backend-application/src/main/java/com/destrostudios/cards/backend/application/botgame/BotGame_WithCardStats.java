@@ -49,7 +49,7 @@ public class BotGame_WithCardStats extends BotGame {
     protected void applyAction(Action action, NetworkRandom random) {
         EntityData data = gameContext.getData();
         if (action instanceof CastSpellAction castSpellAction) {
-            if (SpellUtil.isDefaultCastFromHandSpell(data, castSpellAction.getSpell())) {
+            if (SpellUtil.isDefaultPlaySpell(data, castSpellAction.getSpell())) {
                 PlayedCardThisTurn playedCardThisTurn = new PlayedCardThisTurn();
                 playedCardThisTurn.card = castSpellAction.getSource();
                 playedCardThisTurn.evalBeforePlayed = getActiveBotActivePlayerEval();

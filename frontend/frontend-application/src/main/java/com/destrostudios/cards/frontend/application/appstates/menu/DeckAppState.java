@@ -32,6 +32,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 import com.simsilica.lemur.Button;
+import com.simsilica.lemur.HAlignment;
+import com.simsilica.lemur.Label;
 
 import java.util.Comparator;
 
@@ -39,11 +41,12 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
 
     private AmbientLight ambientLight;
     private DirectionalLight directionalLight;
+    protected BitmapText textTitle;
     protected DBAS deckBuilderAppState;
     private SimpleIntervalZone inspectionZone;
     private Card<CardModel> inspectionCard;
     private Geometry inspectionBackdrop;
-    protected BitmapText textTitle;
+    protected Label labelDeckSize;
     protected Button buttonBack;
 
     @Override
@@ -67,7 +70,7 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
     private void initDeckBuilder() {
         Comparator<CardModel> cardOrder = new CompositeComparator<>(
             Comparator.comparing(CardModel::getManaCostDetails),
-            Comparator.comparing(CardModel::getTitle),
+            Comparator.comparing(CardModel::getName),
             Comparator.comparing(cardModel -> ((cardModel.getFoil() != null) ? cardModel.getFoil().ordinal() : -1))
         );
         deckBuilderAppState = createDeckBuilder(getDeckBuilderSettings(cardOrder), cardOrder);
@@ -106,7 +109,9 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
             .deckCardsMaximumTotal(GameConstants.MAXIMUM_DECK_SIZE)
             .deckCardsMaximumUnique(this::getMaximumUniqueDeckCards)
             .isAllowedToAddCard(this::isAllowedToAddCard)
+            .cardTryToAddInterceptor(this::interceptOnTryToAddCard)
             .cardAddedCallback(this::onCardAdded)
+            .deckSizeChangedCallback(this::onDeckSizeChanged)
             .boardSettings(BoardUtil.getDefaultSettings("deckbuilder")
                 .hoverInspectionDelay(0f)
                 .isInspectable(transformedBoardObject -> (transformedBoardObject instanceof Card card) && (card.getZonePosition().getZone() == deckZone))
@@ -140,8 +145,16 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
         return true;
     }
 
+    protected boolean interceptOnTryToAddCard(CardModel cardModel) {
+        return true;
+    }
+
     protected void onCardAdded(CardModel cardModel) {
 
+    }
+
+    private void onDeckSizeChanged(int deckSize) {
+        labelDeckSize.setText(deckBuilderAppState.getDeckSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + " cards");
     }
 
     protected void inspect(CardModel cardModel) {
@@ -166,29 +179,43 @@ public abstract class DeckAppState<DBAS extends DeckBuilderAppState<CardModel>> 
     }
 
     protected void initGui(float rightColumnX, float rightColumnWidth) {
+        float x;
+        float y;
+
         // Title
+        x = 56;
+        y = (mainApplication.getContext().getSettings().getHeight() - 30);
+
         BitmapFont guiFont = mainApplication.getAssetManager().loadFont("Interface/Fonts/Default.fnt");
         textTitle = new BitmapText(guiFont);
         textTitle.setSize(20);
-        float x = 56;
-        float y = (mainApplication.getContext().getSettings().getHeight() - 30);
+        updateTitle();
         textTitle.setLocalTranslation(x, y, 0);
         guiNode.attachChild(textTitle);
+
+        // Deck size
+        x = rightColumnX;
+        y -= 10;
+
+        labelDeckSize = new Label("");
+        labelDeckSize.setLocalTranslation(x, y, 0);
+        labelDeckSize.setColor(ColorRGBA.White);
+        labelDeckSize.setPreferredSize(new Vector3f(rightColumnWidth, 0, 0));
+        labelDeckSize.setTextHAlignment(HAlignment.Right);
+        guiNode.attachChild(labelDeckSize);
 
         // Back
         buttonBack = addButton("Back", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> back());
         buttonBack.setLocalTranslation(rightColumnX, 18 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
     }
 
-    protected abstract void back();
-
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        textTitle.setText(getTitle() + " (" + deckBuilderAppState.getDeckSize() + "/" + GameConstants.MAXIMUM_DECK_SIZE + ")");
+    protected void updateTitle() {
+        textTitle.setText(getTitle());
     }
 
     protected abstract String getTitle();
+
+    protected abstract void back();
 
     @Override
     public void cleanup() {

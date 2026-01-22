@@ -4,7 +4,7 @@
     </entity>
     <entity id="trigger">
         <effects>
-            <entity template="../effects/buff_target_default_cast_from_hand_spell(buff=#buff)"/>
+            <entity template="../effects/buff_target_default_play_spell(buff=#buff)"/>
         </effects>
     </entity>
     <entity id="buff" template="../buffs/simple(source=#card,bonusManaCost=-2)"/>

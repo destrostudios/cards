@@ -7,10 +7,9 @@ import org.junit.jupiter.api.Test;
 public class TestUnprocessedManaCrystal extends TestGame {
 
     @Test
-    public void testReduceManaCostOnSummon() {
-        int spell = createSpell(2, player, Components.Zone.HAND);
+    public void testGainManaOnCast() {
         int card = create("spells/unprocessed_mana_crystal", player, Components.Zone.HAND);
-        castFromHand(card, spell);
-        assertManaCost(spell, 1);
+        castFromHand(card);
+        assertComponent(player, Components.MANA, 2);
     }
 }

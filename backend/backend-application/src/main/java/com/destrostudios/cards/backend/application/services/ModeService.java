@@ -12,13 +12,15 @@ import java.util.List;
 
 public class ModeService {
 
-    public ModeService(Database database, CardListService cardListService) {
+    public ModeService(Database database, PowerService powerService, CardListService cardListService) {
         this.database = database;
+        this.powerService = powerService;
         this.cardListService = cardListService;
         modes = new HashMap<>();
         loadModes();
     }
     private Database database;
+    private PowerService powerService;
     private CardListService cardListService;
     private HashMap<Integer, Mode> modes;
 
@@ -45,6 +47,7 @@ public class ModeService {
                 modeDecks.add(new ModeDeck(
                     result.getInteger("id"),
                     result.getInteger("mode_id"),
+                    powerService.getPower(result.getInteger("power_id")),
                     cardListService.getCardList(result.getInteger("deck_card_list_id"))
                 ));
             }

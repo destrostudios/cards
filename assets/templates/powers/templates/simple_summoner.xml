@@ -1,0 +1,21 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <powerCard/>
+        <description>Summon a [summonDescription].</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/spawn_for_source_owner(template=[summonTemplate])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

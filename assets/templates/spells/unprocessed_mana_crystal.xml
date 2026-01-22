@@ -1,26 +1,21 @@
 <template>
+    <values>
+        <manaGain>1</manaGain>
+    </values>
     <entity id="card">
         <name>Unprocessed Mana Crystal</name>
         <spellCard/>
-        <description>Reduce cost of target card in your hand by (1).</description>
+        <description>Gain [manaGain] mana.</description>
         <spells>
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
-                <targetPrefilters basic="HAND" advanced="NOT_SOURCE,ALLY"/>
-                <manaCost>1</manaCost>
+                <manaCost>0</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>
                             <entity template="../effects/move_source_to_graveyard"/>
-                            <entity>
-                                <targets>
-                                    <entity template="../targets/targets_default_cast_from_hand_spell"/>
-                                </targets>
-                                <addBuff>
-                                    <entity template="../buffs/simple(source=#card,bonusManaCost=-1)"/>
-                                </addBuff>
-                            </entity>
+                            <entity template="../effects/gain_mana_for_source_owner(mana=[manaGain])"/>
                         </effects>
                     </entity>
                 </castTriggers>

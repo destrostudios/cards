@@ -92,7 +92,7 @@ public class BotTest_DeckGenerator extends BotTest {
         int gamesPerRound = 2000;
         int wins = 0;
         for (int i = 0; i < gamesPerRound; i++) {
-            StartGameInfo startGameInfo = getDefaultStartGameInfo(deck1, deck2);
+            StartGameInfo startGameInfo = getDefaultStartGameInfo(deck1, deck2, powerService.getPower_Spark(), powerService.getPower_Spark());
             BotGame botGame = new BotGame(allCards, startGameInfo, randomSeed.nextLong(), false, true, (botSettings, player) -> {
                 botSettings.maxThreads = 8;
             });

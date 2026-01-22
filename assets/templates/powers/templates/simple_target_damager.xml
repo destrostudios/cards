@@ -1,0 +1,22 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <powerCard/>
+        <description>Deal [damage] damage to target character.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <targetPrefilters basic="BOARD"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/damage_target(damage=[damage])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

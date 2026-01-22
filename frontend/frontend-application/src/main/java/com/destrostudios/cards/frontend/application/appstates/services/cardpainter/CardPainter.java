@@ -51,8 +51,8 @@ public class CardPainter {
 
     public static Texture2D getContent(CardModel cardModel, boolean fullArt) {
         return get(
-            // Other properties currently never change for a given title
-            "content_" + fullArt + "_" + cardModel.getTitle(),
+            // Other properties currently never change for a given name
+            "content_" + fullArt + "_" + cardModel.getName(),
             t -> {
                 if (fullArt) {
                     t.draw(g -> CardPainterAWT.drawCardFront_Minified_Artwork(g, cardModel));

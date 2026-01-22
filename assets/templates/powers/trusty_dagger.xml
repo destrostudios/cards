@@ -1,0 +1,24 @@
+<template>
+    <values>
+        <damage>2</damage>
+    </values>
+    <entity id="card">
+        <name>Trusty Dagger</name>
+        <powerCard/>
+        <description>Deal [damage] damage to your opponent.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>2</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/damage_source_owner_opponent(damage=[damage])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

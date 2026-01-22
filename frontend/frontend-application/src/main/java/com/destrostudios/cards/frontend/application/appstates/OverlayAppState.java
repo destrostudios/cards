@@ -101,7 +101,9 @@ public class OverlayAppState extends MyBaseAppState implements ActionListener {
     public void cleanup() {
         super.cleanup();
         mainApplication.getGuiNode().detachChild(guiNode);
-        mainApplication.getInputManager().deleteMapping("mouseLeft");
-        mainApplication.getInputManager().removeListener(this);
+        if (closeOnClick) {
+            mainApplication.getInputManager().deleteMapping("mouseLeft");
+            mainApplication.getInputManager().removeListener(this);
+        }
     }
 }

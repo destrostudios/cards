@@ -33,17 +33,18 @@ public class BackendApplication {
 
         Database database = getDatabase();
         CardService cardService = new CardService(database);
+        PowerService powerService = new PowerService(database);
         FoilService foilService = new FoilService(database);
         CardListService cardListService = new CardListService(database, cardService, foilService);
-        ModeService modeService = new ModeService(database, cardListService);
+        ModeService modeService = new ModeService(database, powerService, cardListService);
         QueueService queueService = new QueueService(database);
         ArenaService arenaService = new ArenaService(cardService);
         EntityService entityService = new EntityService(cardService);
         PackService packService = new PackService(cardService, foilService, entityService);
-        UserService userService = new UserService(database, modeService, cardService, foilService, cardListService, queueService, arenaService, packService);
+        UserService userService = new UserService(database, modeService, cardService, powerService, foilService, cardListService, queueService, arenaService, packService);
         DeckService deckService = new DeckService(modeService, userService);
 
-        BotDeckService botDeckService = new BotDeckService(database, cardService, foilService, cardListService, modeService, queueService, entityService);
+        BotDeckService botDeckService = new BotDeckService(database, cardService, powerService, foilService, cardListService, modeService, queueService, entityService);
         // botDeckService.generateDecks(123);
 
         Server kryoServer = new Server(10_000_000, 10_000_000);
@@ -51,11 +52,11 @@ public class BackendApplication {
 
         System.err.println("WARNING: Using jwt service without validation.");
         JwtServerModule jwtModule = new JwtServerModule(new NoValidateJwtService(), kryoServer::getConnections);
-        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, cardService, modeService, queueService, userService, deckService);
+        GameDataServerModule gameDataServerModule = new GameDataServerModule(jwtModule, database, cardService, powerService, modeService, queueService, userService, deckService);
         GameServerModule<GameContext, Action> gameModule = new GameServerModule<>(new CardsNetworkService(true), kryoServer::getConnections);
         CardsBotModule cardsBotModule = new CardsBotModule(gameModule);
         CardsGameStartServerModule gameStartModule = new CardsGameStartServerModule(kryoServer, jwtModule, gameModule, cardService);
-        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, modeService, deckService, queueService);
+        QueueServerModule queueModule = new QueueServerModule(jwtModule, gameStartModule, cardsBotModule, powerService, modeService, deckService, queueService);
         GameOverModule gameOverModule = new GameOverModule(gameModule, database, userService);
         AutoRejoinModule autoRejoinModule = new AutoRejoinModule(jwtModule, gameModule);
 

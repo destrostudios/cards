@@ -65,17 +65,17 @@ public class TargetUtil {
                 int sourceOwner = data.getComponent(source, Components.OWNED_BY);
                 add.accept(data.getComponent(sourceOwner, Components.NEXT_PLAYER));
             }
-            case SOURCE_DEFAULT_CAST_FROM_HAND_SPELL -> {
-                add.accept(SpellUtil.getDefaultCastFromHandSpell(data, source));
+            case SOURCE_DEFAULT_PLAY_SPELL -> {
+                add.accept(SpellUtil.getDefaultPlaySpell(data, source));
             }
             case TARGETS -> {
                 for (int target : targets) {
                     add.accept(target);
                 }
             }
-            case TARGETS_DEFAULT_CAST_FROM_HAND_SPELL -> {
+            case TARGETS_DEFAULT_PLAY_SPELL -> {
                 for (int target : targets) {
-                    add.accept(SpellUtil.getDefaultCastFromHandSpell(data, target));
+                    add.accept(SpellUtil.getDefaultPlaySpell(data, target));
                 }
             }
         }
@@ -166,11 +166,11 @@ public class TargetUtil {
                 int sourceOpponent = data.getComponent(sourceOwner, Components.NEXT_PLAYER);
                 return (entity == sourceOpponent);
             }
-            case DEFAULT_CAST_FROM_HAND_SPELL -> {
-                return SpellUtil.isDefaultCastFromHandSpell(data, entity);
+            case DEFAULT_PLAY_SPELL -> {
+                return SpellUtil.isDefaultPlaySpell(data, entity);
             }
-            case SOURCE_DEFAULT_CAST_FROM_HAND_SPELL -> {
-                return SpellUtil.getDefaultCastFromHandSpell(data, source) == entity;
+            case SOURCE_DEFAULT_PLAY_SPELL -> {
+                return SpellUtil.getDefaultPlaySpell(data, source) == entity;
             }
             case SOURCE_HAND -> {
                 return hasSourceComponent(data, entity, Components.Zone.HAND);

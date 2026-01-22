@@ -7,7 +7,7 @@
         <postCastSpellTriggers>
             <entity>
                 <sourcePrefilters basic="CREATURE_ZONE"/>
-                <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_SPELL_CARD,SOURCE_ALLY"/>
+                <targetPrefilters advanced="DEFAULT_PLAY_SPELL,SOURCE_SPELL_CARD,SOURCE_ALLY"/>
                 <effects>
                     <entity template="../effects/buff_source(buff=#buff)"/>
                 </effects>

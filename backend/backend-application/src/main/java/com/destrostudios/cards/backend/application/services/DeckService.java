@@ -30,10 +30,10 @@ public class DeckService {
         }
     }
 
-    public void updateDeck(int modeId, int deckId, String name,List<NewCardListCard> cards) {
+    public void updateDeck(int modeId, int deckId, String name, int powerId, List<NewCardListCard> cards) {
         Mode mode = modeService.getMode(modeId);
         if (mode.isHasFreeUserDecks()) {
-            userService.updateUserModeDeck(deckId, name, cards);
+            userService.updateUserModeDeck(deckId, name, powerId, cards);
         } else {
             throw new UnsupportedOperationException();
         }

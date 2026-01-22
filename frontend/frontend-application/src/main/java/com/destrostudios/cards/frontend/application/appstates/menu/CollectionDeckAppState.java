@@ -1,13 +1,20 @@
 package com.destrostudios.cards.frontend.application.appstates.menu;
 
+import com.destrostudios.cardgui.BoardObject;
 import com.destrostudios.cardgui.CardZone;
+import com.destrostudios.cardgui.InteractivitySource;
+import com.destrostudios.cardgui.interactivities.ClickInteractivity;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.DeckBuilderSettings;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderAppState;
 import com.destrostudios.cardgui.samples.tools.deckbuilder.collection.CollectionDeckBuilderSettings;
+import com.destrostudios.cardgui.transformations.ConstantButTargetedTransformation;
 import com.destrostudios.cardgui.zones.SimpleIntervalZone;
 import com.destrostudios.cards.frontend.application.appstates.LoadingAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.CollectionCardAmountVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.IngameCardVisualizer;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardType;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.deckpower.DeckPower;
+import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.deckpower.DeckPowerVisualizer;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.gui.GuiUtil;
 import com.destrostudios.cards.frontend.application.modules.GameDataClientModule;
@@ -28,13 +35,11 @@ import com.simsilica.lemur.Button;
 import com.simsilica.lemur.Label;
 import com.simsilica.lemur.TextField;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.function.Predicate;
+import java.util.*;
 
 public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionDeckBuilderAppState<CardModel>> implements ActionListener {
+
+    private static final int HIGHEST_BUTTON_MANA_COST = 10;
 
     public CollectionDeckAppState(Mode mode, Deck deck) {
         this.mode = mode;
@@ -42,9 +47,12 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
     }
     private Mode mode;
     private Deck deck;
-    private HashMap<CardModel, Integer> collectionCards;
+    private boolean isSelectingPower;
     private Node collectionGuiNode;
     private TextField textFieldName;
+    private Label labelPowerName;
+    private Power selectedPower;
+    private DeckPower selectedPowerBoardObject;
     private Button buttonPreviousPage;
     private Button buttonNextPage;
     private Button[] buttonFilterManaCost;
@@ -52,7 +60,7 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
 
     @Override
     protected String getTitle() {
-        return "Deckbuilder";
+        return "Deckbuilder - " + (isSelectingPower ? "Companion powers" : "Collection");
     }
 
     @Override
@@ -70,12 +78,15 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         CollectionCardAmountVisualizer collectionCardAmountVisualizer = new CollectionCardAmountVisualizer(collectionGuiNode);
 
         CardList collection = getModule(GameDataClientModule.class).getUser().getCollectionCardList();
-        collectionCards = mapCardList(collection);
+        HashMap<CardModel, Integer> collectionCards = mapCardList(collection);
+
+        List<CardModel> powerCards = mapPowers(getModule(GameDataClientModule.class).getPowers());
+        putOneOfEachCard(collectionCards, powerCards);
+
         HashMap<CardModel, Integer> deck = mapCardList(this.deck.getDeckCardList());
 
         CollectionDeckBuilderSettings<CardModel> settings = CollectionDeckBuilderSettings.<CardModel>builder()
             .deckBuilderSettings(deckBuilderSettings)
-            .collectionCards(collectionCards)
             .collectionZone(collectionZone)
             .collectionCardVisualizer(IngameCardVisualizer.forCollection())
             .collectionCardAmountVisualizer(collectionCardAmountVisualizer)
@@ -88,8 +99,11 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
             @Override
             protected void initialize(Application app) {
                 super.initialize(app);
+                setCollectionCards(collectionCards);
                 setCollectionCardOrder(cardOrder);
+                setFilter(null);
                 setDeck(deck);
+                initPower();
             }
         };
     }
@@ -99,22 +113,60 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         return cardModel.isLegendary() ? GameConstants.MAXIMUM_DECK_CARD_AMOUNT_LEGENDARY : GameConstants.MAXIMUM_DECK_CARD_AMOUNT_NON_LEGENDARY;
     }
 
+    private void initPower() {
+        deckBuilderAppState.getBoard().registerVisualizer_Class(DeckPower.class, new DeckPowerVisualizer());
+
+        selectedPowerBoardObject = new DeckPower();
+        selectedPowerBoardObject.position().setTransformation(new ConstantButTargetedTransformation<>(new Vector3f(8.51f, 0, -5.6f)));
+        selectedPowerBoardObject.setInteractivity(InteractivitySource.MOUSE_LEFT, new ClickInteractivity() {
+
+            @Override
+            public void trigger(BoardObject source, BoardObject target) {
+                setSelectingPower(!isSelectingPower);
+            }
+        });
+        deckBuilderAppState.getBoard().register(selectedPowerBoardObject);
+
+        setSelectedPower(getPowerModel(deck.getPower()));
+    }
+
     @Override
     protected void initGui(float rightColumnX, float rightColumnWidth) {
         super.initGui(rightColumnX, rightColumnWidth);
 
+        float x;
+        float y;
+
+        float startY = labelDeckSize.getLocalTranslation().getY() + 15;
+
         // Deck name
-        float y = textTitle.getLocalTranslation().getY() + 5;
+        x = rightColumnX - 10 - rightColumnWidth;
+        y = startY;
+
         Label labelName = new Label("Deck name:");
-        labelName.setLocalTranslation(rightColumnX, y, 0);
+        labelName.setLocalTranslation(x, y, 0);
         labelName.setColor(ColorRGBA.White);
         guiNode.attachChild(labelName);
         y -= 20;
         textFieldName = new TextField(deck.getDeckCardList().getName());
-        textFieldName.setLocalTranslation(rightColumnX, y, 0);
+        textFieldName.setLocalTranslation(x, y, 0);
         textFieldName.setPreferredWidth(rightColumnWidth);
         textFieldName.setFontSize(16);
         guiNode.attachChild(textFieldName);
+
+        // Power
+        x = rightColumnX;
+        y = startY;
+
+        Label labelPowerTitle = new Label("Companion power:");
+        labelPowerTitle.setLocalTranslation(x, y, 0);
+        labelPowerTitle.setColor(ColorRGBA.White);
+        guiNode.attachChild(labelPowerTitle);
+        y -= 20;
+        labelPowerName = new Label("");
+        labelPowerName.setLocalTranslation(x, y, 0);
+        labelPowerName.setColor(ColorRGBA.White);
+        guiNode.attachChild(labelPowerName);
 
         // Pagination
         int buttonPaginationWidth = 50;
@@ -132,31 +184,13 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         collectionGuiNode.attachChild(buttonNextPage);
 
         // Filter
-        float x = 55;
+        x = 55;
         int buttonManaFilterWidth = 50;
-        buttonFilterManaCost = new Button[11];
-        int highestButtonManaCost = (buttonFilterManaCost.length - 1);
+        buttonFilterManaCost = new Button[HIGHEST_BUTTON_MANA_COST + 1];
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
-            final int manaCost = i;
-            Predicate<CardModel> filter = cardModel -> {
-                if (manaCost < highestButtonManaCost) {
-                    return cardModel.getManaCostDetails() == manaCost;
-                } else {
-                    return cardModel.getManaCostDetails() >= manaCost;
-                }
-            };
-            String buttonText = manaCost + (manaCost < highestButtonManaCost ? "" : "+");
-            Button button = addButton(buttonText, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, _ -> {
-                if (deckBuilderAppState.getCollectionCardFilter() == filter) {
-                    deckBuilderAppState.setCollectionCardFilter(null);
-                    filteredManaCost = null;
-                } else {
-                    deckBuilderAppState.setCollectionCardFilter(filter);
-                    filteredManaCost = manaCost;
-                }
-                deckBuilderAppState.goToCollectionPage(0);
-                updateGui();
-            });
+            int manaCost = i;
+            String buttonText = manaCost + (manaCost < HIGHEST_BUTTON_MANA_COST ? "" : "+");
+            Button button = addButton(buttonText, buttonManaFilterWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, _ -> toggleFilter(manaCost));
             button.setLocalTranslation(x, 89, 0);
             buttonFilterManaCost[i] = button;
             x += buttonManaFilterWidth;
@@ -165,8 +199,6 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         // Save
         Button buttonSave = addButton("Save", rightColumnWidth, GuiUtil.BUTTON_HEIGHT_DEFAULT, b -> saveDeck());
         buttonSave.setLocalTranslation(rightColumnX, 86 + GuiUtil.BUTTON_HEIGHT_DEFAULT, 0);
-
-        updateGui();
     }
 
     @Override
@@ -190,26 +222,57 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         }
     }
 
+    public void setSelectingPower(boolean isSelectingPower) {
+        this.isSelectingPower = isSelectingPower;
+        selectedPowerBoardObject.getModel().setSelected(isSelectingPower);
+        updateTitle();
+        setFilter(null);
+    }
+
+    private void toggleFilter(Integer manaCost) {
+        setFilter(Objects.equals(filteredManaCost, manaCost) ? null : manaCost);
+    }
+
+    private void setFilter(Integer manaCost) {
+        filteredManaCost = manaCost;
+        deckBuilderAppState.setCollectionCardFilter(cardModel -> {
+            if ((isSelectingPower && (cardModel.getType() == CardType.POWER))
+            || (!isSelectingPower && ((cardModel.getType() == CardType.CREATURE) || (cardModel.getType() == CardType.SPELL)))) {
+                if (filteredManaCost == null) {
+                    return true;
+                } else  if (filteredManaCost < HIGHEST_BUTTON_MANA_COST) {
+                    return cardModel.getManaCostDetails() == filteredManaCost;
+                } else {
+                    return cardModel.getManaCostDetails() >= filteredManaCost;
+                }
+            }
+            return false;
+        });
+        updateCollectionGui();
+    }
+
     private void goToPreviousPage() {
         if (deckBuilderAppState.getCollectionPage() > 0) {
             deckBuilderAppState.goToPreviousCollectionPage();
-            updateGui();
+            updateCollectionGui();
         }
     }
 
     private void goToNextPage() {
         if (deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1)) {
             deckBuilderAppState.goToNextCollectionPage();
-            updateGui();
+            updateCollectionGui();
         }
     }
 
-    private void updateGui() {
+    private void updateCollectionGui() {
         buttonPreviousPage.setCullHint(deckBuilderAppState.getCollectionPage() > 0 ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         buttonNextPage.setCullHint(deckBuilderAppState.getCollectionPage() < (deckBuilderAppState.getCollectionPagesCount() - 1) ? Spatial.CullHint.Inherit : Spatial.CullHint.Always);
         for (int i = 0; i < buttonFilterManaCost.length; i++) {
             boolean isSelected = ((filteredManaCost != null) && (filteredManaCost == i));
-            buttonFilterManaCost[i].setColor(isSelected ? ColorRGBA.Green : ColorRGBA.White);
+            ColorRGBA color = isSelected ? ColorRGBA.Green : ColorRGBA.White;
+            buttonFilterManaCost[i].setColor(color);
+            buttonFilterManaCost[i].setFocusColor(color);
         }
     }
 
@@ -223,7 +286,7 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
         if (name.isEmpty()) {
             name = null;
         }
-        getModule(GameDataClientModule.class).updateDeck(mode, deck, name, cards);
+        getModule(GameDataClientModule.class).updateDeck(mode, deck, name, selectedPower, cards);
         mainApplication.getStateManager().attach(new LoadingAppState() {
 
             @Override
@@ -231,6 +294,22 @@ public class CollectionDeckAppState extends CachedModelsDeckAppState<CollectionD
                 return (getModule(GameDataClientModule.class).getUser() != null);
             }
         });
+    }
+
+    @Override
+    protected boolean interceptOnTryToAddCard(CardModel cardModel) {
+        if (isSelectingPower) {
+            setSelectedPower(cardModel);
+            setSelectingPower(false);
+            return false;
+        }
+        return super.interceptOnTryToAddCard(cardModel);
+    }
+
+    public void setSelectedPower(CardModel cardModel) {
+        selectedPower = getPower(cardModel);
+        labelPowerName.setText(cardModel.getName());
+        selectedPowerBoardObject.getModel().setName(cardModel.getName());
     }
 
     @Override

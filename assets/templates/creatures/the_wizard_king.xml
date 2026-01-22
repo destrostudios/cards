@@ -22,7 +22,7 @@
                             <entity template="../effects/move_source_to_creature_zone"/>
                             <entity>
                                 <targets>
-                                    <entity template="../targets/targets_default_cast_from_hand_spell"/>
+                                    <entity template="../targets/targets_default_play_spell"/>
                                 </targets>
                                 <addBuff>
                                     <entity template="../buffs/simple(source=#card,setManaCost=[setManaCost])"/>

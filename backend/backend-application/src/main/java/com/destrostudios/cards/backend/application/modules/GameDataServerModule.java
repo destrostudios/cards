@@ -3,10 +3,7 @@ package com.destrostudios.cards.backend.application.modules;
 import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.backend.database.databases.Database;
-import com.destrostudios.cards.shared.model.Card;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.Queue;
-import com.destrostudios.cards.shared.model.User;
+import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.model.internal.PackResult;
 import com.destrostudios.cards.shared.network.messages.*;
 import com.destrostudios.gametools.network.server.modules.jwt.JwtServerModule;
@@ -23,6 +20,7 @@ public class GameDataServerModule extends NetworkModule {
     private JwtServerModule jwtModule;
     private Database database;
     private CardService cardService;
+    private PowerService powerService;
     private ModeService modeService;
     private QueueService queueService;
     private UserService userService;
@@ -34,17 +32,18 @@ public class GameDataServerModule extends NetworkModule {
             JwtAuthenticationUser jwtUser = jwtModule.getUser(connection.getID());
             database.transaction(() -> {
                 List<Card> cards = cardService.getCards();
+                List<Power> powers = powerService.getPowers();
                 List<Mode> modes = modeService.getModes();
                 List<Queue> queues = queueService.getQueues();
                 userService.onLogin(jwtUser);
                 User user = userService.getUser(getUserId(connection));
-                connection.sendTCP(new InitialGameDataMessage(cards, modes, queues, user));
+                connection.sendTCP(new InitialGameDataMessage(cards, powers, modes, queues, user));
             });
         } else if (object instanceof CreateDeckMessage createDeckMessage) {
             database.transaction(() -> deckService.createDeck(getUserId(connection), createDeckMessage.getModeId()));
             sendUser(connection);
         } else if (object instanceof UpdateDeckMessage updateDeckMessage) {
-            database.transaction(() -> deckService.updateDeck(updateDeckMessage.getModeId(), updateDeckMessage.getDeckId(), updateDeckMessage.getName(), updateDeckMessage.getCards()));
+            database.transaction(() -> deckService.updateDeck(updateDeckMessage.getModeId(), updateDeckMessage.getDeckId(), updateDeckMessage.getName(), updateDeckMessage.getPowerId(), updateDeckMessage.getCards()));
             sendUser(connection);
         } else if (object instanceof DeleteDeckMessage deleteDeckMessage) {
             database.transaction(() -> deckService.deleteDeck(deleteDeckMessage.getModeId(), deleteDeckMessage.getDeckId()));

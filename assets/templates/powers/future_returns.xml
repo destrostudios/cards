@@ -1,0 +1,24 @@
+<template>
+    <values>
+        <manaGain>7</manaGain>
+    </values>
+    <entity id="card">
+        <name>Future Returns</name>
+        <powerCard/>
+        <description>Gain [manaGain] mana.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>6</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/gain_mana_for_source_owner(mana=[manaGain])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

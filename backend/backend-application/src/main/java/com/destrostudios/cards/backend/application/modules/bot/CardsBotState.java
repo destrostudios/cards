@@ -49,7 +49,13 @@ public class CardsBotState implements BotGameState<Action, Integer> {
 
     @Override
     public List<Action> generateActions(Integer team) {
-        return PlayerActionsGenerator.generatePossibleActions(gameContext.getData(), team);
+        List<Action> actions = PlayerActionsGenerator.generatePossibleActions(gameContext.getData(), team);
+        // The action order matters for the bot, as in case of tied visit counts it simply takes the first tied action instead of a random one.
+        // This currently seems to benefit the second player (whose entity gets created last, as the generated actions follow the entity query order which is sorted).
+        // The effect is accordingly very noticeable with low bot strength (node visits), and less with a higher one.
+        // By shuffling the actions, we guarantee a random action in case of tied visit counts, removing this bias.
+        Collections.shuffle(actions);
+        return actions;
     }
 
     @Override

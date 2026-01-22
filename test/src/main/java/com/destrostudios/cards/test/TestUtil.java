@@ -8,7 +8,7 @@ public class TestUtil {
 
     public static void runOnManyProcessors(Runnable runnable) {
         int availableProcessors = Runtime.getRuntime().availableProcessors();
-        int processors = Math.min(1, availableProcessors / 4);
+        int processors = Math.max(1, availableProcessors / 2);
         for (int i = 0; i < processors; i++) {
             new Thread(runnable).start();
         }

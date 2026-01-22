@@ -133,16 +133,23 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 directionZ *= -1;
             }
 
-            float z = directionZ * 1.7f;
+            float playerZ = 1.7f;
+
+            float x = 0;
+            float z = playerZ;
             // Vertical centering
-            z += i * -0.15f;
+            z += directionZ * i * -0.15f;
             PlayerBoardObject playerBoardObject = entityBoardMap.getOrCreatePlayer(players[i]);
-            playerBoardObject.position().setTransformation(new ConstantButTargetedTransformation<>(offset.add(0, 0.01f, z)));
+            playerBoardObject.position().setTransformation(new ConstantButTargetedTransformation<>(offset.add(directionX * x, 0.01f, directionZ * z)));
             board.register(playerBoardObject);
+
+            x = 1.75f;
+            z = playerZ + 0.1f;
+            SimpleIntervalZone powerZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), Quaternion.IDENTITY, new Vector3f(0.734f, 1, 1));
 
             z = 0.2f + (ZONE_HEIGHT / 2);
             CenteredIntervalZone creatureZone = new CenteredIntervalZone(offset.add(0, 0, directionZ * z), Quaternion.IDENTITY, new Vector3f(1, 1, 1));
-            float x = 4.5f;
+            x = 4.5f;
             SimpleIntervalZone graveyardZone = new SimpleIntervalZone(offset.add(directionX * x, 0, directionZ * z), Quaternion.IDENTITY, new Vector3f(0.02f, 1, 1)) {
 
                 // TODO: Cleanup
@@ -168,11 +175,12 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
             Quaternion handRotation = new Quaternion().fromAngleAxis(0.1f * FastMath.PI, Vector3f.UNIT_X);
             CenteredIntervalZone handZone = new CenteredIntervalZone(offset.add(0, 0.25f, directionZ * z), handRotation, new Vector3f(0.85f, 1, 1));
 
+            board.addZone(powerZone);
             board.addZone(deckZone);
             board.addZone(handZone);
             board.addZone(creatureZone);
             board.addZone(graveyardZone);
-            playerZonesMap.put(players[i], new PlayerZones(deckZone, handZone, creatureZone, graveyardZone));
+            playerZonesMap.put(players[i], new PlayerZones(powerZone, deckZone, handZone, creatureZone, graveyardZone));
         }
 
         // Visualizers
@@ -205,6 +213,14 @@ public class IngameAppState extends MyBaseAppState implements ActionListener {
                 return super.getSize(zone);
             }
         });
+        board.registerVisualizer_ZonePosition(zonePosition -> {
+            for (PlayerZones playerZones : playerZonesMap.values()) {
+                if (zonePosition.getZone() == playerZones.getPowerZone()) {
+                    return true;
+                }
+            }
+            return false;
+        }, new IngamePowerVisualizer());
         board.registerVisualizer_ZonePosition(zonePosition -> {
             for (PlayerZones playerZones : playerZonesMap.values()) {
                 if (zonePosition.getZone() == playerZones.getCreatureZone()) {

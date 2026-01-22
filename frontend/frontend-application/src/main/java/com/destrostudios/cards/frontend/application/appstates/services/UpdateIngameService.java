@@ -5,15 +5,15 @@ import com.destrostudios.cardgui.events.*;
 import com.destrostudios.cardgui.interactivities.*;
 import com.destrostudios.cards.frontend.application.EntityBoardMap;
 import com.destrostudios.cards.frontend.application.PlayerZones;
-import com.destrostudios.cards.frontend.application.appstates.CardSelectorAppState;
-import com.destrostudios.cards.frontend.application.appstates.ScrollCardSelectorAppState;
+import com.destrostudios.cards.frontend.application.appstates.ClickCardSelectorAppState;
+import com.destrostudios.cards.frontend.application.appstates.SelectorAppState;
+import com.destrostudios.cards.frontend.application.appstates.TargetsScrollSelectorAppState;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.frontend.application.appstates.services.players.PlayerBoardObject;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.PlayerActionsGenerator;
@@ -23,6 +23,7 @@ import com.destrostudios.cards.shared.rules.actions.EndTurnAction;
 import com.destrostudios.cards.shared.rules.effects.DiscoverPool;
 import com.destrostudios.cards.shared.rules.effects.EffectOptions;
 import com.destrostudios.cards.shared.rules.util.ArrayUtil;
+import com.destrostudios.cards.shared.rules.util.CardUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 import com.jme3.math.Vector3f;
@@ -33,7 +34,7 @@ import java.util.function.Consumer;
 
 public class UpdateIngameService {
 
-    public UpdateIngameService(GameService gameService, Board board, CardZone selectionZone, HashMap<Integer, PlayerZones> playerZonesMap, EntityBoardMap entityBoardMap, IngameGuiService ingameGuiService, Consumer<CardSelectorAppState> openCardSelector) {
+    public UpdateIngameService(GameService gameService, Board board, CardZone selectionZone, HashMap<Integer, PlayerZones> playerZonesMap, EntityBoardMap entityBoardMap, IngameGuiService ingameGuiService, Consumer<SelectorAppState> openCardSelector) {
         this.gameService = gameService;
         this.board = board;
         this.selectionZone = selectionZone;
@@ -49,7 +50,7 @@ public class UpdateIngameService {
     private HashMap<Integer, PlayerZones> playerZonesMap;
     private EntityBoardMap entityBoardMap;
     private IngameGuiService ingameGuiService;
-    private Consumer<CardSelectorAppState> openCardSelector;
+    private Consumer<SelectorAppState> openCardSelector;
     @Getter
     private Action sendableEndTurnAction;
     private HashMap<Integer, ArrayList<int[]>> validSpellTargets;
@@ -87,6 +88,7 @@ public class UpdateIngameService {
             playerBoardObject.getModel().setMaxMana(data.getComponentOrElse(player, Components.AVAILABLE_MANA, 0));
 
             PlayerZones playerZones = playerZonesMap.get(player);
+            updateZoneCards(data, player, Components.Player.POWER_CARDS, playerZones.getPowerZone());
             updateZoneCards(data, player, Components.Player.LIBRARY_CARDS, playerZones.getDeckZone());
             updateZoneCards(data, player, Components.Player.HAND_CARDS, playerZones.getHandZone());
             updateZoneCards(data, player, Components.Player.CREATURE_ZONE_CARDS, playerZones.getCreatureZone());
@@ -100,7 +102,6 @@ public class UpdateIngameService {
     private void updateZoneCards(EntityData data, int player, ComponentDefinition<IntList> playerZoneComponent, CardZone playerCardZone) {
         IntList cardEntities = data.getComponent(player, playerZoneComponent);
         for (int i = 0; i < cardEntities.size(); i++) {
-            int cardZoneIndex = i;
             int cardEntity = cardEntities.get(i);
             CardZone cardZone = playerCardZone;
             boolean isFront = true;
@@ -121,7 +122,7 @@ public class UpdateIngameService {
             card.clearInteractivities();
             CardGuiMapper.updateModel(data, cardEntity, card.getModel(), isFront);
 
-            board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(cardZoneIndex, 0, 0)));
+            board.triggerEvent(new MoveCardEvent(card, cardZone, new Vector3f(i, 0, 0)));
         }
     }
 
@@ -147,14 +148,13 @@ public class UpdateIngameService {
             } else {
                 for (Action action : possibleActions) {
                     if (action instanceof CastSpellAction castSpellAction) {
+                        int source = castSpellAction.getSource();
                         int spell = castSpellAction.getSpell();
                         int[] targets = castSpellAction.getTargets();
 
                         ArrayList<int[]> validTargets = validSpellTargets.computeIfAbsent(spell, _ -> new ArrayList<>());
                         if (validTargets.isEmpty()) {
-                            // TODO: Improve?
-                            int cardEntity = data.list(Components.SPELLS, currentCardEntity -> ArrayUtil.contains(data.getComponent(currentCardEntity, Components.SPELLS), spell)).get(0);
-                            Card<CardModel> card = entityBoardMap.getOrCreateCard(cardEntity);
+                            Card<CardModel> card = entityBoardMap.getOrCreateCard(source);
 
                             DiscoverPool discoverPool = SpellUtil.getDiscoverEffectPool(data, spell);
                             Runnable openDiscoverSelector = () -> {
@@ -162,27 +162,35 @@ public class UpdateIngameService {
                                 EntityData discoverData = new SimpleEntityData(Components.ALL);
                                 String[] templates = gameService.getGameContext().getDiscoverTemplates(discoverPool);
 
-                                ArrayList<int[]> validDiscoverTargets = new ArrayList<>();
-                                HashMap<Integer, Card<CardModel>> discoverCardModelsByEntity = new HashMap<>();
-                                HashMap<Integer, Integer> discoverIndicesByEntity = new HashMap<>();
+                                ArrayList<CardModel> discoverCardModels = new ArrayList<>();
                                 for (int i = 0; i < GameConstants.DISCOVER_OPTIONS; i++) {
                                     String template = templates[i];
-                                    int discoverCardEntity = discoverData.createEntity();
-                                    EntityTemplate.loadTemplate(discoverData, discoverCardEntity, template);
-                                    Card<CardModel> discoverCard = new Card<>(new CardModel());
-                                    CardGuiMapper.updateModel(discoverData, discoverCardEntity, discoverCard.getModel(), true);
-
-                                    validDiscoverTargets.add(new int[] { discoverCardEntity });
-                                    discoverCardModelsByEntity.put(discoverCardEntity, discoverCard);
-                                    discoverIndicesByEntity.put(discoverCardEntity, i);
+                                    int discoverCardEntity = CardUtil.createCard(discoverData, template, data.getComponent(source, Components.FOIL));
+                                    CardModel cardModel = new CardModel();
+                                    CardGuiMapper.updateModel(discoverData, discoverCardEntity, cardModel, true);
+                                    cardModel.setPlayable(true);
+                                    discoverCardModels.add(cardModel);
                                 }
 
-                                String description = data.getComponent(cardEntity, Components.DESCRIPTION);
+                                String description = data.getComponent(source, Components.DESCRIPTION);
                                 update(false);
                                 ingameGuiService.setAttached(false);
-                                openCardSelector.accept(new ScrollCardSelectorAppState(description, validDiscoverTargets, t -> discoverCardModelsByEntity.get(t).getModel(), null, selectedTargets -> {
-                                    int discoverIndex = discoverIndicesByEntity.get(selectedTargets[0]);
-                                    gameService.sendAction(new CastSpellAction(cardEntity, spell, selectedTargets, EffectOptions.builder().discoverIndex(discoverIndex).build()));
+                                openCardSelector.accept(new ClickCardSelectorAppState(description, discoverCardModels, null, false, selectedTarget -> {
+                                    int discoverIndex = discoverCardModels.indexOf(selectedTarget);
+                                    gameService.sendAction(new CastSpellAction(source, spell, ArrayUtil.EMPTY, EffectOptions.builder().discoverIndex(discoverIndex).build()));
+                                    ingameGuiService.setAttached(true);
+                                }));
+                            };
+
+                            Runnable openScrollSelector = () -> {
+                                String description = data.getComponent(source, Components.DESCRIPTION);
+                                update(false);
+                                ingameGuiService.setAttached(false);
+                                openCardSelector.accept(new TargetsScrollSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), () -> {
+                                    update(true);
+                                    ingameGuiService.setAttached(true);
+                                }, selectedTargets -> {
+                                    gameService.sendAction(new CastSpellAction(source, spell, selectedTargets, null));
                                     ingameGuiService.setAttached(true);
                                 }));
                             };
@@ -199,9 +207,9 @@ public class UpdateIngameService {
                                         }
 
                                         @Override
-                                        public void trigger(BoardObject source, BoardObject target) {
+                                        public void trigger(BoardObject boardObject, BoardObject target) {
                                             int targetEntity = getEntity(target);
-                                            gameService.sendAction(new CastSpellAction(cardEntity, spell, new int[]{ targetEntity }, null));
+                                            gameService.sendAction(new CastSpellAction(source, spell, new int[]{ targetEntity }, null));
                                         }
 
                                         private Integer getEntity(BoardObject<?> boardObject) {
@@ -211,25 +219,24 @@ public class UpdateIngameService {
                                             return null;
                                         }
                                     };
+                                } else if (data.hasComponent(source, Components.POWER_CARD)) {
+                                    interactivity = new ClickInteractivity() {
+
+                                        @Override
+                                        public void trigger(BoardObject boardObject, BoardObject target) {
+                                            openScrollSelector.run();
+                                        }
+                                    };
                                 } else {
                                     interactivity = new DragToPlayInteractivity() {
 
                                         @Override
                                         public void trigger(BoardObject boardObject, BoardObject target) {
-                                            String description = data.getComponent(cardEntity, Components.DESCRIPTION);
-                                            update(false);
-                                            ingameGuiService.setAttached(false);
-                                            openCardSelector.accept(new ScrollCardSelectorAppState(description, validTargets, t -> entityBoardMap.getOrCreateCard(t).getModel(), () -> {
-                                                update(true);
-                                                ingameGuiService.setAttached(true);
-                                            }, selectedTargets -> {
-                                                gameService.sendAction(new CastSpellAction(cardEntity, spell, selectedTargets, null));
-                                                ingameGuiService.setAttached(true);
-                                            }));
+                                            openScrollSelector.run();
                                         }
                                     };
                                 }
-                            } else if (data.hasComponent(cardEntity, Components.Zone.HAND)) {
+                            } else if (data.hasComponent(source, Components.Zone.HAND)) {
                                 interactivity = new DragToPlayInteractivity() {
 
                                     @Override
@@ -254,7 +261,7 @@ public class UpdateIngameService {
                                     }
                                 };
                             }
-                            boolean isDefaultSpell = (SpellUtil.isDefaultCastFromHandSpell(data, spell) || SpellUtil.isDefaultAttackSpell(data, spell));
+                            boolean isDefaultSpell = (SpellUtil.isDefaultPlaySpell(data, spell) || SpellUtil.isDefaultAttackSpell(data, spell));
                             InteractivitySource interactivitySource = (isDefaultSpell ? InteractivitySource.MOUSE_LEFT : InteractivitySource.MOUSE_RIGHT);
                             card.setInteractivity(interactivitySource, interactivity);
                             card.getModel().setPlayable(true);

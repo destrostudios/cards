@@ -12,7 +12,7 @@
                 <effects>
                     <entity>
                         <targets>
-                            <entity template="../targets/source_default_cast_from_hand_spell"/>
+                            <entity template="../targets/source_default_play_spell"/>
                         </targets>
                         <addBuff>
                             <entity template="../buffs/simple(source=#card,bonusManaCost=-1)"/>

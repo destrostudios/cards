@@ -10,5 +10,6 @@ public class UserModeDeck implements Deck {
     private int id;
     private int userId;
     private Mode mode;
+    private Power power;
     private CardList deckCardList;
 }

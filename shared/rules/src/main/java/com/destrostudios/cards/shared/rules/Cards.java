@@ -213,7 +213,6 @@ public class Cards {
         "spells/thunder",
         "spells/underworld_rot",
         "spells/underworld_sparks",
-        "spells/unprocessed_mana_crystal",
         "spells/warcry",
     };
 }

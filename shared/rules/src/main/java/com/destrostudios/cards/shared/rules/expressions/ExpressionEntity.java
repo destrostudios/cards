@@ -51,7 +51,7 @@ public class ExpressionEntity {
     public Integer getManaCost() {
         int[] spells = data.getComponent(entity, Components.SPELLS);
         for (int spell : spells) {
-            if (SpellUtil.isDefaultCastFromHandSpell(data, spell)) {
+            if (SpellUtil.isDefaultPlaySpell(data, spell)) {
                 return CostUtil.getEffectiveManaCost(data, spell);
             }
         }
@@ -90,8 +90,8 @@ public class ExpressionEntity {
         return ConditionUtil.isAlly(data, entity, other.entity);
     }
 
-    public boolean getIsDefaultCastFromHandSpell() {
-        return SpellUtil.isDefaultCastFromHandSpell(data, entity);
+    public boolean getIsDefaultPlaySpell() {
+        return SpellUtil.isDefaultPlaySpell(data, entity);
     }
 
     public boolean hasBuff(int buff) {
@@ -165,8 +165,8 @@ public class ExpressionEntity {
         return wrap(ZoneUtil.getTopLibraryCard(data, entity));
     }
 
-    public ExpressionEntity getDefaultCastFromHandSpell() {
-        return wrap(SpellUtil.getDefaultCastFromHandSpell(data, entity));
+    public ExpressionEntity getDefaultPlaySpell() {
+        return wrap(SpellUtil.getDefaultPlaySpell(data, entity));
     }
 
     public ExpressionEntity getSource() {

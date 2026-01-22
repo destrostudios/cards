@@ -22,8 +22,8 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
         modelledCard.getMaterial_Front().setFloat("Distortion", foilDistortion);
         Node foilModelledCardNode = modelledCard.getNode();
         foilModelledCardNode.setShadowMode(shadows ? RenderQueue.ShadowMode.CastAndReceive : RenderQueue.ShadowMode.Off);
-        this.node.attachChild(foilModelledCardNode);
-        glowQuad = new GlowQuad(assetManager, 0.96f, 1.28f);
+        node.attachChild(foilModelledCardNode);
+        glowQuad = new SimpleGlowQuad(assetManager, 0.96f, 1.28f, SimpleGlowQuad.Shape.RECT);
         tauntBox = new TextureQuad(assetManager, 0.96f, 1.5f);
         tauntBox.setTexture(assetManager.loadTexture("images/taunt.png"));
         divineShieldBox = new ColorBox(assetManager, 0.96f / 2.1f, 0.1f, 1.28f / 2.1f);
@@ -33,7 +33,7 @@ public class IngameCardVisualization extends CustomAttachmentVisualization<Node>
     private boolean fullArt;
     private Node node;
     private FoilSimpleModelledCard modelledCard;
-    private GlowQuad glowQuad;
+    private SimpleGlowQuad glowQuad;
     private TextureQuad tauntBox;
     private ColorBox divineShieldBox;
 

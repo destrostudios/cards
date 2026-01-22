@@ -83,7 +83,7 @@ public class GameEventHandling extends EventHandling<GameContext> {
             new RemoveBuffsOnRemovedFromCreatureZoneHandler()
         );
         set(instant, EventType.REMOVED_FROM_HAND,
-            new RemoveDefaultCastFromHandSpellBuffsOnRemovedFromHandHandler()
+            new RemoveDefaultPlaySpellBuffsOnRemovedFromHandHandler()
         );
         set(instant, EventType.SHUFFLE_LIBRARY, new ShuffleLibraryHandler());
         set(instant, EventType.START_TURN,

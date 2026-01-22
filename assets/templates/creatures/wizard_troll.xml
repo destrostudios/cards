@@ -3,11 +3,11 @@
         <description>Costs (1) less for each spell you've played this game.</description>
         <postCastSpellTriggers>
             <entity>
-                <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_SPELL_CARD,SOURCE_ALLY"/>
+                <targetPrefilters advanced="DEFAULT_PLAY_SPELL,SOURCE_SPELL_CARD,SOURCE_ALLY"/>
                 <effects>
                     <entity>
                         <targets>
-                            <entity template="../targets/source_default_cast_from_hand_spell"/>
+                            <entity template="../targets/source_default_play_spell"/>
                         </targets>
                         <addBuff>
                             <entity template="../buffs/simple(source=#card,bonusManaCost=-1)"/>

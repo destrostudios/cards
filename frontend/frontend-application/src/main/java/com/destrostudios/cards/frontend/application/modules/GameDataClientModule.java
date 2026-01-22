@@ -21,6 +21,7 @@ public class GameDataClientModule extends NetworkModule {
     @Getter
     private Connection connection;
     private List<Card> cards;
+    private List<Power> powers;
     private List<Mode> modes;
     private List<Queue> queues;
     private User user;
@@ -30,6 +31,7 @@ public class GameDataClientModule extends NetworkModule {
     public void received(Connection connection, Object object) {
         if (object instanceof InitialGameDataMessage initialGameDataMessage) {
             cards = initialGameDataMessage.getCards();
+            powers = initialGameDataMessage.getPowers();
             modes = initialGameDataMessage.getModes();
             queues = initialGameDataMessage.getQueues();
             user = initialGameDataMessage.getUser();
@@ -52,7 +54,7 @@ public class GameDataClientModule extends NetworkModule {
     }
 
     public Queue getQueue(String name) {
-        return queues.stream().filter(queues -> queues.getName().equals(name)).findFirst().orElseThrow();
+        return queues.stream().filter(queue -> queue.getName().equals(name)).findFirst().orElseThrow();
     }
 
     public List<? extends Deck> getDecks(Mode mode) {
@@ -68,9 +70,9 @@ public class GameDataClientModule extends NetworkModule {
         connection.sendTCP(new CreateDeckMessage(mode.getId()));
     }
 
-    public void updateDeck(Mode mode, Deck deck, String name, List<NewCardListCard> cards) {
+    public void updateDeck(Mode mode, Deck deck, String name, Power power, List<NewCardListCard> cards) {
         user = null;
-        connection.sendTCP(new UpdateDeckMessage(mode.getId(), deck.getId(), name, cards));
+        connection.sendTCP(new UpdateDeckMessage(mode.getId(), deck.getId(), name, power.getId(), cards));
     }
 
     public void deleteDeck(Mode mode, Deck deck) {

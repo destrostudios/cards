@@ -40,7 +40,8 @@ public class PlayerActionsGenerator {
     }
 
     private static void generateSpellCasts(EntityData data, int player, Consumer<Action> out) {
-        // Currently, only cards in hand and creature zone have castable spells (so only checking those speeds up the process a lot)
+        // Currently, only cards in powers, hand and creature zone have castable spells (so only checking those speeds up the process a lot)
+        generateSpellCasts(data, player, data.getComponent(player, Components.Player.POWER_CARDS), out);
         generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_HAND[player]), out);
         generateSpellCasts(data, player, data.list(Components.Zone.PLAYER_CREATURE_ZONE[player]), out);
     }

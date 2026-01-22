@@ -17,12 +17,12 @@ public class TestRemoveBuffs extends TestGame {
     }
 
     @Test
-    public void testRemoveDefaultCastFromHandSpellBuffsOnRemoveFromHand() {
+    public void testRemoveDefaultPlaySpellBuffsOnRemoveFromHand() {
         int card = createCard(player, Components.Zone.HAND);
-        int defaultCastFromHandSpell = getDefaultCastFromHandSpell(card);
+        int defaultPlaySpell = getDefaultPlaySpell(card);
         int buff = data.createEntity();
-        fire(new AddBuffEvent(defaultCastFromHandSpell, buff));
+        fire(new AddBuffEvent(defaultPlaySpell, buff));
         castFromHand(card);
-        assertHasNoComponent(defaultCastFromHandSpell, Components.BUFFS);
+        assertHasNoComponent(defaultPlaySpell, Components.BUFFS);
     }
 }

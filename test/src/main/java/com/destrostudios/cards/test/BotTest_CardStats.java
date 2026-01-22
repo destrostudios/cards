@@ -23,11 +23,11 @@ public class BotTest_CardStats extends BotTest {
         AtomicInteger games = new AtomicInteger();
         ConcurrentHashMap<String, BotGame_WithCardStats.CardStatsTotal> totalCardStats = new ConcurrentHashMap<>();
         TestUtil.runOnManyProcessors(() -> {
-            Random actualRandom = new Random();
+            Random random = new Random();
             while (true) {
-                long seed = actualRandom.nextLong();
+                long seed = random.nextLong();
                 System.out.println("Playing game " + games.incrementAndGet() + "... (seed = " + seed + ")");
-                BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, getDefaultStartGameInfo(), seed, false, false, (botSettings, player) -> {});
+                BotGame_WithCardStats botGame = new BotGame_WithCardStats(allCards, getStartGameInfo_CompletelyRandom(random), seed, false, false, (botSettings, player) -> {});
                 botGame.play();
                 botGame.addToTotalStats(totalCardStats);
             }

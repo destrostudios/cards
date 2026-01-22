@@ -9,5 +9,6 @@ import lombok.*;
 public class ModeDeck implements Deck {
     private int id;
     private int modeId;
+    private Power power;
     private CardList deckCardList;
 }

@@ -19,6 +19,8 @@ public class GameConstants {
     public static final int PACKS_FOR_WINNER_CLASSIC = 1;
     public static final int PACKS_FOR_WINNER_ARENA = 2;
     public static final int PLAYER_HEALTH = 30;
+    public static final String POWER_PATH_SPARK = "powers/spark";
+    public static final String SPELL_PATH_UNPROCESSED_MANA_CRYSTAL = "spells/unprocessed_mana_crystal";
     public static final String QUEUE_NAME_BOT = "bot";
     public static final String QUEUE_NAME_USER = "user";
 }

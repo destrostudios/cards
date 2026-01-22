@@ -7,17 +7,33 @@ import com.destrostudios.cards.shared.rules.Components;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.cards.Foil;
 
-public class ModelUtil {
+public class CardUtil {
 
     public static int createCard(EntityData data, CardIdentifier cardIdentifier) {
-        int card = data.createEntity();
-        EntityTemplate.loadTemplate(data, card, cardIdentifier.getCard().getPath());
-        // TODO: Cleanup?
+        return createCard(data, cardIdentifier.getCard().getPath(), mapFoil(cardIdentifier));
+    }
+
+    // TODO: Cleanup?
+    private static Foil mapFoil(CardIdentifier cardIdentifier) {
         if (GameConstants.FOIL_NAME_ARTWORK.equals(cardIdentifier.getFoil().getName())) {
-            data.setComponent(card, Components.FOIL, Foil.ARTWORK);
+            return Foil.ARTWORK;
         } else if (GameConstants.FOIL_NAME_FULL.equals(cardIdentifier.getFoil().getName())) {
-            data.setComponent(card, Components.FOIL, Foil.FULL);
+            return Foil.FULL;
         }
+        return null;
+    }
+
+    public static int createCard(EntityData data, String path, Foil foil) {
+        int card = createCard(data, path);
+        if (foil != null) {
+            data.setComponent(card, Components.FOIL, foil);
+        }
+        return card;
+    }
+
+    public static int createCard(EntityData data, String path) {
+        int card = data.createEntity();
+        EntityTemplate.loadTemplate(data, card, path);
         return card;
     }
 }

@@ -13,8 +13,8 @@ public class CardModel extends BoardObjectModel {
     private boolean playable;
     private boolean crossed;
 
-    private String type;
-    private String title;
+    private CardType type;
+    private String name;
     private Integer manaCostDetails;
     private Integer manaCostFullArt;
     private StatModification manaCostModification;
@@ -38,7 +38,7 @@ public class CardModel extends BoardObjectModel {
         setPlayable(cardModel.playable);
         setCrossed(cardModel.crossed);
         setType(cardModel.type);
-        setTitle(cardModel.title);
+        setName(cardModel.name);
         setManaCostFullArt(cardModel.manaCostFullArt);
         setManaCostDetails(cardModel.manaCostDetails);
         setManaCostModification(cardModel.manaCostModification);
@@ -68,12 +68,12 @@ public class CardModel extends BoardObjectModel {
         updateIfNotEquals(this.crossed, crossed, () -> this.crossed = crossed);
     }
 
-    public void setType(String type) {
+    public void setType(CardType type) {
         updateIfNotEquals(this.type, type, () -> this.type = type);
     }
 
-    public void setTitle(String title) {
-        updateIfNotEquals(this.title, title, () -> this.title = title);
+    public void setName(String name) {
+        updateIfNotEquals(this.name, name, () -> this.name = name);
     }
 
     public void setManaCostFullArt(Integer manaCostFullArt) {

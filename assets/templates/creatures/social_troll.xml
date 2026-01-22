@@ -7,7 +7,7 @@
         <auras>
             <entity>
                 <sourcePrefilters basic="HAND"/>
-                <targetPrefilters advanced="SOURCE_DEFAULT_CAST_FROM_HAND_SPELL"/>
+                <targetPrefilters advanced="SOURCE_DEFAULT_PLAY_SPELL"/>
                 <auraBuff>
                     <entity template="../buffs/simple(source=#card)">
                         <bonusManaCost>-1 * [bonusManaCost] * source.count(["CREATURE_ZONE"], ["ALLY"])</bonusManaCost>

@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class PlayerZones {
+    private CardZone powerZone;
     private CardZone deckZone;
     private CardZone handZone;
     private CardZone creatureZone;

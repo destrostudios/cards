@@ -1,6 +1,5 @@
 <template>
-    <entity id="card" template="./templates/simple_summoner(name=Goblin Drinking Buddy,manaCost=2,attack=2,health=1,summonTemplate=creatures/goblin)">
+    <entity id="card" template="./templates/simple_summoner(name=Goblin Drinking Buddy,manaCost=2,attack=2,health=1,summonTemplate=creatures/goblin,summonDescription=1/1 Goblin)">
         <goblin/>
-        <description>Cast: Summon a 1/1 Goblin.</description>
     </entity>
 </template>

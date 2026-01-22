@@ -4,9 +4,9 @@ import com.destrostudios.cards.shared.application.ApplicationSetup;
 import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.IntList;
 import com.destrostudios.cards.shared.entities.SimpleEntityData;
-import com.destrostudios.cards.shared.entities.templates.EntityTemplate;
 import com.destrostudios.cards.shared.events.Event;
 import com.destrostudios.cards.shared.model.Mode;
+import com.destrostudios.cards.shared.model.Power;
 import com.destrostudios.cards.shared.model.Queue;
 import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.battle.DamageEvent;
@@ -59,8 +59,8 @@ public class TestGame {
             mock(Queue.class),
             "myBoardName",
             new PlayerInfo[] {
-                new PlayerInfo(1, "Player", null),
-                new PlayerInfo(2, "Opponent", null),
+                new PlayerInfo(1, "Player", new Power[0], null),
+                new PlayerInfo(2, "Opponent", new Power[0], null),
             }
         );
         gameContext = new GameContext(startGameInfo, GameEventHandling.GLOBAL_INSTANCE) {
@@ -82,8 +82,8 @@ public class TestGame {
         player = data.createEntity();
         opponent = data.createEntity();
         players = new int[] { player, opponent };
-        GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), new IntList());
-        GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), new IntList());
+        GameSetup.initPlayer(data, player, opponent, startGameInfo.getPlayers()[0].getLogin(), new IntList(), new IntList());
+        GameSetup.initPlayer(data, opponent, player, startGameInfo.getPlayers()[1].getLogin(), new IntList(), new IntList());
     }
 
     protected int[] createCards(int count, int owner, ComponentDefinition<Void> zone) {
@@ -159,9 +159,7 @@ public class TestGame {
     }
 
     protected int create(String template) {
-        int card = data.createEntity();
-        EntityTemplate.loadTemplate(data, card, template);
-        return card;
+        return CardUtil.createCard(data, template);
     }
 
     protected int[] createForBothPlayers(int countPerPlayer, Function<Integer, Integer> createForPlayer) {
@@ -213,11 +211,11 @@ public class TestGame {
     }
 
     protected void castFromHand(int card, EffectOptions options) {
-        cast(getDefaultCastFromHandSpell(card), ArrayUtil.EMPTY, options);
+        cast(getDefaultPlaySpell(card), ArrayUtil.EMPTY, options);
     }
 
     protected void castFromHand(int card, int[] targets, EffectOptions options) {
-        cast(getDefaultCastFromHandSpell(card), targets, options);
+        cast(getDefaultPlaySpell(card), targets, options);
     }
 
     protected void attack(int card, int target) {
@@ -262,8 +260,8 @@ public class TestGame {
     }
 
     protected void assertManaCost(int card, int value) {
-        int defaultCastFromHandSpell = getDefaultCastFromHandSpell(card);
-        assertManaCostSpell(defaultCastFromHandSpell, value);
+        int defaultPlaySpell = getDefaultPlaySpell(card);
+        assertManaCostSpell(defaultPlaySpell, value);
     }
 
     protected int getAndAssertSpell(int card, int spellIndex, Integer manaCost, Integer maximumCastsPerTurn) {
@@ -277,8 +275,8 @@ public class TestGame {
         assertEquals(value, CostUtil.getEffectiveManaCost(data, spell));
     }
 
-    protected int getDefaultCastFromHandSpell(int entity) {
-        return getSpell(entity, spell -> SpellUtil.isDefaultCastFromHandSpell(data, spell));
+    protected int getDefaultPlaySpell(int entity) {
+        return getSpell(entity, spell -> SpellUtil.isDefaultPlaySpell(data, spell));
     }
 
     protected int getDefaultAttackSpell(int entity) {

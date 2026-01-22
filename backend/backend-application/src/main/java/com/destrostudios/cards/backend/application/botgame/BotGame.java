@@ -75,7 +75,7 @@ public class BotGame {
         for (int i = 0; i < bots.length; i++) {
             MctsBotSettings<CardsBotState, Action> settings = new MctsBotSettings<>();
             settings.termination = TerminationType.NODE_COUNT;
-            settings.strength = 100;
+            settings.strength = 1000;
             settings.evaluation = CardsBotEval::eval;
             settings.random = _botRandomInternal;
             modifyBotSettings.accept(settings, i);
@@ -143,8 +143,8 @@ public class BotGame {
     }
 
     private String getEntityDebugText_Spell(int spell) {
-        if (SpellUtil.isDefaultCastFromHandSpell(gameContext.getData(), spell)) {
-            return "[PlayFromHand]";
+        if (SpellUtil.isDefaultPlaySpell(gameContext.getData(), spell)) {
+            return "[Play]";
         } else if (SpellUtil.isDefaultAttackSpell(gameContext.getData(), spell)) {
             return "[Attack]";
         }

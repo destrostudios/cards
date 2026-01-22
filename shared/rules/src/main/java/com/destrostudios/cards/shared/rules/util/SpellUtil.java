@@ -47,10 +47,10 @@ public class SpellUtil {
         return new ValidTargetsAmount(minimum, maximum);
     }
 
-    // TODO: Maybe just mark the default spells (cast from hand + attack) as such, saves this whole logic and also performance, especially on conditions
+    // TODO: Maybe just mark the default spells (play + attack) as such, saves this whole logic and also performance, especially on conditions
 
-    public static Integer getDefaultCastFromHandSpell(EntityData data, int card) {
-        return findSpell(data, card, spell -> isDefaultCastFromHandSpell(data, spell));
+    public static Integer getDefaultPlaySpell(EntityData data, int card) {
+        return findSpell(data, card, spell -> isDefaultPlaySpell(data, spell));
     }
 
     public static Integer getDefaultAttackSpell(EntityData data, int card) {
@@ -67,10 +67,14 @@ public class SpellUtil {
         return null;
     }
 
-    public static boolean isDefaultCastFromHandSpell(EntityData data, int spell) {
-        // Currently, all spells with a hand prefilter are defaultCastFromHandSpells (FIXME: Doesn't cover discard effects like Can)
+    public static boolean isDefaultPlaySpell(EntityData data, int spell) {
         Components.Prefilters prefilters = data.getComponent(spell, Components.Target.SOURCE_PREFILTERS);
-        return ((prefilters != null) && (prefilters.getBasicComponents()[0] == Components.Zone.HAND));
+        // Currently, all spells without a prefilter are default play spells of powers
+        if (prefilters == null) {
+            return data.hasComponent(spell, Components.Spell.CAST_TRIGGERS);
+        }
+        // Currently, all default play spells of creatures and spells have a hand prefilter (FIXME: Wrongly returns true for spells like Can's self-discard)
+        return prefilters.getBasicComponents()[0] == Components.Zone.HAND;
     }
 
     public static boolean isDefaultAttackSpell(EntityData data, int spell) {

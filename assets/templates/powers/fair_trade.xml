@@ -1,0 +1,24 @@
+<template>
+    <entity id="card">
+        <name>Fair Trade</name>
+        <powerCard/>
+        <description>Shuffle a card from your hand into your library and draw a card.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <targetPrefilters basic="HAND" advanced="ALLY"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>1</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/move_target_to_library"/>
+                            <entity template="../effects/shuffle_library_for_owner"/>
+                            <entity template="../effects/draw_for_owner(draw=1)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -4,11 +4,9 @@ import com.destrostudios.authtoken.JwtAuthenticationUser;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotModule;
 import com.destrostudios.cards.backend.application.services.DeckService;
 import com.destrostudios.cards.backend.application.services.ModeService;
+import com.destrostudios.cards.backend.application.services.PowerService;
 import com.destrostudios.cards.backend.application.services.QueueService;
-import com.destrostudios.cards.shared.model.CardList;
-import com.destrostudios.cards.shared.model.Deck;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.Queue;
+import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.network.messages.QueueMessage;
 import com.destrostudios.cards.shared.network.messages.UnqueueMessage;
 import com.destrostudios.cards.shared.rules.GameConstants;
@@ -28,10 +26,11 @@ public class QueueServerModule extends NetworkModule {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueueServerModule.class);
 
-    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, ModeService modeService, DeckService deckService, QueueService queueService) {
+    public QueueServerModule(JwtServerModule jwtModule, CardsGameStartServerModule cardsGameStartServerModule, CardsBotModule cardsBotModule, PowerService powerService, ModeService modeService, DeckService deckService, QueueService queueService) {
         this.jwtModule = jwtModule;
         this.cardsGameStartServerModule = cardsGameStartServerModule;
         this.cardsBotModule = cardsBotModule;
+        this.powerService = powerService;
         this.modeService = modeService;
         this.deckService = deckService;
         this.queueService = queueService;
@@ -43,6 +42,7 @@ public class QueueServerModule extends NetworkModule {
     private JwtServerModule jwtModule;
     private CardsGameStartServerModule cardsGameStartServerModule;
     private CardsBotModule cardsBotModule;
+    private PowerService powerService;
     private ModeService modeService;
     private DeckService deckService;
     private QueueService queueService;
@@ -58,12 +58,12 @@ public class QueueServerModule extends NetworkModule {
                 LOG.info(jwtUser.login + " queued up (" + queueMessage + ").");
                 Mode mode = modeService.getMode(queueMessage.getModeId());
                 Deck deck = deckService.getDeck(queueMessage.getModeId(), queueMessage.getDeckId());
-                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, deck.getDeckCardList());
+                PlayerInfo playerInfo = new PlayerInfo(userId, jwtUser.login, new Power[] { deck.getPower() }, deck.getDeckCardList());
                 Queue queue = queueService.getQueue(queueMessage.getQueueId());
                 if (queue.getName().equals(GameConstants.QUEUE_NAME_USER)) {
                     modeQueuePlayers
-                            .computeIfAbsent(mode.getId(), mid -> new HashMap<>())
-                            .computeIfAbsent(queue.getId(), qid -> new HashMap<>())
+                            .computeIfAbsent(mode.getId(), _ -> new HashMap<>())
+                            .computeIfAbsent(queue.getId(), _ -> new HashMap<>())
                             .put(userId, playerInfo);
                     startGameIfPossible(mode, queue);
                 } else {
@@ -71,13 +71,14 @@ public class QueueServerModule extends NetworkModule {
                     if (mode.getDecks().size() > 0) {
                         botDeck = mode.getDecks().get((int) (Math.random() * mode.getDecks().size())).getDeckCardList();
                     }
+                    Power[] botPowers = new Power[] { powerService.getPower_Spark() };
                     UUID gameId = cardsGameStartServerModule.startGame(new StartGameInfo(
                         mode,
                         queue,
                         BOARD_NAME,
                         new PlayerInfo[] {
                             playerInfo,
-                            new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, botDeck)
+                            new PlayerInfo(BOT_USER_ID, BOT_USER_NAME, botPowers, botDeck)
                         }
                     ));
                     cardsBotModule.checkBotTurn(gameId);

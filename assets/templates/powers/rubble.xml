@@ -1,0 +1,3 @@
+<template>
+    <entity template="./templates/simple_summoner(name=Rubble,manaCost=3,summonTemplate=creatures/pebble,summonDescription=1/1 Pebble)"/>
+</template>

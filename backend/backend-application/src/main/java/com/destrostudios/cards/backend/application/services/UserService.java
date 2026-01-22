@@ -21,6 +21,7 @@ public class UserService {
     private Database database;
     private ModeService modeService;
     private CardService cardService;
+    private PowerService powerService;
     private FoilService foilService;
     private CardListService cardListService;
     private QueueService queueService;
@@ -49,10 +50,11 @@ public class UserService {
         Mode classicMode = modeService.getMode(GameConstants.MODE_NAME_CLASSIC);
         NewDeck introductionDeck = createUserModeDeck(userId, classicMode.getId());
         Foil foilNone = foilService.getFoil(GameConstants.FOIL_NAME_NONE);
+        Power power = powerService.getPower_Spark();
         List<NewCardListCard> cards = cardService.getCards_Core().stream()
                 .map(card -> new NewCardListCard(card.getId(), foilNone.getId(), 2))
                 .collect(Collectors.toList());
-        updateUserModeDeck(introductionDeck.getId(), "Introduction Deck", cards);
+        updateUserModeDeck(introductionDeck.getId(), "Introduction Deck", power.getId(), cards);
     }
 
     public User getUser(int userId) {
@@ -148,21 +150,24 @@ public class UserService {
             result.getInteger("id"),
             result.getInteger("user_id"),
             modeService.getMode(result.getInteger("mode_id")),
+            powerService.getPower(result.getInteger("power_id")),
             cardListService.getCardList(result.getInteger("deck_card_list_id"))
         );
     }
 
     public NewDeck createUserModeDeck(int userId, int modeId) {
+        Power power = powerService.getPower_Spark();
         int deckCardListId = cardListService.createCardList();
-        try (QueryResult result = database.insert("INSERT INTO user_mode_deck (user_id, mode_id, deck_card_list_id) VALUES (" + userId + ", " + modeId + ", " + deckCardListId + ")")) {
+        try (QueryResult result = database.insert("INSERT INTO user_mode_deck (user_id, mode_id, power_id, deck_card_list_id) VALUES (" + userId + ", " + modeId + ", " + power.getId() + ", " + deckCardListId + ")")) {
             result.next();
             int id = result.getInteger(1);
             return new NewDeck(id, deckCardListId);
         }
     }
 
-    public void updateUserModeDeck(int userModeDeckId, String name, List<NewCardListCard> cards) {
+    public void updateUserModeDeck(int userModeDeckId, String name, int powerId, List<NewCardListCard> cards) {
         UserModeDeck userModeDeck = getUserModeDeck(userModeDeckId);
+        database.execute("UPDATE user_mode_deck SET power_id = " + powerId + " WHERE id = " + userModeDeckId);
         cardListService.updateCardList(userModeDeck.getDeckCardList().getId(), name, cards);
     }
 

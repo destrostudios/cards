@@ -4,20 +4,19 @@ import com.destrostudios.cards.backend.application.BackendApplication;
 import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
-import com.destrostudios.cards.shared.model.Card;
-import com.destrostudios.cards.shared.model.CardList;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.Queue;
+import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 
 import java.util.List;
+import java.util.Random;
 
 public class BotTest {
 
     protected Database database;
     protected CardService cardService;
+    protected PowerService powerService;
     protected FoilService foilService;
     protected CardListService cardListService;
     protected ModeService modeService;
@@ -33,9 +32,10 @@ public class BotTest {
 
         database = BackendApplication.getDatabase();
         cardService = new CardService(database);
+        powerService = new PowerService(database);
         foilService = new FoilService(database);
         cardListService = new CardListService(database, cardService, foilService);
-        modeService = new ModeService(database, cardListService);
+        modeService = new ModeService(database, powerService, cardListService);
         queueService = new QueueService(database);
 
         allCards = cardService.getCards();
@@ -43,19 +43,40 @@ public class BotTest {
         defaultQueue = queueService.getQueue(GameConstants.QUEUE_NAME_BOT);
     }
 
-    protected StartGameInfo getDefaultStartGameInfo() {
-        return getDefaultStartGameInfo(null, null);
+    protected StartGameInfo getStartGameInfo_CompletelyRandom(Random random) {
+        return getDefaultStartGameInfo(null, null, getRandomPower(random), getRandomPower(random));
     }
 
-    protected StartGameInfo getDefaultStartGameInfo(CardList deck1, CardList deck2) {
+    protected StartGameInfo getStartGameInfo_RandomBrawl(Random random) {
+        ModeDeck randomBrawlDeck1 = getRandomBrawlDeck(random);
+        ModeDeck randomBrawlDeck2 = getRandomBrawlDeck(random);
+        return getDefaultStartGameInfo(
+            randomBrawlDeck1.getDeckCardList(),
+            randomBrawlDeck2.getDeckCardList(),
+            randomBrawlDeck1.getPower(),
+            randomBrawlDeck2.getPower()
+        );
+    }
+
+    protected StartGameInfo getDefaultStartGameInfo(CardList deck1, CardList deck2, Power power1, Power power2) {
         return new StartGameInfo(
             defaultMode,
             defaultQueue,
             "forest",
-            new PlayerInfo[] {
-                new PlayerInfo(1, "Bot1", deck1),
-                new PlayerInfo(2, "Bot2", deck2)
+            new PlayerInfo[]{
+                new PlayerInfo(1, "Bot1", new Power[] { power1 }, deck1),
+                new PlayerInfo(2, "Bot2", new Power[] { power2 }, deck2)
             }
         );
+    }
+
+    protected ModeDeck getRandomBrawlDeck(Random random) {
+        Mode mode = modeService.getMode(GameConstants.MODE_NAME_BRAWL);
+        return mode.getDecks().get(random.nextInt(mode.getDecks().size()));
+    }
+
+    protected Power getRandomPower(Random random) {
+        List<Power> powers = powerService.getPowers();
+        return powers.get(random.nextInt(powers.size()));
     }
 }

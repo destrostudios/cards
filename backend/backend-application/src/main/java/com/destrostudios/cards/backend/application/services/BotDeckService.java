@@ -24,6 +24,7 @@ public class BotDeckService {
 
     private Database database;
     private CardService cardService;
+    private PowerService powerService;
     private FoilService foilService;
     private CardListService cardListService;
     private ModeService modeService;
@@ -119,13 +120,14 @@ public class BotDeckService {
                 botDeck2 = botDecks.get(random.nextInt(botDecks.size()));
             } while (botDeck2 == botDeck1);
 
+            Power[] botPowers = new Power[] { powerService.getPower_Spark() };
             StartGameInfo startGameInfo = new StartGameInfo(
                 modeClassic,
                 queueBot,
                 "forest",
                 new PlayerInfo[] {
-                    new PlayerInfo(1, "Bot1", botDeck1.getDeckCardList()),
-                    new PlayerInfo(2, "Bot2", botDeck2.getDeckCardList())
+                    new PlayerInfo(1, "Bot1", botPowers, botDeck1.getDeckCardList()),
+                    new PlayerInfo(2, "Bot2", botPowers, botDeck2.getDeckCardList())
                 }
             );
             long seed = random.nextLong();

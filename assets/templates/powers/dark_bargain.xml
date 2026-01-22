@@ -1,0 +1,25 @@
+<template>
+    <values>
+        <damage>1</damage>
+    </values>
+    <entity id="card">
+        <name>Dark Bargain</name>
+        <powerCard/>
+        <description>Deal [damage] damage to yourself and draw a card.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>3</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../effects/damage_source_owner(damage=[damage])"/>
+                            <entity template="../effects/draw_for_owner(draw=1)"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

@@ -61,7 +61,7 @@ public abstract class BotTest_Winrate extends BotTest {
     }
 
     protected StartGameInfo getStartGameInfo(Random random) {
-        return getDefaultStartGameInfo();
+        return getStartGameInfo_CompletelyRandom(random);
     }
 
     protected String getPlayerKey(PlayerInfo playerInfo) {

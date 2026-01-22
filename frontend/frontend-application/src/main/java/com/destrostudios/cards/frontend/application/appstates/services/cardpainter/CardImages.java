@@ -1,49 +1,48 @@
 package com.destrostudios.cards.frontend.application.appstates.services.cardpainter;
 
+import com.destrostudios.cardgui.samples.visualization.ImageUtil;
 import com.destrostudios.cards.frontend.application.appstates.services.cardpainter.model.CardModel;
 import com.destrostudios.cards.shared.files.FileAssets;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
 public class CardImages {
 
-    private static HashMap<String, Image> CACHED_IMAGES = new HashMap<>();
+    private static HashMap<String, BufferedImage> CACHED_IMAGES = new HashMap<>();
 
-    public static Image getCachedImage(String filePath, int width, int height) {
-        Image image = getCachedImage(filePath);
-        String key = (filePath + "_" + width + "_" + height);
-        return CACHED_IMAGES.computeIfAbsent(key, k -> {
-            int scaleMode = (filePath.endsWith(".gif") ? Image.SCALE_FAST : Image.SCALE_SMOOTH);
-            return image.getScaledInstance(width, height, scaleMode);
-        });
+    public static BufferedImage getCachedImage(String filePath, int width, int height) {
+        BufferedImage image = getCachedImage(filePath);
+        String key = filePath + "_" + width + "_" + height;
+        return CACHED_IMAGES.computeIfAbsent(key, _ -> ImageUtil.resizeImage(image, width, height));
     }
 
-    public static Image getCachedImage(String filePath) {
-        return CACHED_IMAGES.computeIfAbsent(filePath, k -> {
+    public static BufferedImage getCachedImage(String filePath) {
+        return CACHED_IMAGES.computeIfAbsent(filePath, _ -> {
             try {
                 return ImageIO.read(new File(FileAssets.ROOT + filePath));
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                throw new RuntimeException(filePath, ex);
             }
         });
     }
 
     public static String getCardImageFilePath(CardModel cardModel) {
-        String filePath = "images/";
-        String titleImageSuffix = ("cards/" + cardModel.getTitle());
-        if (FileAssets.exists(filePath + titleImageSuffix + ".gif")) {
-            filePath += titleImageSuffix + ".gif";
-        } else if (FileAssets.exists(filePath + titleImageSuffix + ".png")) {
-            filePath += titleImageSuffix + ".png";
-        } else if (FileAssets.exists(filePath + titleImageSuffix + ".jpg")) {
-            filePath += titleImageSuffix + ".jpg";
-        } else {
-            filePath += "cards/unknown.png";
-        }
-        return filePath;
+        return getCardImageFilePath(cardModel.getName());
+    }
+
+    public static String getCardImageFilePath(String cardName) {
+        return "images/cards/" + cardName + ".png";
+    }
+
+    public static String getPowerImageFilePath(CardModel cardModel) {
+        return getPowerImageFilePath(cardModel.getName());
+    }
+
+    public static String getPowerImageFilePath(String cardName) {
+        return "images/powers/" + cardName + ".png";
     }
 }

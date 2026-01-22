@@ -1,0 +1,22 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <powerCard/>
+        <description>Heal [heal] health of target character.</description>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <targetPrefilters basic="BOARD"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/heal_target(heal=[heal])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

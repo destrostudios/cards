@@ -2,11 +2,11 @@ package com.destrostudios.cards.shared.rules.cards;
 
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.entities.IntList;
-import com.destrostudios.cards.shared.rules.Components;
-import com.destrostudios.cards.shared.rules.GameContext;
-import com.destrostudios.cards.shared.rules.GameEventHandler;
+import com.destrostudios.cards.shared.rules.*;
 import com.destrostudios.cards.shared.rules.battle.ConditionsAffectedEvent;
+import com.destrostudios.cards.shared.rules.effects.CreateEvent;
 import com.destrostudios.cards.shared.rules.game.turn.StartTurnEvent;
+import com.destrostudios.cards.shared.rules.util.ArrayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +56,7 @@ public class MulliganHandler extends GameEventHandler<MulliganEvent> {
             data.setComponent(nextPlayer, Components.Player.ACTIVE_PLAYER);
         } else {
             LOG.debug("Mulligan phase finished");
+            context.getEvents().fire(new CreateEvent(player, player, GameConstants.SPELL_PATH_UNPROCESSED_MANA_CRYSTAL, CreateLocation.HAND, ArrayUtil.EMPTY));
             context.getEvents().fire(new StartTurnEvent(nextPlayer));
         }
     }

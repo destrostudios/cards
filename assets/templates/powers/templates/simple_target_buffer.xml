@@ -1,0 +1,21 @@
+<template>
+    <entity id="card">
+        <name>[name]</name>
+        <powerCard/>
+        <spells>
+            <entity>
+                <source>#card</source>
+                <targetPrefilters basic="CREATURE_ZONE"/>
+                <maximumCastsPerTurn>1</maximumCastsPerTurn>
+                <manaCost>[manaCost]</manaCost>
+                <castTriggers>
+                    <entity>
+                        <effects>
+                            <entity template="../../effects/buff_target(buff=[buff])"/>
+                        </effects>
+                    </entity>
+                </castTriggers>
+            </entity>
+        </spells>
+    </entity>
+</template>

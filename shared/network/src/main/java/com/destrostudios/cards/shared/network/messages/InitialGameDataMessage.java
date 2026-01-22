@@ -1,9 +1,6 @@
 package com.destrostudios.cards.shared.network.messages;
 
-import com.destrostudios.cards.shared.model.Card;
-import com.destrostudios.cards.shared.model.Mode;
-import com.destrostudios.cards.shared.model.Queue;
-import com.destrostudios.cards.shared.model.User;
+import com.destrostudios.cards.shared.model.*;
 import lombok.*;
 
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.List;
 @ToString
 public class InitialGameDataMessage {
     private List<Card> cards;
+    private List<Power> powers;
     private List<Mode> modes;
     private List<Queue> queues;
     private User user;

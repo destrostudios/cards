@@ -4,7 +4,7 @@
         <auras>
             <entity>
                 <sourcePrefilters basic="CREATURE_ZONE"/>
-                <targetPrefilters advanced="DEFAULT_CAST_FROM_HAND_SPELL,SOURCE_HAND,SOURCE_DRAGON,SOURCE_ALLY"/>
+                <targetPrefilters advanced="DEFAULT_PLAY_SPELL,SOURCE_HAND,SOURCE_DRAGON,SOURCE_ALLY"/>
                 <auraBuff>
                     <entity template="../buffs/simple(source=#card,bonusManaCost=-2)"/>
                 </auraBuff>

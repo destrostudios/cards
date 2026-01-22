@@ -5,8 +5,9 @@ import com.destrostudios.cards.shared.entities.ComponentDefinition;
 import com.destrostudios.cards.shared.entities.EntityData;
 import com.destrostudios.cards.shared.model.CardIdentifier;
 import com.destrostudios.cards.shared.rules.Components;
+import com.destrostudios.cards.shared.rules.cards.Foil;
 import com.destrostudios.cards.shared.rules.util.CostUtil;
-import com.destrostudios.cards.shared.rules.util.ModelUtil;
+import com.destrostudios.cards.shared.rules.util.CardUtil;
 import com.destrostudios.cards.shared.rules.util.SpellUtil;
 import com.destrostudios.cards.shared.rules.util.StatsUtil;
 
@@ -27,7 +28,14 @@ public class CardGuiMapper {
     }
 
     public static CardModel createModel(EntityData data, CardIdentifier cardIdentifier) {
-        int card = ModelUtil.createCard(data, cardIdentifier);
+        return createModel(data, CardUtil.createCard(data, cardIdentifier));
+    }
+
+    public static CardModel createModel(EntityData data, String path, Foil foil) {
+        return createModel(data, CardUtil.createCard(data, path, foil));
+    }
+
+    private static CardModel createModel(EntityData data, int card) {
         CardModel cardModel = new CardModel();
         updateModel(data, card, cardModel, true);
         return cardModel;
@@ -40,14 +48,14 @@ public class CardGuiMapper {
         cardModel.setPlayable(false);
         cardModel.setCrossed(false);
 
-        String type = (data.hasComponent(card, Components.CREATURE_CARD) ? "creature" : "spell");
+        CardType type = (data.hasComponent(card, Components.CREATURE_CARD) ? CardType.CREATURE : (data.hasComponent(card, Components.SPELL_CARD) ? CardType.SPELL : CardType.POWER));
         cardModel.setType(type);
 
-        cardModel.setTitle(data.getComponent(card, Components.NAME));
+        cardModel.setName(data.getComponent(card, Components.NAME));
         cardModel.setKeywords(createListBasedOnComponents(data, card, keywordComponents));
         cardModel.setDescription(data.getComponent(card, Components.DESCRIPTION));
 
-        boolean checkedDefaultCastFromHandSpell = false;
+        boolean checkedDefaultPlaySpell = false;
         Integer baseManaCost = null;
         Integer manaCostFullArt = null;
         Integer manaCostDetails = null;
@@ -55,13 +63,13 @@ public class CardGuiMapper {
         int[] spellEntities = data.getComponent(card, Components.SPELLS);
         for (int spellEntity : spellEntities) {
             Integer manaCost = CostUtil.getEffectiveManaCost(data, spellEntity);
-            if ((!checkedDefaultCastFromHandSpell) && SpellUtil.isDefaultCastFromHandSpell(data, spellEntity)) {
+            if ((!checkedDefaultPlaySpell) && SpellUtil.isDefaultPlaySpell(data, spellEntity)) {
                 baseManaCost = data.getComponent(spellEntity, Components.Cost.MANA_COST);
                 manaCostDetails = manaCost;
                 if (data.hasComponent(card, Components.Zone.HAND)) {
                     manaCostFullArt = manaCostDetails;
                 }
-                checkedDefaultCastFromHandSpell = true;
+                checkedDefaultPlaySpell = true;
             } else if (!SpellUtil.isDefaultAttackSpell(data, spellEntity)) {
                 String spellDescription = SpellDescriptionGenerator.generateDescription(data, spellEntity);
                 Spell spell = new Spell();

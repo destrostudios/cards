@@ -13,5 +13,6 @@ public class UpdateDeckMessage {
     private int modeId;
     private int deckId;
     private String name;
+    private int powerId;
     private List<NewCardListCard> cards;
 }

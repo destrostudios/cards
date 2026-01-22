@@ -1,5 +1,0 @@
-<template>
-    <entity>
-        <targetSimple>SOURCE_DEFAULT_CAST_FROM_HAND_SPELL</targetSimple>
-    </entity>
-</template>

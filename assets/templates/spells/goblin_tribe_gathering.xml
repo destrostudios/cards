@@ -1,6 +1,6 @@
 <template>
     <values>
-        <draw>2</draw>
+        <draw>3</draw>
     </values>
     <entity id="card">
         <name>Goblin Tribe Gathering</name>
@@ -10,6 +10,7 @@
             <entity>
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
+                <condition>source.exists(["GRAVEYARD","GOBLIN"], ["ALLY"])</condition>
                 <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>

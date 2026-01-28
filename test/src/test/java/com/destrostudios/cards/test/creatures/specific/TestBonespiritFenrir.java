@@ -10,7 +10,7 @@ public class TestBonespiritFenrir extends TestGame {
     public void testBuffWhenOtherAllyCreatureOnBoard() {
         int creature = createCreature(player, Components.Zone.CREATURE_ZONE);
         int card = create("creatures/bonespirit_fenrir", player, Components.Zone.CREATURE_ZONE);
-        assertHealth(card, 1);
+        assertHealth(card, 2);
         destroy(creature);
         assertHealth(card, 0);
         assertHasComponent(card, Components.Zone.GRAVEYARD);

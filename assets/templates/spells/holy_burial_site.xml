@@ -12,7 +12,7 @@
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
                 <condition>source.count(["GRAVEYARD","CREATURE_CARD"], ["ALLY"]) >= [amountCreatures] &amp;&amp; source.count(["GRAVEYARD","SPELL_CARD"], ["ALLY"]) >= [amountSpells]</condition>
-                <manaCost>5</manaCost>
+                <manaCost>4</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

@@ -12,7 +12,7 @@
                 <sourcePrefilters basic="HAND"/>
                 <targetPrefilters basic="GRAVEYARD,DRAGON" advanced="ALLY"/>
                 <minimumTargets>[amount]</minimumTargets>
-                <manaCost>4</manaCost>
+                <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

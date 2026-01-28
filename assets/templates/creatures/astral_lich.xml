@@ -1,14 +1,15 @@
 <template>
     <values>
-        <damage>2</damage>
+        <damage>1</damage>
     </values>
-    <entity template="./templates/vanilla(name=Astral Lich,manaCost=4,attack=2,health=5)">
-        <description>After this creature is healed, deal [damage] damage to a random opponent.</description>
+    <entity template="./templates/vanilla(name=Astral Lich,manaCost=4,attack=2,health=4)">
+        <description>After a creature is healed, deal [damage] damage to all opponent creatures.</description>
         <postHealTriggers>
             <entity>
-                <targetPrefilters advanced="SOURCE"/>
+                <sourcePrefilters basic="CREATURE_ZONE"/>
+                <targetPrefilters basic="CREATURE_ZONE"/>
                 <effects>
-                    <entity template="../effects/damage_random_opponent(damage=[damage])"/>
+                    <entity template="../effects/damage_all_opponent_creatures(damage=[damage])"/>
                 </effects>
             </entity>
         </postHealTriggers>

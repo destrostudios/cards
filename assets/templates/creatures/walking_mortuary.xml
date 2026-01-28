@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Walking Mortuary,manaCost=9,attack=8,health=8)">
+    <entity template="./templates/vanilla(name=Walking Mortuary,manaCost=10,attack=8,health=8)">
         <description>Death: Summon 4 1/1 Zombies.</description>
         <postDestructionTriggers>
             <entity>

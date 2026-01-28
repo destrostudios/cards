@@ -1,9 +1,9 @@
 <template>
     <values>
         <damage>1</damage>
-        <amount>3</amount>
+        <amount>2</amount>
     </values>
-    <entity id="card" template="./templates/vanilla(name=Hobgoblin Cannoneer,attack=3,health=3)">
+    <entity id="card" template="./templates/vanilla(name=Hobgoblin Cannoneer,attack=4,health=3)">
         <goblin/>
         <description>Before this creature attacks, deal [damage] damage to [amount] random opponents.</description>
         <spells>

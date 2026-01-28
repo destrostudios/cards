@@ -161,6 +161,7 @@ public class Cards {
         "creatures/war_angel",
         "creatures/wizard_troll",
         "creatures/wooded_chimera",
+        "creatures/yeti",
         "creatures/young_inventor",
         "creatures/young_succubus",
         "spells/a_long_trip",

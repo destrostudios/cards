@@ -8,7 +8,7 @@
                 <source>#card</source>
                 <sourcePrefilters basic="HAND"/>
                 <targetPrefilters basic="CREATURE_ZONE" advanced="NOT_DAMAGED"/>
-                <manaCost>4</manaCost>
+                <manaCost>3</manaCost>
                 <castTriggers>
                     <entity>
                         <effects>

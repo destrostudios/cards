@@ -17,7 +17,7 @@ public class BotTest_Winrate_Deck extends BotTest_Winrate {
 
     @Override
     protected StartGameInfo getStartGameInfo(Random random) {
-        return getStartGameInfo_RandomBrawl(random);
+        return getStartGameInfo_Brawl(random);
     }
 
     @Override

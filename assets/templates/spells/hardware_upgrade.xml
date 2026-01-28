@@ -1,7 +1,7 @@
 <template>
     <values>
-        <bonusAttack>7</bonusAttack>
-        <bonusHealth>7</bonusHealth>
+        <bonusAttack>6</bonusAttack>
+        <bonusHealth>6</bonusHealth>
     </values>
     <entity id="card">
         <name>Hardware Upgrade</name>

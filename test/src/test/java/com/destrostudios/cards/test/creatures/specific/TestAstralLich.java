@@ -9,9 +9,10 @@ public class TestAstralLich extends TestGame {
 
     @Test
     public void testDamageRandomOpponentOnHeal() {
+        int[] creatures = createVanillas(2, 0, 0, 2, opponent, Components.Zone.CREATURE_ZONE);
         int card = create("creatures/astral_lich", player, Components.Zone.CREATURE_ZONE);
         damage(card, 1);
         heal(card, 1);
-        assertHealthAndDamaged(opponent, GameConstants.PLAYER_HEALTH - 2);
+        assertHealthAndDamaged(creatures, 1);
     }
 }

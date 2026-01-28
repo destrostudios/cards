@@ -6,7 +6,7 @@
     <entity id="card">
         <name>Mahabit Shaman</name>
         <creatureCard/>
-        <attack>5</attack>
+        <attack>4</attack>
         <health>4</health>
         <description>Cast: Target ally Beast gains +[bonusAttack]/+[bonusHealth].</description>
         <spells>

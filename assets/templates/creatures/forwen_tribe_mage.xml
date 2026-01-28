@@ -1,5 +1,5 @@
 <template>
-    <entity template="./templates/vanilla(name=Forwen Tribe Mage,manaCost=4,attack=3,health=5)">
+    <entity template="./templates/vanilla(name=Forwen Tribe Mage,manaCost=4,attack=3,health=4)">
         <description>Death: Add a Thunder to your hand.</description>
         <postDestructionTriggers>
             <entity>

@@ -3,7 +3,7 @@
         <name>Dragon Egg</name>
         <creatureCard/>
         <attack>0</attack>
-        <health>3</health>
+        <health>4</health>
         <spells>
             <entity template="../spells/templates/simple_summon(source=#card,manaCost=2)"/>
             <entity template="../spells/templates/simple_attack(source=#card)"/>

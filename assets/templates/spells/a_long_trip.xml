@@ -1,7 +1,7 @@
 <template>
     <values>
         <draw>3</draw>
-        <maximumManaCost>2</maximumManaCost>
+        <maximumManaCost>3</maximumManaCost>
     </values>
     <entity id="card">
         <name>A Long Trip</name>

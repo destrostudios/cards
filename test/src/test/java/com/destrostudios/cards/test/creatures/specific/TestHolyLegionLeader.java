@@ -13,6 +13,6 @@ public class TestHolyLegionLeader extends TestGame {
         int card = create("creatures/holy_legion_leader", player, Components.Zone.CREATURE_ZONE);
         heal(creature, 1);
         assertAttack(card, 5);
-        assertHealth(card, 5);
+        assertHealth(card, 6);
     }
 }

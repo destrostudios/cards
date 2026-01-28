@@ -1,7 +1,14 @@
 <template>
-    <entity template="./templates/vanilla(name=Baby Turtle,manaCost=4,attack=0,health=5)">
+    <entity id="card">
+        <name>Baby Turtle</name>
+        <description>Can't attack. Death: Summon its mother, the 5/5 Tarasque.</description>
+        <creatureCard/>
+        <attack>0</attack>
+        <health>5</health>
         <beast/>
-        <description>Death: Summon its mother, the 5/5 Tarasque.</description>
+        <spells>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=4)"/>
+        </spells>
         <postDestructionTriggers>
             <entity>
                 <targetPrefilters advanced="SOURCE"/>

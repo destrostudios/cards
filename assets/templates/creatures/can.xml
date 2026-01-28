@@ -5,7 +5,7 @@
         <attack>1</attack>
         <health>2</health>
         <spells>
-            <entity template="../spells/templates/simple_summon(source=#card,manaCost=3)"/>
+            <entity template="../spells/templates/simple_summon(source=#card,manaCost=2)"/>
             <entity template="../spells/templates/simple_attack(source=#card)"/>
             <entity>
                 <source>#card</source>

@@ -6,7 +6,7 @@
         <name>Underworld Ghoul</name>
         <creatureCard/>
         <attack>4</attack>
-        <health>2</health>
+        <health>3</health>
         <spells>
             <entity template="../spells/templates/simple_summon(source=#card,manaCost=4)"/>
             <entity template="../spells/templates/simple_attack(source=#card)"/>

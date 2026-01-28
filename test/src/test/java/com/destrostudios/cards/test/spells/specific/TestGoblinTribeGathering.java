@@ -8,7 +8,7 @@ public class TestGoblinTribeGathering extends TestGame {
 
     @Test
     public void testShuffleGoblinsFromGraveyardIntoLibraryAndDrawOnCast() {
-        int[] goblins = createCreatures(2, player, Components.Zone.GRAVEYARD);
+        int[] goblins = createCreatures(3, player, Components.Zone.GRAVEYARD);
         forEach(goblins, machine -> data.setComponent(machine, Components.Tribe.GOBLIN));
         int card = create("spells/goblin_tribe_gathering", player, Components.Zone.HAND);
         castFromHand(card);

@@ -47,14 +47,20 @@ public class BotTest {
         return getDefaultStartGameInfo(null, null, getRandomPower(random), getRandomPower(random));
     }
 
-    protected StartGameInfo getStartGameInfo_RandomBrawl(Random random) {
-        ModeDeck randomBrawlDeck1 = getRandomBrawlDeck(random);
-        ModeDeck randomBrawlDeck2 = getRandomBrawlDeck(random);
+    protected StartGameInfo getStartGameInfo_Brawl(Random random) {
+        return getStartGameInfo(getRandomBrawlDeck(random), getRandomBrawlDeck(random));
+    }
+
+    protected StartGameInfo getStartGameInfo_Brawl(String deckName1, String deckName2) {
+        return getStartGameInfo(getBrawlDeck(deckName1), getBrawlDeck(deckName2));
+    }
+
+    protected StartGameInfo getStartGameInfo(ModeDeck modeDeck1, ModeDeck modeDeck2) {
         return getDefaultStartGameInfo(
-            randomBrawlDeck1.getDeckCardList(),
-            randomBrawlDeck2.getDeckCardList(),
-            randomBrawlDeck1.getPower(),
-            randomBrawlDeck2.getPower()
+            modeDeck1.getDeckCardList(),
+            modeDeck2.getDeckCardList(),
+            modeDeck1.getPower(),
+            modeDeck2.getPower()
         );
     }
 
@@ -73,6 +79,11 @@ public class BotTest {
     protected ModeDeck getRandomBrawlDeck(Random random) {
         Mode mode = modeService.getMode(GameConstants.MODE_NAME_BRAWL);
         return mode.getDecks().get(random.nextInt(mode.getDecks().size()));
+    }
+
+    protected ModeDeck getBrawlDeck(String deckName) {
+        Mode mode = modeService.getMode(GameConstants.MODE_NAME_BRAWL);
+        return mode.getDecks().stream().filter(deck -> deck.getDeckCardList().getName().equals(deckName)).findAny().orElseThrow();
     }
 
     protected Power getRandomPower(Random random) {

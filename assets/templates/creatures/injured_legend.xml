@@ -1,6 +1,6 @@
 <template>
     <values>
-        <damage>4</damage>
+        <damage>3</damage>
     </values>
     <entity id="card">
         <name>Injured Legend</name>

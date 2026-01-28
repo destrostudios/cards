@@ -13,6 +13,7 @@ public class HealHandler extends GameEventHandler<HealEvent> {
 
     @Override
     public void handle(GameContext context, HealEvent event) {
+        boolean healed = false;
         EntityData data = context.getData();
         LOG.debug("Healing {} health of {}", event.heal, inspect(data, event.target));
         int remainingHeal = event.heal;
@@ -27,6 +28,7 @@ public class HealHandler extends GameEventHandler<HealEvent> {
                 data.removeComponent(event.target, Components.Stats.BONUS_DAMAGED);
                 remainingHeal -= oldBonusDamaged;
             }
+            healed = true;
         }
         if (remainingHeal > 0) {
             Integer oldDamaged = data.getComponent(event.target, Components.Stats.DAMAGED);
@@ -38,7 +40,11 @@ public class HealHandler extends GameEventHandler<HealEvent> {
                 } else {
                     data.removeComponent(event.target, Components.Stats.DAMAGED);
                 }
+                healed = true;
             }
+        }
+        if (!healed) {
+            event.cancel();
         }
     }
 }

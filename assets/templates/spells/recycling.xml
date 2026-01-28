@@ -1,7 +1,7 @@
 <template>
     <values>
         <amount>3</amount>
-        <minimumManaCost>2</minimumManaCost>
+        <minimumManaCost>3</minimumManaCost>
     </values>
     <entity id="card">
         <name>Recycling</name>

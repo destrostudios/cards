@@ -3,7 +3,7 @@
         <bonusAttack>1</bonusAttack>
         <bonusHealth>1</bonusHealth>
     </values>
-    <entity template="./templates/vanilla(name=Holy Legion Leader,manaCost=5,attack=4,health=4)">
+    <entity template="./templates/vanilla(name=Holy Legion Leader,manaCost=5,attack=4,health=5)">
         <description>After a character is healed, this creature gains +[bonusAttack]/+[bonusHealth].</description>
         <postHealTriggers>
             <entity>

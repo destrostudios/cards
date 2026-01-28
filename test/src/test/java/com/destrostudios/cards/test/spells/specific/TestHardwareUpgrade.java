@@ -12,7 +12,7 @@ public class TestHardwareUpgrade extends TestGame {
         data.setComponent(machine, Components.Tribe.MACHINE);
         int card = create("spells/hardware_upgrade", player, Components.Zone.HAND);
         castFromHand(card, machine);
-        assertAttack(machine, 7);
-        assertHealth(machine, 8);
+        assertAttack(machine, 6);
+        assertHealth(machine, 7);
     }
 }

@@ -5,7 +5,7 @@ spells/antique_can,Antique Can,false,2
 spells/arcane_graveyard,Arcane Graveyard,false,2
 spells/arcane_spellbook,Arcane Spellbook,false,2
 spells/begone_lizard,"Begone, Lizard!",false,4
-spells/blue_lagoon,Blue Lagoon,false,5
+spells/blue_lagoon,Blue Lagoon,false,4
 spells/bonfire,Bonfire,false,2
 spells/can_trip,Can Trip,false,2
 spells/conjured_lightning,Conjured Lightning,false,5
@@ -13,7 +13,7 @@ spells/dark_sphere,Dark Sphere,false,2
 spells/dragons_counterattack,Dragon's Counterattack,false,5
 spells/elemental_orb,Elemental Orb,false,6
 spells/eruption,Eruption,false,10
-spells/fall_of_the_first_dragons,Fall of the First Dragons,false,4
+spells/fall_of_the_first_dragons,Fall of the First Dragons,false,3
 spells/fiery_obliteration,Fiery Obliteration,false,7
 spells/fire_altar,Fire Altar,false,1
 spells/frozen_excavation,Frozen Excavation,false,8
@@ -22,13 +22,13 @@ spells/goblin_tribe_gathering,Goblin Tribe Gathering,false,4
 spells/golden_fractal_plant,Golden Fractal Plant,false,2
 spells/grand_fireball,Grand Fireball,false,4
 spells/hardware_upgrade,Hardware Upgrade,false,5
-spells/holy_burial_site,Holy Burial Site,false,5
+spells/holy_burial_site,Holy Burial Site,false,4
 spells/into_battle,Into Battle,false,6
 spells/medusa_shield,Medusa Shield,false,2
 spells/murder,Murder,false,5
 spells/nail_storm,Nail Storm,false,1
 spells/overclock,Overclock,false,1
-spells/peaceful_death,Peaceful Death,false,4
+spells/peaceful_death,Peaceful Death,false,3
 spells/plague,Plague,false,7
 spells/power_of_the_eclipse,Power of the Eclipse,false,3
 spells/reckless_charge,Reckless Charge,false,2
@@ -47,7 +47,7 @@ spells/sword_of_the_crusader,Sword of the Crusader,false,2
 spells/technology,Technology,false,3
 spells/the_kings_army,The King's Army,false,4
 spells/thunder,Thunder,false,1
-spells/underworld_rot,Underworld Rot,false,3
+spells/underworld_rot,Underworld Rot,false,2
 spells/underworld_sparks,Underworld Sparks,false,1
 spells/unprocessed_mana_crystal,Unprocessed Mana Crystal,false,0
 spells/warcry,Warcry,false,2

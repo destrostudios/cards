@@ -1,5 +1,5 @@
 <template>
-    <entity id="card" template="./templates/vanilla(name=Backstabbing Servant,attack=1,health=2)">
+    <entity id="card" template="./templates/vanilla(name=Backstabbing Servant,attack=1,health=1)">
         <description>Can attack anyone.</description>
         <spells>
             <entity template="../spells/templates/simple_summon(source=#card,manaCost=1)"/>

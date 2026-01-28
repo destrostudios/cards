@@ -2,7 +2,7 @@
     <values>
         <bonusAttack>1</bonusAttack>
     </values>
-    <entity template="./templates/vanilla(name=Furious Berserk,manaCost=3,attack=1,health=6)">
+    <entity template="./templates/vanilla(name=Furious Berserk,manaCost=3,attack=1,health=5)">
         <description>After this creature takes damage, it gains +[bonusAttack] attack.</description>
         <postDamageTriggers>
             <entity>

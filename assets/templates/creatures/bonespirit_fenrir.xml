@@ -1,8 +1,8 @@
 <template>
     <values>
-        <bonusHealth>1</bonusHealth>
+        <bonusHealth>2</bonusHealth>
     </values>
-    <entity id="card" template="./templates/vanilla(name=Bonespirit Fenrir,manaCost=2,attack=4,health=0)">
+    <entity id="card" template="./templates/vanilla(name=Bonespirit Fenrir,manaCost=1,attack=3,health=0)">
         <beast/>
         <description>Has +[bonusHealth] health if you have another creature on board.</description>
         <auras>

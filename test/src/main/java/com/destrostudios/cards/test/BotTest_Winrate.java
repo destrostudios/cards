@@ -2,7 +2,6 @@ package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.backend.application.botgame.BotGame;
 import com.destrostudios.cards.backend.application.modules.bot.CardsBotState;
-import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
 import com.destrostudios.cards.shared.rules.StartGameInfo;
 import com.destrostudios.cards.shared.rules.actions.Action;
@@ -54,10 +53,7 @@ public abstract class BotTest_Winrate extends BotTest {
                 games.incrementAndGet();
             }
         });
-        TestUtil.runInterval(() -> {
-            System.out.println("Games: " + games.get());
-            FileManager.putFileContent("./winrates.csv", getCsv(matchups));
-        }, 5000);
+        continuouslyWriteFile("winrates.csv", () -> getCsv(matchups));
     }
 
     protected StartGameInfo getStartGameInfo(Random random) {

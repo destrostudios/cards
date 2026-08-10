@@ -4,6 +4,7 @@ import com.destrostudios.cards.backend.application.BackendApplication;
 import com.destrostudios.cards.backend.application.services.*;
 import com.destrostudios.cards.backend.database.databases.Database;
 import com.destrostudios.cards.shared.application.ApplicationSetup;
+import com.destrostudios.cards.shared.files.FileManager;
 import com.destrostudios.cards.shared.model.*;
 import com.destrostudios.cards.shared.rules.GameConstants;
 import com.destrostudios.cards.shared.rules.PlayerInfo;
@@ -11,6 +12,7 @@ import com.destrostudios.cards.shared.rules.StartGameInfo;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 public class BotTest {
 
@@ -89,5 +91,14 @@ public class BotTest {
     protected Power getRandomPower(Random random) {
         List<Power> powers = powerService.getPowers();
         return powers.get(random.nextInt(powers.size()));
+    }
+
+    protected void continuouslyWriteFile(String fileName, Supplier<String> getContent) {
+        TestUtil.runInterval(() -> writeFile(fileName, getContent.get()), 5000);
+    }
+
+    protected void writeFile(String fileName, String content) {
+        String filePath = System.getenv("TARGET_DIRECTORY") + fileName;
+        FileManager.putFileContent(filePath, content);
     }
 }

@@ -1,7 +1,6 @@
 package com.destrostudios.cards.test;
 
 import com.destrostudios.cards.backend.application.botgame.BotGame_WithCardStats;
-import com.destrostudios.cards.shared.files.FileManager;
 
 import java.util.List;
 import java.util.Map;
@@ -32,9 +31,7 @@ public class BotTest_CardStats extends BotTest {
                 botGame.addToTotalStats(totalCardStats);
             }
         });
-        TestUtil.runInterval(() -> {
-            FileManager.putFileContent("./stats.csv", getCsv(totalCardStats));
-        }, 5000);
+        continuouslyWriteFile("stats.csv", () -> getCsv(totalCardStats));
     }
 
     private String getCsv(Map<String, BotGame_WithCardStats.CardStatsTotal> cardStats) {
